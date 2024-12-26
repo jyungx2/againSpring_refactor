@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import Home from './pages/Home';
-import About from './pages/About';
+import Home from './pages/Home'; // default로 가져오기
+import About from './pages/About'; // default로 가져오기
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Layout>
@@ -14,6 +14,6 @@ function App() {
       </Layout>
     </Router>
   );
-}
+};
 
 export default App;
