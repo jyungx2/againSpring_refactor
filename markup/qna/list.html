@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./list.css" />
+
+    <title>질문게시판 목록</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="qna-title">Q&A</h1>
+
+      <div class="qna-write">
+        <button class="qna-write__btn">글 작성</button>
+      </div>
+
+      <div class="qna-table-container">
+        <table class="qna-table">
+          <thead class="qna-table__head">
+            <tr>
+              <th class="qna-table__th">NO</th>
+              <th class="qna-table__th">제목</th>
+              <th class="qna-table__th">작성자</th>
+              <th class="qna-table__th">답변상태</th>
+              <th class="qna-table__th">등록일자</th>
+            </tr>
+          </thead>
+          <tbody class="qna-table__body">
+            <tr class="qna-table__row">
+              <td class="qna-table__cell">4</td>
+              <td class="qna-table__cell">배송 완료인데 배송이 안 왔어요.</td>
+              <td class="qna-table__cell">홍길동</td>
+              <td class="qna-table__cell">
+                <span class="qna-status">답변완료</span>
+              </td>
+              <td class="qna-table__cell">24/12/20</td>
+            </tr>
+            <tr class="qna-table__row">
+              <td class="qna-table__cell">3</td>
+              <td class="qna-table__cell">배송 완료인데 배송이 안 왔어요.</td>
+              <td class="qna-table__cell">홍길동</td>
+              <td class="qna-table__cell">
+                <span class="qna-status__wait">답변대기</span>
+              </td>
+              <td class="qna-table__cell">24/12/20</td>
+            </tr>
+            <tr class="qna-table__row">
+              <td class="qna-table__cell">2</td>
+              <td class="qna-table__cell">배송 완료인데 배송이 안 왔어요.</td>
+              <td class="qna-table__cell">홍길동</td>
+              <td class="qna-table__cell">
+                <span class="qna-status">답변완료</span>
+              </td>
+              <td class="qna-table__cell">24/12/20</td>
+            </tr>
+            <tr class="qna-table__row">
+              <td class="qna-table__cell">1</td>
+              <td class="qna-table__cell">배송 완료인데 배송이 안 왔어요.</td>
+              <td class="qna-table__cell">홍길동</td>
+              <td class="qna-table__cell">
+                <span class="qna-status__wait">답변대기</span>
+              </td>
+              <td class="qna-table__cell">24/12/20</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="qna-pagination">
+        <button class="qna-pagination__btn qna-pagination__btn--active">
+          1
+        </button>
+        <button class="qna-pagination__btn qna-pagination__btn--noactive">
+          2
+        </button>
+        <button class="qna-pagination__btn qna-pagination__btn--noactive">
+          3
+        </button>
+        <button class="qna-pagination__btn qna-pagination__btn--next">
+          Next
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
