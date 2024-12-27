@@ -8,6 +8,8 @@
 
 body {
   font-family: "GowunBatang-Regular", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 /* 컨테이너 */
@@ -15,41 +17,49 @@ body {
   position: relative;
   width: 100%;
   max-width: 1920px;
-  min-height: 2252px;
+  height: 1460px;
   margin: 0 auto;
-  padding: 0 200px;
+  padding: 0 127.5px;
+  box-sizing: border-box;
 }
 
 /* 타이틀 */
 .qna-title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #90be6d;
-  margin: 40px 0;
-  width: 100%;
+  height: 63px;
+  font-size: 24px;
+  text-align: center;
+  margin: 0;
+  padding: 15px 0;
+  box-sizing: border-box;
 }
 
-/* 글쓰기 버튼 영역 */
+/* 문의하기 버튼 영역 */
 .qna-write {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 20px;
+  padding: 12px 0;
   width: 100%;
 }
 
 .qna-write__btn {
   padding: 8px 20px;
-  background-color: #835f45;
+  background-color: #bc9f8b;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
+.qna-write__btn:hover {
+  background-color: #835f45;
+}
+
 /* 테이블 컨테이너 */
 .qna-table-container {
   width: 100%;
   margin: 0 auto;
+  max-height: 906.11px;
+  overflow-y: auto;
 }
 
 /* 테이블 기본 스타일 */
@@ -62,35 +72,37 @@ body {
 /* 테이블 헤더 */
 .qna-table__head tr {
   border-top: 1px solid #333;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 3px solid #ededed;
 }
 
 .qna-table__th {
   padding: 20px 0;
   text-align: center;
-  color: #835f45;
 }
 
 /* 테이블 열 너비 조정 */
 .qna-table__th:nth-child(1) {
-  width: 10%;
-} /* NO */
+  width: 8%;
+  text-align: left;
+  padding-left: 20px;
+} /* 번호 */
 .qna-table__th:nth-child(2) {
-  width: 50%;
+  width: 77%;
 } /* 제목 */
 .qna-table__th:nth-child(3) {
-  width: 15%;
+  width: 7%;
+  text-align: right;
+  padding-right: 10px;
 } /* 작성자 */
 .qna-table__th:nth-child(4) {
-  width: 15%;
-} /* 답변상태 */
-.qna-table__th:nth-child(5) {
-  width: 10%;
-} /* 등록일자 */
+  width: 8%;
+  text-align: right;
+  padding-right: 20px;
+} /* 작성일 */
 
 /* 테이블 바디 */
 .qna-table__row {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ededed;
 }
 
 .qna-table__cell {
@@ -99,9 +111,24 @@ body {
   vertical-align: middle;
 }
 
-/* 제목 셀 왼쪽 정렬 */
+/* 셀 정렬 조정 */
+.qna-table__cell:nth-child(1) {
+  text-align: left;
+  padding-left: 20px;
+}
+
 .qna-table__cell:nth-child(2) {
   text-align: left;
+}
+
+.qna-table__cell:nth-child(3) {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.qna-table__cell:nth-child(4) {
+  text-align: right;
+  padding-right: 20px;
 }
 
 /* 답변상태 스타일 */
@@ -112,6 +139,7 @@ body {
   background-color: #90be6d;
   color: white;
   font-size: 14px;
+  margin-left: 10px;
 }
 
 .qna-status__wait {
@@ -121,13 +149,17 @@ body {
   background-color: #d9d9d9;
   color: white;
   font-size: 14px;
+  margin-left: 10px;
 }
+
 /* 페이지네이션 */
 .qna-pagination {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-top: 40px;
+  margin: 30px 0;
+  height: 98px;
+  align-items: center;
 }
 
 .qna-pagination__btn {
@@ -144,7 +176,6 @@ body {
 .qna-pagination__btn--active {
   background-color: #bc9f8b;
   color: #fff;
-  border: none;
 }
 
 .qna-pagination__btn--noactive {
@@ -155,4 +186,51 @@ body {
   background-color: #d9d9d9;
   width: auto;
   padding: 0 16px;
+}
+
+/* 검색 영역 */
+.qna-search {
+  padding-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 5.4px;
+  height: 70.67px;
+}
+
+/* 검색 필터 드롭다운 */
+.qna-search__select {
+  position: relative;
+  width: 120px;
+}
+
+.qna-search__select select {
+  width: 100%;
+  height: 37px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.qna-searchword {
+  height: 37px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.qna-search__find {
+  background-color: #bc9f8b;
+  color: white;
+  height: 37px;
+  padding: 0 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 37px;
+}
+
+.qna-search__find:hover {
+  background-color: #835f45;
 }
