@@ -1,0 +1,121 @@
+@font-face {
+  font-family: "GowunBatang-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "GowunBatang-Regular", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 컨테이너 */
+.container {
+  position: relative;
+  width: 1920px;
+  height: 2252px;
+  margin: 0 auto;
+  padding: 0 200px;
+  box-sizing: border-box;
+}
+
+.notice-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #90be6d;
+  margin: 40px 0;
+  width: 100%;
+}
+
+/* 글쓰기 버튼 영역 */
+.notice-write {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.notice-write__btn {
+  padding: 8px 20px;
+  background-color: #835f45;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 목록 영역 */
+.notice-card {
+  display: grid;
+  grid-template-columns: repeat(4, 280px);
+  justify-content: center;
+  gap: 24px;
+  width: calc(4 * 280px + 3 * 24px); /* 4개의 카드 너비 + 3개의 간격 */
+  margin: 0 155.5px; /* 좌우 여백 정확히 155.5px 설정 */
+}
+
+.notice-card__container {
+  width: 280px;
+}
+
+.notice-card__image {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.notice-card__content {
+  padding-top: 19px;
+  padding-left: 10px;
+  width: 100%;
+}
+
+.notice-card__category {
+  color: #fa5252;
+  font-size: 14px;
+  margin: 0;
+}
+
+.notice-card__title {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.notice-card__date {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* 페이지네이션 */
+.notice-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 40px;
+}
+.notice-pagination__btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.notice-pagination__btn--active {
+  background-color: #bc9f8b;
+  color: #fff;
+  border: none;
+}
+.notice-pagination__btn--noactive {
+  background-color: #d9d9d9;
+}
+.notice-pagination__btn--next {
+  background-color: #d9d9d9;
+  width: auto;
+  padding: 0 16px;
+}
