@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./new_post.css" />
+    <title>Q&A 게시글 작성</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="notice-title">Q&A</h1>
+
+      <input class="input-title" type="text" placeholder="제목을 입력하세요" />
+
+      <div class="editor-toolbar">
+        <button class="toolbar-button" title="굵게">
+          <img src="./img/bold.png" />
+        </button>
+        <button class="toolbar-button" title="기울임">
+          <img src="./img/italic.png" />
+        </button>
+        <button class="toolbar-button" title="밑줄">
+          <img src="./img/underlined.png" />
+        </button>
+        <button class="toolbar-button" title="왼쪽 정렬">
+          <img src="./img/align-left.png" />
+        </button>
+        <button class="toolbar-button" title="가운데 정렬">
+          <img src="./img/align-center.png" />
+        </button>
+        <button class="toolbar-button" title="오른쪽 정렬">
+          <img src="./img/align-right.png" />
+        </button>
+        <button class="toolbar-button" title="링크">🔗</button>
+        <button class="toolbar-button" title="목록">
+          <img src="./img/list.png" />
+        </button>
+      </div>
+
+      <textarea
+        class="editor-content"
+        placeholder="내용을 입력하세요"
+      ></textarea>
+
+      <div class="file-upload">
+        <div class="file-upload-box">
+          <div class="upload-icon">
+            <img src="./img/camera.png" alt="파일 업로드" width="40px" />
+          </div>
+          <p>파일을 이 곳에 드래그하거나 클릭하여 업로드하세요.</p>
+          <input type="file" class="upload-input" />
+          <button type="button" class="upload-button">파일 선택</button>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button class="submit-button">등록하기</button>
+        <button class="cancel-button">취소하기</button>
+      </div>
+    </div>
+  </body>
+</html>
