@@ -59,12 +59,12 @@ function Cart() {
 
   return (
     <div className="flex justify-center">
-      <div className="w-[1920px] mx-auto">
+      <div className="max-w-[1520px] w-full mx-auto">
         <div className="flex items-center mb-[16px]">
           <h1 className="text-[24px] font-bold text-[#363636] mr-[8px]">
             장바구니
           </h1>
-          <span className="flex items-center justify-center w-[32px] h-[32px] bg-black bg-opacity-20 text-[#FFF] rounded-full">
+          <span className="flex items-center justify-center w-[32px] h-[32px] bg-black bg-opacity-20 text-white rounded-full">
             {cartItemsList.length}
           </span>
         </div>
@@ -77,25 +77,25 @@ function Cart() {
           </div>
         ) : (
           <div>
-            <table className="w-full">
+            <table className="w-full table-auto">
               <thead>
                 <tr className="font-semibold border-b">
-                  <th className="text-center py-[20px]">
+                  <th className="w-[4%] text-center py-[20px]">
                     <input
                       type="checkbox"
                       className="appearance-none w-[16px] h-[16px] border border-gray-400 rounded cursor-pointer checked:bg-blue-500"
                     />
                   </th>
-                  <th className="text-left py-[20px] text-[#363636] opacity-60 text-[14px]">
+                  <th className="w-[60%] text-left py-[20px] text-[#363636] opacity-60 text-[14px]">
                     상품 정보
                   </th>
-                  <th className="text-center py-[20px] text-[#363636] opacity-60 text-[14px]">
+                  <th className="w-[12%] text-center py-[20px] text-[#363636] opacity-60 text-[14px]">
                     수량
                   </th>
-                  <th className="text-center py-[20px] text-[#363636] opacity-60 text-[14px]">
+                  <th className="w-[12%] text-center py-[20px] text-[#363636] opacity-60 text-[14px]">
                     주문 금액
                   </th>
-                  <th className="text-center py-[20px] text-[#363636] opacity-60 text-[14px]">
+                  <th className="w-[12%] text-center py-[20px] text-[#363636] opacity-60 text-[14px]">
                     배송 정보
                   </th>
                 </tr>
@@ -123,22 +123,22 @@ function Cart() {
                         </h2>
                       </div>
                     </td>
-                    <td className="text-center w-[188px] py-[20px]">
+                    <td className="text-center py-[20px] border-l border-gray-300">
                       <div className="flex justify-center h-full">
                         <div className="flex items-center h-[32px] border border-gray-300">
                           <button className="w-[24px] h-full border-r border-gray-300 hover:bg-gray-200">
                             -
                           </button>
-                          <span className="w-[50px] h-full flex items-center justify-center border-r border-gray-300">
+                          <span className="w-[50px] h-full flex items-center justify-center border-gray-300">
                             {item.quantity}
                           </span>
-                          <button className="w-[24px] h-full hover:bg-gray-200">
+                          <button className="w-[24px] h-full border-l border-gray-300 hover:bg-gray-200">
                             +
                           </button>
                         </div>
                       </div>
                     </td>
-                    <td className="text-center py-[20px] border-l border-r border-gray-300">
+                    <td className="text-center py-[20px] border-l border-gray-300">
                       {item.price * item.quantity} 원
                     </td>
                     <td className="text-center py-[20px] border-l border-gray-300">
