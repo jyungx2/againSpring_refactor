@@ -1,13 +1,13 @@
-import Footer from './components/Footer';
-import Header from './components/Header';
-
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Signup from "./pages/user/signUp";
 
 const App = () => {
   return (
     <div>
-      <Header />
-      {/* 레이아웃 들어갈 곳 */}
-      <Footer />
+      {/* <Header /> */}
+      <Signup />
+      {/* <Footer /> */}
     </div>
   );
 };
