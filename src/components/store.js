@@ -1,8 +1,8 @@
-import create from 'zustand';
+import { create } from "zustand";
 
-const useStore = create((set) => ({
-  title: '기본 헤더 제목',
-  setTitle: (newTitle) => set({ title: newTitle }),
+const useMenuStore = create((set) => ({
+  activeMenu: null,
+  setActiveMenu: (menu) => set({ activeMenu: menu }), 
 }));
 
-export default useStore;
+export default useMenuStore;
