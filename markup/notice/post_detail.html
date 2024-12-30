@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./post_detail.css" />
+    <title>공지사항 게시글 상세</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="notice__title">공지사항</h1>
+      <section class="notice-detail">
+        <div class="notice-detail__header">
+          <label class="notice-detail__label" for="title">제목</label>
+          <h2 class="notice-detail__title" id="title">공지사항 입니다.</h2>
+        </div>
+        <div class="notice-detail__author">
+          <label class="notice-detail__label" for="writer">작성자</label>
+          <p class="notice-detail__writer" id="writer">다시, 봄</p>
+        </div>
+        <div class="notice-detail__info">
+          <div class="notice-detail__meta">
+            <div class="notice-detail__date">
+              <label class="notice-detail__label" for="date">작성일</label>
+              <p class="notice-detail__date-text" id="date">
+                2024-01-01 00:00:00
+              </p>
+            </div>
+            <div class="notice-detail__views">
+              <label class="notice-detail__label" for="views">조회수</label>
+              <p class="notice-detail__views-count" id="views">0</p>
+            </div>
+          </div>
+          <p class="notice-detail__content">이 곳에 글 내용이 나와요</p>
+        </div>
+
+        <div class="notice-bottom-wrap">
+          <div class="notice-actions">
+            <div class="notice-actions__left">
+              <button type="button" class="notice-actions__btn">
+                <a href="#" class="notice-actions__btn--list">목록</a>
+              </button>
+            </div>
+            <div class="notice-actions__right">
+              <button
+                type="button"
+                class="notice-actions__btn notice-actions__btn--edit"
+              >
+                수정
+              </button>
+              <button
+                type="button"
+                class="notice-actions__btn notice-actions__btn--delete"
+              >
+                삭제
+              </button>
+            </div>
+          </div>
+          <nav class="notice-navigation">
+            <table class="notice-navigation__table">
+              <tr class="notice-navigation__row">
+                <td class="notice-navigation__cell">
+                  <span class="arrow">▲</span>
+                  이전글
+                </td>
+                <td class="notice-navigation__cell">이전 공지글</td>
+              </tr>
+              <tr class="notice-navigation__row">
+                <td class="notice-navigation__cell">
+                  <span class="arrow">▼</span>
+                  다음글
+                </td>
+                <td class="notice-navigation__cell">다음 공지글</td>
+              </tr>
+            </table>
+          </nav>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

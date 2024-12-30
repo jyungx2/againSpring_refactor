@@ -1,0 +1,148 @@
+@font-face {
+  font-family: 'GowunBatang-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  font-family: 'GowunBatang-Regular', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+/* 컨테이너 */
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  height: 1460px;
+  margin: 0 auto;
+  padding: 0 100px;
+  box-sizing: border-box;
+}
+/* 타이틀 */
+.notice__title {
+  height: 63px;
+  font-size: 24px;
+  text-align: center;
+  margin: 0;
+  padding: 15px 0;
+  box-sizing: border-box;
+}
+.notice-detail {
+  border-top: 1px solid black;
+}
+.notice-detail__header {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  padding: 12px 0;
+}
+.notice-detail__header,
+.notice-detail__author {
+  border-bottom: 1.3px solid #dedede;
+}
+.notice-detail__title,
+.notice-detail__writer,
+.notice-detail__label {
+  font-size: 13px;
+}
+.notice-detail__label {
+  font-weight: 400;
+  color: #202020;
+}
+.notice-detail__title,
+.notice-detail__writer {
+  font-weight: 400;
+  color: #888;
+}
+
+.notice-detail__author {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+.notice-detail__date > .notice-detail__label,
+.notice-detail__views > .notice-detail__label {
+  font-weight: 700;
+  margin-right: 3.33px;
+}
+.notice-detail__date > .notice-detail__label {
+  padding-left: 20px;
+}
+.notice-detail__meta {
+  display: flex;
+  gap: 43px;
+}
+.notice-detail__date,
+.notice-detail__views {
+  display: flex;
+  align-items: center;
+}
+.notice-detail__date-text,
+.notice-detail__views-count {
+  color: #939393;
+}
+.notice-detail__content {
+  padding-top: 16px;
+  padding-bottom: 43px;
+  text-align: center;
+}
+
+.notice-bottom-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 100px;
+  right: 100px;
+  padding-top: 46px;
+  padding-bottom: 46px;
+  border-top: 1.3px solid #dedede;
+}
+.notice-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.notice-actions__right {
+  display: flex;
+  gap: 12px;
+}
+.notice-actions__btn {
+  border: 1px solid #d1d1d1;
+  border-radius: 2px;
+  padding: 7px 37px;
+}
+.notice-navigation {
+  width: 100%;
+}
+.notice-navigation__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.notice-navigation__cell {
+  padding: 15px;
+  border: 1px solid #e5e5e5;
+  font-size: 14px;
+}
+.notice-navigation__cell:first-child {
+  width: 150px;
+  color: #666;
+}
+.notice-navigation__cell:last-child {
+  color: #333;
+}
+.arrow {
+  margin-right: 5px;
+  font-size: 12px;
+}
