@@ -1,0 +1,268 @@
+@font-face {
+  font-family: 'GowunBatang-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'GowunBatang-Regular', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* 컨테이너 */
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  height: 1460px;
+  margin: 0 auto;
+  padding: 0 100px;
+  box-sizing: border-box;
+}
+
+/* 타이틀 */
+.qna__title {
+  height: 63px;
+  font-size: 24px;
+  text-align: center;
+  margin: 0;
+  padding: 15px 0;
+  box-sizing: border-box;
+}
+
+.qna-detail {
+  border-top: 1px solid black;
+}
+
+.qna-detail__header {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  padding: 12px 0;
+}
+
+.qna-detail__header,
+.qna-detail__author,
+.qna-detail__info,
+.qna-replies {
+  border-bottom: 1.3px solid #dedede;
+}
+
+.qna-detail__title,
+.qna-detail__writer,
+.qna-detail__label,
+.qna-replies__date {
+  font-size: 13px;
+}
+
+.qna-detail__label {
+  font-weight: 400;
+  color: #202020;
+}
+
+.qna-detail__title,
+.qna-detail__writer {
+  font-weight: 400;
+  color: #888;
+}
+
+.qna-status__wait {
+  display: inline-block;
+  padding: 10px 38px;
+  border-radius: 20px;
+  background-color: #d9d9d9;
+  color: white;
+  font-size: 20px;
+}
+
+.qna-detail__author {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+
+.qna-detail__date > .qna-detail__label,
+.qna-detail__views > .qna-detail__label {
+  font-weight: 700;
+  margin-right: 3.33px;
+}
+
+.qna-detail__date > .qna-detail__label {
+  padding-left: 20px;
+}
+
+.qna-detail__meta {
+  display: flex;
+  gap: 43px;
+}
+
+.qna-detail__date,
+.qna-detail__views {
+  display: flex;
+  align-items: center;
+}
+
+.qna-detail__date-text,
+.qna-detail__views-count {
+  color: #939393;
+}
+
+.qna-detail__content {
+  padding-top: 16px;
+  padding-bottom: 43px;
+}
+
+.qna-replies {
+  margin-bottom: 200px; /* 하단 요소들의 높이를 고려한 여백 */
+}
+
+.qna-replies__item {
+  padding: 30px 0;
+}
+
+.qna-replies__header {
+  display: flex;
+  align-items: center;
+}
+
+.qna-replies__content,
+.qna-replies__label {
+  font-weight: 350;
+}
+
+.qna-replies__label {
+  font-size: 12.9px;
+}
+
+.qna-replies__date {
+  color: #21212173;
+  font-weight: 400;
+}
+
+.qna-replies__content {
+  font-size: 12.8px;
+  color: #212121e5;
+}
+
+.qna-replies__actions button:not(:first-child) {
+  position: relative;
+  margin-left: 12px;
+}
+
+.qna-replies__actions button:not(:first-child)::before {
+  content: '/';
+  position: absolute;
+  left: -6.6px;
+}
+
+.qna-replies__actions {
+  display: flex;
+}
+
+.qna-replies__btn,
+.qna-replies__btn-edit,
+.qna-replies__btn-delete {
+  font-size: 12px;
+  color: #757575;
+  font-weight: 400;
+}
+
+.qna-replies__form {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #80808033;
+  gap: 16px;
+  padding: 23px;
+}
+
+.qna-replies__input {
+  flex-grow: 1;
+  border: 1px solid black;
+  width: 100%;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.qna-replies__button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.qna-replies__btn-submit {
+  border-radius: 8px;
+  background-color: #bc9f8b;
+  color: white;
+  padding: 8px 26px;
+}
+
+.qna-bottom-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 100px;
+  right: 100px;
+  padding-top: 46px;
+  padding-bottom: 46px;
+  border-top: 1.3px solid #dedede;
+}
+
+.qna-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.qna-actions__right {
+  display: flex;
+  gap: 12px;
+}
+
+.qna-actions__btn {
+  border: 1px solid #d1d1d1;
+  border-radius: 2px;
+  padding: 7px 37px;
+}
+
+.qna-navigation {
+  width: 100%;
+}
+
+.qna-navigation__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.qna-navigation__cell {
+  padding: 15px;
+  border: 1px solid #e5e5e5;
+  font-size: 14px;
+}
+
+.qna-navigation__cell:first-child {
+  width: 150px;
+  color: #666;
+}
+
+.qna-navigation__cell:last-child {
+  color: #333;
+}
+
+.arrow {
+  margin-right: 5px;
+  font-size: 12px;
+}

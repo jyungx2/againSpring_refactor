@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./post_detail.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="qna__title">Q&A</h1>
+
+      <section class="qna-detail">
+        <div class="qna-detail__header">
+          <label class="qna-detail__label" for="title">제목</label>
+          <h2 class="qna-detail__title" id="title">피그마 너무 어려운데요.</h2>
+          <span class="qna-status__wait">답변대기</span>
+        </div>
+
+        <div class="qna-detail__author">
+          <label class="qna-detail__label" for="writer">작성자</label>
+          <p class="qna-detail__writer" id="writer">윤형섭</p>
+        </div>
+
+        <div class="qna-detail__info">
+          <div class="qna-detail__meta">
+            <div class="qna-detail__date">
+              <label class="qna-detail__label" for="date">작성일</label>
+              <p class="qna-detail__date-text" id="date">2024-01-01 00:00:00</p>
+            </div>
+            <div class="qna-detail__views">
+              <label class="qna-detail__label" for="views">조회수</label>
+              <p class="qna-detail__views-count" id="views">0</p>
+            </div>
+          </div>
+          <p class="qna-detail__content">감기조심하세요</p>
+        </div>
+
+        <section class="qna-replies">
+          <div class="qna-replies__item">
+            <div class="qna-replies__header">
+              <label class="qna-replies__label" for="admin">관리자</label>
+              <p class="qna-replies__date" id="admin">2024-01-01-01 00:00:00</p>
+            </div>
+            <p class="qna-replies__content">고객님도 감기조심하세요</p>
+            <div class="qna-replies__actions">
+              <button type="button" class="qna-replies__btn">댓글</button>
+              <button type="button" class="qna-replies__btn-edit">수정</button>
+              <button type="button" class="qna-replies__btn-delete">
+                지우기
+              </button>
+            </div>
+          </div>
+
+          <div class="qna-replies__item">
+            <!-- 두 번째 댓글 내용 -->
+          </div>
+
+          <div class="qna-replies__form">
+            <textarea
+              class="qna-replies__input"
+              placeholder="관리자만 작성하실 수 있습니다."
+              id="reply-text"
+            ></textarea>
+            <div class="qna-replies__button-wrapper">
+              <button type="submit" class="qna-replies__btn-submit">
+                작성
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <div class="qna-bottom-wrap">
+          <div class="qna-actions">
+            <div class="qna-actions__left">
+              <button type="button" class="qna-actions__btn">
+                <a href="#" class="qna-actions__btn--list">목록</a>
+              </button>
+            </div>
+            <div class="qna-actions__right">
+              <button
+                type="button"
+                class="qna-actions__btn qna-actions__btn--edit"
+              >
+                수정
+              </button>
+              <button
+                type="button"
+                class="qna-actions__btn qna-actions__btn--delete"
+              >
+                삭제
+              </button>
+            </div>
+          </div>
+
+          <nav class="qna-navigation">
+            <table class="qna-navigation__table">
+              <tr class="qna-navigation__row">
+                <td class="qna-navigation__cell">
+                  <span class="arrow">▲</span>
+                  이전글
+                </td>
+                <td class="qna-navigation__cell">이전 질문글</td>
+              </tr>
+              <tr class="qna-navigation__row">
+                <td class="qna-navigation__cell">
+                  <span class="arrow">▼</span>
+                  다음글
+                </td>
+                <td class="qna-navigation__cell">다음 질문글</td>
+              </tr>
+            </table>
+          </nav>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
