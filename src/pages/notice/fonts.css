@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'GowunBatang-Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Bold.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'GowunBatang-Bold', sans-serif;
+  margin: 0;
+  padding: 0;
+}
