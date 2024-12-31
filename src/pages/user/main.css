@@ -4,18 +4,6 @@ p {
   margin: unset;
 }
 
-ul,
-li {
-  margin: unset;
-  padding: unset;
-  list-style: none;
-}
-
-li {
-  display: inline;
-  text-indent: 0;
-}
-
 img {
   max-width: 100%;
   vertical-align: top;
@@ -30,27 +18,168 @@ input {
   all: unset;
 }
 
+/* commons */
+/* input: text & password */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  display: block;
+  width: 100%;
+
+  height: var(--input-height);
+  line-height: var(--input-height);
+
+  padding: 0 var(--input-padding);
+  box-sizing: border-box;
+}
+
+.button {
+  font-family: "GowunBatang-Bold";
+  width: 100%;
+  height: 54px;
+  font-size: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.btn-signup {
+  color: var(--color-white);
+  background-color: var(--color-primary-40);
+}
+
+.btn-signup:focus {
+  background-color: var(--color-primary-30);
+}
+
+/* input[type="text"]를 한번 감싸는 역할 */
+.field {
+  display: flex;
+  gap: 10px;
+  padding-left: 8px;
+  font-size: var(--input-fs);
+  border: 3px solid #ddd;
+  border-radius: 16px;
+  margin-bottom: 14px;
+}
+
+.field:focus-within {
+  border-color: var(--color-secondary-20);
+}
+
+@font-face {
+  font-family: "GowunBatang-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* variables */
+:root {
+  --font-ko: "GowunBatang-Regular";
+
+  /* Colors */
+  --color-white: #ffffff;
+  --color-grey-30: #c4c4c4;
+  --color-grey-20: #d9d9d9;
+  --color-black: #000000;
+
+  --color-primary-30: #a3c986;
+  --color-primary-40: #90be6d;
+  --color-primary-70: #5f9043;
+  --color-secondary-20: #bc9f8b;
+
+  --color-kakao: #ffe501;
+  --color-kakao-focus: #ffed65;
+
+  --color-error: #e73434;
+
+  --input-height: 48px;
+  --input-fs: 1.8rem;
+  --input-padding: 0px;
+
+  --effect-focus: 0 0 0 4px rgb(131 208 156 / 0.25);
+}
+
+/* typography */
+:root {
+  font-size: 62.5%;
+  line-height: 1.2;
+}
+
+body {
+  font-family: var(--font-ko);
+  font-size: 1.6rem;
+}
+
 /* components */
 header,
 footer {
   box-shadow: inset 0 0 20px green;
 }
 
-.container {
-  width: 100vw;
-  margin: 0 auto;
+.wrapper {
+  /* width: 100vw; */
+  /* margin: 0 auto; */
   padding: 100px;
-  /* box-shadow: inset 0 0 20px red; */
+  box-shadow: inset 0 0 20px red;
 }
 
 .content {
-  width: 540px;
+  width: 595px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 70px 44px;
+  padding: 30px 58px 52px;
   border: 2px solid var(--color-grey-20);
   border-radius: 20px;
-  gap: 80px;
+  gap: 64px;
+}
+
+.login_logo_wrap {
+  width: 80px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+.login_wrap {
+  width: 480px;
+}
+
+.profile-wrap {
+  position: relative;
+  margin: 0 auto;
+  /* box-shadow: inset 0 0 20px red; */
+}
+
+.profile-cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.add-cover {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  box-sizing: border-box;
+  border: 2px solid var(--color-grey-20);
+  border-radius: 50%;
+  padding: 10px;
+
+  background-color: var(--color-white);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+.id-collection {
+  margin-bottom: 15px;
 }
