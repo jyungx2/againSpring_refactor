@@ -21,10 +21,11 @@ a {
 /* 컨테이너 */
 .container {
   position: relative;
-  width: 1920px;
-  height: 2252px;
+  width: 100%;
+  max-width: 1920px;
+  height: 1460px;
   margin: 0 auto;
-  padding: 0 200px;
+  padding: 0 100px;
   box-sizing: border-box;
 }
 
@@ -59,8 +60,8 @@ a {
   grid-template-columns: repeat(4, 280px);
   justify-content: center;
   gap: 24px;
-  width: calc(4 * 280px + 3 * 24px); /* 4개의 카드 너비 + 3개의 간격 */
-  margin: 0 155.5px; /* 좌우 여백 정확히 155.5px 설정 */
+  width: calc(4 * 280px + 3 * 24px);
+  margin: 0 auto;
 }
 
 .notice-card__container {
@@ -70,6 +71,8 @@ a {
 .notice-card__image {
   border-radius: 4px;
   object-fit: cover;
+  width: 100%;
+  height: auto;
 }
 
 .notice-card__content {
@@ -102,6 +105,7 @@ a {
   gap: 8px;
   margin-top: 40px;
 }
+
 .notice-pagination__btn {
   width: 40px;
   height: 40px;
@@ -112,14 +116,17 @@ a {
   align-items: center;
   justify-content: center;
 }
+
 .notice-pagination__btn--active {
   background-color: #bc9f8b;
   color: #fff;
   border: none;
 }
+
 .notice-pagination__btn--noactive {
   background-color: #d9d9d9;
 }
+
 .notice-pagination__btn--next {
   background-color: #d9d9d9;
   width: auto;
