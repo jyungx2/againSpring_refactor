@@ -5,7 +5,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        gowun: ['GowunBatang', 'serif'], // GowunBatang 추가
+        gowun: ['GowunBatang-Regular', 'Arial', 'sans-serif'],
+        gowunBold: ['GowunBatang-Bold', 'Arial', 'sans-serif'],
       },
       colors: {
         primary: "#90BE6D",
