@@ -1,3 +1,4 @@
+import './fonts.css';
 export default function newPost() {
   return (
     <div className='relative w-full max-w-[1920px] h-[1460px] box-border mx-auto my-0 px-[100px] py-0'>
