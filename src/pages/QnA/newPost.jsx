@@ -14,37 +14,37 @@ export default function newPost() {
           className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-gray-300'
           title='굵게'
         >
-          <img src='./img/bold.png' />
+          <img src='./images/qna/bold.png' />
         </button>
         <button
           className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-gray-300'
           title='기울임'
         >
-          <img src='./img/italic.png' />
+          <img src='./images/qna/italic.png' />
         </button>
         <button
           className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-gray-300'
           title='밑줄'
         >
-          <img src='./img/underlined.png' />
+          <img src='./images/qna/underlined.png' />
         </button>
         <button
           className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-gray-300'
           title='왼쪽 정렬'
         >
-          <img src='./img/align-left.png' />
+          <img src='./images/qna/alignLeft.png' />
         </button>
         <button
           className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-gray-300'
           title='가운데 정렬'
         >
-          <img src='./img/align-center.png' />
+          <img src='./images/qna/alignCenter.png' />
         </button>
         <button
           className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-gray-300'
           title='오른쪽 정렬'
         >
-          <img src='./img/align-right.png' />
+          <img src='./images/qna/alignRight.png' />
         </button>
         <button
           className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-gray-300'
@@ -56,7 +56,7 @@ export default function newPost() {
           className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-gray-300'
           title='목록'
         >
-          <img src='./img/list.png' />
+          <img src='./images/qna/list.png' />
         </button>
       </div>
       <textarea
@@ -67,7 +67,7 @@ export default function newPost() {
       <div className='w-full mb-4 box-border'>
         <div className='border border-dashed border-black p-[30px] text-center'>
           <div className='flex justify-center'>
-            <img src='./img/camera.png' alt='파일 업로드' width='40px' />
+            <img src='./images/qna/camera.png' alt='파일 업로드' width='40px' />
           </div>
           <p>파일을 이 곳에 드래그하거나 클릭하여 업로드하세요.</p>
           <input type='file' className='hidden' />
