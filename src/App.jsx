@@ -1,5 +1,8 @@
-import Footer from './components/Footer';
 import Header from './components/Header';
+import Footer from './components/Footer';
+import Slider from './pages/Slider';
+import Layout from "./pages/mainLayout";
+
 
 
 const App = () => {
@@ -7,6 +10,8 @@ const App = () => {
     <div>
       <Header />
       {/* 레이아웃 들어갈 곳 */}
+      {/* <Layout />
+      <Slider /> */}
       <Footer />
     </div>
   );
