@@ -1,14 +1,9 @@
-import Footer from './components/Footer';
-import Header from './components/Header';
-
+import { RouterProvider } from 'react-router-dom';
+import router from './routes/routes';
 
 const App = () => {
   return (
-    <div>
-      <Header />
-      {/* 레이아웃 들어갈 곳 */}
-      <Footer />
-    </div>
+    <RouterProvider router={router} future={{ v7_startTransition: true }} />
   );
 };
 
