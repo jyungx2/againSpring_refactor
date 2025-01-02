@@ -37,7 +37,7 @@ function Cart() {
   const totalOrderAmount = totalPrice + shippingCost;
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center px-[16px]">
       <div className="container mx-auto px-[24px] my-[40px]">
         <div className="flex items-center mb-[16px]">
           <h1 className="text-[24px] font-gowun text-[#363636] mr-[8px]">
