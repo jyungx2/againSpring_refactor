@@ -1,16 +1,52 @@
 import { Link } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
+import ListItem from './ListItem';
 
 export default function ListPage() {
+  // 실제로는 API에서 받아올 데이터
+  const items = [
+    {
+      number: 4,
+      title: '피그마 너무 어려운데요.',
+      author: '홍길동',
+      date: '2024-01-01',
+      isAnswered: true,
+    },
+    {
+      number: 3,
+      title: '피그마 너무 어려운데요.',
+      author: '홍길동',
+      date: '2024-01-01',
+      isAnswered: false,
+    },
+    {
+      number: 2,
+      title: '피그마 너무 어려운데요.',
+      author: '홍길동',
+      date: '2024-01-01',
+      isAnswered: true,
+    },
+    {
+      number: 1,
+      title: '피그마 너무 어려운데요.',
+      author: '홍길동',
+      date: '2024-01-01',
+      isAnswered: false,
+    },
+  ];
+
   return (
     <div className='container mx-auto px-6 mb-20'>
       <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
         Q&amp;A
       </h1>
       <div className='flex justify-end mb-5 w-full'>
-        <button className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'>
-          <Link to='new'>질문하기</Link>
-        </button>
+        <Link
+          to='new'
+          className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
+        >
+          질문하기
+        </Link>
       </div>
       <div className='w-full mx-auto my-0 max-h-[906.11px] overflow-y-auto'>
         <table className='w-full border-collapse table-fixed'>
@@ -23,82 +59,16 @@ export default function ListPage() {
             </tr>
           </thead>
           <tbody>
-            <tr className='border-b border-grey-10'>
-              <td className='py-5 text-left pl-5'>4</td>
-              <td className='py-5 text-left pl-5'>
-                <Link
-                  to='detail'
-                  className='hover:text-secondary-20 transition-colors'
-                >
-                  피그마 너무 어려운데요.
-                </Link>
-                <span className='inline-block px-5 py-2 rounded-[20px] bg-primary-40 text-white text-sm ml-2.5'>
-                  답변완료
-                </span>
-              </td>
-              <td className='py-5 text-right pr-2.5'>홍길동</td>
-              <td className='py-5 text-right pr-5'>
-                <div>2024-01-01</div>
-                <div>00:00:00</div>
-              </td>
-            </tr>
-            <tr className='border-b border-grey-10'>
-              <td className='py-5 text-left pl-5'>3</td>
-              <td className='py-5 text-left pl-5'>
-                <Link
-                  to='detail'
-                  className='hover:text-secondary-20 transition-colors'
-                >
-                  피그마 너무 어려운데요.
-                </Link>
-                <span className='inline-block px-5 py-2 rounded-[20px] bg-grey-20 text-white text-sm ml-2.5'>
-                  답변대기
-                </span>
-              </td>
-              <td className='py-5 text-right pr-2.5'>홍길동</td>
-              <td className='py-5 text-right pr-5'>
-                <div>2024-01-01</div>
-                <div>00:00:00</div>
-              </td>
-            </tr>
-            <tr className='border-b border-grey-10'>
-              <td className='py-5 text-left pl-5'>2</td>
-              <td className='py-5 text-left pl-5'>
-                <Link
-                  to='detail'
-                  className='hover:text-secondary-20 transition-colors'
-                >
-                  피그마 너무 어려운데요.
-                </Link>
-                <span className='inline-block px-5 py-2 rounded-[20px] bg-primary-40 text-white text-sm ml-2.5'>
-                  답변완료
-                </span>
-              </td>
-              <td className='py-5 text-right pr-2.5'>홍길동</td>
-              <td className='py-5 text-right pr-5'>
-                <div>2024-01-01</div>
-                <div>00:00:00</div>
-              </td>
-            </tr>
-            <tr className='border-b border-grey-10'>
-              <td className='py-5 text-left pl-5'>1</td>
-              <td className='py-5 text-left pl-5'>
-                <Link
-                  to='detail'
-                  className='hover:text-secondary-20 transition-colors'
-                >
-                  피그마 너무 어려운데요.
-                </Link>
-                <span className='inline-block px-5 py-2 rounded-[20px] bg-grey-20 text-white text-sm ml-2.5'>
-                  답변대기
-                </span>
-              </td>
-              <td className='py-5 text-right pr-2.5'>홍길동</td>
-              <td className='py-5 text-right pr-5'>
-                <div>2024-01-01</div>
-                <div>00:00:00</div>
-              </td>
-            </tr>
+            {items.map((item) => (
+              <ListItem
+                key={item.number}
+                number={item.number}
+                title={item.title}
+                author={item.author}
+                date={item.date}
+                isAnswered={item.isAnswered}
+              />
+            ))}
           </tbody>
         </table>
       </div>
