@@ -28,17 +28,17 @@ function Cart() {
 
   const [cartItemsList] = useState(dummyItems);
 
-  const fixedShippingCost = 3000; //배송비
+  const shippingCost = 3000; //배송비
   const totalPrice = cartItemsList.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  const totalOrderAmount = totalPrice + fixedShippingCost;
+  const totalOrderAmount = totalPrice + shippingCost;
 
   return (
     <div className="flex justify-center">
-      <div className="max-w-[1520px] w-full mx-auto my-[40px]">
+      <div className="container mx-auto px-6 my-[40px]">
         <div className="flex items-center mb-[16px]">
           <h1 className="text-[24px] font-gowun  text-[#363636] mr-[8px]">
             장바구니
@@ -127,7 +127,7 @@ function Cart() {
                     </td>
                     <td className="text-center text-[#363636] py-[20px] border-l border-gray-300">
                       <div className="text-[16px]">
-                        {fixedShippingCost.toLocaleString()}원
+                        {shippingCost.toLocaleString()}원
                       </div>
                       <div className="text-[13px] text-[#afafaf]">택배</div>
                     </td>
@@ -159,7 +159,7 @@ function Cart() {
               </div>
               <div className="flex flex-col items-center">
                 <div className="text-[18px] font-bold">
-                  {fixedShippingCost.toLocaleString()}원
+                  {shippingCost.toLocaleString()}원
                 </div>
                 <div className="text-[12px] text-gray-600">배송비</div>
               </div>
