@@ -1,21 +1,16 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { createBrowserRouter } from "react-router-dom";
+import Home from "@/pages/Home";
+import About from "@/pages/About";
 
-const Home = () => {
-  return (
-    <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <Header />
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/about",
+    element: <About />,
+  },
+]);
 
-      {/* Main Content */}
-      <main className="flex-grow px-6">
-        <h1 className="text-2xl font-bold">main contents</h1>
-      </main>
-
-      {/* Footer */}
-      <Footer />
-    </div>
-  );
-};
-
-export default Home;
+export default router;
