@@ -46,16 +46,4 @@
   input[type="checkbox"] {
     @apply pointer-events-none absolute;
   }
-
-  .choice::before {
-    content: "";
-    display: inline-block;
-    background-image: url(./icons/emptybox.svg);
-    width: 20px;
-    height: 20px;
-  }
-
-  .choice input:checked + .choice-label::before {
-    background-image: url(./icons/checkbox.svg);
-  }
 }
