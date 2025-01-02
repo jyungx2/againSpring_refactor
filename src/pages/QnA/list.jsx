@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
+
 export default function List() {
   return (
-    <div className='relative w-full max-w-[1920px] h-[1460px] box-border mx-auto my-0 px-[100px] py-0'>
+    <div className='container mx-auto px-6 mb-20'>
+      {' '}
+      {/* mb-20 추가 */}
       <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
         Q&amp;A
       </h1>
@@ -16,70 +19,74 @@ export default function List() {
           <thead>
             <tr className='border-t border-t-[#333] border-b-[3px] border-b-[#ededed]'>
               <th className='py-5 text-left w-[8%] pl-5'>번호</th>
-              <th className='py-5 text-center w-[77%]'>제목</th>
+              <th className='py-5 text-left w-[77%] pl-5'>제목</th>
               <th className='py-5 text-right w-[7%] pr-2.5'>작성자</th>
               <th className='py-5 text-right w-[8%] pr-5'>작성일</th>
             </tr>
           </thead>
           <tbody>
             <tr className='border-b border-[#ededed]'>
-              <td className='py-5 px-0 text-left pl-5'>4</td>
-              <td className='py-5 px-0 text-left'>
-                <Link to='detail'>피그마 너무 어려운데요.</Link>
+              <td className='py-5 text-left pl-5'>4</td>
+              <td className='py-5 text-left pl-5'>
+                <Link to='detail' className='hover:text-[#bc9f8b]'>
+                  피그마 너무 어려운데요.
+                </Link>
                 <span className='inline-block px-5 py-2 rounded-[20px] bg-[#90be6d] text-white text-sm ml-2.5'>
                   답변완료
                 </span>
               </td>
-              <td className='py-5 px-0 text-right pr-2.5'>홍길동</td>
-              <td className='py-5 px-0 text-right pr-5'>
-                2024-01-01
-                <br />
-                00:00:00
+              <td className='py-5 text-right pr-2.5'>홍길동</td>
+              <td className='py-5 text-right pr-5'>
+                <div>2024-01-01</div>
+                <div>00:00:00</div>
               </td>
             </tr>
             <tr className='border-b border-[#ededed]'>
-              <td className='py-5 px-0 text-left pl-5'>3</td>
-              <td className='py-5 px-0 text-left'>
-                <Link to='detail'>피그마 너무 어려운데요.</Link>
+              <td className='py-5 text-left pl-5'>3</td>
+              <td className='py-5 text-left pl-5'>
+                <Link to='detail' className='hover:text-[#bc9f8b]'>
+                  피그마 너무 어려운데요.
+                </Link>
                 <span className='inline-block px-5 py-2 rounded-[20px] bg-[#d9d9d9] text-white text-sm ml-2.5'>
                   답변대기
                 </span>
               </td>
-              <td className='py-5 px-0 text-right pr-2.5'>홍길동</td>
-              <td className='py-5 px-0 text-right pr-5'>
-                2024-01-01
-                <br />
-                00:00:00
+              <td className='py-5 text-right pr-2.5'>홍길동</td>
+              <td className='py-5 text-right pr-5'>
+                <div>2024-01-01</div>
+                <div>00:00:00</div>
               </td>
             </tr>
             <tr className='border-b border-[#ededed]'>
-              <td className='py-5 px-0 text-left pl-5'>2</td>
-              <td className='py-5 px-0 text-left'>
-                <Link to='detail'>피그마 너무 어려운데요.</Link>
+              <td className='py-5 text-left pl-5'>2</td>
+              <td className='py-5 text-left pl-5'>
+                <Link to='detail' className='hover:text-[#bc9f8b]'>
+                  피그마 너무 어려운데요.
+                </Link>
                 <span className='inline-block px-5 py-2 rounded-[20px] bg-[#90be6d] text-white text-sm ml-2.5'>
                   답변완료
                 </span>
               </td>
-              <td className='py-5 px-0 text-right pr-2.5'>홍길동</td>
-              <td className='py-5 px-0 text-right pr-5'>
-                2024-01-01
-                <br />
-                00:00:00
+              <td className='py-5 text-right pr-2.5'>홍길동</td>
+              <td className='py-5 text-right pr-5'>
+                <div>2024-01-01</div>
+                <div>00:00:00</div>
               </td>
             </tr>
             <tr className='border-b border-[#ededed]'>
-              <td className='py-5 px-0 text-left pl-5'>1</td>
-              <td className='py-5 px-0 text-left'>
-                <Link to='detail'>피그마 너무 어려운데요.</Link>
+              <td className='py-5 text-left pl-5'>1</td>
+              <td className='py-5 text-left pl-5'>
+                <Link to='detail' className='hover:text-[#bc9f8b]'>
+                  피그마 너무 어려운데요.
+                </Link>
                 <span className='inline-block px-5 py-2 rounded-[20px] bg-[#d9d9d9] text-white text-sm ml-2.5'>
                   답변대기
                 </span>
               </td>
-              <td className='py-5 px-0 text-right pr-2.5'>홍길동</td>
-              <td className='py-5 px-0 text-right pr-5'>
-                2024-01-01
-                <br />
-                00:00:00
+              <td className='py-5 text-right pr-2.5'>홍길동</td>
+              <td className='py-5 text-right pr-5'>
+                <div>2024-01-01</div>
+                <div>00:00:00</div>
               </td>
             </tr>
           </tbody>

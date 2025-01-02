@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
 export default function NewPost() {
   return (
-    <div className='relative w-full max-w-[1920px] h-[1460px] box-border mx-auto my-0 px-[100px] py-0'>
+    <div className='container mx-auto px-6 mb-20'>
       <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
         Q&amp;A
       </h1>
