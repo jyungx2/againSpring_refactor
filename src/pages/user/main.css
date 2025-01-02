@@ -1,0 +1,208 @@
+/* Resets */
+body,
+p {
+  margin: unset;
+}
+
+h1,
+h2 {
+  margin: unset;
+  font-weight: unset;
+  font-size: unset;
+}
+
+img {
+  max-width: 100%;
+  vertical-align: top;
+}
+
+textarea {
+  all: unset;
+}
+
+button {
+  all: unset;
+  display: block;
+}
+
+/* variables */
+:root {
+  --font-ko: "GowunBatang-Regular";
+
+  /* Colors */
+  --color-white: #ffffff;
+  --color-grey-40: #9d9d9d;
+  --color-grey-30: #c4c4c4;
+  --color-grey-20: #d9d9d9;
+  --color-grey-10: #e9e9e9;
+  --color-grey-5: #f5f5f5;
+  --color-black: #000000;
+
+  --color-primary-5: #eff6ea;
+  --color-primary-10: #d6e8c9;
+  --color-primary-30: #a3c986;
+  --color-primary-40: #90be6d;
+  --color-primary-70: #5f9043;
+
+  --color-secondary-5: #f8e7d7;
+  --color-secondary-20: #bc9f8b;
+  --color-secondary-40: #835f45;
+
+  --color-kakao: #ffe501;
+  --color-kakao-focus: #ffed65;
+
+  --color-error: #e73434;
+
+  --input-height: 64px;
+  --input-fs: 1.8rem;
+  --input-padding: 10px;
+
+  --effect-focus: 0 0 0 4px rgb(131 208 156 / 0.25);
+}
+
+/* typography */
+:root {
+  font-size: 62.5%;
+  line-height: 1.2;
+}
+
+body {
+  font-family: var(--font-ko);
+  font-size: 1.6rem;
+}
+
+/* components */
+.container {
+  max-width: 1580px;
+  margin: 0 auto;
+  padding: 24px;
+  padding-bottom: 0;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  grid-template-rows: auto;
+  column-gap: 20px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.btn-section {
+  margin-left: auto;
+}
+
+.img-section {
+  flex-shrink: 0;
+}
+
+.first-depth {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  flex-grow: 1;
+}
+
+.first-depth h1 {
+  font-size: 2.6rem;
+  font-family: "GowunBatang-Bold";
+}
+
+.button {
+  font-family: "GowunBatang-Bold";
+  display: inline-block;
+  height: 42px;
+  color: var(--color-primary-70);
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 0 24px;
+  border: 1px solid var(--color-primary-30);
+  border-radius: 2px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.l_section.middle h2 {
+  font-family: "GowunBatang-Bold";
+  font-size: 2.2rem;
+}
+
+/* table */
+table {
+  width: 100%;
+  border-collapse: collapse; /* 중복 테두리 제거 */
+  margin: 20px 0;
+}
+
+thead {
+  background-color: var(--color-grey-5);
+  font-family: "GowunBatang-Bold";
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 8px;
+}
+
+tbody tr:hover {
+  background-color: var(--color-primary-5); /* 마우스 오버 시 강조 */
+  cursor: pointer; /* 클릭 가능하게 보이도록 포인터 변경 */
+}
+
+.btn {
+  font-family: "GowunBatang-Bold";
+  display: inline-block;
+  font-size: 1.6rem;
+  color: var(--color-white);
+  height: 48px;
+  line-height: 48px;
+  padding: 0 64px;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.btn-cancel {
+  background-color: var(--color-grey-40);
+}
+
+.btn-register {
+  background-color: var(--color-primary-40);
+}
+
+.l_section {
+  display: flex;
+  border-top: 1px solid var(--color-grey-30);
+  padding: 30px;
+}
+
+.l_section.top {
+  border-top: 2px solid var(--color-black);
+  align-items: start;
+  gap: 18px;
+}
+
+.l_section.middle {
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  gap: 24px;
+}
+
+.l_section.bottom {
+  width: 100%;
+  justify-content: center;
+  column-gap: 24px;
+}
