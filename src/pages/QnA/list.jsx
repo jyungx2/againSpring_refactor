@@ -1,5 +1,6 @@
-import './fonts.css';
-export default function list() {
+import { Link } from 'react-router-dom';
+import '../../assets/styles/fonts.css';
+export default function List() {
   return (
     <div className='relative w-full max-w-[1920px] h-[1460px] box-border mx-auto my-0 px-[100px] py-0'>
       <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
@@ -7,7 +8,7 @@ export default function list() {
       </h1>
       <div className='flex justify-end mb-5 w-full'>
         <button className='px-5 py-2 bg-[#bc9f8b] text-white rounded hover:bg-[#835f45]'>
-          <a href='./new_post.html'>질문하기</a>
+          <Link to='new'>질문하기</Link>
         </button>
       </div>
       <div className='w-full mx-auto my-0 max-h-[906.11px] overflow-y-auto'>
@@ -24,7 +25,7 @@ export default function list() {
             <tr className='border-b border-[#ededed]'>
               <td className='py-5 px-0 text-left pl-5'>4</td>
               <td className='py-5 px-0 text-left'>
-                <a href='./post_detail.html'>피그마 너무 어려운데요.</a>
+                <Link to='detail'>피그마 너무 어려운데요.</Link>
                 <span className='inline-block px-5 py-2 rounded-[20px] bg-[#90be6d] text-white text-sm ml-2.5'>
                   답변완료
                 </span>
@@ -39,7 +40,7 @@ export default function list() {
             <tr className='border-b border-[#ededed]'>
               <td className='py-5 px-0 text-left pl-5'>3</td>
               <td className='py-5 px-0 text-left'>
-                <a href='./post_detail.html'>피그마 너무 어려운데요.</a>
+                <Link to='detail'>피그마 너무 어려운데요.</Link>
                 <span className='inline-block px-5 py-2 rounded-[20px] bg-[#d9d9d9] text-white text-sm ml-2.5'>
                   답변대기
                 </span>
@@ -54,7 +55,7 @@ export default function list() {
             <tr className='border-b border-[#ededed]'>
               <td className='py-5 px-0 text-left pl-5'>2</td>
               <td className='py-5 px-0 text-left'>
-                <a href='./post_detail.html'>피그마 너무 어려운데요.</a>
+                <Link to='detail'>피그마 너무 어려운데요.</Link>
                 <span className='inline-block px-5 py-2 rounded-[20px] bg-[#90be6d] text-white text-sm ml-2.5'>
                   답변완료
                 </span>
@@ -69,7 +70,7 @@ export default function list() {
             <tr className='border-b border-[#ededed]'>
               <td className='py-5 px-0 text-left pl-5'>1</td>
               <td className='py-5 px-0 text-left'>
-                <a href='./post_detail.html'>피그마 너무 어려운데요.</a>
+                <Link to='detail'>피그마 너무 어려운데요.</Link>
                 <span className='inline-block px-5 py-2 rounded-[20px] bg-[#d9d9d9] text-white text-sm ml-2.5'>
                   답변대기
                 </span>

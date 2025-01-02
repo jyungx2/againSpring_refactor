@@ -1,5 +1,6 @@
-import './fonts.css';
-export default function newPost() {
+import { Link } from 'react-router-dom';
+import '../../assets/styles/fonts.css';
+export default function NewPost() {
   return (
     <div className='relative w-full max-w-[1920px] h-[1460px] box-border mx-auto my-0 px-[100px] py-0'>
       <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
@@ -82,10 +83,10 @@ export default function newPost() {
       </div>
       <div className='flex justify-center gap-[38px] mt-10'>
         <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-[#bc9f8b] text-white'>
-          <a href='./post_detail.html'>등록하기</a>
+          <Link to='/detail'>등록하기</Link>
         </button>
         <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-[#d9d9d9]'>
-          <a href='./list.html'>취소하기</a>
+          <Link to='/'>취소하기</Link>
         </button>
       </div>
     </div>

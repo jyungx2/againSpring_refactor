@@ -1,5 +1,6 @@
-import './fonts.css';
-export default function postDetail() {
+import { Link } from 'react-router-dom';
+import '../../assets/styles/fonts.css';
+export default function PostDetail() {
   return (
     <div className='relative w-full max-w-[1920px] h-[1460px] box-border mx-auto my-0 px-[100px] py-0'>
       <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
@@ -112,13 +113,13 @@ export default function postDetail() {
                 type='button'
                 className='border border-[#d1d1d1] rounded px-9 py-2'
               >
-                <a href='./edit_post.html'>수정</a>
+                <Link to='/edit'>수정</Link>
               </button>
               <button
                 type='button'
                 className='border border-[#d1d1d1] rounded px-9 py-2'
               >
-                <a href='./list.html'>삭제</a>
+                <Link to='/'>삭제</Link>
               </button>
             </div>
           </div>
