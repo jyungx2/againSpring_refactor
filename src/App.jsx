@@ -10,8 +10,8 @@ const App = () => {
     <div>
       <Header />
       {/* 레이아웃 들어갈 곳 */}
-      {/* <Layout />
-      <Slider /> */}
+      <Layout />
+      <Slider />
       <Footer />
     </div>
   );
