@@ -6,7 +6,7 @@ function Signup() {
       <div className="mx-auto py-24">
         <div className="w-[460px] mx-auto flex flex-col items-center p-[18px_40px_28px] border-2 border-grey-10 rounded-[20px] gap-8">
           <div className="py-3">
-            <h1 className="font-gowunBold text-5xl text-secondary-50">
+            <h1 className="font-gowunBold text-4xl text-secondary-50">
               회원가입
             </h1>
           </div>
