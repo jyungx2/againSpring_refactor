@@ -19,7 +19,7 @@ const Slider = () => {
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
+        autoplay={{ delay: 3000 }}
         className="h-full"
       >
         {slides.map((slide) => (
