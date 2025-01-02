@@ -1,19 +1,11 @@
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Slider from './pages/Slider';
-import Layout from "./pages/mainLayout";
-
-
+import { BrowserRouter as Router } from 'react-router-dom';
+import Routes from './routes';
 
 const App = () => {
   return (
-    <div>
-      <Header />
-      {/* 레이아웃 들어갈 곳 */}
-      <Layout />
-      <Slider />
-      <Footer />
-    </div>
+    <Router>
+      <Routes />
+    </Router>
   );
 };
 
