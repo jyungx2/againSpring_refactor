@@ -38,9 +38,9 @@ function Cart() {
 
   return (
     <div className="flex justify-center">
-      <div className="container mx-auto px-6 my-[40px]">
+      <div className="container mx-auto px-[24px] my-[40px]">
         <div className="flex items-center mb-[16px]">
-          <h1 className="text-[24px] font-gowun  text-[#363636] mr-[8px]">
+          <h1 className="text-[24px] font-gowun text-[#363636] mr-[8px]">
             장바구니
           </h1>
           <span className="flex items-center justify-center w-[20px] h-[20px] bg-black bg-opacity-20 text-white rounded-full">
@@ -57,7 +57,7 @@ function Cart() {
               alt="Empty Cart"
               className="w-[52px] h-[52px] mb-[20px]"
             />
-            <p className="text-[18px] text-[#afafaf]">
+            <p className="text-[18px] font-gowun text-[#afafaf]">
               장바구니가 비어있습니다.
             </p>
           </div>
@@ -72,20 +72,21 @@ function Cart() {
                       className="w-[16px] h-[16px] border border-gray-400 rounded cursor-pointer checked:bg-blue-500"
                     />
                   </th>
-                  <th className="w-[62%] text-left py-[20px] text-[#afafaf] text-[14px]">
+                  <th className="w-[62%] text-left py-[20px] font-gowun text-[#afafaf] text-[14px] ">
                     상품 정보
                   </th>
-                  <th className="w-[12%] text-center py-[20px] text-[#afafaf] text-[14px]">
+                  <th className="w-[12%] text-center py-[20px] font-gowun text-[#afafaf] text-[14px]">
                     수량
                   </th>
-                  <th className="w-[12%] text-center py-[20px] text-[#afafaf] text-[14px]">
+                  <th className="w-[12%] text-center py-[20px] font-gowun text-[#afafaf] text-[14px]">
                     주문 금액
                   </th>
-                  <th className="w-[12%] text-center py-[20px] text-[#afafaf] text-[14px]">
+                  <th className="w-[12%] text-center py-[20px] font-gowun text-[#afafaf] text-[14px]">
                     배송 정보
                   </th>
                 </tr>
               </thead>
+
               <tbody>
                 {cartItemsList.map((item) => (
                   <tr key={item.id} className="border-b">
@@ -122,14 +123,16 @@ function Cart() {
                         </div>
                       </div>
                     </td>
-                    <td className="text-center text-[#363636] py-[20px] border-l border-gray-300 text-[20px]">
+                    <td className="text-center text-[#363636] font-gowunBold py-[20px] border-l border-gray-300 text-[20px]">
                       {(item.price * item.quantity).toLocaleString()}원
                     </td>
-                    <td className="text-center text-[#363636] py-[20px] border-l border-gray-300">
+                    <td className="text-center text-[#363636] font-gowunBold py-[20px] border-l border-gray-300">
                       <div className="text-[16px]">
                         {shippingCost.toLocaleString()}원
                       </div>
-                      <div className="text-[13px] text-[#afafaf]">택배</div>
+                      <div className="text-[13px] font-gowun text-[#afafaf]">
+                        택배
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -139,7 +142,7 @@ function Cart() {
             <hr className="mb-[12px]" />
 
             <div className="flex justify-between">
-              <p className="text-[14px]">
+              <p className="text-[14px] font-gowun">
                 총 주문 상품{" "}
                 <span className="text-[#946037]">{cartItemsList.length}</span>개
               </p>
@@ -152,7 +155,9 @@ function Cart() {
                 <div className="text-[18px] font-bold">
                   {totalPrice.toLocaleString()}원
                 </div>
-                <div className="text-[12px] text-gray-600">상품 금액</div>
+                <div className="text-[12px] font-gowun text-gray-600">
+                  상품 금액
+                </div>
               </div>
               <div className="flex items-center justify-center">
                 <div className="text-[18px] font-bold px-[20px]">+</div>
@@ -161,7 +166,9 @@ function Cart() {
                 <div className="text-[18px] font-bold">
                   {shippingCost.toLocaleString()}원
                 </div>
-                <div className="text-[12px] text-gray-600">배송비</div>
+                <div className="text-[12px] font-gowun text-gray-600">
+                  배송비
+                </div>
               </div>
               <div className="flex items-center justify-center">
                 <div className="text-[18px] font-bold px-[20px]">=</div>
@@ -170,7 +177,9 @@ function Cart() {
                 <div className="text-[18px] font-bold">
                   {totalOrderAmount.toLocaleString()}원
                 </div>
-                <div className="text-[12px] text-gray-600">총 주문 금액</div>
+                <div className="text-[12px] font-gowun text-gray-600">
+                  총 주문 금액
+                </div>
               </div>
             </div>
 
@@ -183,7 +192,7 @@ function Cart() {
             </div>
 
             <div className="mt-[8px] text-center">
-              <button className="text-black text-[15px]">
+              <button className="text-black text-[15px] border-b border-[rgba(0,0,0,0.2)]">
                 다음에 다시 주문하기
               </button>
             </div>
