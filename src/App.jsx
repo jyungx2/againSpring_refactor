@@ -5,9 +5,9 @@ import Signup from "./pages/user/signUp";
 const App = () => {
   return (
     <div>
-      {/* <Header /> */}
+      <Header />
       <Signup />
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

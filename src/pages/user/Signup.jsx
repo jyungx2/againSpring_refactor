@@ -1,11 +1,10 @@
 import "./main.css";
+import "./jy-global.css";
 
 function Signup() {
   return (
     <>
-      <header>HEADER</header>
-
-      <div className="wrapper">
+      <div className="my-container">
         <div className="content">
           <div className="login_logo_wrap">
             <a href="/">
@@ -55,8 +54,6 @@ function Signup() {
           </div>
         </div>
       </div>
-
-      <footer>FOOTER</footer>
     </>
   );
 }
