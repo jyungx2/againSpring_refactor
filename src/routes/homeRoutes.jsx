@@ -1,37 +1,8 @@
-import Home from '../pages/Home';
-import ListPage from '../pages/notice/ListPage';
-import NewPostPage from '../pages/notice/NewPostPage';
-import PostDetailPage from '../pages/notice/PostDetailPage';
-import EditPostPage from '../pages/notice/EditPostPage';
+import Login from '@pages/user/Login';
 
-const routes = [
-  {
-    path: '/',
-    element: <Home />,
-    children: [
-      {
-        path: 'notice',
-        children: [
-          {
-            index: true,
-            element: <ListPage />,
-          },
-          {
-            path: 'new',
-            element: <NewPostPage />,
-          },
-          {
-            path: 'detail',
-            element: <PostDetailPage />,
-          },
-          {
-            path: 'edit',
-            element: <EditPostPage />,
-          },
-        ],
-      },
-    ],
-  },
+const homeRoutes = [
+  // { index: true, element: <mainLayout /> },
+  { path: 'login', element: <Login /> },
 ];
 
-export default routes;
+export default homeRoutes;
