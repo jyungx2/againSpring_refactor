@@ -1,91 +1,98 @@
 import { Link } from 'react-router-dom';
+import 'quill/dist/quill.snow.css';
 import '../../assets/styles/fonts.css';
+import { useEffect } from 'react';
+import { useQuill } from 'react-quilljs';
 export default function EditPostPage() {
+  const modules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ align: ['', 'center', 'right'] }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link'],
+      ['image'],
+    ],
+    clipboard: {
+      matchVisual: false,
+    },
+  };
+
+  const formats = [
+    'bold',
+    'italic',
+    'underline',
+    'align',
+    'list',
+    'link',
+    'image',
+    'ordered',
+    'bullet',
+  ];
+
+  const { quill, quillRef } = useQuill({
+    modules,
+    formats,
+    placeholder: '내용을 입력하세요',
+    theme: 'snow',
+  });
+
+  // 초기값 설정
+  useEffect(() => {
+    if (quill) {
+      quill.root.innerHTML = '감기조심하세요';
+    }
+  }, [quill]);
+
+  // 이미지 업로드 처리
+  const selectLocalImage = () => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = () => {
+      const file = input.files[0];
+      if (file) {
+        // 여기에 실제 이미지 업로드 로직 구현해야 함
+        // 예시로 파일 리더를 사용해 이미지를 base64로 변환
+        const render = new FileReader();
+        render.onload = () => {
+          const range = quill.getSelection(true);
+          quill.insertEmbed(range.index, 'image', render.result);
+        };
+        render.readAsDataURL(file);
+      }
+    };
+  };
+  useEffect(() => {
+    if (quill) {
+      quill.getModule('toolbar').addHandler('image', selectLocalImage);
+    }
+  }, [quill]);
   return (
-    <div className='container mx-auto px-6 mb-20'>
+    <div className='container mx-auto px-6 relative min-h-screen pb-32'>
       <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
         Q&amp;A
       </h1>
+
       <input
         className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-base'
         type='text'
         defaultValue='피그마 너무 어려운데요.'
       />
-      <div className='w-full mb-4 box-border flex gap-2 p-2'>
-        <button
-          className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-grey-10'
-          title='굵게'
-        >
-          <img src='./images/qna/bold.png' />
-        </button>
-        <button
-          className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-grey-10'
-          title='기울임'
-        >
-          <img src='./images/qna/italic.png' />
-        </button>
-        <button
-          className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-grey-10'
-          title='밑줄'
-        >
-          <img src='./images/qna/underlined.png' />
-        </button>
-        <button
-          className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-grey-10'
-          title='왼쪽 정렬'
-        >
-          <img src='./images/qna/alignLeft.png' />
-        </button>
-        <button
-          className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-grey-10'
-          title='가운데 정렬'
-        >
-          <img src='./images/qna/alignCenter.png' />
-        </button>
-        <button
-          className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-grey-10'
-          title='오른쪽 정렬'
-        >
-          <img src='./images/qna/alignRight.png' />
-        </button>
-        <button
-          className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-grey-10'
-          title='링크'
-        >
-          🔗
-        </button>
-        <button
-          className='py-2 px-3 border-none bg-inherit cursor-pointer hover:bg-grey-10'
-          title='목록'
-        >
-          <img src='./images/qna/list.png' />
-        </button>
-      </div>
-      <textarea
-        className='w-full h-[800px] p-4 text-base mb-4 box-border resize-none rounded-md border border-black'
-        defaultValue={'감기조심하세요.'}
-      />
-      <div className='w-full mb-4 box-border'>
-        <div className='border border-dashed border-black p-[30px] text-center'>
-          <div className='flex justify-center'>
-            <img src='./images/qna/camera.png' alt='파일 업로드' width='40px' />
-          </div>
-          <p>파일을 이 곳에 드래그하거나 클릭하여 업로드하세요.</p>
-          <input type='file' className='hidden' />
-          <button
-            type='button'
-            className='mt-[10px] py-2 px-4 bg-inherit border border-grey-30 rounded cursor-pointer'
-          >
-            파일 선택
-          </button>
+
+      <div className='w-full'>
+        <div className='min-h-[400px] h-[60vh] max-h-[800px]'>
+          <div ref={quillRef} className='h-full' />
         </div>
       </div>
-      <div className='flex justify-center gap-[38px] mt-10'>
+
+      <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-secondary-20 text-white'>
-          <Link to='/detail'>수정하기</Link>
+          <Link to='/qna/detail'>수정하기</Link>
         </button>
         <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-grey-20'>
-          <Link to='/'>취소하기</Link>
+          <Link to='/qna'>취소하기</Link>
         </button>
       </div>
     </div>
