@@ -82,7 +82,7 @@ export default function NewPostPage() {
 
       <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-secondary-20 text-white'>
-          <Link to='/detail'>등록하기</Link>
+          <Link to='/notice'>등록하기</Link>
         </button>
         <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-grey-20'>
           <Link to='/notice'>취소하기</Link>
