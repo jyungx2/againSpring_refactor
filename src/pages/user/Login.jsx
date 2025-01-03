@@ -6,7 +6,9 @@ function Login() {
       <div className="py-32 mx-auto">
         <div className="w-[400px] mx-auto flex flex-col items-center p-[20px_40px_44px] border border-grey-20 rounded-[20px] gap-[44px]">
           <div className="w-20 aspect-[1/1] object-contain">
-            <img src="/public/favicon.png" alt="logo" />
+            <a href="/" className="cursor-pointer">
+              <img src="/public/favicon.png" alt="logo" />
+            </a>
           </div>
 
           <div className="w-[320px]">
@@ -40,12 +42,21 @@ function Login() {
 
               <ul className="font-gowun mt-14 text-center">
                 <li>
-                  <a className="cursor-pointer text-primary-70">회원가입</a> ｜
+                  <a href="/" className="cursor-pointer text-primary-70">
+                    회원가입
+                  </a>{" "}
+                  ｜
                 </li>
                 <li>
                   <div className="inline-block">
-                    <a className="cursor-pointer underline">아이디</a> ·{" "}
-                    <a className="cursor-pointer underline">비밀번호</a> 찾기
+                    <a href="/" className="cursor-pointer underline">
+                      아이디
+                    </a>{" "}
+                    ·{" "}
+                    <a href="/" className="cursor-pointer underline">
+                      비밀번호
+                    </a>{" "}
+                    찾기
                   </div>
                 </li>
               </ul>
