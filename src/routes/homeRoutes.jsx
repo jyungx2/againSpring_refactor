@@ -1,9 +1,8 @@
-// import Main from "@pages/mainLayout";
 import Login from "@pages/user/Login";
 
 const homeRoutes = [
-  // { index: true, element: <Main /> },
-  { index: true, element: <Login /> },
+  // { index: true, element: <mainLayout /> },
+  { path: "login", element: <Login /> },
 ];
 
 export default homeRoutes;
