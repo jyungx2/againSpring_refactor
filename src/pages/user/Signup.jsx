@@ -6,20 +6,26 @@ function Signup() {
       <div className="mx-auto py-24">
         <div className="w-[460px] mx-auto flex flex-col items-center p-[18px_40px_28px] border-2 border-grey-10 rounded-[20px] gap-8">
           <div className="py-3">
-            <h1 className="font-gowunBold text-4xl text-secondary-50">
+            <h1 className="font-gowunBold text-[32px] text-grey-60">
               회원가입
             </h1>
           </div>
 
           <div className="w-[400px]">
             <form className="flex flex-col gap-6">
-              <div className="relative mx-auto">
+              <div
+                id="fildupload_profile_img"
+                className="relative mx-auto w-[100px] h-[100px]"
+                accept="image/jepg, image/jpg, image/png, image/gif, image/svg+xml"
+              >
+                <div className="bg-"></div>
                 <img
                   className="block w-full h-full"
                   src="src/pages/user/icons/profile.svg"
                 />
+
                 <img
-                  className="absolute bottom-0 right-0 box-border border-2 border-grey-20 rounded-3xl p-2 bg-white"
+                  className="w-[40px] p-3 absolute bottom-0 right-0 box-border border border-grey-20 bg-white rounded-full"
                   src="src/pages/user/icons/camera.svg"
                 />
               </div>
@@ -48,7 +54,7 @@ function Signup() {
                 </div>
               </div>
 
-              <button className="font-gowunBold w-full h-[48px] rounded-xl text-center cursor-pointer box-border text-[20px] text-white bg-primary-40 focus:bg-primary-30">
+              <button className="font-gowunBold w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
                 가입하기
               </button>
             </form>
