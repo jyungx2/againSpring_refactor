@@ -1,10 +1,6 @@
 import Signup from "@pages/user/Signup";
-import Main from "@pages/mainLayout";
 
-const homeRoutes = [
-  { index: true, element: <Main /> },
-  { path: "users/signup", element: <Signup /> },
-];
+const homeRoutes = [{ index: true, element: <Signup /> }];
 // const router = createBrowserRouter([
 //   {
 //     path: "/",
