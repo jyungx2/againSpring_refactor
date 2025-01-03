@@ -1,4 +1,3 @@
-import { Navigate } from 'react-router-dom';
 import Home from '../pages/Home';
 import ListPage from '../pages/notice/ListPage';
 import NewPostPage from '../pages/notice/NewPostPage';
@@ -10,10 +9,6 @@ const routes = [
     path: '/',
     element: <Home />,
     children: [
-      {
-        path: '/',
-        element: <Navigate to='/notice' replace />,
-      },
       {
         path: 'notice',
         children: [
@@ -34,10 +29,6 @@ const routes = [
             element: <EditPostPage />,
           },
         ],
-      },
-      {
-        path: '*',
-        element: <Navigate to='/notice' replace />,
       },
     ],
   },
