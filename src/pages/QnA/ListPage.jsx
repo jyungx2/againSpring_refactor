@@ -42,7 +42,7 @@ export default function ListPage() {
       </h1>
       <div className='flex justify-end mb-5 w-full'>
         <Link
-          to='new'
+          to='/qna/new'
           className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
         >
           질문하기

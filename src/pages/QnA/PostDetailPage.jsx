@@ -111,20 +111,20 @@ export default function PostDetailPage() {
               type='button'
               className='border border-grey-10 rounded px-9 py-2'
             >
-              <Link to='/'>목록</Link>
+              <Link to='/qna'>목록</Link>
             </button>
             <div className='flex gap-3'>
               <button
                 type='button'
                 className='border border-grey-10 rounded px-9 py-2'
               >
-                <Link to='/edit'>수정</Link>
+                <Link to='/qna/edit'>수정</Link>
               </button>
               <button
                 type='button'
                 className='border border-grey-10 rounded px-9 py-2'
               >
-                <Link to='/'>삭제</Link>
+                <Link to='/qna'>삭제</Link>
               </button>
             </div>
           </div>
