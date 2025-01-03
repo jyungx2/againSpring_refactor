@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-free": "^6.7.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-quilljs": "^2.0.5",
     "react-router-dom": "^7.1.1",
     "swiper": "^11.1.15",
     "zustand": "^5.0.2"
