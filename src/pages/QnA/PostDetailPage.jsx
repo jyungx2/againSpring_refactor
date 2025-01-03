@@ -4,7 +4,7 @@ import '../../assets/styles/fonts.css';
 export default function PostDetailPage() {
   return (
     <div className='container mx-auto px-6 py-8'>
-      <h1 className='text-2xl text-center py-4 mb-6'>공지사항</h1>
+      <h1 className='text-2xl text-center py-4 mb-6'>Q&amp;A</h1>
 
       <section className='flex flex-col min-h-screen'>
         {/* 게시글 헤더 */}
@@ -14,7 +14,7 @@ export default function PostDetailPage() {
               제목
             </label>
             <h2 className='text-sm font-normal text-grey-50' id='title'>
-              공지사항 입니다.
+              피그마 너무 어려운데요.
             </h2>
           </div>
           <div className='flex items-center gap-[100px] py-3 border-b border-grey-10'>
