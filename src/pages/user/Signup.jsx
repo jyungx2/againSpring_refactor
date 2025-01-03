@@ -18,12 +18,14 @@ function Signup() {
                 className="relative mx-auto w-[100px] h-[100px]"
                 accept="image/jepg, image/jpg, image/png, image/gif, image/svg+xml"
               >
-                <div className="bg-"></div>
-                <img
-                  className="block w-full h-full"
-                  src="src/pages/user/icons/profile.svg"
-                />
+                <div className="bg-">
+                  <img
+                    className="block w-full h-full"
+                    src="src/pages/user/icons/profile.svg"
+                  />
+                </div>
 
+                <button></button>
                 <img
                   className="w-[40px] p-3 absolute bottom-0 right-0 box-border border border-grey-20 bg-white rounded-full"
                   src="src/pages/user/icons/camera.svg"
