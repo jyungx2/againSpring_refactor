@@ -1,15 +1,8 @@
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Myreview from "./pages/user/Myreview";
+import { RouterProvider } from "react-router-dom";
+import router from "@/routes";
 
-const App = () => {
-  return (
-    <div>
-      <Header />
-      <Myreview />
-      <Footer />
-    </div>
-  );
-};
+function App() {
+  return <RouterProvider router={router} />;
+}
 
 export default App;
