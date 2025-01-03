@@ -1,5 +1,8 @@
-import Signup from "@pages/user/Signup";
+import Login from "@pages/user/Login";
 
-const homeRoutes = [{ index: true, element: <Signup /> }];
+const homeRoutes = [
+  // { index: true, element: <mainLayout /> },
+  { path: "login", element: <Login /> },
+];
 
 export default homeRoutes;

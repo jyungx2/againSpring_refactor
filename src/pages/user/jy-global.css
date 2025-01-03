@@ -2,20 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer utilities {
-  .clip-circle {
-    clip-path: circle(50%);
-  }
-} */
-
-/* Tailwind CSS에 mask-image를 확장하는 방법 */
-@layer utilities {
-  .mask-circle {
-    -webkit-mask-image: radial-gradient(circle, black 70%, transparent 100%);
-    mask-image: radial-gradient(circle, black 70%, transparent 100%);
-  }
-}
-
 @layer base {
   :root {
     font-size: 62.5%;
