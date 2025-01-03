@@ -1,15 +1,10 @@
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Signup from "./pages/user/signUp";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import routes from "./routes";
 
-const App = () => {
-  return (
-    <div>
-      <Header />
-      <Signup />
-      <Footer />
-    </div>
-  );
-};
+const router = createBrowserRouter(routes);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
 
 export default App;
