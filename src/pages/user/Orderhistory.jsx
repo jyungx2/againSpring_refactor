@@ -3,7 +3,7 @@ import "./jy-global.css";
 function Orderhistory() {
   return (
     <>
-      <div className="box mx-w-[1580px] mx-auto p-6 pb-0">
+      <div className="mx-w-[1580px] mx-auto p-6 pb-0">
         <div className="flex gap-[20px]">
           <div className="flex flex-col gap-[24px] pt-[24px] min-w-[180px]">
             <a>주문조회</a>
