@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Outlet } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -8,9 +9,7 @@ const Home = () => {
       <Header />
 
       {/* Main Content */}
-      <main className="flex-grow px-6">
-        <h1 className="text-2xl font-bold">main contents</h1>
-      </main>
+      <Outlet />
 
       {/* Footer */}
       <Footer />

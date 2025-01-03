@@ -1,11 +1,16 @@
-import { createBrowserRouter } from "react-router-dom";
-import Home from "../pages/Home";
+import Signup from "@pages/user/Signup";
+import Main from "@pages/mainLayout";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-]);
+const homeRoutes = [
+  { index: true, element: <Main /> },
+  { path: "users/signup", element: <Signup /> },
+];
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <Home />,
+//     children: [{ index: true, element: <Signup /> }],
+//   },
+// ]);
 
-export default router;
+export default homeRoutes;

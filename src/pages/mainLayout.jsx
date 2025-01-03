@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"; // PropTypes를 임포트합니다.
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Slider from "./Slider";
+import Slider from "@pages/Slider";
+import Header from "@components/Header";
+import Footer from "@components/Footer";
 
 Layout.propTypes = {
   children: PropTypes.node,
@@ -19,6 +19,5 @@ const Layout = ({ children }) => {
     </div>
   );
 };
-
 
 export default Layout;
