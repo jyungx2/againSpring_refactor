@@ -2,7 +2,7 @@
 // routes/productRoutes.js를 추가하고, index.js에서 통합하면 됩니다.
 
 import { createBrowserRouter } from "react-router-dom";
-import homeRoutes from "./homeRoutes";
+import homeRoutes from "@routes/homeRoutes";
 import Home from "@pages/Home";
 
 const routes = createBrowserRouter([
