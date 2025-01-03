@@ -1,10 +1,11 @@
 import "./main.css";
+import "./jy-global.css";
 
 function Myreview() {
   return (
     <>
-      <div className="container">
-        <div className="wrapper">
+      <div className="max-w-[1580px] mx-auto p-[24px] pb-0">
+        <div className="flex">
           <div className="sidebar">
             <a>주문조회</a>
             <a>1:1 문의</a>

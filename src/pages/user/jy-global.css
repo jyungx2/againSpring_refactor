@@ -29,7 +29,8 @@
   }
 
   button,
-  input {
+  input,
+  textarea {
     all: unset;
   }
 
