@@ -1,15 +1,8 @@
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Orderhistory from "./pages/user/Orderhistory";
+import { RouterProvider } from "react-router-dom";
+import router from "@/routes";
 
-const App = () => {
-  return (
-    <div>
-      <Header />
-      <Orderhistory />
-      <Footer />
-    </div>
-  );
-};
+function App() {
+  return <RouterProvider router={router} />;
+}
 
 export default App;

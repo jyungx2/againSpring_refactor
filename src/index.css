@@ -1,10 +1,9 @@
-@import "./assets/style/fonts.css";
 @import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "./assets/styles/fonts.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 공통 디자인 설정 */
 html,
 body {
   margin: 0;
