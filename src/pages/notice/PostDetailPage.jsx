@@ -3,10 +3,10 @@ import '../../assets/styles/fonts.css';
 
 export default function PostDetailPage() {
   return (
-    <div className='container mx-auto px-6 py-8'>
-      <h1 className='text-2xl text-center py-4 mb-6'>공지사항</h1>
+    <div className='container mx-auto px-6 py-4'>
+      <h1 className='text-2xl text-center py-2 mb-4'>공지사항</h1>
 
-      <section className='flex flex-col min-h-screen'>
+      <section className='flex flex-col'>
         {/* 게시글 헤더 */}
         <div className='border-t border-black'>
           <div className='flex items-center gap-[100px] py-3 border-b border-grey-10'>
@@ -47,13 +47,18 @@ export default function PostDetailPage() {
                 </p>
               </div>
             </div>
-            <p className='py-4'>감기조심하세요</p>
+
+            {Array.from({ length: 200 }, (_, i) => (
+              <p key={i} className='py-4'>
+                여기에 글 내용이 들어갑니다 {i + 1}번째 줄
+              </p>
+            ))}
           </div>
         </div>
 
         {/* 하단 네비게이션 */}
-        <div className='border-t border-grey-10 pt-8 pb-4'>
-          <div className='flex justify-between mb-5'>
+        <div className='border-t border-grey-10 pt-4 pb-2'>
+          <div className='flex justify-between mb-4'>
             <button
               type='button'
               className='border border-grey-10 rounded px-9 py-2'
@@ -76,7 +81,7 @@ export default function PostDetailPage() {
             </div>
           </div>
 
-          <nav className='w-full'>
+          <nav className='mb-4'>
             <div className='border-t border-b border-grey-5'>
               <div className='flex items-center border-b border-grey-5 min-h-[48px]'>
                 <div className='w-[80px] sm:w-[100px] px-2 sm:px-4 py-3 text-grey-50 text-sm shrink-0'>
