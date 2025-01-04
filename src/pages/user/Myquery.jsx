@@ -12,6 +12,7 @@ function Myquery() {
             <a>쿠폰</a>
             <a>포인트</a>
             <a>정보 수정</a>
+            <a>회원탈퇴</a>
           </div>
 
           <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[40px]">
