@@ -146,20 +146,26 @@ function TermsOfService() {
               </em>
             </label>
             <div className="flex flex-col gap-6 text-[16px]">
-              <input type="checkbox" id="termsSMS" className="peer" />
-              <label
-                className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
-                htmlFor="termsSMS"
-              >
-                SMS 수신 동의
-              </label>
-              <input type="checkbox" id="termsEmail" className="peer" />
-              <label
-                className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
-                htmlFor="termsEmail"
-              >
-                E-mail 수신 동의
-              </label>
+              <div className="flex">
+                <input type="checkbox" id="termsSMS" className="peer" />
+                <label
+                  className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
+                  htmlFor="termsSMS"
+                >
+                  SMS 수신 동의
+                </label>
+              </div>
+
+              <div className="flex">
+                <input type="checkbox" id="termsEmail" className="peer" />
+                <label
+                  className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
+                  htmlFor="termsEmail"
+                >
+                  E-mail 수신 동의
+                </label>
+              </div>
+
               <div className="border border-[#ddd] mt-6 ml-8 rounded-lg p-[18px] max-h-[100px] overflow-auto box-border text-[15px] tracking-wide">
                 <div>
                   <p className="leading-[20px]">
