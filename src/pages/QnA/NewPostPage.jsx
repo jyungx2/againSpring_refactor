@@ -18,7 +18,7 @@ export default function NewPostPage() {
       [{ align: ['', 'center', 'right'] }], // 텍스트 정렬 옵션
       [{ list: 'ordered' }, { list: 'bullet' }], // 리스트 옵션
       ['link'], // 링크 삽입 옵션
-      ['image'], // 이미지 삽입 옵션
+      // ['image'], // 이미지 삽입 옵션 비활성화
     ],
     clipboard: {
       matchVisual: false, // 복사/붙여넣기 시 시각적 포맷팅 매칭 비활성화
@@ -33,7 +33,7 @@ export default function NewPostPage() {
     'align',
     'list',
     'link',
-    'image',
+    // 'image', // 이미지 포맷 비활성화
     'ordered',
     'bullet',
   ];
@@ -117,36 +117,36 @@ export default function NewPostPage() {
   }, [quill]);
 
   /**
-   * 게시글 저장 처리 함수
+   * 게시글 저장 처리 함수(임시 비활성화)
    * 에디터의 내용을 서버에 POST 요청으로 전송
    */
-  const newPostSaveBtn = () => {
-    console.log(quill.root.innerHTML);
+  // const newPostSaveBtn = () => {
+  //   console.log(quill.root.innerHTML);
 
-    const saveData = async () => {
-      // 저장할 게시글 데이터 구성
-      const data = {
-        type: 'qna',
-        title: '글쓰기 테스트',
-        content: quill.root.innerHTML,
-      };
+  //   const saveData = async () => {
+  //     // 저장할 게시글 데이터 구성
+  //     const data = {
+  //       type: 'qna',
+  //       title: '글쓰기 테스트',
+  //       content: quill.root.innerHTML,
+  //     };
 
-      // 서버에 게시글 저장 요청
-      const response = await fetch('https://11.fesp.shop/posts', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'client-id': 'final02',
-          'Content-Type': 'application/json',
-        },
-      });
+  //     // 서버에 게시글 저장 요청
+  //     const response = await fetch('https://11.fesp.shop/posts', {
+  //       method: 'POST',
+  //       body: JSON.stringify(data),
+  //       headers: {
+  //         'client-id': 'final02',
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
 
-      const result = await response.json();
-      console.log('이미지 업로드 성공:', result);
-    };
+  //     const result = await response.json();
+  //     console.log('이미지 업로드 성공:', result);
+  //   };
 
-    saveData();
-  };
+  //   saveData();
+  // };
 
   return (
     // 게시글 작성 페이지 레이아웃
@@ -173,13 +173,8 @@ export default function NewPostPage() {
       {/* 하단 버튼 그룹 */}
       <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         {/* 등록 버튼 */}
-        <button
-          onClick={() => {
-            newPostSaveBtn();
-          }}
-          className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-secondary-20 text-white'
-        >
-          <Link>등록하기</Link>
+        <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-secondary-20 text-white'>
+          <Link to='/qna'>등록하기</Link>
         </button>
         {/* 취소 버튼 */}
         <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-grey-20'>
