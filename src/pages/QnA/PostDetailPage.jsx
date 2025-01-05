@@ -52,7 +52,7 @@ export default function PostDetailPage() {
         </div>
 
         {/* 댓글 섹션 */}
-        <section className='border-b border-grey-10 mb-8'>
+        <section className='mb-8'>
           <div className='py-6'>
             <div className='flex items-center'>
               <label className='text-[12.9px] font-light' htmlFor='admin'>
