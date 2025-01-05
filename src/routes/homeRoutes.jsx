@@ -1,9 +1,9 @@
 // import Login from '@pages/user/Login';
 
-import EditPostPage from '@pages/QnA/EditPostPage';
-import ListPage from '@pages/QnA/ListPage';
-import NewPostPage from '@pages/QnA/NewPostPage';
-import PostDetailPage from '@pages/QnA/PostDetailPage';
+import EditPostPage from '@pages/qna/EditPostPage';
+import ListPage from '@pages/qna/ListPage';
+import NewPostPage from '@pages/qna/NewPostPage';
+import PostDetailPage from '@pages/qna/PostDetailPage';
 
 const homeRoutes = [
   // { index: true, element: <mainLayout /> },
