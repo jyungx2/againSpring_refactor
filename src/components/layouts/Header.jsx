@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useMenuStore from "../store/menuStore";
+import useMenuStore from "../../store/menuStore";
 
 const Header = () => {
   const { activeMenu, setActiveMenu } = useMenuStore();

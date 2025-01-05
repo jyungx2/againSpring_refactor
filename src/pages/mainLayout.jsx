@@ -13,7 +13,7 @@ Layout.defaultProps = {
 const Layout = ({ children }) => {
   return (
     <main className="flex-grow">
-      {/* SEO 메타데이터 관리 */}
+      {/* HelmetProvider 관리 */}
       <Helmet>
         <title>다시,봄 메인 페이지</title>
         <meta name="description" content="다시,봄 홈페이지" />
