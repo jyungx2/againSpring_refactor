@@ -90,7 +90,7 @@ export default function ListPage() {
         <div className='relative w-[120px]'>
           <select className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'>
             <option value='title'>제목</option>
-            <option value='date'>등록일</option>
+            <option value='date'>작성일</option>
             <option value='author'>작성자</option>
           </select>
         </div>
