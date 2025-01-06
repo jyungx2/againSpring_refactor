@@ -12,4 +12,9 @@ export default defineConfig({
       { find: "@routes", replacement: "/src/routes" },
     ],
   },
+  css: {
+    modules: {
+      scopeBehaviour: "local", // CSS Module을 local로 설정
+    },
+  },
 });
