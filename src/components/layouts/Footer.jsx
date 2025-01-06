@@ -1,9 +1,9 @@
-
 const Footer = () => {
   return (
-    <footer className="w-full bg-white border-t border-gray-200 py-6">
+    <footer className="w-full bg-gray-50 border-t border-gray-300 py-6 font-gowunBold">
       <div className="container mx-auto px-6">
-        <div className="text-gray-700 text-sm space-y-2">
+        {/* 상단 정보 */}
+        <div className="text-gray-700 text-lg space-y-4">
           <p>
             상호: 다시봄 | 대표: 멋사 2조
           </p>
@@ -18,16 +18,17 @@ const Footer = () => {
           </p>
         </div>
 
-        <div className="flex justify-between items-center mt-4">
-          <div className="flex space-x-4">
-            <a href="/terms" className="text-gray-500 hover:text-secondary text-sm">
+        {/* 하단 링크 및 저작권 */}
+        <div className="flex justify-between items-center mt-6">
+          <div className="flex space-x-6">
+            <a href="/terms" className="text-gray-500 hover:text-secondary text-base">
               이용약관
             </a>
-            <a href="/privacy" className="text-gray-500 hover:text-secondary text-sm">
+            <a href="/privacy" className="text-gray-500 hover:text-secondary text-base">
               개인정보처리방침
             </a>
           </div>
-          <div className="text-gray-400 text-sm">
+          <div className="text-gray-500 text-lg font-gowunBold">
             Copyright © 2024 다시봄 store all rights reserved.
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -12,7 +12,7 @@ const Slider = () => {
   ];
 
   return (
-    <div className="w-full h-[400px]">
+    <div className="w-full h-[400px] mt-8">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={30}
