@@ -1,4 +1,4 @@
-import "./jy-global.css";
+import styles from "./User.module.css";
 
 function Signup() {
   return (
@@ -21,35 +21,51 @@ function Signup() {
                 <div className="w-full h-full bg-[url('./icons/profile.svg')] bg-cover bg-center"></div>
 
                 <div className="absolute bottom-[4px] right-0 rounded-full  border border-grey-30">
-                  <button className="box-border w-11 h-11 bg-white rounded-full cursor-pointer">
+                  <button className="box-border w-10 h-10 bg-white rounded-full cursor-pointer">
                     <img
-                      className="w-7 h-7 mx-auto"
-                      src="src/pages/user/icons/camera.svg"
+                      className="w-7 h-7 mx-auto mt-1"
+                      src="/icons/camera.svg"
                     />
                   </button>
                 </div>
               </div>
 
-              <div className="flex pl-2 border-2 border-grey-20 rounded-3xl mb-6 focus-within:border-secondary-20">
-                <img src="src/pages/user/icons/user.svg" />
-                <input id="username" type="text" placeholder="이름" />
+              <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-6 focus-within:border-secondary-20">
+                <img src="/icons/user.svg" />
+                <input
+                  id="username"
+                  type="text"
+                  placeholder="이름"
+                  className={`${styles.inputUnset}`}
+                />
               </div>
 
               <div className="id-collection">
-                <div className="flex pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
-                  <img src="src/pages/user/icons/user.svg" />
-                  <input id="email" type="email" placeholder="이메일" />
+                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
+                  <img src="/icons/user.svg" />
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="이메일"
+                    className={`${styles.inputUnset}`}
+                  />
                 </div>
-                <div className="flex pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
-                  <img src="src/pages/user/icons/locker.svg" />
-                  <input id="password" type="password" placeholder="비밀번호" />
+                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
+                  <img src="/icons/locker.svg" />
+                  <input
+                    id="password"
+                    type="password"
+                    placeholder="비밀번호"
+                    className={`${styles.inputUnset}`}
+                  />
                 </div>
-                <div className="flex pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
-                  <img src="src/pages/user/icons/locker.svg" />
+                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
+                  <img src="/icons/locker.svg" />
                   <input
                     id="password"
                     type="password"
                     placeholder="비밀번호 확인"
+                    className={`${styles.inputUnset}`}
                   />
                 </div>
               </div>
