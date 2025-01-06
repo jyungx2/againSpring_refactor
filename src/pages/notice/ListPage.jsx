@@ -28,7 +28,7 @@ export default function ListPage() {
 
   return (
     <div className='w-[1200px] mx-auto px-6 mb-20'>
-      <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
+      <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         공지사항
       </h1>
       <div className='flex justify-end mb-5 w-full'>
@@ -44,20 +44,22 @@ export default function ListPage() {
           <ListItem key={item.id} title={item.title} date={item.date} />
         ))}
       </div>
-      <div className='flex justify-center gap-2 mt-10'>
-        <button className='flex justify-center items-center w-10 h-10 rounded-[10px] border-none cursor-pointer bg-secondary-20 text-white hover:bg-secondary-40 transition-colors'>
+
+      <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
+        <button className='bg-secondary-20 text-white w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40'>
           1
         </button>
-        <button className='flex justify-center items-center w-10 h-10 rounded-[10px] border-none cursor-pointer bg-grey-20 hover:bg-grey-30 transition-colors'>
+        <button className='bg-grey-20 text-black w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'>
           2
         </button>
-        <button className='flex justify-center items-center w-10 h-10 rounded-[10px] border-none cursor-pointer bg-grey-20 hover:bg-grey-30 transition-colors'>
+        <button className='bg-grey-20 text-black w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'>
           3
         </button>
-        <button className='flex justify-center items-center w-auto h-10 rounded-[10px] border-none cursor-pointer bg-grey-20 hover:bg-grey-30 transition-colors px-4'>
+        <button className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'>
           Next
         </button>
       </div>
+
       <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
         <div className='relative w-[120px]'>
           <select className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'>
