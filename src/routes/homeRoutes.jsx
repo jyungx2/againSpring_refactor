@@ -1,17 +1,16 @@
-// import Login from '@pages/user/Login';
-
-import EditPostPage from '@pages/qna/EditPostPage';
-import ListPage from '@pages/qna/ListPage';
-import NewPostPage from '@pages/qna/NewPostPage';
-import PostDetailPage from '@pages/qna/PostDetailPage';
+import Layout from '@components/layouts';
+import Slider from '@pages/Slider';
+import Login from '@pages/user/Login';
 
 const homeRoutes = [
-  // { index: true, element: <mainLayout /> },
-  // { path: 'login', element: <Login /> },
-  { path: 'qna', element: <ListPage /> },
-  { path: 'qna/new', element: <NewPostPage /> },
-  { path: 'qna/edit', element: <EditPostPage /> },
-  { path: 'qna/detail', element: <PostDetailPage /> },
+  {
+    index: '/',
+    element: <Layout />,
+    children: [
+      { index: true, element: <Slider /> },
+      { path: 'login', element: <Login /> },
+    ],
+  },
 ];
 
 export default homeRoutes;
