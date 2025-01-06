@@ -1,4 +1,4 @@
-import styles from "./Login.module.css";
+import styles from "./User.module.css";
 
 function Login() {
   return (
@@ -42,7 +42,7 @@ function Login() {
               <input type="checkbox" id="stay-login" className="peer" />
               <label
                 htmlFor="stay-login"
-                className="flex items-center gap-3 mt-14 before:content-[''] before:w-[20px] before:h-[20px] before:inline-block "
+                className="flex items-center gap-3 mt-14 before:content-[''] before:w-[20px] before:h-[20px] before:inline-block before:bg-[url('/icons/emptybox.svg')] peer-checked:before:bg-[url('/icons/checkbox.svg')]"
               >
                 자동 로그인
               </label>

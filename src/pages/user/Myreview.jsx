@@ -1,5 +1,3 @@
-// import "./jy-global.css";
-
 function Myreview() {
   return (
     <>
@@ -16,14 +14,14 @@ function Myreview() {
 
         <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[20px]">
           <div className="flex items-start p-[30px] text-[16px] border-t-2 border-black gap-[18px]">
-            <img src="src/pages/user/icons/basket.svg" />
+            <img src="/icons/basket.svg" />
             <div className="flex flex-col gap-[16px]">
               <h1 className="text-[26px] font-gowunBold">상품리뷰</h1>
               <p>상품의 품질에 대해서 얼마나 만족하시나요?</p>
             </div>
           </div>
           <div className="flex items-start p-[30px] text-[16px] border-t border-grey-30 gap-[18px]">
-            <img src="src/pages/user/icons/image.png" />
+            <img src="/images/product-1.png" />
             <div className="flex flex-col gap-[20px]">
               <p className="font-gowunBold">안티 헤어 로스 샴푸바</p>
               <p>12,900원 - 1개</p>

@@ -18,22 +18,9 @@ img {
   vertical-align: top;
 }
 
-button,
 input,
 textarea {
   all: unset;
-}
-
-button {
-  display: block;
-}
-
-#stay-login:checked + label::before {
-  background-image: url("./icons/checkbox.svg");
-}
-
-#stay-login:not(:checked) + label::before {
-  background-image: url("./icons/emptybox.svg");
 }
 
 input[type="text"],
