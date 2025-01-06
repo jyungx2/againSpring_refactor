@@ -27,7 +27,7 @@ export default function ListPage() {
   ];
 
   return (
-    <div className='container mx-auto px-6 mb-20'>
+    <div className='w-[1200px] mx-auto px-6 mb-20'>
       <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
         공지사항
       </h1>

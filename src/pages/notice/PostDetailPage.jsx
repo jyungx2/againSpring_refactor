@@ -3,7 +3,7 @@ import '../../assets/styles/fonts.css';
 
 export default function PostDetailPage() {
   return (
-    <div className='container mx-auto px-6 py-4'>
+    <div className='w-[1200px] mx-auto px-6 py-4'>
       <h1 className='text-2xl text-center py-2 mb-4'>공지사항</h1>
 
       <section className='flex flex-col'>

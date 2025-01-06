@@ -70,7 +70,7 @@ export default function EditPostPage() {
     }
   }, [quill]);
   return (
-    <div className='container mx-auto px-6 relative min-h-screen pb-32'>
+    <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-32'>
       <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
         공지사항
       </h1>
