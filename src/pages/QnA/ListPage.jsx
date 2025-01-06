@@ -53,7 +53,9 @@ export default function ListPage() {
           <thead>
             <tr className='border-t border-t-grey-80 border-b-[3px] border-b-grey-10'>
               <th className='py-5 text-left w-[8%] pl-5'>번호</th>
-              <th className='py-5 text-left w-[77%] pl-5'>제목</th>
+              <th className='py-5 text-left w-[77%] flex justify-center pl-5'>
+                제목
+              </th>
               <th className='py-5 text-right w-[7%] pr-2.5'>작성자</th>
               <th className='py-5 text-right w-[8%] pr-5'>작성일</th>
             </tr>
