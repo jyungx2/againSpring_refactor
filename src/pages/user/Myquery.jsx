@@ -1,7 +1,7 @@
 function Myquery() {
   return (
     <>
-      <div className="flex box-border w-[1200px] mx-auto px-6 pb-0">
+      <div className="flex box-border w-[1200px] mx-auto px-6">
         <div className="flex flex-col gap-[24px] pt-[24px] min-w-[180px]">
           <a>주문조회</a>
           <a>1:1 문의</a>
@@ -26,7 +26,7 @@ function Myquery() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-[10px] justify-center border-t border-grey-30 p-[30px]">
+          <div className="flex flex-col gap-[10px] justify-center border-t border-grey-30 p-[30px] pb-[200px]">
             <h2 className="font-gowunBold text-[22px]">문의내역</h2>
 
             <table className="w-full border-collapse my-[20px]">

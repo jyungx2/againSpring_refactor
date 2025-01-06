@@ -5,6 +5,7 @@ import Myreview from "@pages/user/Myreview";
 import Myquery from "@pages/user/Myquery";
 import Shop from "@pages/Shop";
 import Detail from "@pages/Detail";
+import Myorder from "@pages/user/Myorder";
 
 const homeRoutes = [
   {
@@ -17,6 +18,7 @@ const homeRoutes = [
       { path: "query", element: <Myquery /> },
       { path: "shop", element: <Shop /> },
       { path: "detail", element: <Detail /> },
+      { path: "order", element: <Myorder /> },
     ],
   },
 ];
