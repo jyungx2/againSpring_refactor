@@ -1,5 +1,5 @@
 import Layout from "@components/layouts"
-import Slider from "@pages/Slider"
+import Slider from "@components/Slider"
 import Login from "@pages/user/Login";
 
 const homeRoutes = [

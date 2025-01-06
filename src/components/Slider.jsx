@@ -1,31 +1,38 @@
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 const Slider = () => {
-  const slides = Array.from({ length: 3 }); // 임시로 슬라이드 3개 설정
+  const slides = [
+    { id: 1, src: "/images/event1.jpg", alt: "Event 1" },
+    { id: 2, src: "/images/event2.jpg", alt: "Event 2" },
+    { id: 3, src: "/images/event3.jpg", alt: "Event 3" },
+  ];
 
   return (
-    <section className="slider-section my-8">
+    <div className="w-full h-[400px] mt-8">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={30}
+        slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
         autoplay={{ delay: 3000 }}
-        loop={true}
-        className="mySwiper"
+        className="h-full"
       >
-        {slides.map((_, index) => (
-          <SwiperSlide key={index}>
-            <div className="w-full h-64 bg-gray-300 flex items-center justify-center">
-              <span className="text-xl font-bold">다시,봄 이벤트 배너 {index + 1}</span>
-            </div>
+        {slides.map((slide) => (
+          <SwiperSlide key={slide.id}>
+            <img
+              src={slide.src}
+              alt={slide.alt}
+              className="w-full h-full object-cover"
+            />
           </SwiperSlide>
         ))}
       </Swiper>
-    </section>
+    </div>
   );
 };
 
