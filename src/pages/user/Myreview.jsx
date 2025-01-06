@@ -1,4 +1,4 @@
-import "./jy-global.css";
+// import "./jy-global.css";
 
 function Myreview() {
   return (
@@ -43,7 +43,7 @@ function Myreview() {
           </div>
           <div className="flex items-start p-[30px] text-[16px] border-t border-grey-30 gap-[60px]">
             <h2 className="font-gowunBold text-[20px]">사진첨부</h2>
-            <button className="font-gowunBold h-[42px] leading-[42px] text-primary-70 text-[16px] px-[24px] border-2 border-primary-30 rounded-[2px] box-border cursor-pointer">
+            <button className="font-gowunBold h-[42px] leading-[42px] text-primary-70 text-[16px] px-[24px] border border-primary-30 rounded-[2px] box-border cursor-pointer">
               사진 첨부하기
             </button>
           </div>
