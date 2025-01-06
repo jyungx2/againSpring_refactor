@@ -1,5 +1,3 @@
-import "./jy-global.css";
-
 function Myquery() {
   return (
     <>
@@ -15,19 +13,17 @@ function Myquery() {
             <a>회원탈퇴</a>
           </div>
 
-          <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[40px]">
-            <div className="flex border-t-2 border-black p-[30px] gap-[18px] items-start ">
-              <div className="flex-shrink-0">
-                <img src="src/pages/user/icons/query.svg" />
+          <div className="flex-grow min-w-0 basis-0 flex flex-col">
+            <div className="flex flex-col border-t-2 border-black p-[30px] pb-[40px] items-start justify-center">
+              <div className="flex items-center gap-[18px]">
+                <img src="/icons/query.svg" />
+                <h1 className="font-gowunBold text-[26px]">문의 내역 확인</h1>
               </div>
 
-              <div className="flex flex-col gap-[40px] flex-grow">
-                <h1 className="font-gowunBold text-[26px]">문의 내역 확인</h1>
-                <div className="ml-auto">
-                  <button className="font-gowunBold inline-block h-[42px] text-primary-70 text-[16px] px-[24px] border border-primary-30 rounded-[2px] box-border cursor-pointer">
-                    문의하러 가기
-                  </button>
-                </div>
+              <div className="ml-auto">
+                <button className="font-gowunBold inline-block h-[42px] text-primary-70 text-[16px] px-[24px] border border-primary-30 rounded-[2px] box-border cursor-pointer">
+                  문의하러 가기
+                </button>
               </div>
             </div>
 

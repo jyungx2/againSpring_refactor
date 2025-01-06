@@ -1,3 +1,5 @@
+import styles from "./User.module.css";
+
 function Myreview() {
   return (
     <>
@@ -33,7 +35,7 @@ function Myreview() {
             </h2>
             <div className="flex-grow border border-grey-20 rounded-[2px] w-full">
               <textarea
-                className="block w-full p-[10px] box-border text-[14px] placeholder:text-grey-40"
+                className={`${styles.textareaUnset} ${styles.textareaCustom}`}
                 rows="10"
                 placeholder="다른 고객님에게 도움이 되도록 상품에 대한 솔직한 평가를 남겨주세요."
               ></textarea>
