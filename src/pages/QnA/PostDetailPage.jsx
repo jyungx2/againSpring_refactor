@@ -1,7 +1,38 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
 export default function PostDetailPage() {
+  const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
+
+  const deleteCheckBtn = () => {
+    MySwal.fire({
+      title: '게시글을 삭제하시겠습니까?',
+      text: '삭제된 게시글은 복구할 수 없습니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '네',
+      cancelButtonText: '아니요',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        MySwal.fire({
+          title: '삭제 완료',
+          text: '게시글이 삭제되었습니다.',
+          confirmButtonText: '확인',
+          icon: 'success',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/qna');
+          }
+        });
+      }
+    });
+  };
+
   return (
     <div className='container mx-auto px-6 py-8'>
       <h1 className='text-2xl text-center py-4 mb-6'>Q&amp;A</h1>
@@ -123,8 +154,11 @@ export default function PostDetailPage() {
               <button
                 type='button'
                 className='border border-grey-10 rounded px-9 py-2'
+                onClick={() => {
+                  deleteCheckBtn();
+                }}
               >
-                <Link to='/qna'>삭제</Link>
+                삭제
               </button>
             </div>
           </div>
