@@ -29,8 +29,7 @@ const MainProduce = () => {
 
         {/* 1440px 너비 */}
         <div className="max-w-[1440px] mx-auto">
-          {/* 추가 섹션이 필요한 경우 여기에 추가 */}
-          {/* 예시로 다음 섹션을 추가할 수 있습니다 */}
+
         </div>
       </div>
       );
