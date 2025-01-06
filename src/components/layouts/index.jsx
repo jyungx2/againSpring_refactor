@@ -1,17 +1,29 @@
-// 예: Product 관련 라우트 추가 시
-// routes/productRoutes.js를 추가하고, index.js에서 통합하면 됩니다.
+import Header from "@components/layouts/Header";
+import Footer from "@components/layouts/Footer";
+import { Outlet } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import PropTypes from "prop-types";
 
-import { createBrowserRouter } from "react-router-dom";
-import homeRoutes from "@routes/homeRoutes";
-import cartRoutes from "@routes/cartRoutes";
-import Home from "@pages/Home";
+const MainLayout = ({ title, description }) => {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Helmet>
+        <title>{title || "다시,봄 메인 페이지"}</title>
+        <meta name="description" content={description || "다시,봄 홈페이지"} />
+      </Helmet>
+      <Header />
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
+};
 
-const routes = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-    children: [...homeRoutes, ...cartRoutes],
-  },
-]);
+// title, description 문자열 타입 설정
+MainLayout.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+};
 
-export default routes;
+export default MainLayout;
