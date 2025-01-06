@@ -1,59 +1,106 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useMenuStore from "../../store/menuStore";
 
 const Header = () => {
   const { activeMenu, setActiveMenu } = useMenuStore();
-  const [hovered, setHovered] = useState(false);
+  const [setHovered] = useState(false);
+  const [timer, setTimer] = useState(null);
 
-  useEffect(() => {
-    if (!hovered) {
-      const timeout = setTimeout(() => setActiveMenu(null), 100); // 드롭다운 menu timout (필요없게되면 삭제)
-      return () => clearTimeout(timeout);
-    }
-  }, [hovered, setActiveMenu]);
+  const handleMouseEnter = (menuName) => {
+    clearTimeout(timer); // 타이머 초기화
+    setActiveMenu(menuName);
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setActiveMenu(null);
+      setHovered(false);
+    }, 300); // 300ms 딜레이
+    setTimer(timeout);
+  };
 
   const menuItems = [
-    { name: "다시,봄", subMenu: ["다시,봄"], links: ["/spring"] },
-    { name: "커뮤니티", subMenu: ["커뮤니티"], links: ["/community"] },
-    { name: "SHOP", subMenu: ["SHOP"], links: ["/shop"] },
-    { name: "문의사항", subMenu: ["문의사항"], links: ["/inquiry"] },
-    { name: "공지사항", subMenu: ["공지사항", "이벤트", "Q&A"], links: ["/notice", "/event", "/qna"] },
+    { name: "다시,봄", links: ["/Home"] },
+    {
+      name: "SHOP",
+      subMenu: [
+        "주방용품",
+        "세탁용품",
+        "욕실용품",
+        "문구용품",
+        "식품",
+        "생활잡화",
+        "반려동물",
+      ],
+      links: [
+        "/Product1",
+        "/Product2",
+        "/Product3",
+        "/Product4",
+        "/Product5",
+        "/Product6",
+        "/Product7",
+      ]
+    },
+    { name: "공지사항", links: ["/notice"] },
+    { name: "이벤트", links: ["/event",], },
   ];
 
   return (
-    <header className="w-full bg-white shadow-md px-6">
-      <div className="flex justify-center py-6">
-        {/* 로고 */}
-        <img src="/public/images/logo.png" alt="logo" className="w-12 h-12" />
+    <header className="w-full bg-white  border-b border-gray-200 z-50 relative">
+      {/* 로고 */}
+      <div className="flex justify-center py-4">
+        <img src="public/images/Logo.png" alt="logo" className="w-24 h-24" />
       </div>
 
+      {/* 메뉴 */}
       <nav className="w-full">
-        <div className="flex justify-center space-x-8">
+        <ul className="flex justify-center space-x-10 border-t border-gray-200 py-3 bg-white">
           {menuItems.map((item, index) => (
-            <div key={index} className="relative group"
-              onMouseEnter={() => {
-                setActiveMenu(item.name);
-                setHovered(true);
-              }}
-              onMouseLeave={() => setHovered(false)}
+            <li
+              key={index}
+              className="relative group"
+              style={{ minWidth: "120px" }} // 각 메뉴 항목의 최소 너비 설정
+              onMouseEnter={() => handleMouseEnter(item.name)}
+              onMouseLeave={handleMouseLeave}
             >
-              <a href="#" className="text-gray-700 hover:text-secondary font-semibold"> {item.name} </a>
+              {/* 메인 메뉴 */}
+              <a
+                href={item.links ? item.links[0] : "#"}
+                className="text-gray-700 hover:text-secondary font-medium text-center block"
+              >
+                {item.name}
+              </a>
+
+              {/* 서브메뉴 */}
               {item.subMenu && activeMenu === item.name && (
-                <div className="absolute top-full mt-2 bg-white shadow-lg rounded-md p-6 min-w-[200px]">
-                  <ul className="space-y-3">
+                <div
+                  className="absolute top-full left-0 bg-white shadow-lg rounded-md py-4 px-6 z-50"
+                  style={{ width: "100%" }} // 서브메뉴 너비를 메인 메뉴에 맞춤
+                  onMouseEnter={() => clearTimeout(timer)} // 서브메뉴로 이동 시 유지
+                  onMouseLeave={handleMouseLeave} // 서브메뉴 벗어날 때 숨김
+                >
+                  <ul className="space-y-2 text-center">
                     {item.subMenu.map((subItem, subIndex) => (
                       <li key={subIndex}>
-                        <a href={item.links[subIndex]} className="hover:text-secondary cursor-pointer block"> {subItem} </a>
+                        <a
+                          href={item.links[subIndex]}
+                          className="text-gray-600 hover:text-secondary block whitespace-nowrap"
+                        >
+                          {subItem}
+                        </a>
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </nav>
 
+      {/* 로그인,마이페이지,검색 아이콘 */}
       <div className="absolute top-4 right-6 flex space-x-4">
         <a href="/login" className="text-gray-700 hover:text-secondary">로그인</a>
         <a href="/profile" className="text-gray-700 hover:text-secondary">
