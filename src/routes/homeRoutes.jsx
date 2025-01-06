@@ -6,6 +6,8 @@ import PostDetailPage from '@pages/notice/PostDetailPage';
 import Slider from '@pages/Slider';
 import Login from '@pages/user/Login';
 import Myreview from '@pages/user/Myreview';
+import Shop from '@pages/Shop';
+import Detail from '@pages/Detail';
 
 const homeRoutes = [
   {
@@ -15,6 +17,10 @@ const homeRoutes = [
       { index: true, element: <Slider /> },
       { path: 'login', element: <Login /> },
       { path: 'review', element: <Myreview /> },
+
+      { path: 'shop', element: <Shop /> },
+      { path: 'detail', element: <Detail /> },
+
       { path: 'notice', element: <ListPage /> },
       { path: 'notice/new', element: <NewPostPage /> },
       { path: 'notice/edit', element: <EditPostPage /> },
