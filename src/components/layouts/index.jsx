@@ -3,13 +3,14 @@
 
 import { createBrowserRouter } from "react-router-dom";
 import homeRoutes from "@routes/homeRoutes";
+import cartRoutes from "@routes/cartRoutes";
 import Home from "@pages/Home";
 
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-    children: [...homeRoutes],
+    children: [...homeRoutes, ...cartRoutes],
   },
 ]);
 

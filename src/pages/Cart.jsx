@@ -1,34 +1,9 @@
-import { useState } from "react";
+import { cartStore } from "../store/cartStore";
 
 function Cart() {
-  //더미 상품 데이터
-  const dummyItems = [
-    // {
-    //   id: 1,
-    //   name: "상품 A",
-    //   price: 15000,
-    //   quantity: 1,
-    //   image: "https://via.placeholder.com/80",
-    // },
-    // {
-    //   id: 2,
-    //   name: "상품 B",
-    //   price: 2500000,
-    //   quantity: 2,
-    //   image: "https://via.placeholder.com/80",
-    // },
-    // {
-    //   id: 3,
-    //   name: "상품 C",
-    //   price: 10000,
-    //   quantity: 1,
-    //   image: "https://via.placeholder.com/80",
-    // },
-  ];
+  const { cartItemsList, shippingCost } = cartStore();
 
-  const [cartItemsList] = useState(dummyItems);
-
-  const shippingCost = 3000; //배송비
+  // 총 주문 금액 계산
   const totalPrice = cartItemsList.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -69,10 +44,10 @@ function Cart() {
                   <th className="w-[2%] text-left py-[20px]">
                     <input
                       type="checkbox"
-                      className="w-[16px] h-[16px] cursor-pointer"
+                      className="w-[16px] h-[16px] bg-grey-40 cursor-pointer"
                     />
                   </th>
-                  <th className="w-[62%] text-left py-[20px] font-gowun text-grey-40 text-[14px] ">
+                  <th className="w-[62%] text-left py-[20px] font-gowun text-grey-40 text-[14px]">
                     상품 정보
                   </th>
                   <th className="w-[12%] text-center py-[20px] font-gowun text-grey-40 text-[14px]">
@@ -194,7 +169,7 @@ function Cart() {
               </button>
             </div>
 
-            <div className="mt-[8px] text-center">
+            <div className="mt-[8px] flex justify-center">
               <button className="text-black text-[15px] border-b border-grey-30">
                 다음에 다시 주문하기
               </button>

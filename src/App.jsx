@@ -7,8 +7,7 @@ function App() {
     <HelmetProvider>
       <RouterProvider router={router} />;
     </HelmetProvider>
-  )
-
+  );
 }
 
 export default App;
