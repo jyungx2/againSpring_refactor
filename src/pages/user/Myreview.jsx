@@ -3,7 +3,7 @@ import styles from "./User.module.css";
 function Myreview() {
   return (
     <>
-      <div className="flex box-border min-w-[1200px] mx-auto px-6 pb-0">
+      <div className="flex box-border w-[1200px] mx-auto px-6 pb-0">
         <div className="flex flex-col gap-[24px] pt-[24px] min-w-[180px]">
           <a>주문조회</a>
           <a>1:1 문의</a>
