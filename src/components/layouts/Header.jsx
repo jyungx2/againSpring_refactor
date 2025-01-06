@@ -33,18 +33,10 @@ const Header = () => {
         "생활잡화",
         "반려동물",
       ],
-      links: [
-        "/Product1",
-        "/Product2",
-        "/Product3",
-        "/Product4",
-        "/Product5",
-        "/Product6",
-        "/Product7",
-      ]
+      links: ["/shop", "/shop", "/shop", "/shop", "/shop", "/shop", "/shop"],
     },
     { name: "공지사항", links: ["/notice"] },
-    { name: "이벤트", links: ["/event",], },
+    { name: "이벤트", links: ["/event"] },
   ];
 
   return (
@@ -102,7 +94,9 @@ const Header = () => {
 
       {/* 로그인,마이페이지,검색 아이콘 */}
       <div className="absolute top-4 right-6 flex space-x-4">
-        <a href="/login" className="text-gray-700 hover:text-secondary">로그인</a>
+        <a href="/login" className="text-gray-700 hover:text-secondary">
+          로그인
+        </a>
         <a href="/profile" className="text-gray-700 hover:text-secondary">
           <i className="fas fa-user"></i>
         </a>
