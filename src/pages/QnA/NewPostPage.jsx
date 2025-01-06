@@ -152,13 +152,13 @@ export default function NewPostPage() {
     // 게시글 작성 페이지 레이아웃
     <div className='container mx-auto px-6 relative min-h-screen pb-32'>
       {/* 페이지 제목 */}
-      <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
+      <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&amp;A
       </h1>
 
       {/* 게시글 제목 입력 필드 */}
       <input
-        className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-base'
+        className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
         placeholder='제목을 입력하세요'
       />

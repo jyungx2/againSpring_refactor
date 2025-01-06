@@ -71,12 +71,12 @@ export default function EditPostPage() {
   }, [quill]);
   return (
     <div className='container mx-auto px-6 relative min-h-screen pb-32'>
-      <h1 className='h-[63px] text-2xl text-center box-border m-0 px-0 py-[15px]'>
+      <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&amp;A
       </h1>
 
       <input
-        className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-base'
+        className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
         defaultValue='피그마 너무 어려운데요.'
       />

@@ -35,83 +35,91 @@ export default function PostDetailPage() {
 
   return (
     <div className='container mx-auto px-6 py-8'>
-      <h1 className='text-2xl text-center py-4 mb-6'>Q&amp;A</h1>
+      <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
+        Q&amp;A
+      </h1>
 
-      <section className='flex flex-col min-h-screen'>
+      <section className='flex flex-col'>
         {/* 게시글 헤더 */}
         <div className='border-t border-black'>
-          <div className='flex items-center gap-[100px] py-3 border-b border-grey-10'>
-            <label className='text-sm font-normal text-grey-80' htmlFor='title'>
+          <div className='flex items-center gap-[100px] py-4 border-b border-grey-10'>
+            <label
+              className='text-lg font-medium text-grey-80 w-24'
+              htmlFor='title'
+            >
               제목
             </label>
-            <h2 className='text-sm font-normal text-grey-50' id='title'>
+            <h2 className='text-xl font-medium text-grey-50' id='title'>
               피그마 너무 어려운데요.
             </h2>
           </div>
-          <div className='flex items-center gap-[100px] py-3 border-b border-grey-10'>
+          <div className='flex items-center gap-[100px] py-4 border-b border-grey-10'>
             <label
-              className='text-sm font-normal text-grey-80'
+              className='text-lg font-medium text-grey-80 w-24'
               htmlFor='writer'
             >
               작성자
             </label>
-            <p className='text-sm font-normal text-grey-50' id='writer'>
-              다시, 봄
+            <p className='text-xl font-medium text-grey-50' id='writer'>
+              홍길동
             </p>
           </div>
           <div className='border-b border-grey-10'>
-            <div className='flex gap-[43px] py-3'>
+            <div className='flex gap-[43px] py-4'>
               <div className='flex items-center'>
-                <label className='text-sm font-bold pl-5 mr-1' htmlFor='date'>
+                <label className='text-lg font-medium pl-5 mr-2' htmlFor='date'>
                   작성일
                 </label>
-                <p className='text-sm text-grey-40' id='date'>
+                <p className='text-lg text-grey-40' id='date'>
                   2024-01-01 00:00:00
                 </p>
               </div>
               <div className='flex items-center'>
-                <label className='text-sm font-bold mr-1' htmlFor='views'>
+                <label className='text-lg font-medium mr-2' htmlFor='views'>
                   조회수
                 </label>
-                <p className='text-sm text-grey-40' id='views'>
+                <p className='text-lg text-grey-40' id='views'>
                   0
                 </p>
               </div>
             </div>
-            <p className='py-4'>감기조심하세요</p>
+
+            {Array.from({ length: 10 }, (_, i) => (
+              <p key={i} className='py-4 text-lg'>
+                여기에 글 내용이 들어갑니다 {i + 1}번째 줄
+              </p>
+            ))}
           </div>
         </div>
 
         {/* 댓글 섹션 */}
         <section className='mb-8'>
-          <div className='py-6'>
+          <div className='py-8'>
             <div className='flex items-center'>
-              <label className='text-[12.9px] font-light' htmlFor='admin'>
+              <label className='text-xl font-medium' htmlFor='admin'>
                 관리자
               </label>
-              <p className='text-sm text-grey-50 font-normal ml-2' id='admin'>
+              <p className='text-xl text-grey-50 font-normal ml-3' id='admin'>
                 2024-01-01-01 00:00:00
               </p>
             </div>
-            <p className='text-[12.8px] text-grey-80 font-light mt-2'>
-              고객님도 감기조심하세요
-            </p>
-            <div className='flex mt-2'>
+            <p className='text-lg text-grey-80 mt-4'>고객님도 감기조심하세요</p>
+            <div className='flex mt-4'>
               <button
                 type='button'
-                className='text-xs text-grey-40 font-normal'
+                className='text-xl text-grey-40 hover:text-grey-70 font-normal'
               >
                 댓글
               </button>
               <button
                 type='button'
-                className="text-xs text-grey-40 font-normal relative ml-3 before:content-['/'] before:absolute before:left-[-6.6px]"
+                className="text-xl text-grey-40  hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
               >
                 수정
               </button>
               <button
                 type='button'
-                className="text-xs text-grey-40 font-normal relative ml-3 before:content-['/'] before:absolute before:left-[-6.6px]"
+                className="text-xl text-grey-40 hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
               >
                 지우기
               </button>
@@ -120,7 +128,7 @@ export default function PostDetailPage() {
 
           <div className='flex flex-col gap-4 border border-grey-5 p-6 mb-6'>
             <textarea
-              className='w-full min-h-[80px] resize-y border border-black p-2'
+              className='w-full min-h-[80px] resize-y border border-grey-30 p-2'
               placeholder='관리자만 작성하실 수 있습니다.'
               id='reply-text'
             />
@@ -163,28 +171,28 @@ export default function PostDetailPage() {
             </div>
           </div>
 
-          <nav className='w-full'>
+          <nav className='mb-4'>
             <div className='border-t border-b border-grey-5'>
-              <div className='flex items-center border-b border-grey-5 min-h-[48px]'>
-                <div className='w-[80px] sm:w-[100px] px-2 sm:px-4 py-3 text-grey-50 text-sm shrink-0'>
-                  <span className='text-xs mr-1'>▲</span>이전글
+              <div className='flex items-center border-b border-grey-5 min-h-[60px]'>
+                <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-lg font-medium shrink-0'>
+                  <span className='text-sm mr-2'>▲</span>이전글
                 </div>
                 <Link
                   to='#'
-                  className='flex-1 px-2 sm:px-4 py-3 text-sm text-grey-80 hover:text-secondary-20 truncate'
+                  className='flex-1 px-4 py-4 text-lg text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  이전 질문글
+                  이전 공지글
                 </Link>
               </div>
-              <div className='flex items-center min-h-[48px]'>
-                <div className='w-[80px] sm:w-[100px] px-2 sm:px-4 py-3 text-grey-50 text-sm shrink-0'>
-                  <span className='text-xs mr-1'>▼</span>다음글
+              <div className='flex items-center min-h-[60px]'>
+                <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-lg font-medium shrink-0'>
+                  <span className='text-sm mr-2'>▼</span>다음글
                 </div>
                 <Link
                   to='#'
-                  className='flex-1 px-2 sm:px-4 py-3 text-sm text-grey-80 hover:text-secondary-20 truncate'
+                  className='flex-1 px-4 py-4 text-lg text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  다음 질문글
+                  다음 공지글
                 </Link>
               </div>
             </div>

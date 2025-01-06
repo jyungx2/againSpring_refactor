@@ -8,6 +8,7 @@ import ListPage from '@pages/QnA/ListPage';
 import NewPostPage from '@pages/QnA/NewPostPage';
 import EditPostPage from '@pages/QnA/EditPostPage';
 import PostDetailPage from '@pages/QnA/PostDetailPage';
+import Myquery from '@pages/user/Myquery';
 
 const homeRoutes = [
   {
@@ -18,9 +19,6 @@ const homeRoutes = [
 
       { path: 'login', element: <Login /> },
       { path: 'review', element: <Myreview /> },
-
-      { path: 'shop', element: <Shop /> },
-      { path: 'detail', element: <Detail /> },
       { path: 'query', element: <Myquery /> },
 
       { path: 'qna', element: <ListPage /> },
