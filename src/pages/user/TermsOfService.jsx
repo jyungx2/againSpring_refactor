@@ -3,7 +3,7 @@ import "./jy-global.css";
 function TermsOfService() {
   return (
     <>
-      <div className="my-[60px] mx-auto max-w-[1000px] flex flex-col gap-[20px]">
+      <div className="box-border px-[100px] my-[60px] mx-auto max-w-[1000px] flex flex-col gap-[20px]">
         <form className="flex flex-col gap-[32px] text-[18px]">
           <div className="flex">
             <input type="checkbox" id="check" className="peer" />
@@ -173,7 +173,7 @@ function TermsOfService() {
                     정보를 제공합니다.
                   </p>
                   <p className="leading-[20px]">
-                    지구샵에서 진행하는 행사 소식을 가장 빠르게 받아보실 수
+                    다시봄에서 진행하는 행사 소식을 가장 빠르게 받아보실 수
                     있습니다!
                   </p>
                 </div>
