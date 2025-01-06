@@ -170,7 +170,7 @@ function Cart() {
             </div>
 
             <div className="mt-[8px] flex justify-center">
-              <button className="text-black text-[15px] border-b border-red-500 bg-blue-300">
+              <button className="text-black text-[15px] border-b border-grey-40">
                 다음에 다시 주문하기
               </button>
             </div>
