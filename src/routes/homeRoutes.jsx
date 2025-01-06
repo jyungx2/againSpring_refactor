@@ -14,12 +14,11 @@ const homeRoutes = [
     children: [
       { index: true, element: <Slider /> },
       { path: 'login', element: <Login /> },
+      { path: 'review', element: <Myreview /> },
       { path: 'notice', element: <ListPage /> },
       { path: 'notice/new', element: <NewPostPage /> },
       { path: 'notice/edit', element: <EditPostPage /> },
       { path: 'notice/detail', element: <PostDetailPage /> },
-      { path: 'login', element: <Login /> },
-      { path: 'review', element: <Myreview /> },
     ],
   },
 ];
