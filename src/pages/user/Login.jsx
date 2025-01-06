@@ -21,21 +21,15 @@ function Login() {
                     id='email'
                     type='text'
                     placeholder='아이디'
-                    className='unset'
-                    id="email"
-                    type="text"
-                    placeholder="아이디"
                     className={`${styles.inputUnset} ${styles.inputCustom}`}
                   />
                 </div>
 
                 <div className='border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4'>
-                  <input id='password' type='password' placeholder='비밀번호' />
-                <div className="border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4">
                   <input
-                    id="password"
-                    type="password"
-                    placeholder="비밀번호"
+                    id='password'
+                    type='password'
+                    placeholder='비밀번호'
                     className={`${styles.inputUnset} ${styles.inputCustom}`}
                   />
                 </div>
@@ -50,10 +44,9 @@ function Login() {
                 </button>
               </div>
 
-              <input type='checkbox' id='stay-login' className='peer' />
               <input
-                type="checkbox"
-                id="stay-login"
+                type='checkbox'
+                id='stay-login'
                 className={`${styles.inputUnset} ${styles.checkboxCustom} peer`}
               />
               <label
