@@ -21,11 +21,15 @@ const homeRoutes = [
 
       { path: 'shop', element: <Shop /> },
       { path: 'detail', element: <Detail /> },
+      { path: 'query', element: <Myquery /> },
 
       { path: 'qna', element: <ListPage /> },
       { path: 'qna/new', element: <NewPostPage /> },
       { path: 'qna/edit', element: <EditPostPage /> },
       { path: 'qna/detail', element: <PostDetailPage /> },
+
+      { path: 'shop', element: <Shop /> },
+      { path: 'detail', element: <Detail /> },
     ],
   },
 ];
