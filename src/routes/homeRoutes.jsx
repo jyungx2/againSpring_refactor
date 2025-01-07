@@ -6,6 +6,7 @@ import Myreview from "@pages/user/Myreview";
 import Myquery from "@pages/user/Myquery";
 import Shop from "@pages/Shop";
 import Detail from "@pages/Detail";
+import TermsOfService from "@pages/user/TermsOfService";
 
 const homeRoutes = [
   {
@@ -15,6 +16,7 @@ const homeRoutes = [
       { index: true, element: <Slider /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <Signup /> },
+      { path: "tos", element: <TermsOfService /> },
       { path: "review", element: <Myreview /> },
       { path: "query", element: <Myquery /> },
       { path: "shop", element: <Shop /> },
