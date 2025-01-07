@@ -9,10 +9,14 @@ import Myquery from '@pages/user/Myquery';
 import Shop from '@pages/Shop';
 import Detail from '@pages/Detail';
 import MainProducts from '@pages/MainProducts';
-import ListPage from '@pages/notice/ListPage';
-import NewPostPage from '@pages/notice/NewPostPage';
-import EditPostPage from '@pages/notice/EditPostPage';
-import PostDetailPage from '@pages/notice/PostDetailPage';
+import NoticeListPage from '@pages/notice/NoticeListPage';
+import NoticeNewPostPage from '@pages/notice/NoticeNewPostPage';
+import NoticeEditPostPage from '@pages/notice/NoticeEditPostPage';
+import NoticePostDetailPage from '@pages/notice/NoticePostDetailPage';
+import QnAListPage from '@pages/qna/QnAListPage';
+import QnANewPostPage from '@pages/qna/QnANewPostPage';
+import QnAEditPostPage from '@pages/qna/QnAEditPostPage';
+import QnAPostDetailPage from '@pages/qna/QnAPostDetailPage';
 
 const homeRoutes = [
   {
@@ -23,8 +27,7 @@ const homeRoutes = [
         index: true,
         element: (
           <>
-            {' '}
-            <Slider /> <MainProducts />{' '}
+            <Slider /> <MainProducts />
           </>
         ),
       },
@@ -36,14 +39,14 @@ const homeRoutes = [
       { path: 'query', element: <Myquery /> },
       { path: 'shop', element: <Shop /> },
       { path: 'detail', element: <Detail /> },
-      { path: 'notice', element: <ListPage /> },
-      { path: 'notice/new', element: <NewPostPage /> },
-      { path: 'notice/edit', element: <EditPostPage /> },
-      { path: 'notice/detail', element: <PostDetailPage /> },
-      { path: 'qna', element: <ListPage /> },
-      { path: 'qna/new', element: <NewPostPage /> },
-      { path: 'qna/edit', element: <EditPostPage /> },
-      { path: 'qna/detail', element: <PostDetailPage /> },
+      { path: 'notice', element: <NoticeListPage /> },
+      { path: 'notice/new', element: <NoticeNewPostPage /> },
+      { path: 'notice/edit', element: <NoticeEditPostPage /> },
+      { path: 'notice/detail', element: <NoticePostDetailPage /> },
+      { path: 'qna', element: <QnAListPage /> },
+      { path: 'qna/new', element: <QnANewPostPage /> },
+      { path: 'qna/edit', element: <QnAEditPostPage /> },
+      { path: 'qna/detail', element: <QnAPostDetailPage /> },
     ],
   },
 ];

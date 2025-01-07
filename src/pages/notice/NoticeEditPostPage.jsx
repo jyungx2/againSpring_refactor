@@ -6,7 +6,7 @@ import { useQuill } from 'react-quilljs';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
-export default function EditPostPage() {
+export default function NoticeEditPostPage() {
   /**
    *
    * TODO: [API 연동] 게시글 상세 정보 조회

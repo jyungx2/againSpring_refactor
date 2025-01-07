@@ -3,7 +3,7 @@ import 'quill/dist/quill.snow.css';
 import '../../assets/styles/fonts.css';
 import { useEffect } from 'react';
 import { useQuill } from 'react-quilljs';
-export default function EditPostPage() {
+export default function QnAEditPostPage() {
   const modules = {
     toolbar: [
       ['bold', 'italic', 'underline'],
