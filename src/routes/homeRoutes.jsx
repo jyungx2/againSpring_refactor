@@ -4,8 +4,10 @@ import Slider from '@pages/Slider';
 import Login from '@pages/user/Login';
 import Signup from '@pages/user/Signup';
 import TermsOfService from '@pages/user/TermsOfService';
+
 import Myreview from '@pages/user/Myreview';
 import Myquery from '@pages/user/Myquery';
+import Myorder from '@pages/user/Myorder';
 
 import Shop from '@pages/Shop';
 import Detail from '@pages/Detail';
@@ -24,7 +26,9 @@ const homeRoutes = [
       { path: 'signup', element: <Signup /> },
       { path: 'login', element: <Login /> },
       { path: 'tos', element: <TermsOfService /> },
+
       { path: 'review', element: <Myreview /> },
+      { path: 'order', element: <Myorder /> },
       { path: 'query', element: <Myquery /> },
 
       { path: 'shop', element: <Shop /> },
