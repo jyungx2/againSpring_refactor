@@ -3,7 +3,7 @@ import styles from "./User.module.css";
 function TermsOfService() {
   return (
     <>
-      <div className="box-border px-6 my-[60px] mx-auto w-[1200px] flex flex-col gap-[20px]">
+      <div className="box-border px-6 my-[60px] mx-auto max-w-[1200px] flex flex-col gap-[20px]">
         <form className="flex flex-col gap-[32px] text-[18px]">
           <div className="flex">
             <input
