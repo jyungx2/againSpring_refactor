@@ -36,7 +36,7 @@ export default function QnAListPage() {
   ];
 
   return (
-    <div className='container mx-auto px-6 mb-20'>
+    <div className='w-[1200px] mx-auto px-6 mb-20'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&amp;A
       </h1>

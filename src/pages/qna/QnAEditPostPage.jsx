@@ -70,7 +70,7 @@ export default function QnAEditPostPage() {
     }
   }, [quill]);
   return (
-    <div className='container mx-auto px-6 relative min-h-screen pb-32'>
+    <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-32'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&amp;A
       </h1>

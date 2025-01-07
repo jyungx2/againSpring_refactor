@@ -198,7 +198,7 @@ export default function QnANewPostPage() {
 
   return (
     // 게시글 작성 페이지 레이아웃
-    <div className='container mx-auto px-6 relative min-h-screen pb-52'>
+    <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-52'>
       {/* 페이지 제목 */}
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&amp;A
