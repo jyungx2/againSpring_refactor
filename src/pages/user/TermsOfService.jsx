@@ -1,4 +1,4 @@
-import "./jy-global.css";
+import styles from "./User.module.css";
 
 function TermsOfService() {
   return (
@@ -6,9 +6,13 @@ function TermsOfService() {
       <div className="box-border px-[100px] my-[60px] mx-auto max-w-[1000px] flex flex-col gap-[20px]">
         <form className="flex flex-col gap-[32px] text-[18px]">
           <div className="flex">
-            <input type="checkbox" id="check" className="peer" />
+            <input
+              type="checkbox"
+              id="check"
+              className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+            />
             <label
-              className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold"
+              className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold text-[18px]"
               htmlFor="check"
             >
               전체 동의하기
@@ -17,18 +21,24 @@ function TermsOfService() {
 
           <div>
             <div className="flex">
-              <input type="checkbox" id="termsService" className="peer" />
+              <input
+                type="checkbox"
+                id="termsService"
+                className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+              />
               <label
-                className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold"
+                className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold text-[18px]"
                 htmlFor="termsService"
               >
                 이용약관 동의
-                <em className="inline-block font-gowunBold text-[14px] text-error">
+                <em
+                  className={`${styles.emUnset} inline-block font-gowunBold text-[14px] text-error`}
+                >
                   (필수)
                 </em>
               </label>
             </div>
-            <div className="border border-[#ddd] mt-6 ml-8 rounded-lg p-[18px] max-h-[100px] overflow-auto box-border text-[15px] tracking-wide ">
+            <div className="border border-[#ddd] mt-6 ml-8 rounded-lg p-[18px] max-h-[100px] overflow-auto box-border text-[15px] tracking-wider">
               <div className="mb-4">
                 <h1 className="text-[18px] font-gowunBold">
                   여러분을 환영합니다.
@@ -67,18 +77,24 @@ function TermsOfService() {
 
           <div>
             <div className="flex">
-              <input type="checkbox" id="termsPrivacy" className="peer" />
+              <input
+                type="checkbox"
+                id="termsPrivacy"
+                className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+              />
               <label
-                className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold"
+                className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold text-[18px]"
                 htmlFor="termsPrivacy"
               >
                 개인정보 수집 및 이용 동의
-                <em className="inline-block font-gowunBold text-[14px] text-error">
+                <em
+                  className={`${styles.emUnset} inline-block font-gowunBold text-[14px] text-error`}
+                >
                   (필수)
                 </em>
               </label>
             </div>
-            <div className="border border-[#ddd] mt-6 ml-8 rounded-lg p-[18px] max-h-[100px] overflow-auto box-border text-[15px] tracking-wide">
+            <div className="border border-[#ddd] mt-6 ml-8 rounded-lg p-[18px] max-h-[100px] overflow-auto box-border text-[15px] tracking-wider">
               <div className="mb-4">
                 <h1 className="text-[18px] font-gowunBold">
                   1. 수집하는 개인정보
@@ -139,15 +155,21 @@ function TermsOfService() {
           </div>
 
           <div className="flex flex-col gap-[30px]">
-            <label className="flex gap-4 items-end font-gowunBold">
+            <label className="flex gap-4 items-end font-gowunBold text-[18px]">
               마케팅 활용 동의 및 광고 수신 동의
-              <em className="inline-block font-gowunBold text-[14px] text-grey-50">
+              <em
+                className={`${styles.emUnset} inline-block font-gowunBold text-[14px] text-grey-50`}
+              >
                 (선택)
               </em>
             </label>
             <div className="flex flex-col gap-6 text-[16px]">
               <div className="flex">
-                <input type="checkbox" id="termsSMS" className="peer" />
+                <input
+                  type="checkbox"
+                  id="termsSMS"
+                  className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+                />
                 <label
                   className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
                   htmlFor="termsSMS"
@@ -157,7 +179,11 @@ function TermsOfService() {
               </div>
 
               <div className="flex">
-                <input type="checkbox" id="termsEmail" className="peer" />
+                <input
+                  type="checkbox"
+                  id="termsEmail"
+                  className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+                />
                 <label
                   className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
                   htmlFor="termsEmail"
@@ -166,7 +192,7 @@ function TermsOfService() {
                 </label>
               </div>
 
-              <div className="border border-[#ddd] mt-6 ml-8 rounded-lg p-[18px] max-h-[100px] overflow-auto box-border text-[15px] tracking-wide">
+              <div className="border border-[#ddd] mt-6 ml-8 rounded-lg p-[18px] max-h-[100px] overflow-auto box-border text-[15px] tracking-wider">
                 <div>
                   <p className="leading-[20px]">
                     서비스와 관련된 소식, 이벤트 안내, 고객 혜택 등 다양한
@@ -180,11 +206,11 @@ function TermsOfService() {
               </div>
             </div>
           </div>
-          <div className="flex justify-center gap-[24px] p-[30px]">
-            <button className="bg-grey-40 inline-block text-4 text-white h-[48px] leading-[48px] px-[64px] font-gowunBold box-border cursor-pointer rounded-[12px]  btn-cancel">
+          <div className="flex justify-center gap-[24px] p-[30px] border-t border-grey-30">
+            <button className="bg-grey-40 inline-block text-4 text-white h-[48px] leading-[48px] px-[64px] box-border cursor-pointer rounded-[12px] btn-cancel flex-shrink-0">
               취소
             </button>
-            <button className="bg-primary-40 inline-block text-4 text-white h-[48px] leading-[48px] px-[64px] font-gowunBold box-border cursor-pointer rounded-[12px] btn-register">
+            <button className="bg-primary-40 inline-block text-4 text-white h-[48px] leading-[48px] px-[64px] box-border cursor-pointer rounded-[12px] btn-register flex-shrink-0">
               등록
             </button>
           </div>
