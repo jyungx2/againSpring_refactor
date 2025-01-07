@@ -6,32 +6,38 @@ import "swiper/css/pagination";
 
 const Slider = () => {
   const slides = [
-    { id: 1, src: "/images/event1.jpg", alt: "Event 1" },
-    { id: 2, src: "/images/event2.jpg", alt: "Event 2" },
-    { id: 3, src: "/images/event3.jpg", alt: "Event 3" },
+    { id: 1, src: "/images/Banner-test1.png", alt: "Event 1" },
+    { id: 2, src: "/images/Banner-test2.png", alt: "Event 2" },
+    { id: 3, src: "/images/Banner-test3.png", alt: "Event 3" },
   ];
 
   return (
-    <div className="w-full h-[400px] mt-8">
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={30}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 3000 }}
-        className="h-full"
-      >
-        {slides.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <img
-              src={slide.src}
-              alt={slide.alt}
-              className="w-full h-full object-cover"
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+    <div className="w-full bg-white">
+      <div className="w-[1200px] mx-auto px-6">
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={0}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 5000 }}
+          className="rounded-lg overflow-hidden"
+        >
+          {slides.map((slide) => (
+            <SwiperSlide key={slide.id}>
+              <img
+                src={slide.src}
+                alt={slide.alt}
+                className="object-cover"
+                style={{
+                  width: "1200px", // 고정 너비 설정
+                  height: "auto", // 비율 유지
+                }}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </div>
   );
 };
