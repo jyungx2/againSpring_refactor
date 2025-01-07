@@ -1,3 +1,9 @@
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination } from "swiper/modules";
+
 const MainProducts = () => {
   const products = [
     {
@@ -35,6 +41,13 @@ const MainProducts = () => {
       originalPrice: "900,000원",
       imageUrl: "/images/product-1.png",
     },
+    {
+      id: 6,
+      name: "비누",
+      price: "800,000원",
+      originalPrice: "900,000원",
+      imageUrl: "/images/product-1.png",
+    },
   ];
 
   return (
@@ -42,60 +55,104 @@ const MainProducts = () => {
       <div className="max-w-[1200px] mx-auto">
         <section className="my-8">
           <h2 className="text-xl font-bold mb-6">추천제품</h2>
-          <div className="flex flex-wrap justify-center gap-6">
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={20}
+            slidesPerView={4}
+            navigation
+            pagination={{ clickable: true }}
+            className="product-slider"
+          >
             {products.map((product) => (
-              <div
-                key={product.id}
-                className="flex flex-col items-center text-center"
-                style={{ width: "200px" }}
-              >
-                <div
-                  className="bg-gray-200"
-                  style={{ width: "100%", height: "200px" }}
-                >
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
+              <SwiperSlide key={product.id}>
+                <div className="flex flex-col items-center text-center">
+                  <div
+                    className="bg-gray-200"
+                    style={{ width: "200px", height: "200px" }}
+                  >
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="mt-4 text-sm">{product.name}</p>
+                  <p className="text-sm text-gray-500 line-through">
+                    {product.originalPrice}
+                  </p>
+                  <p className="text-sm font-bold">{product.price}</p>
                 </div>
-                <p className="mt-4 text-sm">{product.name}</p>
-                <p className="text-sm text-gray-500 line-through">
-                  {product.originalPrice}
-                </p>
-                <p className="text-sm font-bold">{product.price}</p>
-              </div>
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
         </section>
 
         <section className="my-8">
-          <h2 className="text-xl font-bold mb-6">추천제품</h2>
-          <div className="flex flex-wrap justify-center gap-6">
+          <h2 className="text-xl font-bold mb-6">신제품</h2>
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={20}
+            slidesPerView={4}
+            navigation
+            pagination={{ clickable: true }}
+            className="product-slider"
+          >
             {products.map((product) => (
-              <div
-                key={product.id}
-                className="flex flex-col items-center text-center"
-                style={{ width: "200px" }}
-              >
-                <div
-                  className="bg-gray-200"
-                  style={{ width: "100%", height: "200px" }}
-                >
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
+              <SwiperSlide key={product.id}>
+                <div className="flex flex-col items-center text-center">
+                  <div
+                    className="bg-gray-200"
+                    style={{ width: "200px", height: "200px" }}
+                  >
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="mt-4 text-sm">{product.name}</p>
+                  <p className="text-sm text-gray-500 line-through">
+                    {product.originalPrice}
+                  </p>
+                  <p className="text-sm font-bold">{product.price}</p>
                 </div>
-                <p className="mt-4 text-sm">{product.name}</p>
-                <p className="text-sm text-gray-500 line-through">
-                  {product.originalPrice}
-                </p>
-                <p className="text-sm font-bold">{product.price}</p>
-              </div>
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
+        </section>
+
+        <section className="my-8">
+          <h2 className="text-xl font-bold mb-6">할인 제품</h2>
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={20}
+            slidesPerView={4}
+            navigation
+            pagination={{ clickable: true }}
+            className="product-slider"
+          >
+            {products.map((product) => (
+              <SwiperSlide key={product.id}>
+                <div className="flex flex-col items-center text-center">
+                  <div
+                    className="bg-gray-200"
+                    style={{ width: "200px", height: "200px" }}
+                  >
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="mt-4 text-sm">{product.name}</p>
+                  <p className="text-sm text-gray-500 line-through">
+                    {product.originalPrice}
+                  </p>
+                  <p className="text-sm font-bold">{product.price}</p>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </section>
       </div>
     </div>

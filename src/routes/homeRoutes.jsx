@@ -1,5 +1,5 @@
 import Layout from "@components/layouts"
-import Slider from "@components/Slider"
+import Slider from "@pages/Slider"
 import Login from "@pages/user/Login";
 import Myreview from "@pages/user/Myreview";
 import Myquery from "@pages/user/Myquery";
