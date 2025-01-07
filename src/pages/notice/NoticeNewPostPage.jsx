@@ -1,15 +1,57 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'quill/dist/quill.snow.css';
 import '../../assets/styles/fonts.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
 /**
  * 새로운 게시글을 작성하기 위한 페이지 컴포넌트
  * React-Quill 에디터를 사용하여 리치 텍스트 편집 기능을 제공
  * 이미지 업로드, 텍스트 스타일링, 게시글 저장 기능 포함
  */
-export default function NewPostPage() {
+export default function NoticeNewPostPage() {
+  // 게시글 작성 중 취소 버튼 눌렀을 떄
+  const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+
+  const cancelCheckBtn = () => {
+    // 제목, 내용이 있는지 확인
+    const hasContent =
+      title.trim() !== '' || (quill && quill.getText().trim() !== '');
+
+    if (hasContent) {
+      MySwal.fire({
+        title: '작성 중인 게시물이 있습니다. 취소하시겠습니까?',
+        text: ' 게시글은 복구할 수 없습니다.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '네',
+        cancelButtonText: '아니요',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          MySwal.fire({
+            title: '취소 완료',
+            text: '게시글 작성이 취소되었습니다.',
+            confirmButtonText: '확인',
+            icon: 'success',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate('/notice');
+            }
+          });
+        }
+      });
+    } else {
+      // 작성된 내용이 없으면 바로 이동
+      navigate('/notice');
+    }
+  };
+
   // Quill 에디터 설정
   const modules = {
     // 툴바 설정: 텍스트 스타일링, 정렬, 리스트, 링크, 이미지 기능 포함
@@ -126,7 +168,7 @@ export default function NewPostPage() {
   //   const saveData = async () => {
   //     // 저장할 게시글 데이터 구성
   //     const data = {
-  //       type: 'qna',
+  //       type: 'info',
   //       title: '글쓰기 테스트',
   //       content: quill.root.innerHTML,
   //     };
@@ -150,10 +192,10 @@ export default function NewPostPage() {
 
   return (
     // 게시글 작성 페이지 레이아웃
-    <div className='container mx-auto px-6 relative min-h-screen pb-32'>
+    <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-32'>
       {/* 페이지 제목 */}
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        Q&amp;A
+        공지사항
       </h1>
 
       {/* 게시글 제목 입력 필드 */}
@@ -161,6 +203,8 @@ export default function NewPostPage() {
         className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
         placeholder='제목을 입력하세요'
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
       />
 
       {/* Quill 에디터 컨테이너 */}
@@ -174,11 +218,14 @@ export default function NewPostPage() {
       <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         {/* 등록 버튼 */}
         <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-secondary-20 text-white'>
-          <Link to='/qna'>등록하기</Link>
+          <Link to='/notice'>등록하기</Link>
         </button>
         {/* 취소 버튼 */}
-        <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-grey-20'>
-          <Link to='/qna'>취소하기</Link>
+        <button
+          className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-grey-20'
+          onClick={cancelCheckBtn}
+        >
+          취소하기
         </button>
       </div>
     </div>

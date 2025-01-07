@@ -1,80 +1,67 @@
 import { Link } from 'react-router-dom';
-import '../../assets/styles/fonts.css';
-import ListItem from './ListItem';
+import ListItem from './NoticeListItem';
 
-export default function ListPage() {
+export default function NoticeListPage() {
+  /**
+   * TODO:
+   * 1. API 연동
+   *    - fetch('/posts?type=info') 호출 구현
+   *    - useState로 posts 상태 관리 추가
+   *    - useEffect로 데이터 fetching
+   *    - loading, error 상태 처리 ?
+   *
+   * 2. 페이지네이션
+   *    - 현재 하드코딩된 버튼을 API 응답 기반으로 동적 생성
+   *    - page 파라미터 처리
+   *
+   * 3. 검색 기능
+   *    - 검색 API 연동 (/posts?type=info&search=검색어)
+   *    - select와 input의 검색 조건 처리
+   */
+
   // 실제로는 API에서 받아올 데이터
   const items = [
     {
-      number: 4,
-      title: '피그마 너무 어려운데요.',
-      author: '홍길동',
-      date: '2024-01-01',
-      isAnswered: true,
+      id: 1,
+      title: '연말 휴무 및 택배 없는 날 안내',
+      date: '24/12/30',
     },
     {
-      number: 3,
-      title: '피그마 너무 어려운데요.',
-      author: '홍길동',
-      date: '2024-01-01',
-      isAnswered: false,
+      id: 2,
+      title: '1월 신년 이벤트 안내',
+      date: '24/01/02',
     },
     {
-      number: 2,
-      title: '피그마 너무 어려운데요.',
-      author: '홍길동',
-      date: '2024-01-01',
-      isAnswered: true,
+      id: 3,
+      title: '웹사이트 개편 안내',
+      date: '24/01/01',
     },
     {
-      number: 1,
-      title: '피그마 너무 어려운데요.',
-      author: '홍길동',
-      date: '2024-01-01',
-      isAnswered: false,
+      id: 4,
+      title: '신규 상품 출시 안내',
+      date: '23/12/28',
     },
   ];
 
   return (
-    <div className='container mx-auto px-6 mb-20'>
+    <div className='w-[1200px] mx-auto px-6 mb-20'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        Q&amp;A
+        공지사항
       </h1>
-
       <div className='flex justify-end mb-5 w-full'>
         <Link
-          to='/qna/new'
+          to='/notice/new'
           className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
         >
-          질문하기
+          글쓰기
         </Link>
       </div>
-      <div className='w-full mx-auto my-0 max-h-[906.11px] overflow-y-auto'>
-        <table className='w-full border-collapse table-fixed'>
-          <thead>
-            <tr className='border-t border-t-grey-80 border-b-[3px] border-b-grey-10'>
-              <th className='py-5 text-left w-[8%] pl-5'>번호</th>
-              <th className='py-5 text-left w-[77%] flex justify-center pl-5'>
-                제목
-              </th>
-              <th className='py-5 text-right w-[7%] pr-2.5'>작성자</th>
-              <th className='py-5 text-right w-[8%] pr-5'>작성일</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <ListItem
-                key={item.number}
-                number={item.number}
-                title={item.title}
-                author={item.author}
-                date={item.date}
-                isAnswered={item.isAnswered}
-              />
-            ))}
-          </tbody>
-        </table>
+      <div className='grid grid-cols-[repeat(4,280px)] justify-center gap-6 w-[calc(4_*_280px_+_3_*_24px)] mx-auto my-0'>
+        {items.map((item) => (
+          <ListItem key={item.id} title={item.title} date={item.date} />
+        ))}
       </div>
+
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
         <button className='bg-secondary-20 text-white w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40'>
           1
@@ -89,6 +76,7 @@ export default function ListPage() {
           Next
         </button>
       </div>
+
       <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
         <div className='relative w-[120px]'>
           <select className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'>

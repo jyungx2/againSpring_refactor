@@ -1,35 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
-import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
-export default function PostDetailPage() {
-  /**
-   * TODO:
-   * 1. API 연동
-   *    - fetch('/posts/{id}') 호출 구현
-   *    - useState로 post 상태 관리 추가
-   *    - useEffect로 데이터 fetching
-   *    - loading, error 상태 처리
-   *
-   * 2. 데이터 바인딩
-   *    - 제목 -> item.title
-   *    - 작성자 -> item.user.name
-   *    - 작성일 -> item.updatedAt || item.createdAt
-   *    - 조회수 -> item.views
-   *    - 내용 -> item.content
-   *    - 더미 텍스트 제거
-   *
-   * 3. 삭제 기능
-   *    - deleteCheckBtn 함수에 실제 DELETE API 호출 추가
-   *    - 성공/실패 처리
-   *    - 삭제 후 목록 페이지로 이동
-   *
-   * 4. 이전글/다음글
-   *    - API에서 이전글/다음글 정보 받아오기
-   *    - 네비게이션 링크에 해당 게시글 ID 추가
-   */
-
+export default function QnAPostDetailPage() {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
 
@@ -52,7 +26,7 @@ export default function PostDetailPage() {
           icon: 'success',
         }).then((result) => {
           if (result.isConfirmed) {
-            navigate('/notice');
+            navigate('/qna');
           }
         });
       }
@@ -60,9 +34,9 @@ export default function PostDetailPage() {
   };
 
   return (
-    <div className='w-[1200px] mx-auto px-6 py-4'>
+    <div className='container mx-auto px-6 py-8'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        공지사항
+        Q&amp;A
       </h1>
 
       <section className='flex flex-col'>
@@ -76,7 +50,7 @@ export default function PostDetailPage() {
               제목
             </label>
             <h2 className='text-xl font-medium text-grey-50' id='title'>
-              공지사항 입니다.
+              피그마 너무 어려운데요.
             </h2>
           </div>
           <div className='flex items-center gap-[100px] py-4 border-b border-grey-10'>
@@ -87,7 +61,7 @@ export default function PostDetailPage() {
               작성자
             </label>
             <p className='text-xl font-medium text-grey-50' id='writer'>
-              다시, 봄
+              홍길동
             </p>
           </div>
           <div className='border-b border-grey-10'>
@@ -118,25 +92,76 @@ export default function PostDetailPage() {
           </div>
         </div>
 
+        {/* 댓글 섹션 */}
+        <section className='mb-8'>
+          <div className='py-8'>
+            <div className='flex items-center'>
+              <label className='text-xl font-medium' htmlFor='admin'>
+                관리자
+              </label>
+              <p className='text-xl text-grey-50 font-normal ml-3' id='admin'>
+                2024-01-01-01 00:00:00
+              </p>
+            </div>
+            <p className='text-lg text-grey-80 mt-4'>고객님도 감기조심하세요</p>
+            <div className='flex mt-4'>
+              <button
+                type='button'
+                className='text-xl text-grey-40 hover:text-grey-70 font-normal'
+              >
+                댓글
+              </button>
+              <button
+                type='button'
+                className="text-xl text-grey-40  hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
+              >
+                수정
+              </button>
+              <button
+                type='button'
+                className="text-xl text-grey-40 hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
+              >
+                지우기
+              </button>
+            </div>
+          </div>
+
+          <div className='flex flex-col gap-4 border border-grey-5 p-6 mb-6'>
+            <textarea
+              className='w-full min-h-[80px] resize-y border border-grey-30 p-2'
+              placeholder='관리자만 작성하실 수 있습니다.'
+              id='reply-text'
+            />
+            <div className='flex justify-end'>
+              <button
+                type='submit'
+                className='rounded-lg bg-secondary-20 text-white px-6 py-2'
+              >
+                작성
+              </button>
+            </div>
+          </div>
+        </section>
+
         {/* 하단 네비게이션 */}
-        <div className='border-t border-grey-10 pt-4 pb-2'>
-          <div className='flex justify-between mb-4'>
+        <div className='border-t border-grey-10 pt-8 pb-4'>
+          <div className='flex justify-between mb-5'>
             <button
               type='button'
-              className='border border-grey-10 rounded px-9 py-3 text-lg'
+              className='border border-grey-10 rounded px-9 py-2'
             >
-              <Link to='/notice'>목록</Link>
+              <Link to='/qna'>목록</Link>
             </button>
             <div className='flex gap-3'>
               <button
                 type='button'
-                className='border border-grey-10 rounded px-9 py-3 text-lg'
+                className='border border-grey-10 rounded px-9 py-2'
               >
-                <Link to='/notice/edit'>수정</Link>
+                <Link to='/qna/edit'>수정</Link>
               </button>
               <button
                 type='button'
-                className='border border-grey-10 rounded px-9 py-3 text-lg'
+                className='border border-grey-10 rounded px-9 py-2'
                 onClick={() => {
                   deleteCheckBtn();
                 }}

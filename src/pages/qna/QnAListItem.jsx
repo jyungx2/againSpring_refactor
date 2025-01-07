@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export default function ListItem({ number, title, author, date, isAnswered }) {
+export default function QnAListItem({
+  number,
+  title,
+  author,
+  date,
+  isAnswered,
+}) {
   return (
     <tr className='border-b border-grey-10'>
       <td className='py-5 text-left pl-5'>{number}</td>
@@ -26,7 +32,7 @@ export default function ListItem({ number, title, author, date, isAnswered }) {
   );
 }
 
-ListItem.propTypes = {
+QnAListItem.propTypes = {
   number: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
