@@ -1,4 +1,5 @@
 import useMenuStore from "../../store/menuStore";
+import { Link } from "react-router-dom";
 
 const Menu = () => {
   const { activeMenu, setActiveMenu } = useMenuStore();
@@ -21,7 +22,7 @@ const Menu = () => {
     {
       name: "공지사항",
       subMenu: ["공지사항", "QnA"],
-      links: ["/notice"],
+      links: ["/notice", "/inquiries"],
     },
     { name: "이벤트", links: ["/event"] },
   ];
@@ -37,12 +38,18 @@ const Menu = () => {
             onMouseEnter={() => setActiveMenu(item.name)}
             onMouseLeave={() => setActiveMenu(null)}
           >
-            <a
+            {/* <a
               href={item.links ? item.links[0] : "#"}
               className="text-gray-700 hover:text-secondary font-medium text-center block"
             >
               {item.name}
-            </a>
+            </a> */}
+            <Link
+              to={item.links ? item.links[0] : "#"}
+              className="text-gray-700 hover:text-secondary font-medium text-center block"
+            >
+              {item.name}
+            </Link>
             {item.subMenu && activeMenu === item.name && (
               <div
                 className="absolute top-full left-0 bg-white shadow-lg rounded-md py-4 px-6 z-50"
@@ -51,12 +58,18 @@ const Menu = () => {
                 <ul className="space-y-2 text-center">
                   {item.subMenu.map((subItem, subIndex) => (
                     <li key={subIndex}>
-                      <a
+                      {/* <a
                         href={item.links[subIndex]}
                         className="text-gray-600 hover:text-secondary block whitespace-nowrap"
                       >
                         {subItem}
-                      </a>
+                      </a> */}
+                      <Link
+                        to={item.links[subIndex]}
+                        className="text-gray-600 hover:text-secondary block whitespace-nowrap"
+                      >
+                        {subItem}
+                      </Link>
                     </li>
                   ))}
                 </ul>
