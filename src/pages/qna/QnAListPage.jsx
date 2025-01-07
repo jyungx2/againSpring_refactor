@@ -7,14 +7,14 @@ export default function QnAListPage() {
   const items = [
     {
       number: 4,
-      title: '피그마 너무 어려운데요.',
+      title: '상품 관련 문의',
       author: '홍길동',
       date: '2024-01-01',
       isAnswered: true,
     },
     {
       number: 3,
-      title: '피그마 너무 어려운데요.',
+      title: '상품 관련 문의',
       author: '홍길동',
       date: '2024-01-01',
       isAnswered: false,

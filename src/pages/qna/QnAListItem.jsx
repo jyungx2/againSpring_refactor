@@ -8,11 +8,16 @@ export default function QnAListItem({
   date,
   isAnswered,
 }) {
+  const detailPath =
+    title === '상품 관련 문의' ? '/qna/product/detail' : '/qna/detail';
   return (
     <tr className='border-b border-grey-10'>
       <td className='py-5 text-left pl-5'>{number}</td>
       <td className='py-5 text-left pl-5'>
-        <Link to='detail' className='hover:text-secondary-20 transition-colors'>
+        <Link
+          to={detailPath}
+          className='hover:text-secondary-20 transition-colors'
+        >
           {title}
         </Link>
         <span
@@ -25,8 +30,8 @@ export default function QnAListItem({
       </td>
       <td className='py-5 text-right pr-2.5'>{author}</td>
       <td className='py-5 text-right pr-5'>
-        <div>{date}</div>
-        <div>00:00:00</div>
+        <div className='text-2xl'>{date}</div>
+        <div className='text-2xl'>00:00:00</div>
       </td>
     </tr>
   );
