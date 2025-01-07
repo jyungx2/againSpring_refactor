@@ -17,6 +17,8 @@ import QnAListPage from '@pages/qna/QnAListPage';
 import QnANewPostPage from '@pages/qna/QnANewPostPage';
 import QnAEditPostPage from '@pages/qna/QnAEditPostPage';
 import QnAPostDetailPage from '@pages/qna/QnAPostDetailPage';
+import ProductQnAPostDetailPage from '@pages/qna/ProductQnAPostDetailPage';
+import ProductQnAEditPostPage from '@pages/qna/ProductQnAEditPostPage';
 
 const homeRoutes = [
   {
@@ -47,6 +49,8 @@ const homeRoutes = [
       { path: 'qna/new', element: <QnANewPostPage /> },
       { path: 'qna/edit', element: <QnAEditPostPage /> },
       { path: 'qna/detail', element: <QnAPostDetailPage /> },
+      { path: 'qna/product/detail', element: <ProductQnAPostDetailPage /> },
+      { path: 'qna/product/edit', element: <ProductQnAEditPostPage /> },
     ],
   },
 ];

@@ -66,10 +66,6 @@ export default function QnAEditPostPage() {
         cancelButtonColor: '#d33',
         confirmButtonText: '네',
         cancelButtonText: '아니요',
-        customClass: {
-          title: 'text-2xl',
-          popup: 'text-lg',
-        },
       }).then((result) => {
         if (result.isConfirmed) {
           MySwal.fire({
@@ -155,13 +151,13 @@ export default function QnAEditPostPage() {
     }
   }, [quill]);
   return (
-    <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-32'>
+    <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-52'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&amp;A
       </h1>
 
       <input
-        className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-xl h-[50px]'
+        className='w-full mb-4 box-border border py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
         defaultValue='피그마 너무 어려운데요.'
         value={title}
