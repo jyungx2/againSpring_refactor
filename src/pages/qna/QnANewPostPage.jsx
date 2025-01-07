@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import 'quill/dist/quill.snow.css';
 import '../../assets/styles/fonts.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';
+import QnAProductModal from '@pages/qna/QnAProductModal';
 
 /**
  * 새로운 게시글을 작성하기 위한 페이지 컴포넌트
@@ -10,6 +11,11 @@ import { useQuill } from 'react-quilljs';
  * 이미지 업로드, 텍스트 스타일링, 게시글 저장 기능 포함
  */
 export default function QnANewPostPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   // Quill 에디터 설정
   const modules = {
     // 툴바 설정: 텍스트 스타일링, 정렬, 리스트, 링크, 이미지 기능 포함
@@ -150,15 +156,39 @@ export default function QnANewPostPage() {
 
   return (
     // 게시글 작성 페이지 레이아웃
-    <div className='container mx-auto px-6 relative min-h-screen pb-32'>
+    <div className='container mx-auto px-6 relative min-h-screen pb-52'>
       {/* 페이지 제목 */}
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&amp;A
       </h1>
 
+      {/* 상품 정보 불러오기 */}
+
+      <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+        <div className='mr-6'>
+          <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+            No Image
+          </div>
+        </div>
+        <div className='flex flex-col gap-4 justify-center h-32'>
+          <div className='text-lg'>상품명: </div>
+          <div className='flex gap-4'>
+            <button className='px-6 py-2.5 bg-black text-white text-base rounded hover:bg-gray-800'>
+              <Link to='/detail'>상품상세보기</Link>
+            </button>
+            <button
+              className='px-6 py-2.5 border border-black text-base rounded hover:bg-gray-50'
+              onClick={openModal}
+            >
+              상품정보선택
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* 게시글 제목 입력 필드 */}
       <input
-        className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-xl h-[50px]'
+        className='w-full mb-4 box-border border py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
         placeholder='제목을 입력하세요'
       />
@@ -181,6 +211,15 @@ export default function QnANewPostPage() {
           <Link to='/qna'>취소하기</Link>
         </button>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-lg shadow-lg max-w-3xl w-full mx-4'>
+            <QnAProductModal onClose={closeModal} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
