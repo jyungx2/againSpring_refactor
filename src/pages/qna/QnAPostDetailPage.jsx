@@ -34,7 +34,7 @@ export default function QnAPostDetailPage() {
   };
 
   return (
-    <div className='container mx-auto px-6 py-4'>
+    <div className='w-[1200px] mx-auto px-6 py-4'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&amp;A
       </h1>
