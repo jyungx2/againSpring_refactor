@@ -44,7 +44,7 @@ function Cart() {
                   <th className="w-[2%] text-left py-[20px]">
                     <input
                       type="checkbox"
-                      className="w-[16px] h-[16px] bg-grey-40 cursor-pointer"
+                      className="w-[16px] h-[16px] cursor-pointer"
                     />
                   </th>
                   <th className="w-[62%] text-left py-[20px] font-gowun text-grey-40 text-[14px]">
