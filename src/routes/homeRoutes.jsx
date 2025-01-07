@@ -13,6 +13,8 @@ import ListPage from '@pages/notice/ListPage';
 import NewPostPage from '@pages/notice/NewPostPage';
 import EditPostPage from '@pages/notice/EditPostPage';
 import PostDetailPage from '@pages/notice/PostDetailPage';
+import MainContentSection from "@pages/MainContentSection";
+// import InfoSection from "@pages/InfoSection";
 
 const homeRoutes = [
   {
@@ -23,8 +25,10 @@ const homeRoutes = [
         index: true,
         element: (
           <>
-            {' '}
-            <Slider /> <MainProducts />{' '}
+            <Slider />
+            <MainProducts />
+            <MainContentSection />
+            {/* <InfoSection /> */}
           </>
         ),
       },
