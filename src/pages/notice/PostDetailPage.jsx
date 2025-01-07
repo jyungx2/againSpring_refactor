@@ -4,6 +4,32 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 export default function PostDetailPage() {
+  /**
+   * TODO:
+   * 1. API 연동
+   *    - fetch('/posts/{id}') 호출 구현
+   *    - useState로 post 상태 관리 추가
+   *    - useEffect로 데이터 fetching
+   *    - loading, error 상태 처리
+   *
+   * 2. 데이터 바인딩
+   *    - 제목 -> item.title
+   *    - 작성자 -> item.user.name
+   *    - 작성일 -> item.updatedAt || item.createdAt
+   *    - 조회수 -> item.views
+   *    - 내용 -> item.content
+   *    - 더미 텍스트 제거
+   *
+   * 3. 삭제 기능
+   *    - deleteCheckBtn 함수에 실제 DELETE API 호출 추가
+   *    - 성공/실패 처리
+   *    - 삭제 후 목록 페이지로 이동
+   *
+   * 4. 이전글/다음글
+   *    - API에서 이전글/다음글 정보 받아오기
+   *    - 네비게이션 링크에 해당 게시글 ID 추가
+   */
+
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
 

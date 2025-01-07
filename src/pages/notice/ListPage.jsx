@@ -2,6 +2,23 @@ import { Link } from 'react-router-dom';
 import ListItem from './ListItem';
 
 export default function ListPage() {
+  /**
+   * TODO:
+   * 1. API 연동
+   *    - fetch('/posts?type=info') 호출 구현
+   *    - useState로 posts 상태 관리 추가
+   *    - useEffect로 데이터 fetching
+   *    - loading, error 상태 처리 ?
+   *
+   * 2. 페이지네이션
+   *    - 현재 하드코딩된 버튼을 API 응답 기반으로 동적 생성
+   *    - page 파라미터 처리
+   *
+   * 3. 검색 기능
+   *    - 검색 API 연동 (/posts?type=info&search=검색어)
+   *    - select와 input의 검색 조건 처리
+   */
+
   // 실제로는 API에서 받아올 데이터
   const items = [
     {
