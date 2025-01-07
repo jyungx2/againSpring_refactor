@@ -299,7 +299,7 @@ export default function ProductQnAPostDetailPage() {
         {/* 댓글 섹션 */}
         <section className='mb-8'>
           {comments.map((comment) => (
-            <div key={comment.id} className='py-8'>
+            <div key={comment.id} className='py-8 border-b border-grey-10'>
               <div className='flex items-center'>
                 <label className='text-2xl font-medium flex items-center gap-2 pl-3'>
                   {comment.name}
