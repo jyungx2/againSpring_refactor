@@ -3,15 +3,17 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import useUserStore from "@store/userStore";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const axios = useAxiosInstance();
   const setUser = useUserStore((store) => store.setUser);
+  const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm({
     defaultValues: { email: "u1@market.com", password: "11111111" },
   });
 
-  const axios = useAxiosInstance();
   const login = useMutation({
     mutationFn: (loginData) => axios.post(`/users/login`, loginData),
     onSuccess: (res) => {
@@ -20,7 +22,16 @@ function Login() {
       const user = res.data.item;
       console.log(user);
 
-      setUser({ user });
+      setUser({
+        _id: user._id,
+        name: user.name,
+        accessToken: user.token.accessToken,
+        refreshToken: user.token.refreshToken,
+      });
+
+      alert(user.name + "님 로그인 되었습니다.");
+
+      navigate("/");
     },
   });
 
