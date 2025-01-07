@@ -43,3 +43,7 @@ img {
   padding: 0 2px;
   box-sizing: border-box;
 }
+
+.emUnset {
+  font-style: normal;
+}
