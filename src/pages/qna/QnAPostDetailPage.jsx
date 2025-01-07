@@ -12,13 +12,6 @@ export default function QnAPostDetailPage() {
   const [comments, setComments] = useState([
     {
       id: 1,
-      name: '다시, 봄',
-      content: '고객님도 감기조심하세요',
-      createdAt: '2024.01.01 00:00:00',
-      isAdmin: true,
-    },
-    {
-      id: 2,
       name: '홍길동',
       content: '답변 감사합니다.',
       createdAt: '2024.01.01 00:00:00',
