@@ -47,14 +47,14 @@ export default function QnANewPostPage() {
             icon: 'success',
           }).then((result) => {
             if (result.isConfirmed) {
-              navigate('/notice');
+              navigate('/qna');
             }
           });
         }
       });
     } else {
       // 작성된 내용이 없으면 바로 이동
-      navigate('/notice');
+      navigate('/qna');
     }
   };
 

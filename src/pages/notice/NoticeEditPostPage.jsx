@@ -66,10 +66,6 @@ export default function NoticeEditPostPage() {
         cancelButtonColor: '#d33',
         confirmButtonText: '네',
         cancelButtonText: '아니요',
-        customClass: {
-          title: 'text-2xl',
-          popup: 'text-lg',
-        },
       }).then((result) => {
         if (result.isConfirmed) {
           MySwal.fire({
