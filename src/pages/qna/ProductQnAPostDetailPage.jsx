@@ -191,8 +191,14 @@ export default function ProductQnAPostDetailPage() {
             >
               제목
             </label>
-            <h2 className='text-xl font-medium text-grey-50' id='title'>
+            <h2
+              className='text-xl font-medium text-grey-50 flex items-center gap-2'
+              id='title'
+            >
               상품 관련 문의
+              <span className='inline-block px-5 py-2 rounded-[20px] text-white text-sm bg-primary-40'>
+                답변완료
+              </span>
             </h2>
           </div>
           <div className='flex items-center gap-[100px] py-4 border-b border-grey-10'>
