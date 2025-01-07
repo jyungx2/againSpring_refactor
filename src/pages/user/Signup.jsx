@@ -3,7 +3,7 @@ import styles from "./User.module.css";
 function Signup() {
   return (
     <>
-      <div className="mx-auto py-24">
+      <div className="box-border max-w-[1200px] my-[60px] px-6 mx-auto">
         <div className="w-[460px] mx-auto flex flex-col items-center p-[18px_40px_28px] border-2 border-grey-10 rounded-[20px] gap-8">
           <div className="py-3">
             <h1 className="font-gowunBold text-[32px] text-grey-60">
