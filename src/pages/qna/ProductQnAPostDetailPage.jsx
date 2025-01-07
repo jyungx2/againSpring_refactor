@@ -126,12 +126,6 @@ export default function ProductQnAPostDetailPage() {
             <div className='flex mt-4'>
               <button
                 type='button'
-                className='text-xl text-grey-40 hover:text-grey-70 font-normal'
-              >
-                댓글
-              </button>
-              <button
-                type='button'
                 className="text-xl text-grey-40  hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
               >
                 수정
