@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import { cartStore } from "../store/cartStore";
 
 function Cart() {
-  const { cartItemsList, shippingCost } = cartStore();
+  const { cartItemsList, shippingCost, fetchCartItems } = cartStore();
+
+  useEffect(() => {
+    fetchCartItems();
+  }, [fetchCartItems]);
 
   // 총 주문 금액 계산
   const totalPrice = cartItemsList.reduce(

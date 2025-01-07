@@ -1,28 +1,22 @@
 import { create } from "zustand";
+import axios from "axios";
 
-export const cartStore = create(() => ({
-  cartItemsList: [
-    {
-      id: 1,
-      name: "상품 A",
-      price: 125000,
-      quantity: 1,
-      image: "https://via.placeholder.com/80",
-    },
-    {
-      id: 2,
-      name: "상품 B",
-      price: 2500000,
-      quantity: 2,
-      image: "https://via.placeholder.com/80",
-    },
-    {
-      id: 3,
-      name: "상품 C",
-      price: 10000,
-      quantity: 1,
-      image: "https://via.placeholder.com/80",
-    },
-  ],
+export const cartStore = create((set) => ({
+  cartItemsList: [],
   shippingCost: 3000,
+  fetchCartItems: async () => {
+    try {
+      const response = await axios.get("https://11.fesp.shop/carts/local");
+      const products = response.data.products.map((product) => ({
+        id: product._id,
+        name: product.name,
+        price: product.price,
+        quantity: product.quantity,
+        image: product.image.url,
+      }));
+      set({ cartItemsList: products });
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  },
 }));
