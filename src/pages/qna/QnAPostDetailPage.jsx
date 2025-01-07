@@ -2,10 +2,29 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import { useState } from 'react';
 
 export default function QnAPostDetailPage() {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+
+  // 댓글 더미 데이터 상태관리
+  const [comments, setComments] = useState([
+    {
+      id: 1,
+      name: '다시, 봄',
+      content: '고객님도 감기조심하세요',
+      createdAt: '2024.01.01 00:00:00',
+      isAdmin: true,
+    },
+    {
+      id: 2,
+      name: '홍길동',
+      content: '답변 감사합니다.',
+      createdAt: '2024.01.01 00:00:00',
+      isAdmin: false,
+    },
+  ]);
 
   const deleteCheckBtn = () => {
     MySwal.fire({
@@ -28,6 +47,30 @@ export default function QnAPostDetailPage() {
           if (result.isConfirmed) {
             navigate('/qna');
           }
+        });
+      }
+    });
+  };
+
+  const handleCommentDelete = (commentId) => {
+    MySwal.fire({
+      title: '댓글을 삭제하시겠습니까?',
+      text: '삭제된 댓글은 복구할 수 없습니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '네',
+      cancelButtonText: '아니요',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // 댓글 삭제 로직
+        setComments(comments.filter((comment) => comment.id !== commentId));
+        MySwal.fire({
+          title: '삭제 완료',
+          text: '댓글이 삭제되었습니다.',
+          confirmButtonText: '확인',
+          icon: 'success',
         });
       }
     });
@@ -94,32 +137,45 @@ export default function QnAPostDetailPage() {
 
         {/* 댓글 섹션 */}
         <section className='mb-8'>
-          <div className='py-8'>
-            <div className='flex items-center'>
-              <label className='text-xl font-medium' htmlFor='admin'>
-                관리자
-              </label>
-              <p className='text-xl text-grey-50 font-normal ml-3' id='admin'>
-                2024-01-01-01 00:00:00
-              </p>
+          {comments.map((comment) => (
+            <div
+              key={comment.id}
+              className={`py-8 ${comment.isAdmin ? 'bg-grey-5' : ''}`}
+            >
+              <div className='flex items-center'>
+                <label className='text-xl font-medium flex items-center gap-2'>
+                  {comment.name}
+                  {comment.isAdmin && (
+                    <span className='bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded'>
+                      관리자
+                    </span>
+                  )}
+                </label>
+                <p className='text-xl text-grey-50 font-normal ml-3'>
+                  {comment.date}
+                </p>
+              </div>
+              <p className='text-lg text-grey-80 mt-4'>{comment.content}</p>
+              <div className='flex mt-4'>
+                {/* 자신의 댓글인 경우에만 수정/삭제 버튼 표시해야 함 */}
+                <button
+                  type='button'
+                  className='text-xl text-grey-40  hover:text-grey-70 font-normal relative ml-4'
+                >
+                  수정
+                </button>
+                <button
+                  type='button'
+                  className="text-xl text-grey-40 hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
+                  onClick={() => handleCommentDelete(comment.id)}
+                >
+                  삭제
+                </button>
+              </div>
             </div>
-            <p className='text-lg text-grey-80 mt-4'>고객님도 감기조심하세요</p>
-            <div className='flex mt-4'>
-              <button
-                type='button'
-                className="text-xl text-grey-40  hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
-              >
-                수정
-              </button>
-              <button
-                type='button'
-                className="text-xl text-grey-40 hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
-              >
-                지우기
-              </button>
-            </div>
-          </div>
+          ))}
 
+          {/* 댓글 입력 */}
           <div className='flex flex-col gap-4 border border-grey-5 p-6 mb-6'>
             <textarea
               className='w-full min-h-[80px] resize-y border border-grey-30 p-2'
