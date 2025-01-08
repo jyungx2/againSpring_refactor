@@ -9,3 +9,12 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.custom-swiper .swiper-button-next,
+.custom-swiper .swiper-button-prev {
+  color: #BC9F8B;
+}
+
+.custom-swiper .swiper-pagination-bullet {
+  background-color: #BC9F8B;
+}

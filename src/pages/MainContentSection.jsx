@@ -7,7 +7,7 @@ const MainContentSection = () => {
 
   return (
     <section className="w-[1200px] mx-auto px-6 py-8">
-      <h2 className="text-xl font-bold mb-6 text-black">Contents 영역</h2>
+      <h2 className="text-3xl font-bold mb-6 text-black">Contents</h2>
       <div className="flex justify-between gap-6">
         {stories.map((story) => (
           <div key={story.id} className="flex flex-col items-center text-center">

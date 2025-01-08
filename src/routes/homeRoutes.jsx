@@ -19,6 +19,8 @@ import QnAEditPostPage from "@pages/qna/QnAEditPostPage";
 import QnAPostDetailPage from "@pages/qna/QnAPostDetailPage";
 import ProductQnAPostDetailPage from "@pages/qna/ProductQnAPostDetailPage";
 import ProductQnAEditPostPage from "@pages/qna/ProductQnAEditPostPage";
+import MainContentSection from "@pages/MainContentSection";
+import InfoSection from "@pages/InfoSection";
 
 const homeRoutes = [
   {
@@ -29,7 +31,10 @@ const homeRoutes = [
         index: true,
         element: (
           <>
-            <Slider /> <MainProducts />
+            <Slider />
+            <MainProducts />
+            <MainContentSection />
+            <InfoSection />
           </>
         ),
       },
