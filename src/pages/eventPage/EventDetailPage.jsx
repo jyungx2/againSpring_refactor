@@ -50,7 +50,7 @@ export default function EventDetailPage() {
     return (
       <div className='w-[1200px] mx-auto px-6 py-4'>
         <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-          공지사항
+          Event
         </h1>
         <p className='text-center text-lg text-grey-50 py-10'>
           해당 게시글을 찾을 수 없습니다.
@@ -70,23 +70,23 @@ export default function EventDetailPage() {
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        공지사항
+        Event
       </h1>
 
       <section className='flex flex-col'>
         <div className='border-t border-black'>
-          <div className='flex items-center gap-[100px] py-4 border-b border-grey-10'>
+          <div className='flex items-center gap-[20px] py-4 border-b border-grey-10'>
             <label className='text-lg font-medium text-grey-80 w-24'>제목</label>
             <h2 className='text-xl font-medium text-grey-50'>{eventData.title}</h2>
           </div>
-          <div className='flex items-center gap-[100px] py-4 border-b border-grey-10'>
+          <div className='flex items-center gap-[20px] py-4 border-b border-grey-10'>
             <label className='text-lg font-medium text-grey-80 w-24'>작성자</label>
             <p className='text-xl font-medium text-grey-50'>{eventData.author}</p>
           </div>
           <div className='border-b border-grey-10'>
             <div className='flex gap-[43px] py-4'>
               <div className='flex items-center'>
-                <label className='text-lg font-medium pl-5 mr-2'>작성일</label>
+                <label className='text-lg font-medium mr-2'>작성일</label>
                 <p className='text-lg text-grey-40'>{eventData.updatedAt}</p>
               </div>
               <div className='flex items-center'>
@@ -95,7 +95,7 @@ export default function EventDetailPage() {
               </div>
             </div>
 
-            <div className='py-4 text-lg'>{eventData.content}</div>
+            <div className='py-4 text-xl'>{eventData.content}</div>
           </div>
         </div>
 
