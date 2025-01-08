@@ -61,8 +61,7 @@ const MainProducts = () => {
             spaceBetween={20}
             slidesPerView={4}
             navigation
-            pagination={{ clickable: true }}
-            className="product-slider"
+            className="product-slider custom-swiper"
           >
             {products.map((product) => (
               <SwiperSlide key={product.id}>
@@ -98,8 +97,7 @@ const MainProducts = () => {
             spaceBetween={20}
             slidesPerView={4}
             navigation
-            pagination={{ clickable: true }}
-            className="product-slider"
+            className="product-slider custom-swiper"
           >
             {products.map((product) => (
               <SwiperSlide key={product.id}>
@@ -132,8 +130,7 @@ const MainProducts = () => {
             spaceBetween={20}
             slidesPerView={4}
             navigation
-            pagination={{ clickable: true }}
-            className="product-slider"
+            className="product-slider custom-swiper"
           >
             {products.map((product) => (
               <SwiperSlide key={product.id}>
