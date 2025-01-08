@@ -9,15 +9,36 @@ export default function EventDetailPage() {
   const [eventData, setEventData] = useState(null);
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
+  const [previousEvent, setPreviousEvent] = useState(null);
+  const [nextEvent, setNextEvent] = useState(null);
 
   useEffect(() => {
     const dummyData = [
       { id: "1", title: "2024년 12월 윈터 이벤트", content: "윈터 이벤트 상세 내용입니다.", author: "다시, 봄", updatedAt: "2024-12-01 00:00:00", views: 10 },
       { id: "2", title: "2025년 1월 회원가입 이벤트", content: "회원가입 이벤트 상세 내용입니다.", author: "다시, 봄", updatedAt: "2025-01-01 00:00:00", views: 20 },
     ];
-    const event = dummyData.find((item) => item.id === id);
-    setEventData(event);
+    const eventIndex = dummyData.findIndex((item) => item.id === id);
+    setEventData(dummyData[eventIndex]);
+
+    // 이전글과 다음글 설정
+    setPreviousEvent(dummyData[eventIndex - 1] || null);
+    setNextEvent(dummyData[eventIndex + 1] || null);
   }, [id]);
+
+  /** DB 연동 시 사용
+   * useEffect(() => {
+    const fetchEventData = async () => {
+    const response = await fetch(`https://11.fesp.shop/`);
+    const data = await response.json();
+    setEventData(data);
+    setPreviousEvent(data.previousEvent || null);
+    setNextEvent(data.nextEvent || null);
+  };
+
+  fetchEventData();
+}, [id]);
+   */
+
 
   const deleteCheckBtn = () => {
     MySwal.fire({
@@ -123,7 +144,43 @@ export default function EventDetailPage() {
               </button>
             </div>
           </div>
+          <nav className='mb-4'>
+            <div className='border-t border-b border-grey-5'>
+              <div className='flex items-center border-b border-grey-5 min-h-[60px]'>
+                <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-lg font-medium shrink-0'>
+                  <span className='text-sm mr-2'>▲</span>이전글
+                </div>
+                {previousEvent ? (
+                  <Link
+                    to={`/event/detail/${previousEvent.id}`}
+                    className='flex-1 px-4 py-4 text-lg text-grey-80 hover:text-secondary-20 truncate'
+                  >
+                    {previousEvent.title}
+                  </Link>
+                ) : (
+                  <p className='flex-1 px-4 py-4 text-lg text-grey-40'>이전 글이 없습니다.</p>
+                )}
+              </div>
+              <div className='flex items-center min-h-[60px]'>
+                <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-lg font-medium shrink-0'>
+                  <span className='text-sm mr-2'>▼</span>다음글
+                </div>
+                {nextEvent ? (
+                  <Link
+                    to={`/event/detail/${nextEvent.id}`}
+                    className='flex-1 px-4 py-4 text-lg text-grey-80 hover:text-secondary-20 truncate'
+                  >
+                    {nextEvent.title}
+                  </Link>
+                ) : (
+                  <p className='flex-1 px-4 py-4 text-lg text-grey-40'>다음 글이 없습니다.</p>
+                )}
+              </div>
+            </div>
+          </nav>
         </div>
+
+
       </section>
     </div>
   );
