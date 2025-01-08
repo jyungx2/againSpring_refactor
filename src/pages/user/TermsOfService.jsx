@@ -1,15 +1,55 @@
+import { useForm } from "react-hook-form";
 import styles from "./User.module.css";
 
 function TermsOfService() {
+  const { register, handleSubmit, setValue, watch } = useForm({
+    defaultValues: {
+      "terms-required": false,
+      "personal-required": false,
+      "SMS-optional": false,
+      "Email-optional": false,
+    },
+  });
+  const watchAll = watch(); // register로 등록된 폼 필드의 값을 추적하고 객체 형태로 반환하는 함수입니다.
+
+  // 체크박스(type="checkbox")의 경우, 속성의 밸류는 체크 여부이며, 이는 자동으로 true(체크) 또는 false(체크 x)로 설정
+  // watchAll = {
+  //   required1: true, // 필수 체크박스 1 체크 여부
+  //   required2: false, // 필수 체크박스 2 체크 여부
+  //   optional: true, // 선택 체크박스 체크 여부
+  // };
+  console.log(watchAll);
+  // useForm()에서 defaultValues를 설정하지 않으면 watchAll()이 처음에 빈 객체 {}를 반환
+
+  const allChecked = Object.values(watchAll).every(Boolean); // watch 객체의 value값들이 모두 true값을 갖고 있다면 true 반환..
+  const isOkayToNext =
+    watchAll["terms-required"] && watchAll["personal-required"];
+
+  const onSubmit = (data) => {
+    console.log("이용약관 체크 상태: ", data);
+  };
+
+  const handleCheckAll = (e) => {
+    const isChecked = e.target.checked;
+    Object.keys(watchAll).forEach((key) => {
+      setValue(key, isChecked); // setValue를 사용해 각 체크박스의 값을 업데이트 - 매개변수 2개: (필드 이름, 설정할 값)
+    });
+  };
+
   return (
     <>
-      <div className="box-border px-6 my-[60px] mx-auto max-w-[1200px] flex flex-col gap-[20px]">
-        <form className="flex flex-col gap-[32px] text-[18px]">
+      <div className="box-border px-6 my-[60px] mx-auto max-w-[600px] flex flex-col gap-[20px]">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-[32px] text-[18px]"
+        >
           <div className="flex">
             <input
               type="checkbox"
               id="check"
               className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+              onChange={handleCheckAll}
+              checked={allChecked}
             />
             <label
               className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold text-[18px]"
@@ -25,6 +65,7 @@ function TermsOfService() {
                 type="checkbox"
                 id="termsService"
                 className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+                {...register("terms-required", { required: true })}
               />
               <label
                 className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold text-[18px]"
@@ -81,6 +122,7 @@ function TermsOfService() {
                 type="checkbox"
                 id="termsPrivacy"
                 className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+                {...register("personal-required", { required: true })}
               />
               <label
                 className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold text-[18px]"
@@ -169,6 +211,7 @@ function TermsOfService() {
                   type="checkbox"
                   id="termsSMS"
                   className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+                  {...register("SMS-optional")}
                 />
                 <label
                   className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
@@ -183,6 +226,7 @@ function TermsOfService() {
                   type="checkbox"
                   id="termsEmail"
                   className={`peer ${styles.inputUnset} ${styles.checkboxCustom}`}
+                  {...register("Email-optional")}
                 />
                 <label
                   className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
@@ -206,12 +250,13 @@ function TermsOfService() {
               </div>
             </div>
           </div>
-          <div className="flex justify-center gap-[24px] p-[30px] border-t border-grey-30">
-            <button className="bg-grey-40 inline-block text-4 text-white h-[48px] leading-[48px] px-[64px] box-border cursor-pointer rounded-[12px] btn-cancel flex-shrink-0">
-              취소
-            </button>
-            <button className="bg-primary-40 inline-block text-4 text-white h-[48px] leading-[48px] px-[64px] box-border cursor-pointer rounded-[12px] btn-register flex-shrink-0">
-              등록
+          <div className="flex justify-center p-[30px] border-t border-grey-30">
+            <button
+              type="submit"
+              disabled={!isOkayToNext}
+              className="bg-primary-40 inline-block text-4 text-white h-[48px] leading-[48px] w-full box-border cursor-pointer rounded-[12px] btn-register flex-shrink-0 font-gowunBold disabled:bg-grey-30"
+            >
+              동의하기
             </button>
           </div>
         </form>
