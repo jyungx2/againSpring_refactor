@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import { cartStore } from "../store/cartStore";
+import { Helmet } from "react-helmet-async";
 
 function Cart() {
-  const { cartItemsList, shippingCost, fetchCartItems } = cartStore();
+  const { cartItemsList, shippingCost, fetchCartItems, loading, error } =
+    cartStore();
 
   useEffect(() => {
-    fetchCartItems();
+    fetchCartItems(); // 컴포넌트 마운트 시 장바구니 아이템 가져오기
   }, [fetchCartItems]);
 
-  // 총 주문 금액 계산
   const totalPrice = cartItemsList.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -19,6 +20,15 @@ function Cart() {
   return (
     <div className="flex justify-center px-[16px]">
       <div className="container mx-auto px-[24px] my-[40px]">
+        <Helmet>
+          <title>장바구니</title>
+          <meta
+            name="description"
+            content="장바구니에 담긴 상품을 확인하세요."
+          />{" "}
+        </Helmet>
+        {loading && <p>로딩 중...</p>}
+        {error && <p className="text-red-500">{error}</p>}{" "}
         <div className="flex items-center mb-[16px]">
           <h1 className="text-[24px] font-gowun text-grey-80 mr-[8px]">
             장바구니
@@ -27,9 +37,7 @@ function Cart() {
             {cartItemsList.length}
           </span>
         </div>
-
         <hr className="mb-0 border-t border-grey-20" />
-
         {cartItemsList.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[256px]">
             <img
