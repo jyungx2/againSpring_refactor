@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export default function QnAListItem({
+export default function EventListItem({
   number,
   title,
   author,
@@ -34,7 +34,7 @@ export default function QnAListItem({
   );
 }
 
-QnAListItem.propTypes = {
+EventListItem.propTypes = {
   number: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
