@@ -10,7 +10,7 @@ function Login() {
   const setUser = useUserStore((store) => store.setUser);
   const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, setError } = useForm({
     defaultValues: { email: "u1@market.com", password: "11111111" },
   });
 
@@ -30,8 +30,21 @@ function Login() {
       });
 
       alert(user.name + "님 로그인 되었습니다.");
-
       navigate("/");
+    },
+    onError: (err) => {
+      console.error(err);
+
+      if (err.response?.data.errors) {
+        err.response.data.errors.forEach((error) =>
+          setError(error.path, { message: error.msg })
+        );
+      } else {
+        alert(
+          err.response.data.message ||
+            "오류가 발생하였습니다. 잠시 후 다시 요청하세요."
+        );
+      }
     },
   });
 
