@@ -1,5 +1,4 @@
 import useMenuStore from "../../store/menuStore";
-import { Link } from "react-router-dom";
 
 const Menu = () => {
   const { activeMenu, setActiveMenu } = useMenuStore();
