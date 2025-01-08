@@ -1,12 +1,12 @@
 // import { Link } from 'react-router-dom';
 import useUserStore from '@store/userStore';
 import '../../assets/styles/fonts.css';
-import ListItem from './QnAListItem';
 import { useNavigate } from 'react-router-dom';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
+import QnAListItem from './QnAListItem';
 
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
@@ -15,39 +15,51 @@ const fetchUserInfo = async (axios) => {
 };
 
 export default function QnAListPage() {
-  const { user } = useUserStore();
   const navigate = useNavigate();
+
+  const { user } = useUserStore();
   const axios = useAxiosInstance();
+
   const { data: userData } = useQuery({
     queryKey: ['userInfo'],
     queryFn: () => fetchUserInfo(axios),
   });
 
-  console.log('userDate는 ', userData);
-  console.log('userDate 첫번째 회원의 type은 ', userData?.item[0]?.type);
-  console.log(
-    'userDate 모든 회원의 type은 ',
-    userData?.item.map((user) => user.type)
-  );
-  const MySwal = withReactContent(Swal);
+  // console.log('userDate는 ', userData);
+  // console.log('userDate 첫번째 회원의 type은 ', userData?.item[0]?.type);
+  // console.log(
+  //   'userDate 모든 회원의 type은 ',
+  //   userData?.item.map((user) => user.type)
+  // );
 
-  // 실제로는 API에서 받아올 데이터
-  const items = [
-    {
-      number: 2,
-      title: '상품 관련 문의',
-      author: '홍길동',
-      date: '2024-01-01',
-      isAnswered: true,
-    },
-    {
-      number: 1,
-      title: '피그마 너무 어려운데요.',
-      author: '홍길동',
-      date: '2024-01-01',
-      isAnswered: false,
-    },
-  ];
+  /**
+   * TODO 게시판 목록 조회하기
+   * 1. {{url}}/posts?type=qna
+   * 2. 제목(title), 작성자(user.name), 작성일(createdAt, updatedAt 중 가장 최근 날짜에 작성된 것으로)
+   * 3. React Query를 사용해 게시글 목록 데이터 fetch
+   * 4. 게시글 목록을 ListItem 컴포넌트로 매핑
+   */
+  const { data } = useQuery({
+    queryKey: ['posts', 'qna'],
+    queryFn: () => axios.get('/posts', { params: { type: 'qna' } }),
+    select: (res) => res.data,
+    staleTime: 1000 * 10,
+  });
+
+  console.log('qna 게시판 글 목록', data);
+
+  // 데이터 로딩 중일 때 표시할 UI
+  if (!data) {
+    return <div>로딩중...</div>;
+  }
+
+  // TODO 글 번호는 오름차순으로, 작성일은 내림차순으로 정렬하기 (완료)
+
+  const qnaPostList = data.item.map((item, index) => (
+    <QnAListItem key={item._id} item={item} number={data.item.length - index} />
+  ));
+
+  const MySwal = withReactContent(Swal);
 
   /**
    * TODO 비 로그인 상태이면 로그인 페이지로 이동
@@ -141,18 +153,7 @@ export default function QnAListPage() {
               <th className='py-5 text-right w-[8%] pr-5'>작성일</th>
             </tr>
           </thead>
-          <tbody>
-            {items.map((item) => (
-              <ListItem
-                key={item.number}
-                number={item.number}
-                title={item.title}
-                author={item.author}
-                date={item.date}
-                isAnswered={item.isAnswered}
-              />
-            ))}
-          </tbody>
+          <tbody>{qnaPostList}</tbody>
         </table>
       </div>
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
