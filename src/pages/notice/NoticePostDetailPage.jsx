@@ -3,7 +3,7 @@ import '../../assets/styles/fonts.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-export default function PostDetailPage() {
+export default function NoticePostDetailPage() {
   /**
    * TODO:
    * 1. API 연동

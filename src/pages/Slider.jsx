@@ -21,7 +21,7 @@ const Slider = () => {
           navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 5000 }}
-          className="rounded-lg overflow-hidden"
+          className="rounded-lg overflow-hidden custom-swiper"
         >
           {slides.map((slide) => (
             <SwiperSlide key={slide.id}>

@@ -5,8 +5,14 @@ import { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import QnAProductModal from '@pages/qna/QnAProductModal';
 
-export default function EditPostPage() {
+export default function ProductQnAEditPostPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   /**
    *
    * TODO: [API 연동] 게시글 상세 정보 조회
@@ -66,10 +72,6 @@ export default function EditPostPage() {
         cancelButtonColor: '#d33',
         confirmButtonText: '네',
         cancelButtonText: '아니요',
-        customClass: {
-          title: 'text-2xl',
-          popup: 'text-lg',
-        },
       }).then((result) => {
         if (result.isConfirmed) {
           MySwal.fire({
@@ -79,14 +81,14 @@ export default function EditPostPage() {
             icon: 'success',
           }).then((result) => {
             if (result.isConfirmed) {
-              navigate('/notice/detail');
+              navigate('/qna/product/detail');
             }
           });
         }
       });
     } else {
       // 변경된 내용이 없으면 바로 이동
-      navigate('/notice/detail');
+      navigate('/qna/product/detail');
     }
   };
 
@@ -155,13 +157,38 @@ export default function EditPostPage() {
     }
   }, [quill]);
   return (
-    <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-32'>
+    <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-52'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        공지사항
+        Q&amp;A
       </h1>
 
+      {/* 상품 정보 불러오기 */}
+      <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+        <div className='mr-6'>
+          <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+            상품 Image
+          </div>
+        </div>
+        <div className='flex flex-col gap-4 justify-center h-32'>
+          <div className='text-lg'>
+            상품명: 대나무 칫솔 (소형) <br /> 1,400원
+          </div>
+          <div className='flex gap-4'>
+            <button className='px-6 py-2.5 bg-black text-white text-base rounded hover:bg-gray-800'>
+              <Link to='/detail'>상품상세보기</Link>
+            </button>
+            <button
+              className='px-6 py-2.5 border border-black text-base rounded hover:bg-gray-50'
+              onClick={openModal}
+            >
+              상품정보선택
+            </button>
+          </div>
+        </div>
+      </div>
+
       <input
-        className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-xl h-[50px]'
+        className='w-full mb-4 box-border border py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
         defaultValue='피그마 너무 어려운데요.'
         value={title}
@@ -181,7 +208,7 @@ export default function EditPostPage() {
            3. 성공/실패 시 적절한 메시지 표시
            4. 성공 시 상세 페이지로 이동 */}
         <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-secondary-20 text-white'>
-          <Link to='/notice/detail'>수정하기</Link>
+          <Link to='/qna/product/detail'>수정하기</Link>
         </button>
         <button
           className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-grey-20'
@@ -190,6 +217,15 @@ export default function EditPostPage() {
           취소하기
         </button>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-lg shadow-lg max-w-3xl w-full mx-4'>
+            <QnAProductModal onClose={closeModal} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
