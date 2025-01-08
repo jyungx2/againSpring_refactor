@@ -12,8 +12,8 @@ export default function EventDetailPage() {
 
   useEffect(() => {
     const dummyData = [
-      { id: "1", title: "2024년 12월 윈터 이벤트", content: "윈터 이벤트 상세 내용입니다.", author: "다시, 봄", updatedAt: "2024-12-01", views: 10 },
-      { id: "2", title: "2025년 1월 회원가입 이벤트", content: "회원가입 이벤트 상세 내용입니다.", author: "다시, 봄", updatedAt: "2025-01-01", views: 20 },
+      { id: "1", title: "2024년 12월 윈터 이벤트", content: "윈터 이벤트 상세 내용입니다.", author: "다시, 봄", updatedAt: "2024-12-01 00:00:00", views: 10 },
+      { id: "2", title: "2025년 1월 회원가입 이벤트", content: "회원가입 이벤트 상세 내용입니다.", author: "다시, 봄", updatedAt: "2025-01-01 00:00:00", views: 20 },
     ];
     const event = dummyData.find((item) => item.id === id);
     setEventData(event);
