@@ -1,0 +1,21 @@
+name: Auto Assign Reviewers
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  assign-reviewers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign Reviewers
+        uses: kentaro-m/auto-assign-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          reviewers: |
+            ohDASEUL
+            elfing91
+            Wwththhk
+            jyungx2
+            SeopE9611
+          team-reviewers: |
+            team1
