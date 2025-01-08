@@ -24,3 +24,14 @@ body {
 .custom-swiper .swiper-button-prev {
   left: 10px; /* 버튼 위치 조정 */
 }
+
+.custom-swiper .swiper-pagination-bullet {
+  background-color: #bc9f8b; /* 기본 색상 */
+  opacity: 0.5; /* 비활성 상태 투명도 */
+}
+
+.custom-swiper .swiper-pagination-bullet-active {
+  background-color: #bc9f8b; /* 활성 상태 색상 */
+  opacity: 1; /* 활성 상태 투명도 */
+}
+
