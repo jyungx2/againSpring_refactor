@@ -6,7 +6,7 @@ export default function EventMainPage() {
   const eventList = [
     {
       number: 2,
-      title: '2025 1월 회원가입 이벤트',
+      title: '2025년 1월 회원가입 이벤트',
       author: '다시,봄',
       date: '2025-01-01',
       isActive: true,

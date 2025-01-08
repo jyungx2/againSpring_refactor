@@ -27,8 +27,8 @@ export default function EventListItem({
       </td>
       <td className='py-5 text-right pr-2.5'>{author}</td>
       <td className='py-5 text-right pr-5'>
-        <div className='text-2xl'>{date}</div>
-        <div className='text-2xl'>00:00:00</div>
+        <div className='text-2xl text-center'>{date}</div>
+        <div className='text-xl text-center'>00:00:00</div>
       </td>
     </tr>
   );
