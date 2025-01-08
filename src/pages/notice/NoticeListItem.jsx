@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export default function ListItem({ title, date }) {
+export default function NoticeListItem({ title, date }) {
   /**
    * TODO:
    * 1. Props 수정
@@ -34,7 +34,7 @@ export default function ListItem({ title, date }) {
   );
 }
 
-ListItem.propTypes = {
+NoticeListItem.propTypes = {
   title: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
 };
