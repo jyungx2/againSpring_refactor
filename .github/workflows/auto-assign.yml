@@ -3,6 +3,10 @@ on:
   pull_request:
     types: [opened]
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   assign-reviewers:
     runs-on: ubuntu-latest
@@ -17,4 +21,3 @@ jobs:
             Wwththhk
             jyungx2
             SeopE9611
-
