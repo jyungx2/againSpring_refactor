@@ -21,6 +21,7 @@ import ProductQnAPostDetailPage from "@pages/qna/ProductQnAPostDetailPage";
 import ProductQnAEditPostPage from "@pages/qna/ProductQnAEditPostPage";
 import MainContentSection from "@pages/MainContentSection";
 import InfoSection from "@pages/InfoSection";
+import EventMainPage from "@pages/eventPage/EventMainPage";
 
 const homeRoutes = [
   {
@@ -56,6 +57,7 @@ const homeRoutes = [
       { path: "qna/detail", element: <QnAPostDetailPage /> },
       { path: "qna/product/detail", element: <ProductQnAPostDetailPage /> },
       { path: "qna/product/edit", element: <ProductQnAEditPostPage /> },
+      { path: "event", element: <EventMainPage /> },
     ],
   },
 ];
