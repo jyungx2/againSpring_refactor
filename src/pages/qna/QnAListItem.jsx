@@ -21,9 +21,8 @@ export default function QnAListItem({
           {title}
         </Link>
         <span
-          className={`inline-block px-5 py-2 rounded-[20px] text-white text-sm ml-2.5 ${
-            isAnswered ? 'bg-primary-40' : 'bg-grey-20'
-          }`}
+          className={`inline-block px-5 py-2 rounded-[20px] text-white text-sm ml-2.5 ${isAnswered ? 'bg-primary-40' : 'bg-grey-20'
+            }`}
         >
           {isAnswered ? '답변완료' : '답변대기'}
         </span>

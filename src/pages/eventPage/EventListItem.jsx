@@ -13,7 +13,7 @@ export default function EventListItem({
       <td className='py-5 text-left pl-5'>{number}</td>
       <td className='py-5 text-left pl-5'>
         <Link
-          to={""}
+          to={`/event/detail/${number}`}
           className='hover:text-secondary-20 transition-colors'
         >
           {title}
