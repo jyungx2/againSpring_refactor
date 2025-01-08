@@ -5,11 +5,30 @@ import ListItem from './QnAListItem';
 import { useNavigate } from 'react-router-dom';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosInstance from '@hooks/useAxiosInstance';
+
+// 사용자 정보 조회 API 함수
+const fetchUserInfo = async (axios) => {
+  const response = await axios.get('/users');
+  return response.data;
+};
 
 export default function QnAListPage() {
-  const user = useUserStore();
+  const { user } = useUserStore();
   const navigate = useNavigate();
+  const axios = useAxiosInstance();
+  const { data: userData } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: () => fetchUserInfo(axios),
+  });
 
+  console.log('userDate는 ', userData);
+  console.log('userDate 첫번째 회원의 type은 ', userData?.item[0]?.type);
+  console.log(
+    'userDate 모든 회원의 type은 ',
+    userData?.item.map((user) => user.type)
+  );
   const MySwal = withReactContent(Swal);
 
   // 실제로는 API에서 받아올 데이터
@@ -41,6 +60,18 @@ export default function QnAListPage() {
    * 7. useNavigate hook 사용(아직 구현 안 함)
    */
 
+  /**
+   * TODO 로그인 상태인데 type=user가 아니면 권한 없음 처리
+   * 1. axios instance import 하기(완료)
+   * 2. React Query의 useQuery hook import 하기(완료)
+   * 3. 사용자 정보 조회 API 함수 작성하기(완료)
+   * 4. useQuery로 사용자 정보 가져오기(완료)
+   * 5. questionButton 함수에서 권한 체크 로직 추가하기 (완료)
+   *   - 비 로그인 -> 로그인 페이지 이동 (기존 로직 유지)
+   *   - 로그인 & type !== 'user' -> 권한 없음 alert
+   *   - 로그인 & type === 'user' -> 글쓰기 페이지로 이동
+   */
+
   const questionButton = () => {
     if (!user) {
       MySwal.fire({
@@ -67,7 +98,20 @@ export default function QnAListPage() {
         }
       });
     } else {
-      navigate('/qna/new');
+      // 현재 로그인한 사용자의 type
+      const currentUserType = userData?.item.find(
+        (item) => item._id === user._id
+      )?.type;
+
+      if (currentUserType !== 'user') {
+        MySwal.fire({
+          title: '권한이 없습니다',
+          text: '일반 회원만 질문을 작성할 수 있습니다',
+          icon: 'error',
+        });
+      } else {
+        navigate('/qna/new');
+      }
     }
   };
 
