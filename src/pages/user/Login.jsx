@@ -23,10 +23,7 @@ function Login() {
   const login = useMutation({
     mutationFn: (loginData) => axios.post(`/users/login`, loginData),
     onSuccess: (res) => {
-      console.log(res);
-
       const user = res.data.item;
-      console.log(user);
 
       setUser({
         _id: user._id,

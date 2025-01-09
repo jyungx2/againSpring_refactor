@@ -1,6 +1,24 @@
+import { useForm } from "react-hook-form";
 import styles from "./User.module.css";
+import { useMutation } from "@tanstack/react-query";
 
 function Signup() {
+  const {
+    register,
+    handleSubmit,
+    serError,
+    formState: { errors },
+  } = useForm();
+
+  const registerUser = useMutation({
+    mutationFn: (userInfo) => {
+      console.log("Initial userInfo: ", userInfo); // name, email, password, password-confirm 정보가 담긴 객체
+
+      userInfo.type = "user";
+      console.log("Final userInfo: ", userInfo);
+    },
+  });
+
   return (
     <>
       <div className="box-border max-w-[1200px] my-[60px] px-6 mx-auto">
@@ -12,7 +30,10 @@ function Signup() {
           </div>
 
           <div className="w-[400px]">
-            <form className="flex flex-col gap-6">
+            <form
+              onSubmit={handleSubmit(registerUser.mutate)}
+              className="flex flex-col gap-6"
+            >
               <div
                 id="fildupload_profile_img"
                 className="relative mx-auto w-[100px] h-[100px]"
@@ -37,6 +58,7 @@ function Signup() {
                   type="text"
                   placeholder="이름"
                   className={`${styles.inputUnset}`}
+                  {...register("username", { required: "이름은 필수입니다." })}
                 />
               </div>
 
@@ -48,6 +70,7 @@ function Signup() {
                     type="email"
                     placeholder="이메일"
                     className={`${styles.inputUnset}`}
+                    {...register("email", { required: "이메일은 필수입니다." })}
                   />
                 </div>
                 <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
@@ -57,6 +80,9 @@ function Signup() {
                     type="password"
                     placeholder="비밀번호"
                     className={`${styles.inputUnset}`}
+                    {...register("password", {
+                      required: "비밀번호는 필수입니다.",
+                    })}
                   />
                 </div>
                 <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
@@ -66,6 +92,9 @@ function Signup() {
                     type="password"
                     placeholder="비밀번호 확인"
                     className={`${styles.inputUnset}`}
+                    {...register("password-confirm", {
+                      required: "비밀번호 확인은 필수입니다.",
+                    })}
                   />
                 </div>
               </div>
