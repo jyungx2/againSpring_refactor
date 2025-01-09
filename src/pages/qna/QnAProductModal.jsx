@@ -183,16 +183,12 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     setError(null);
 
     try {
-      // 검색어 유무에 따라 다른 파라미터 설정
-      const searchParams = {
+      // 검색 파라미터 객체 직접 구성
+      const params = {
         page: 1,
         limit: pageSize,
+        ...(trimmedKeyWord && { title: trimmedKeyWord }), // 검색어가 있을 때만 title 파라미터 추가
       };
-
-      // 검색어가 있을 때만 title 파라미터 추가
-      if (trimmedKeyWord) {
-        searchParams.title = trimmedKeyWord;
-      }
 
       // 검색 파라미터 구성
       setSearchParams({
@@ -201,9 +197,9 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
         limit: pageSize.toString(),
       });
 
-      const response = await axiosInstance.get('/products', {
-        params: { searchParams },
-      });
+      // params를 직접 전달
+      const response = await axiosInstance.get('/products', { params });
+
       setProducts(response.data.item);
       setSearchCount(response.data.pagination.total);
     } catch (err) {

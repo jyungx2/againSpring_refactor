@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import 'quill/dist/quill.snow.css';
 import '../../assets/styles/fonts.css';
 import { useEffect, useState } from 'react';
@@ -40,18 +40,18 @@ import Swal from 'sweetalert2';
 /**
  * TODO: 상품 정보 초기화 처리 구현
  *
- * 1. Modal 관련 상태 및 핸들러 정리
- *  - isModalOpen 상태 확인 (완료)
- *  - openModal, closeModal 핸들러 확인 (완료)
- *  - selectedProductInfo 상태 확인 (완료)
+ * 1. Modal 관련 상태 및 핸들러 정리 (완료)
+ *  - isModalOpen 상태 확인
+ *  - openModal, closeModal 핸들러 확인
+ *  - selectedProductInfo 상태 확인
  *
- * 2. 상품 선택 처리 개선
+ * 2. 상품 선택 처리 개선 (완료)
  *  - handleProductSelect 함수 내에서
  *    - 이전 선택 정보 확인
  *    - 새로운 상품 정보로 업데이트
  *    - 필요한 경우 관련 UI 상태 초기화
  *
- * 3. Modal 닫기 처리 개선
+ * 3. Modal 닫기 처리 개선 (완료)
  *  - closeModal 함수 내에서
  *    - 선택 완료된 경우: 현재 선택 정보 유지
  *    - 선택 취소된 경우: 이전 선택 정보 유지
@@ -93,15 +93,105 @@ import Swal from 'sweetalert2';
  */
 export default function QnANewPostPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchkeyword, setSearchKeyword] = useState('');
+  const [pageSize, setPageSize] = useState(5);
+  const [previousSelection, setPreviousSelection] = useState(null); // 이전 선택 정보 저장용
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  // Modal 열 때 현재 선택 정보 저장
+  const openModal = () => {
+    setPreviousSelection(selectedProductInfo);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    // 선택 취소 시 확인 (선택된 상품이 변경되었을 때만)
+    if (selectedProductInfo !== previousSelection) {
+      MySwal.fire({
+        title: '선택을 취소하시겠습니까?',
+        text: '변경사항이 저장되지 않습니다.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '네',
+        cancelButtonText: '아니오',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // 취소 확인 시 이전 선택으로 복원
+          setSelectedProductInfo(previousSelection);
+          resetModalState();
+        }
+      });
+    } else {
+      // 변경 사항이 없으면 바로 닫기
+      resetModalState();
+    }
+  };
+
+  // Modal 상태 초기화 함수
+  const resetModalState = () => {
+    setSearchKeyword('');
+    setPageSize(5);
+    setSearchParams({}); // URL 파라미터 초기화
+    setIsModalOpen(false);
+  };
+
+  const [error, setError] = useState(null);
 
   const [selectedProductInfo, setSelectedProductInfo] = useState(null);
 
+  // TODO: 페이지네이션 관련 상태 및 핸들러 추가
+  const [currentPage, setCurrentPage] = useState(1);
+  const handlePageChange = (page) => {
+    // 페이지 변경 로직
+  };
+
   // 상품 선택 처리 함수
+  // const handleProductSelect = (product) => {
+  //   // 1. 이전 선택 정보와 새로운 선택이 다른지 확인
+  //   if (selectedProductInfo?._id !== product._id) {
+  //     // 2. 새로운 상품 정보로 업데이트하기 전에 필요한 처리
+  //     // 예 : 이전 상품 관련 임시 데이터나 UI 상태 초기화
+
+  //     // 3. 새로운 상품 정보 저장
+  //     setSelectedProductInfo(product);
+
+  //     // 4. 선택 완료 후 필요한 처리
+  //     // 예 : 성공 메시지 표시나 UI 업데이트
+  //     console.log(`상품이 선택되었습니다: ${product.name}`);
+  //   } else {
+  //     // 5. 같은 상품을 다시 선택한 경우
+  //     console.log('이미 선택된 상품입니다.');
+  //   }
+  // };
+
   const handleProductSelect = (product) => {
-    setSelectedProductInfo(product); // 선택된 상품 정보를 state에 저장
+    try {
+      // 유효성 검사
+      if (!product || !product._id) {
+        throw new Error('올바르지 않은 상품 정보입니다.');
+      }
+
+      // 이전 선택과 비교
+      if (selectedProductInfo?._id !== product._id) {
+        // UI 상태 초기화 (에 : 에러 메시지나 임시 데이터)
+        setError(null);
+
+        // 새 상품 정보 저장
+        setSelectedProductInfo(product);
+      } else {
+        // 이미 선택된 상품 처리
+        MySwal.fire({
+          title: '알림',
+          text: '이미 선택된 상품입니다.',
+          icon: 'info',
+          confirmButtonText: '확인',
+        });
+      }
+    } catch (err) {
+      // 에러 처리
+      console.error('상품 선택 중 오류 발생: ', err);
+      setError(err.message);
+    }
   };
 
   // 게시글 작성 중 취소 버튼 눌렀을 떄
@@ -145,14 +235,6 @@ export default function QnANewPostPage() {
     }
   };
 
-  /**
-   * TODO 오류 해결
-   *
-   * Quill 에디터 formats 오류 해결
-   * - formats 배열에서 'ordered' , 'bullet' 제거
-   * - 대신 'list' 포맷만 사용
-   *
-   */
   // Quill 에디터 설정
   const modules = {
     // 툴바 설정: 텍스트 스타일링, 정렬, 리스트, 링크, 이미지 기능 포함
@@ -210,7 +292,7 @@ export default function QnANewPostPage() {
       if (file) {
         console.log('file data 변경 또는 입력' + file);
         /**
-         * TODO 여기에 실제 이미지 업로드 로직 구현해야 함
+         * TODO: 여기에 실제 이미지 업로드 로직 구현해야 함
          *
          * 1. 서버 파일 데이터 저장 요청
          * 2. 서버가 저장된 사진 값을 반환 ({{url}}/files/00-sample/Gb4OJkEX2k.jpg)
