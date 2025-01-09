@@ -18,6 +18,7 @@ function Signup() {
     reValidateMode: "onChange",
     criteriaMode: "all",
   });
+  console.log(errors);
 
   const axios = useAxiosInstance();
 
@@ -87,7 +88,11 @@ function Signup() {
               </div>
 
               <div>
-                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
+                <div
+                  className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20 ${
+                    errors.name ? `${styles.error}` : ""
+                  }`}
+                >
                   <img src="/icons/user.svg" />
                   <input
                     id="name"
@@ -101,7 +106,7 @@ function Signup() {
                         message: "2글자 이상 입력하세요.",
                       },
                       pattern: {
-                        value: /^[^\d]*$/, // 🫸숫자는 포함할 수 없음.
+                        value: /^[^\d]*$/,
                         message: "숫자는 입력할 수 없습니다.",
                       },
                     })}
@@ -112,7 +117,11 @@ function Signup() {
 
               <div className="id-collection">
                 <div>
-                  <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
+                  <div
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20 ${
+                      errors.email ? `${styles.error}` : ""
+                    }`}
+                  >
                     <img src="/icons/user.svg" />
                     <input
                       id="email"
@@ -132,7 +141,11 @@ function Signup() {
                 </div>
 
                 <div>
-                  <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20">
+                  <div
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
+                      errors.password ? `${styles.error}` : ""
+                    }`}
+                  >
                     <img src="/icons/locker.svg" />
                     <input
                       id="password"
@@ -152,7 +165,11 @@ function Signup() {
                 </div>
 
                 <div>
-                  <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20">
+                  <div
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
+                      errors["password-confirm"] ? `${styles.error}` : ""
+                    }`}
+                  >
                     <img src="/icons/locker.svg" />
                     <input
                       id="password-confirm"
