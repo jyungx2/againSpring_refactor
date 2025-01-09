@@ -65,7 +65,9 @@ function Login() {
             <form onSubmit={handleSubmit(login.mutate)}>
               <div className="flex flex-col gap-3">
                 <div
-                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4`}
+                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${
+                    errors.email ? `${styles.error}` : ""
+                  }`}
                 >
                   <input
                     id="email"
@@ -77,7 +79,11 @@ function Login() {
                 </div>
                 <ErrorMsg target={errors.email} />
 
-                <div className="border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4">
+                <div
+                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${
+                    errors.password ? `${styles.error}` : ""
+                  }`}
+                >
                   <input
                     id="password"
                     type="password"
