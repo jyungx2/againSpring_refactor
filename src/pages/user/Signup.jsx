@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import styles from "./User.module.css";
 import { useMutation } from "@tanstack/react-query";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 function Signup() {
   const {
@@ -10,12 +11,21 @@ function Signup() {
     formState: { errors },
   } = useForm();
 
+  const axios = useAxiosInstance();
+
   const registerUser = useMutation({
     mutationFn: (userInfo) => {
       console.log("Initial userInfo: ", userInfo); // name, email, password, password-confirm 정보가 담긴 객체
 
       userInfo.type = "user";
       console.log("Final userInfo: ", userInfo);
+      return axios.post(`/users`, userInfo);
+    },
+    onSuccess: () => {
+      alert("회원가입이 완료되었습니다.");
+    },
+    onError: (err) => {
+      console.error(err);
     },
   });
 
@@ -54,11 +64,11 @@ function Signup() {
               <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-6 focus-within:border-secondary-20">
                 <img src="/icons/user.svg" />
                 <input
-                  id="username"
+                  id="name"
                   type="text"
                   placeholder="이름"
                   className={`${styles.inputUnset}`}
-                  {...register("username", { required: "이름은 필수입니다." })}
+                  {...register("name", { required: "이름은 필수입니다." })}
                 />
               </div>
 
@@ -88,7 +98,7 @@ function Signup() {
                 <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
                   <img src="/icons/locker.svg" />
                   <input
-                    id="password"
+                    id="password-confirm"
                     type="password"
                     placeholder="비밀번호 확인"
                     className={`${styles.inputUnset}`}
