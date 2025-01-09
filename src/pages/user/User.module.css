@@ -47,3 +47,8 @@ img {
 .emUnset {
   font-style: normal;
 }
+
+.error,
+.error:focus-within {
+  border: 2px solid #e73434;
+}
