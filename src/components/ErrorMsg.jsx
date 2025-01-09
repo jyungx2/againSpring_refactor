@@ -6,7 +6,7 @@ ErrorMsg.propTypes = {
 
 function ErrorMsg({ target }) {
   if (!target) return;
-  return <p className="text-error text-[14px] pl-2">{target.message}</p>;
+  return <p className="text-error text-[14px] pl-3 ">{target.message}</p>;
 }
 
 export default ErrorMsg;

@@ -2,14 +2,19 @@ import { useForm } from "react-hook-form";
 import styles from "./User.module.css";
 import { useMutation } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import ErrorMsg from "@components/ErrorMsg";
 
 function Signup() {
   const {
     register,
     handleSubmit,
-    serError,
+    setError,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: "onFocus",
+    reValidateMode: "onChange",
+    criteriaMode: "all",
+  });
 
   const axios = useAxiosInstance();
 
@@ -26,6 +31,23 @@ function Signup() {
     },
     onError: (err) => {
       console.error(err);
+
+      // 클라이언트 측에서 유효성 검사에 실패한 오류를 1차적으로 처리
+      if (err.response.data.errors) {
+        err.reponse.data.errors.forEach(
+          (error) => setError(error.path, { message: error.msg })
+          // errors 객체를 생성하는 함수 - 객체이기 때문에 키값과 밸류값, 두가지 매개변수를 필요로 함
+          // error.path === register로 설정한 field 이름
+          // error.msg === 최초 검증 시점(useForm의 mode 속성값)에 따라 클라이언트 측에서 유효성 검사를 통해 발생한 메시지일 수도 있고, 클라이언트 측에서는 서버로부터 받은 오류 메시지를 setError 함수에 전달하여 폼 필드에 오류를 표시하는 역할도 하기 때문에 서버에서 설정한 오류 메시지(서버에서 정의한 유효성 검사 규칙에 따라 자동으로 생성된 메시지)일 수도 있다.
+        );
+      }
+      // 서버에서 발생한 오류 메시지를 처리
+      else {
+        alert(
+          err.response.data.message ||
+            "오류가 발생하였습니다. 잠시 후 다시 요청하세요."
+        );
+      }
     },
   });
 
@@ -61,15 +83,18 @@ function Signup() {
                 </div>
               </div>
 
-              <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-6 focus-within:border-secondary-20">
-                <img src="/icons/user.svg" />
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="이름"
-                  className={`${styles.inputUnset}`}
-                  {...register("name", { required: "이름은 필수입니다." })}
-                />
+              <div>
+                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
+                  <img src="/icons/user.svg" />
+                  <input
+                    id="name"
+                    type="text"
+                    placeholder="이름"
+                    className={`${styles.inputUnset}`}
+                    {...register("name", { required: "이름은 필수입니다." })}
+                  />
+                </div>
+                <ErrorMsg target={errors.name} />
               </div>
 
               <div className="id-collection">
@@ -83,7 +108,9 @@ function Signup() {
                     {...register("email", { required: "이메일은 필수입니다." })}
                   />
                 </div>
-                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
+                <ErrorMsg target={errors.email} />
+
+                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20">
                   <img src="/icons/locker.svg" />
                   <input
                     id="password"
@@ -95,7 +122,9 @@ function Signup() {
                     })}
                   />
                 </div>
-                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
+                <ErrorMsg target={errors.password} />
+
+                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20">
                   <img src="/icons/locker.svg" />
                   <input
                     id="password-confirm"
@@ -107,6 +136,7 @@ function Signup() {
                     })}
                   />
                 </div>
+                <ErrorMsg target={errors["password-confirm"]} />
               </div>
 
               <button className="font-gowunBold w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
