@@ -36,6 +36,11 @@ function Shop() {
     fetchProducts();
   }, [axiosInstance]);
 
+  const getImage = (path) => {
+    const baseURL = "https://11.fesp.shop";
+    return `${baseURL}${path}`
+  }
+
   return (
     <div className="flex justify-center px-[16px]">
       <div
@@ -97,7 +102,7 @@ function Shop() {
                   >
                     <td className="flex flex-col items-start py-[20px]">
                       <img
-                        src={item.mainImages?.[0]?.path || "https://via.placeholder.com/80"}
+                        src={getImage(item.mainImages?.[0]?.path) || "https://via.placeholder.com/80"}
                         alt={item.name}
                         style={{
                           width: "100%",
