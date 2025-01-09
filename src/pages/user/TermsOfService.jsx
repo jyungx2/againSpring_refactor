@@ -41,6 +41,7 @@ function TermsOfService() {
 
   const handleNext = () => {
     navigate("/signup");
+    window.scrollTo(0, 0); // 회원가입 페이지로 이동 시, 스크롤된 상태로 이동하는 것을 막음
   };
 
   return (
