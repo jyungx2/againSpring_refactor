@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import useQnaProductSearchStore from '@store/qnaProductSearchStore';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useSearchParams } from 'react-router-dom';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
 /**
  *
@@ -21,23 +23,23 @@ import { useSearchParams } from 'react-router-dom';
  * 3. handleSearch 함수 수정(완료)
  * React Query와 기존 로직이 혼재되어 있음
  * 검색 로직 정리 필요
- *  - 기존 더미데이터 부분 제거 (완료)
+ *  - 기존 더미데이터 부분 제거
  *  - axios instance를 사용해 API 호출
  *  - 로딩 상태 처리
- *  - try-catch로 에러 처리 (완료)
+ *  - try-catch로 에러 처리
  *  - 성공 시 응답 데이터를 products 상태에 저장
  *  - pagination.total을 searchCount에 저장
  *
  * 4. 받아온 데이터 바인딩(완료)
  *  - products.map()에서 API 응답 구조에 맞게 속성 매핑
- *  - 이미지 경로 처리 (baseURL + mainImages[0].path) (완료)
- *  - 기본적인 상품 정보 표시 (완료)
+ *  - 이미지 경로 처리 (baseURL + mainImages[0].path)
+ *  - 기본적인 상품 정보 표시
  *
- * 5. 선택한 상품 처리(부분완료)
- *  - selectedProduct 상태를 부모 컴포넌트로 전달 (완료)
- *  - QnANewPostPage에서 선택된 상품 정보 표시 (미완료)
+ * 5. 선택한 상품 처리(완료)
+ *  - selectedProduct 상태를 부모 컴포넌트로 전달
+ *  - QnANewPostPage에서 선택된 상품 정보 표시
  *
- * 6. 페이지네이션 구현 (선택 사항)
+ * 6. 페이지네이션 구현 (완료)
  *  - 현재 페이지 상태 추가
  *  - API 응답의 pagination 정보 활용
  *  - 페이지 이동 UI 및 기능 구현
@@ -49,20 +51,20 @@ import { useSearchParams } from 'react-router-dom';
  *  - 입력값 유효성 검사
  *
  */
+
 export default function QnAProductModal({ onClose, onProductSelect }) {
   const axiosInstance = useAxiosInstance();
   const [searchKeyword, setSearchKeyword] = useState('');
   const [pageSize, setPageSize] = useState(5);
   const searchRef = useRef('');
+  const MySwal = withReactContent(Swal);
 
-  // zustand store에서 상태와 액션 가져오기
   const {
     products,
     loading,
     error,
     searchCount,
     selectedProduct,
-
     setProducts,
     setLoading,
     setError,
@@ -70,6 +72,16 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     setSelectedProduct,
   } = useQnaProductSearchStore();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const params = {
+    keyword: searchParams.get('keyword') || '',
+    page: searchParams.get('page') || 1,
+    limit: 5,
+  };
   /**
    * TODO: Zustand로 검색 로직 정리하기
    *
@@ -102,17 +114,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
    *  - 선택된 상품 정보 부모로 전달 방식 구현 (미완료)
    */
 
-  // 쿼리 스트링 정보를 읽거나 설정
-  // /products?keyword=레고&page=3 => new URLSearchParams('keyword=레고&page=3')
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const params = {
-    keyword: searchParams.get('keyword') || '',
-    page: searchParams.get('page') || 1,
-    limit: 5,
-  };
-
-  // 컴포넌트 마운트 시 초기 데이터 로드
   useEffect(() => {
     const currentKeyword = searchParams.get('keyword') || '';
     const currentPage = parseInt(searchParams.get('page')) || 1;
@@ -121,16 +122,16 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     setSearchKeyword(currentKeyword);
     setPageSize(currentLimit);
 
-    // 초기 데이터 로드를 위한 별도 함수
     const loadInitialData = async () => {
       setLoading(true);
       setError(null);
+
       try {
         const params = {
           page: currentPage,
           limit: currentLimit,
         };
-        // URL에 키워드가 있으면 추가
+
         if (currentKeyword) {
           params.title = currentKeyword;
         }
@@ -142,6 +143,24 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
         setError(err.message);
       } finally {
         setLoading(false);
+      }
+    };
+
+    loadInitialData();
+  }, [searchParams]);
+
+  // pagination 정보를 받아올 때 total pages 계산
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        const response = await axiosInstance.get('/products', { params });
+        setProducts(response.data.item);
+        setSearchCount(response.data.pagination.total);
+
+        // 전체 페이지 수 계산
+        setTotalPages(Math.ceil(response.data.pagination.total / pageSize));
+      } catch (err) {
+        setError(err.message);
       }
     };
     loadInitialData();
@@ -175,33 +194,103 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
    */
 
   const handleSearch = async (e) => {
-    // 검색
-    if (e) e.preventDefault(); // 이벤트 객체가 있을 경우에만 preventDefault 호출
+    if (e) e.preventDefault();
 
     const trimmedKeyWord = searchKeyword.trim();
     setLoading(true);
     setError(null);
 
     try {
-      // 검색 파라미터 객체 직접 구성
       const params = {
         page: 1,
         limit: pageSize,
-        ...(trimmedKeyWord && { title: trimmedKeyWord }), // 검색어가 있을 때만 title 파라미터 추가
+        ...(trimmedKeyWord && { title: trimmedKeyWord }),
       };
 
-      // 검색 파라미터 구성
       setSearchParams({
         ...(trimmedKeyWord && { keyword: trimmedKeyWord }),
-        page: '1', // 새로운 검색 시 첫 페이지로
+        page: '1',
         limit: pageSize.toString(),
       });
 
-      // params를 직접 전달
       const response = await axiosInstance.get('/products', { params });
-
       setProducts(response.data.item);
       setSearchCount(response.data.pagination.total);
+    } catch (err) {
+      const errorMessage =
+        err.response?.status === 404
+          ? '상품을 찾을 수 없습니다'
+          : '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+
+      setError(errorMessage);
+
+      MySwal.fire({
+        title: '오류',
+        text: errorMessage,
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handlePageSizeChange = (newSize) => {
+    setPageSize(newSize);
+    setSearchParams({
+      ...Object.fromEntries(searchParams),
+      limit: newSize.toString(),
+      page: '1',
+    });
+    handleSearch();
+  };
+
+  const handleSelect = () => {
+    try {
+      const selected = products.find((p) => p._id === selectedProduct);
+      if (!selected) {
+        throw new Error('선택된 상품을 찾을 수 없습니다.');
+      }
+
+      MySwal.fire({
+        title: '상품 선택 완료',
+        text: `${selected.name} 상품이 선택되었습니다.`,
+        icon: 'success',
+        confirmButtonText: '확인',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          onProductSelect(selected);
+          onClose();
+        }
+      });
+    } catch (err) {
+      MySwal.fire({
+        title: '오류',
+        text: err.message,
+        icon: 'error',
+        confirmButtonText: '확인',
+      });
+    }
+  };
+
+  const handlePageChange = async (page) => {
+    try {
+      setLoading(true);
+      const params = {
+        page,
+        limit: pageSize,
+        ...(searchKeyword.trim() && { title: searchKeyword.trim() }),
+      };
+
+      // URL 파라미터 업데이트
+      setSearchParams({
+        ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
+        page: page.toString(),
+        limit: pageSize.toString(),
+      });
+
+      const response = await axiosInstance.get('/products', { params });
+      setProducts(response.data.item);
+      setCurrentPage(page);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -209,28 +298,62 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     }
   };
 
-  // pageSize 변경 핸들러
-  const handlePageSizeChange = (newSize) => {
-    setPageSize(newSize);
-    setSearchParams({
-      ...Object.fromEntries(searchParams),
-      limit: newSize.toString(),
-      page: '1', // 페이지 크기 변경 시 첫 페이지로
-    });
-    // 페이지 사이즈 변경 시 자동으로 검색 실행
-    handleSearch();
-  };
+  const Pagination = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 3; // 한 번에 보여줄 페이지 번호 수
 
-  // 선택 버튼 클릭 시 처리
-  const handleSelect = () => {
-    const seleted = products.find((p) => p._id === selectedProduct);
-    onProductSelect(seleted);
-    onClose();
+    // 보여줄 페이지 번호 계산
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    // startPage 재조정
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+
+    // 페이지 번호 배열 생성
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
+        {currentPage > 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+          >
+            Prev
+          </button>
+        )}
+
+        {pageNumbers.map((number) => (
+          <button
+            key={number}
+            onClick={() => handlePageChange(number)}
+            className={`${
+              currentPage === number
+                ? 'bg-secondary-20 text-white'
+                : 'bg-grey-20 text-black'
+            } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40`}
+          >
+            {number}
+          </button>
+        ))}
+
+        {currentPage < totalPages && (
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+          >
+            Next
+          </button>
+        )}
+      </div>
+    );
   };
 
   return (
     <div className='p-6 bg-white rounded-lg relative'>
-      {/* 헤더 - 더 부드러운 녹색으로 변경 */}
+      {/* 헤더 */}
       <div className='bg-primary-40 text-white p-3 -mx-6 -mt-6 mb-6 flex justify-between items-center rounded-t-lg'>
         <h2 className='text-lg font-medium'>상품검색</h2>
         <button
@@ -241,7 +364,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
         </button>
       </div>
 
-      {/* 검색 영역 - 연한 회색 테두리 사용 */}
+      {/* 검색 영역 */}
       <div className='p-4 bg-white rounded mb-4 border border-grey-20'>
         <div className='flex gap-2 items-center'>
           <select className='border border-grey-20 rounded p-2 w-32 focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'>
@@ -263,7 +386,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
           </button>
         </div>
       </div>
-
       {/* 검색 결과 카운트 & 페이지 사이즈 */}
       <div className='flex justify-between items-center mb-4'>
         <p className='text-lg text-grey-60'>
@@ -297,10 +419,10 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
           </tr>
         </thead>
         <tbody>
-          {products.length > 0 ? (
-            products.map((product) => (
-              <tr key={product._id} className='border-b border-grey-20'>
-                {/* TODO 이미지 표시 로직 수정
+          {products.length > 0
+            ? products.map((product) => (
+                <tr key={product._id} className='border-b border-grey-20'>
+                  {/* TODO 이미지 표시 로직 수정
                 1. map 함수 내부에서는 현재 순회 중인 product 객체를 사용해야 함
                 - products 배열이 아닌 현재 product의 mainImages 체크 필요 
                 - 조건문의 주체를 products에서 product로 변경 (수정 완료)
@@ -308,62 +430,85 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
                 2. Optional Chaining(옵셔널 체이닝) 위치 확인
                 - 배열 전체가 아닌 현재 상품의 속성을 체크해야 함
                 - mainImages 배열의 존재 여부를 확인하는 위치 변경 */}
-                <td className='p-3'>
-                  {product.mainImages?.length > 0 ? (
-                    <img
-                      src={`https://11.fesp.shop${product.mainImages[0].path}`}
-                      alt={product.name}
-                      className='w-32 h-32 object-cover rounded'
+                  <td className='p-3'>
+                    {product.mainImages?.length > 0 ? (
+                      <img
+                        src={`https://11.fesp.shop${product.mainImages[0].path}`}
+                        alt={product.name}
+                        className='w-32 h-32 object-cover rounded'
+                      />
+                    ) : (
+                      <div className='w-32 h-32 bg-grey-10 rounded flex items-center justify-center'>
+                        <span className='text-grey-40'>No Image</span>
+                      </div>
+                    )}
+                  </td>
+                  <td className='p-3'>
+                    <h3 className='font-medium mb-2'>{product.name}</h3>
+                    <p className='text-primary-40'>
+                      {product.price.toLocaleString()}원
+                    </p>
+                  </td>
+                  <td className='p-3 text-center'>
+                    <input
+                      type='radio'
+                      name='productSelection'
+                      checked={selectedProduct === product._id}
+                      onChange={() => setSelectedProduct(product._id)}
+                      className='w-4 h-4 text-primary-40 border-grey-20 focus:ring-primary-30'
                     />
-                  ) : (
-                    <div className='w-32 h-32 bg-grey-10 rounded flex items-center justify-center'>
-                      <span className='text-grey-40'>No Image</span>
+                  </td>
+                </tr>
+              ))
+            : !loading && (
+                <tr>
+                  <td colSpan='3' className='text-center p-8'>
+                    <div className='flex flex-col items-center gap-2'>
+                      <span className='text-4xl'>🔍</span>
+                      <p className='text-grey-60'>검색 결과가 없습니다.</p>
+                      <p className='text-sm text-grey-40'>
+                        다른 검색어로 시도해보세요.
+                      </p>
                     </div>
-                  )}
-                </td>
-                <td className='p-3'>
-                  <h3 className='font-medium mb-2'>{product.name}</h3>
-                  <p className='text-primary-40'>
-                    {product.price.toLocaleString()}원
-                  </p>
-                </td>
-                <td className='p-3 text-center'>
-                  <input
-                    type='radio'
-                    name='productSelection'
-                    checked={selectedProduct === product._id}
-                    onChange={() => setSelectedProduct(product._id)}
-                    className='w-4 h-4 text-primary-40 border-grey-20 focus:ring-primary-30'
-                  />
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan='3' className='text-center p-4 text-grey-50'>
-                검색 결과가 없습니다
-              </td>
-            </tr>
-          )}
+                  </td>
+                </tr>
+              )}
           {loading && (
             <tr>
-              <td colSpan='3' className='text-center p-4'>
-                <div>로딩중...</div>
+              <td colSpan='3' className='text-center p-8'>
+                <div className='flex flex-col items-center gap-2'>
+                  <div className='animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-40'></div>
+                  <p className='text-grey-60'>
+                    상품 정보를 불러오는 중입니다...
+                  </p>
+                </div>
               </td>
             </tr>
           )}
 
           {error && (
             <tr>
-              <td colSpan='3' className='text-center p-4 text-error'>
-                {error}
+              <td colSpan='3' className='text-center p-8'>
+                <div className='flex flex-col items-center gap-2 text-error'>
+                  <span className='text-4xl'>⚠️</span>
+                  <p className='font-medium'>오류가 발생했습니다</p>
+                  <p className='text-sm'>{error}</p>
+                  <button
+                    onClick={handleSearch}
+                    className='mt-2 px-4 py-2 bg-grey-10 rounded hover:bg-grey-20 transition-colors'
+                  >
+                    다시 시도
+                  </button>
+                </div>
               </td>
             </tr>
           )}
         </tbody>
       </table>
 
-      {/* 하단 버튼 - 회색 계열 사용 */}
+      {!loading && products.length > 0 && <Pagination />}
+
+      {/* 하단 버튼 */}
       <div className='flex justify-center gap-4 mt-6'>
         <button
           onClick={handleSelect}
