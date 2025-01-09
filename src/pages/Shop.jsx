@@ -27,7 +27,7 @@ function Shop() {
           },
         });
         // console.log("API 테스트", response.data); 
-        setCartItemsList(response.data.items || []);
+        setCartItemsList(response.data.item || []);
       } catch (error) {
         console.error("Failed to fetch products:", error);
       }
