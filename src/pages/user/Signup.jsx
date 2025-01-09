@@ -23,6 +23,7 @@ function Signup() {
 
   const axios = useAxiosInstance();
   const navigate = useNavigate();
+  const setUser = useUserStore((store) => store.setUser);
 
   const registerUser = useMutation({
     mutationFn: (userInfo) => {
@@ -32,7 +33,20 @@ function Signup() {
       console.log("Final userInfo: ", userInfo);
       return axios.post(`/users`, userInfo);
     },
-    onSuccess: () => {
+    onSuccess: async (res, userInfo) => {
+      const user = res.data.item;
+      console.log(user); // password 속성 존재 (undefined X)
+      user.password = userInfo.password; // 굳이 해줄 필요? (안 쓰면 422 에러)
+      console.log(user); // password 속성 당연히 존재
+
+      const userLogin = await axios.post(`/users/login`, user);
+      setUser({
+        _id: userLogin._id,
+        name: userLogin.name,
+        accessToken: userLogin.token.accessToken,
+        refreshToken: user.token.refreshToken,
+      });
+
       alert("회원가입이 완료되었습니다.");
       navigate("/");
     },
