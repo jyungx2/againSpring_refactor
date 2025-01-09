@@ -8,6 +8,85 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
 /**
+ * TODO: 선택된 상품 정보 표시 구현
+ *
+ * 1. 상품 정보 상태 관리 (완료)
+ *  - selectedProduct 상태 추가
+ *  - 상태 초기값은 null로 설정
+ *
+ * 2. QnAProductModal에 onProductSelect prop 전달(완료)
+ *  - Modal 컴포넌트에 onProductSelect 함수 전달
+ *  - 선택된 상품 정보를 상태에 저장하는 로직 구현
+ *
+ * 3. 선택된 상품 정보 표시 UI 구현 (완료)
+ *  - 상품 이미지 표시
+ *    - mainImages가 있을 경우 첫 번째 이미지 표시
+ *    - 없을 경우 NoImage 표시 (현재 UI 활용)
+ *  - 상품명 표시
+ *    - 현재 "상품명: " 부분에 선택된 상품명 표시
+ *  - 상품 상세보기 링크 업데이트
+ *    - Link 컴포넌트의 to prop을 선택된 상품의 ID를 사용하도록 수정
+ *
+ * 4. 상품 선택 상태에 따른 UI 처리 (완료)
+ *  - 상품이 선택되지 않은 경우 기본 UI 표시
+ *  - 상품이 선택된 경우 해당 상품 정보 표시
+ *  - 조건부 렌더링을 통해 처리
+ *
+ * 5. 상품 정보 초기화 처리
+ *  - 새로운 상품 선택 시 이전 선택 정보 초기화
+ *  - Modal 닫을 때 불필요한 경우 선택 정보 유지
+ */
+
+/**
+ * TODO: 상품 정보 초기화 처리 구현
+ *
+ * 1. Modal 관련 상태 및 핸들러 정리
+ *  - isModalOpen 상태 확인 (완료)
+ *  - openModal, closeModal 핸들러 확인 (완료)
+ *  - selectedProductInfo 상태 확인 (완료)
+ *
+ * 2. 상품 선택 처리 개선
+ *  - handleProductSelect 함수 내에서
+ *    - 이전 선택 정보 확인
+ *    - 새로운 상품 정보로 업데이트
+ *    - 필요한 경우 관련 UI 상태 초기화
+ *
+ * 3. Modal 닫기 처리 개선
+ *  - closeModal 함수 내에서
+ *    - 선택 완료된 경우: 현재 선택 정보 유지
+ *    - 선택 취소된 경우: 이전 선택 정보 유지
+ *    - Modal 내부 상태 초기화 (검색어, 페이지 등)
+ *
+ * 4. 상품 재선택 시나리오 처리
+ *  - 이미 선택된 상품이 있는 상태에서 Modal 열기
+ *  - Modal 내에서 이전 선택 상품 표시
+ *  - 새로운 선택 시 이전 정보 교체
+ *
+ * 5. 엣지 케이스 처리
+ *  - Modal이 취소로 닫힐 때 처리
+ *  - 선택 없이 Modal이 닫힐 때 처리
+ *  - 네트워크 오류 발생 시 처리
+ *  - 잘못된 상품 데이터 처리
+ *
+ * 6. 상태 동기화 확인
+ *  - selectedProductInfo 상태와 UI 동기화
+ *  - Modal 상태와 메인 화면 상태 동기화
+ *  - 새로고침 시 상태 초기화 처리
+ */
+
+/**
+ * TODO: 선택된 상품 데이터 구조
+ *
+ * selectedProduct: {
+ *   _id: string,
+ *   name: string,
+ *   price: number,
+ *   mainImages: Array<{path: string}>,
+ *   // ... 기타 필요한 상품 정보
+ * } | null
+ */
+
+/**
  * 새로운 게시글을 작성하기 위한 페이지 컴포넌트
  * React-Quill 에디터를 사용하여 리치 텍스트 편집 기능을 제공
  * 이미지 업로드, 텍스트 스타일링, 게시글 저장 기능 포함
@@ -18,11 +97,19 @@ export default function QnANewPostPage() {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const [selectedProductInfo, setSelectedProductInfo] = useState(null);
+
+  // 상품 선택 처리 함수
+  const handleProductSelect = (product) => {
+    setSelectedProductInfo(product); // 선택된 상품 정보를 state에 저장
+  };
+
   // 게시글 작성 중 취소 버튼 눌렀을 떄
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
 
+  // 취소 확인 버튼
   const cancelCheckBtn = () => {
     // 제목, 내용이 있는지 확인
     const hasContent =
@@ -58,6 +145,14 @@ export default function QnANewPostPage() {
     }
   };
 
+  /**
+   * TODO 오류 해결
+   *
+   * Quill 에디터 formats 오류 해결
+   * - formats 배열에서 'ordered' , 'bullet' 제거
+   * - 대신 'list' 포맷만 사용
+   *
+   */
   // Quill 에디터 설정
   const modules = {
     // 툴바 설정: 텍스트 스타일링, 정렬, 리스트, 링크, 이미지 기능 포함
@@ -66,7 +161,7 @@ export default function QnANewPostPage() {
       [{ align: ['', 'center', 'right'] }], // 텍스트 정렬 옵션
       [{ list: 'ordered' }, { list: 'bullet' }], // 리스트 옵션
       ['link'], // 링크 삽입 옵션
-      // ['image'], // 이미지 삽입 옵션 비활성화
+      ['image'],
     ],
     clipboard: {
       matchVisual: false, // 복사/붙여넣기 시 시각적 포맷팅 매칭 비활성화
@@ -81,9 +176,9 @@ export default function QnANewPostPage() {
     'align',
     'list',
     'link',
-    // 'image', // 이미지 포맷 비활성화
-    'ordered',
-    'bullet',
+    'image',
+    // 'ordered', // 오류 나서 주석 처리
+    // 'bullet', // 오류 나서 주석 처리
   ];
 
   // Quill 에디터 초기화
@@ -206,27 +301,86 @@ export default function QnANewPostPage() {
 
       {/* 상품 정보 불러오기 */}
 
-      <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
-        <div className='mr-6'>
-          <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
-            No Image
+      {/**
+       * TODO: 선택된 상품 정보 표시 UI 구현
+       *
+       * 1. 조건부 렌더링 구조 만들기(완료)
+       * - selectedProductInfo 유무에 따라 다른 UI 표시
+       * - selectedProductInfo가 null일 떄는 기본 UI
+       * - selectedProductInfo가 잇을 때는 상품 정보 표시
+       *
+       * 2. 이미지 표시 구현 (완료)
+       * - mainImages 배열 체크
+       * - 이미지가 있을 경우
+       *  - https://11.fesp.shop + mainImages[0].path
+       *  - alt 속성에는 상품명
+       * -이미지가 없을 경우 "No Image" 표시
+       *
+       * 3. 상품 정보 표시(완료)
+       * - 상품명: selectedProductInfo.name
+       * - Link 컴포넌트 to 속성: `/detail/${selectedProductInfo._id}`
+       *
+       * 4. 테스트(완료)
+       * - 상품 선택 전 기본 UI 확인
+       * - 상품 선택 후 정보 표시 확인
+       * - 이미지 로드 확인
+       * - 상품 상세보기 링크 작동 확인
+       */}
+
+      {selectedProductInfo ? (
+        <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+          <div className='mr-6'>
+            {selectedProductInfo.mainImages?.length > 0 ? (
+              <img
+                src={`https://11.fesp.shop${selectedProductInfo.mainImages[0].path}`}
+                className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'
+              />
+            ) : (
+              <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+                No Image
+              </div>
+            )}
+          </div>
+          <div className='flex flex-col gap-4 justify-center h-32'>
+            <div className='text-lg'>상품명: {selectedProductInfo.name} </div>
+            <div className='flex gap-4'>
+              <button className='px-6 py-2.5 bg-black text-white text-base rounded hover:bg-gray-800'>
+                <Link to={`/detail/${selectedProductInfo._id}`}>
+                  상품상세보기
+                </Link>
+              </button>
+              <button
+                className='px-6 py-2.5 border border-black text-base rounded hover:bg-gray-50'
+                onClick={openModal}
+              >
+                상품정보선택
+              </button>
+            </div>
           </div>
         </div>
-        <div className='flex flex-col gap-4 justify-center h-32'>
-          <div className='text-lg'>상품명: </div>
-          <div className='flex gap-4'>
-            <button className='px-6 py-2.5 bg-black text-white text-base rounded hover:bg-gray-800'>
-              <Link to='/detail'>상품상세보기</Link>
-            </button>
-            <button
-              className='px-6 py-2.5 border border-black text-base rounded hover:bg-gray-50'
-              onClick={openModal}
-            >
-              상품정보선택
-            </button>
+      ) : (
+        <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+          <div className='mr-6'>
+            <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+              No Image
+            </div>
+          </div>
+          <div className='flex flex-col gap-4 justify-center h-32'>
+            <div className='text-lg'>상품명: </div>
+            <div className='flex gap-4'>
+              <button className='px-6 py-2.5 bg-black text-white text-base rounded hover:bg-gray-800'>
+                <Link to='/detail'>상품상세보기</Link>
+              </button>
+              <button
+                className='px-6 py-2.5 border border-black text-base rounded hover:bg-gray-50'
+                onClick={openModal}
+              >
+                상품정보선택
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* 게시글 제목 입력 필드 */}
       <input
@@ -263,7 +417,10 @@ export default function QnANewPostPage() {
       {isModalOpen && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
           <div className='bg-white rounded-lg shadow-lg max-w-3xl w-full mx-4'>
-            <QnAProductModal onClose={closeModal} />
+            <QnAProductModal
+              onClose={closeModal}
+              onProductSelect={handleProductSelect}
+            />
           </div>
         </div>
       )}
