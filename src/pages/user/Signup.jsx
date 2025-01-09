@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import ErrorMsg from "@components/ErrorMsg";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "@store/userStore";
 
 const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
