@@ -1,12 +1,25 @@
 import useUserStore from "@store/userStore";
+import { useNavigate } from "react-router-dom";
 
 const MenuIcons = () => {
   const { user, resetUser } = useUserStore();
+
+  const navigate = useNavigate();
 
   const handleLogout = (e) => {
     e.preventDefault();
     resetUser();
     alert(`${user.name} 님, 정상적으로 로그아웃 되었습니다.`);
+  };
+
+  const handleCartClick = (e) => {
+    if (user) {
+      navigate(`/cart/${user.id}`);
+    } else {
+      e.preventDefault();
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+    }
   };
 
   return (
@@ -32,7 +45,11 @@ const MenuIcons = () => {
           <a href="/profile" className="text-gray-700 hover:text-secondary">
             <i className="fas fa-user"></i>
           </a>
-          <a href="/cart" className="text-gray-700 hover:text-secondary">
+          <a
+            href="/cart"
+            className="text-gray-700 hover:text-secondary"
+            onClick={handleCartClick}
+          >
             <i className="fas fa-shopping-cart"></i>
           </a>
           <a href="/search" className="text-gray-700 hover:text-secondary">

@@ -6,20 +6,13 @@ export const cartStore = create((set) => {
 
   return {
     cartItemsList: [],
-    shippingCost: 3000,
+    shippingCost: 3000, // 기본 배송비
     loading: false,
     error: null,
-    fetchCartItems: async (isLoggedIn) => {
-      if (!isLoggedIn) {
-        set({
-          error: "비회원은 장바구니를 조회할 수 없습니다.",
-        });
-        return;
-      }
-
+    fetchCartItems: async () => {
       set({ loading: true, error: null });
       try {
-        const response = await axiosInstance.get("/carts");
+        const response = await axiosInstance.get("/carts/");
 
         const products = response.data.item.map((product) => ({
           id: product.product._id,
@@ -29,7 +22,11 @@ export const cartStore = create((set) => {
           image: product.product.image.url,
         }));
 
-        set({ cartItemsList: products, loading: false });
+        set({
+          cartItemsList: products,
+          shippingCost: response.data.cost.shippingFees,
+          loading: false,
+        });
       } catch (error) {
         console.error(
           "Error fetching cart items:",

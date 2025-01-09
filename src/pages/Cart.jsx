@@ -7,7 +7,7 @@ function Cart() {
     cartStore();
 
   useEffect(() => {
-    fetchCartItems(); // 컴포넌트 마운트 시 장바구니 아이템 가져오기
+    fetchCartItems();
   }, [fetchCartItems]);
 
   const totalPrice = cartItemsList.reduce(
@@ -16,6 +16,9 @@ function Cart() {
   );
 
   const totalOrderAmount = totalPrice + shippingCost;
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="flex justify-center px-[16px]">
