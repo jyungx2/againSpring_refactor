@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
 import styles from "./User.module.css";
+import { useNavigate } from "react-router-dom";
 
 function TermsOfService() {
+  const navigate = useNavigate();
+
   const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       "terms-required": false,
@@ -34,6 +37,10 @@ function TermsOfService() {
     Object.keys(watchAll).forEach((key) => {
       setValue(key, isChecked); // setValue를 사용해 각 체크박스의 값을 업데이트 - 매개변수 2개: (필드 이름, 설정할 값)
     });
+  };
+
+  const handleNext = () => {
+    navigate("/signup");
   };
 
   return (
@@ -252,9 +259,10 @@ function TermsOfService() {
           </div>
           <div className="flex justify-center p-[30px] border-t border-grey-30">
             <button
-              type="submit"
+              type="button"
               disabled={!isOkayToNext}
-              className="bg-primary-40 inline-block text-4 text-white h-[48px] leading-[48px] w-full box-border cursor-pointer rounded-[12px] btn-register flex-shrink-0 font-gowunBold disabled:bg-grey-30"
+              className="bg-primary-40 inline-block text-4 text-white h-[48px] leading-[48px] w-full box-border cursor-pointer rounded-[12px] btn-register flex-shrink-0 font-gowunBold disabled:bg-grey-30 focus:bg-primary-30"
+              onClick={handleNext}
             >
               동의하기
             </button>
