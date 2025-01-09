@@ -1,45 +1,43 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export default function QnAListItem({
+export default function EventListItem({
   number,
   title,
   author,
   date,
-  isAnswered,
+  isActive,
 }) {
-  const detailPath =
-    title === '상품 관련 문의' ? '/qna/product/detail' : '/qna/detail';
   return (
     <tr className='border-b border-grey-10'>
       <td className='py-5 text-left pl-5'>{number}</td>
       <td className='py-5 text-left pl-5'>
         <Link
-          to={detailPath}
+          to={`/event/detail/${number}`}
           className='hover:text-secondary-20 transition-colors'
         >
           {title}
         </Link>
         <span
-          className={`inline-block px-5 py-2 rounded-[20px] text-white text-sm ml-2.5 ${isAnswered ? 'bg-primary-40' : 'bg-grey-20'
+          className={`inline-block px-5 py-2 rounded-[20px] text-white text-lg ml-2.5 ${isActive ? 'bg-primary-40' : 'bg-grey-20'
             }`}
         >
-          {isAnswered ? '답변완료' : '답변대기'}
+          {isActive ? '진행중' : '종료'}
         </span>
       </td>
       <td className='py-5 text-right pr-2.5'>{author}</td>
       <td className='py-5 text-right pr-5'>
-        <div className='text-2xl'>{date}</div>
-        <div className='text-2xl'>00:00:00</div>
+        <div className='text-2xl text-center'>{date}</div>
+        <div className='text-xl text-center'>00:00:00</div>
       </td>
     </tr>
   );
 }
 
-QnAListItem.propTypes = {
+EventListItem.propTypes = {
   number: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
-  isAnswered: PropTypes.bool.isRequired,
+  isActive: PropTypes.bool.isRequired,
 };
