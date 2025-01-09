@@ -15,12 +15,10 @@ function TermsOfService() {
   });
   const watchAll = watch(); // register로 등록된 폼 필드의 값을 추적하고 객체 형태로 반환하는 함수입니다.
 
-  // 체크박스(type="checkbox")의 경우, 속성의 밸류는 체크 여부이며, 이는 자동으로 true(체크) 또는 false(체크 x)로 설정
-  // watchAll = {
-  //   required1: true, // 필수 체크박스 1 체크 여부
-  //   required2: false, // 필수 체크박스 2 체크 여부
-  //   optional: true, // 선택 체크박스 체크 여부
-  // };
+  // * input form(checkbox/text/...)에 따른 useForm() 사용
+  // 체크박스(type="text")의 경우, watch 객체의 속성의 밸류는 유저가 입력한 값이지만,
+  // 체크박스(type="checkbox")의 경우, watch 객체의 속성의 밸류는 체크 여부이며, 이는 자동으로 true(체크) 또는 false(체크 x)로 설정
+
   console.log(watchAll);
   // useForm()에서 defaultValues를 설정하지 않으면 watchAll()이 처음에 빈 객체 {}를 반환
 
