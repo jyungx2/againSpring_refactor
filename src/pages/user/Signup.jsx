@@ -4,14 +4,17 @@ import { useMutation } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import ErrorMsg from "@components/ErrorMsg";
 
+const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 function Signup() {
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
+    watch,
   } = useForm({
-    mode: "onFocus",
+    mode: "onSubmit",
     reValidateMode: "onChange",
     criteriaMode: "all",
   });
@@ -91,52 +94,81 @@ function Signup() {
                     type="text"
                     placeholder="이름"
                     className={`${styles.inputUnset}`}
-                    {...register("name", { required: "이름은 필수입니다." })}
+                    {...register("name", {
+                      required: "이름은 필수입니다.",
+                      minLength: {
+                        value: 2,
+                        message: "2글자 이상 입력하세요.",
+                      },
+                      pattern: {
+                        value: /^[^\d]*$/, // 🫸숫자는 포함할 수 없음.
+                        message: "숫자는 입력할 수 없습니다.",
+                      },
+                    })}
                   />
                 </div>
                 <ErrorMsg target={errors.name} />
               </div>
 
               <div className="id-collection">
-                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
-                  <img src="/icons/user.svg" />
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="이메일"
-                    className={`${styles.inputUnset}`}
-                    {...register("email", { required: "이메일은 필수입니다." })}
-                  />
+                <div>
+                  <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20">
+                    <img src="/icons/user.svg" />
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="이메일"
+                      className={`${styles.inputUnset}`}
+                      {...register("email", {
+                        required: "이메일은 필수입니다.",
+                        pattern: {
+                          value: emailExp,
+                          message: "이메일 양식에 맞지 않습니다.",
+                        },
+                      })}
+                    />
+                  </div>
+                  <ErrorMsg target={errors.email} />
                 </div>
-                <ErrorMsg target={errors.email} />
 
-                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20">
-                  <img src="/icons/locker.svg" />
-                  <input
-                    id="password"
-                    type="password"
-                    placeholder="비밀번호"
-                    className={`${styles.inputUnset}`}
-                    {...register("password", {
-                      required: "비밀번호는 필수입니다.",
-                    })}
-                  />
+                <div>
+                  <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20">
+                    <img src="/icons/locker.svg" />
+                    <input
+                      id="password"
+                      type="password"
+                      placeholder="비밀번호"
+                      className={`${styles.inputUnset}`}
+                      {...register("password", {
+                        required: "비밀번호는 필수입니다.",
+                        minLength: {
+                          value: 8,
+                          message: "8자리 이상 입력하세요.",
+                        },
+                      })}
+                    />
+                  </div>
+                  <ErrorMsg target={errors.password} />
                 </div>
-                <ErrorMsg target={errors.password} />
 
-                <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20">
-                  <img src="/icons/locker.svg" />
-                  <input
-                    id="password-confirm"
-                    type="password"
-                    placeholder="비밀번호 확인"
-                    className={`${styles.inputUnset}`}
-                    {...register("password-confirm", {
-                      required: "비밀번호 확인은 필수입니다.",
-                    })}
-                  />
+                <div>
+                  <div className="flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20">
+                    <img src="/icons/locker.svg" />
+                    <input
+                      id="password-confirm"
+                      type="password"
+                      placeholder="비밀번호 확인"
+                      className={`${styles.inputUnset}`}
+                      {...register("password-confirm", {
+                        required: "비밀번호 확인은 필수입니다.",
+                        validate: (value) =>
+                          value === watch("password") ||
+                          "비밀번호가 일치하지 않습니다.",
+                      })}
+                    />
+                  </div>
+                  <ErrorMsg target={errors["password-confirm"]} />
                 </div>
-                <ErrorMsg target={errors["password-confirm"]} />
               </div>
 
               <button className="font-gowunBold w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
