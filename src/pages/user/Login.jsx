@@ -4,23 +4,26 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import useUserStore from "@store/userStore";
 import { useNavigate } from "react-router-dom";
+import ErrorMsg from "@components/ErrorMsg";
 
 function Login() {
   const axios = useAxiosInstance();
   const setUser = useUserStore((store) => store.setUser);
   const navigate = useNavigate();
 
-  const { register, handleSubmit, setError } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
     defaultValues: { email: "u1@market.com", password: "11111111" },
   });
 
   const login = useMutation({
     mutationFn: (loginData) => axios.post(`/users/login`, loginData),
     onSuccess: (res) => {
-      console.log(res);
-
       const user = res.data.item;
-      console.log(user);
 
       setUser({
         _id: user._id,
@@ -62,7 +65,9 @@ function Login() {
             <form onSubmit={handleSubmit(login.mutate)}>
               <div className="flex flex-col gap-3">
                 <div
-                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4`}
+                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${
+                    errors.email ? `${styles.error}` : ""
+                  }`}
                 >
                   <input
                     id="email"
@@ -72,8 +77,13 @@ function Login() {
                     {...register("email", { required: "이메일은 필수입니다." })}
                   />
                 </div>
+                <ErrorMsg target={errors.email} />
 
-                <div className="border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4">
+                <div
+                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${
+                    errors.password ? `${styles.error}` : ""
+                  }`}
+                >
                   <input
                     id="password"
                     type="password"
@@ -84,6 +94,7 @@ function Login() {
                     })}
                   />
                 </div>
+                <ErrorMsg target={errors.password} />
               </div>
 
               <div className="mt-8">
@@ -109,7 +120,7 @@ function Login() {
 
               <ul className="font-gowun mt-14 text-center">
                 <li className={styles.li}>
-                  <a href="/" className={`cursor-pointer text-primary-70`}>
+                  <a href="/tos" className={`cursor-pointer text-primary-70`}>
                     회원가입 ｜
                   </a>{" "}
                 </li>
