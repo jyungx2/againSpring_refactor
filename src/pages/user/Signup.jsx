@@ -27,8 +27,21 @@ function Signup() {
   const setUser = useUserStore((store) => store.setUser);
 
   const registerUser = useMutation({
-    mutationFn: (userInfo) => {
+    mutationFn: async (userInfo) => {
       console.log("Initial userInfo: ", userInfo); // name, email, password, password-confirm 정보가 담긴 객체
+
+      // 프로필 이미지 등록 로직 구현
+      if (userInfo.attach.length > 0) {
+        const profileFormData = new FormData();
+        profileFormData.append("attach", userInfo.attach[0]);
+
+        const fileRes = await axios.post("/files", profileFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        userInfo.image = fileRes.data.item[0];
+        delete userInfo.attach;
+      }
 
       userInfo.type = "user";
       console.log("Final userInfo: ", userInfo);
@@ -96,11 +109,16 @@ function Signup() {
               >
                 <div className="w-full h-full bg-[url('./icons/profile.svg')] bg-cover bg-center"></div>
 
-                <div className="absolute bottom-[4px] right-0 rounded-full  border border-grey-30">
-                  <button className="box-border w-10 h-10 bg-white rounded-full cursor-pointer">
-                    <img
-                      className="w-7 h-7 mx-auto mt-1"
-                      src="/icons/camera.svg"
+                <div className="absolute bottom-[4px] right-0 rounded-full border border-grey-30 bg-white cursor-pointer">
+                  <button
+                    className={`box-border w-12 h-12 ${styles.camera} cursor-pointer`}
+                  >
+                    <input
+                      type="file"
+                      id="attach"
+                      accept="image/*"
+                      className={`${styles.hidden}`}
+                      {...register("attach")} // files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
                     />
                   </button>
                 </div>

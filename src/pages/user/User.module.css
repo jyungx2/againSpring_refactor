@@ -52,3 +52,16 @@ img {
 .error:focus-within {
   border: 2px solid #e73434;
 }
+
+.camera {
+  position: relative;
+  background-image: url("/icons/camera.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.hidden {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+}
