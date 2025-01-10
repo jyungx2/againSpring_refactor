@@ -21,6 +21,9 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     pageSize: 5,
   });
 
+  // 상품 정렬 기능 구현 순서
+  const [sortOption, setSortOption] = useState('default');
+
   // Zustand 스토어에서 상태 가져오기
   const {
     products,
@@ -126,6 +129,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
           ...(trimmedKeyWord && { keyword: trimmedKeyWord }),
           page: '1',
           limit: pagination.pageSize.toString(),
+          sort: getSortParamsByOption,
         });
       }
     } catch (error) {
@@ -183,6 +187,32 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     } catch (err) {
       handleApiError(err);
     }
+  };
+
+  // 각 옵션별 sort 파라미터 반환 로직
+  const getSortParamsByOption = (sortOption) => {
+    const sortParams = {
+      default: undefined,
+      'price-asc': JSON.stringify({ price: 1 }), // 오름차순
+      'price-desc': JSON.stringify({ price: -1 }), // 내림차순
+      review: JSON.stringify({ replies: -1 }),
+    };
+
+    return sortParams[sortOption];
+  };
+
+  // 정렬 변경 처리 로직
+  const handleSortChange = (e) => {
+    const newSortOption = e.target.value;
+    setSortOption(newSortOption);
+
+    const params = {
+      page: pagination.currentPage,
+      limit: pagination.pageSize,
+      ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
+      sort: getSortParamsByOption(newSortOption),
+    };
+    loadProductData(params);
   };
 
   // 페이지네이션 컴포넌트
@@ -298,14 +328,16 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
             총 <span className='font-medium'>{searchCount}</span>개의 상품이
             검색되었습니다
           </p>
+
           <select
             className='border border-grey-20 rounded p-1 text-lg focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'
             aria-label='정렬 기준'
+            onChange={handleSortChange}
           >
             <option value='default'>기본순</option>
             <option value='price-asc'>낮은 가격순</option>
             <option value='price-desc'>높은 가격순</option>
-            <option value='latest'>신상품순</option>
+            <option value='review'>리뷰순</option>
           </select>
         </div>
 
