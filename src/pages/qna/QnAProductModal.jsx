@@ -129,15 +129,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
       setLoading(false);
     }
   };
-  const handlePageSizeChange = (newSize) => {
-    setPageSize(newSize);
-    setSearchParams({
-      ...Object.fromEntries(searchParams),
-      limit: newSize.toString(),
-      page: '1',
-    });
-    handleSearch();
-  };
 
   const handleSelect = () => {
     try {
