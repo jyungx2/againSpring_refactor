@@ -1,12 +1,38 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosInstance from '@hooks/useAxiosInstance';
 
 export default function ProductQnAPostDetailPage() {
+  const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+
+  const [selectedProductInfo, setSelectedProductInfo] = useState(null);
+
+  const { id } = useParams();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['qnaDetail', id],
+    queryFn: () => axios.get(`/posts/${id}`),
+    select: (res) => res.data,
+  });
+
+  useEffect(() => {
+    if (data?.item?.product) {
+      // product 객체의 구조가 API 응답과 다릅니다
+      setSelectedProductInfo({
+        ...data.item.product,
+        name: data.item.product.name[0], // 배열의 첫 번째 항목 사용
+        _id: data.item.product._id[0], // 배열의 첫 번째 항목 사용
+        mainImages: data.item.product.mainImages[0], // 첫 번째 이미지 세트 사용
+      });
+    }
+  }, [data]);
 
   // 댓글 입력 상태 관리
   const [newComment, setNewComment] = useState('');
@@ -210,30 +236,73 @@ export default function ProductQnAPostDetailPage() {
     });
   };
 
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>로딩중...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl text-red-500'>에러가 발생했습니다</div>
+      </div>
+    );
+  }
+
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        Q&amp;A
+        Q&A
       </h1>
 
       {/* 상품 정보 불러오기 */}
-      <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
-        <div className='mr-6'>
-          <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-base text-gray-600'>
-            상품 Image
+      {selectedProductInfo ? (
+        <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+          <div className='mr-6 relative'>
+            {selectedProductInfo.mainImages?.length > 0 ? (
+              <img
+                src={`https://11.fesp.shop${selectedProductInfo.mainImages[0].path}`}
+                className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'
+              />
+            ) : (
+              <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+                No Image
+              </div>
+            )}
+          </div>
+          <div className='flex flex-col gap-4 justify-center h-32'>
+            <div className='text-xl'>상품명: {selectedProductInfo.name}</div>
+            <div className='flex gap-4'>
+              <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
+                <Link to={`/detail/${selectedProductInfo._id}`}>
+                  상품상세보기
+                </Link>
+              </button>
+            </div>
           </div>
         </div>
-        <div className='flex flex-col gap-4 justify-center h-32'>
-          <div className='text-xl'>
-            상품명: 대나무 칫솔 (소형) <br /> 1,400원
+      ) : (
+        <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+          <div className='mr-6 relative'>
+            <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+              No Image
+            </div>
           </div>
-          <div className='flex gap-4'>
-            <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
-              <Link to='/detail'>상품상세보기</Link>
-            </button>
+          <div className='flex flex-col gap-4 justify-center h-32'>
+            <div className='text-xl'>
+              상품명: 대나무 칫솔 (소형) <br /> 1,400원
+            </div>
+            <div className='flex gap-4'>
+              <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
+                <Link to='/detail'>상품상세보기</Link>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <section className='flex flex-col'>
         {/* 게시글 헤더 */}
@@ -249,9 +318,9 @@ export default function ProductQnAPostDetailPage() {
               className='text-2xl font-medium text-grey-50 flex items-center gap-2'
               id='title'
             >
-              상품 관련 문의
+              {data?.item?.title}
               <span className='inline-block px-5 py-2 rounded-[20px] text-white text-base bg-primary-40'>
-                답변완료
+                {data?.item?.repliesCount ? '답변완료' : '답변대기'}
               </span>
             </h2>
           </div>
@@ -263,7 +332,7 @@ export default function ProductQnAPostDetailPage() {
               작성자
             </label>
             <p className='text-2xl font-medium text-grey-50' id='writer'>
-              홍길동
+              {data?.item?.user?.name}
             </p>
           </div>
 
@@ -275,7 +344,7 @@ export default function ProductQnAPostDetailPage() {
                   작성일
                 </label>
                 <p className='text-xl text-grey-40' id='date'>
-                  2024-01-01 00:00:00
+                  {data?.item?.createdAt}
                 </p>
               </div>
               <div className='flex items-center'>
@@ -283,16 +352,12 @@ export default function ProductQnAPostDetailPage() {
                   조회수
                 </label>
                 <p className='text-xl text-grey-40' id='views'>
-                  0
+                  {data?.item?.views}
                 </p>
               </div>
             </div>
 
-            {Array.from({ length: 10 }, (_, i) => (
-              <p key={i} className='py-4 text-xl'>
-                여기에 글 내용이 들어갑니다 {i + 1}번째 줄
-              </p>
-            ))}
+            {data?.item?.content}
           </div>
         </div>
 
@@ -445,3 +510,37 @@ export default function ProductQnAPostDetailPage() {
     </div>
   );
 }
+
+ProductQnAPostDetailPage.propTypes = {
+  item: PropTypes.shape({
+    _id: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
+    product_id: PropTypes.number.isRequired, // 상품 관련 QnA는 product_id가 필수
+    seller_id: PropTypes.number,
+    views: PropTypes.number.isRequired,
+    user: PropTypes.shape({
+      _id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string,
+    }).isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+    product: PropTypes.shape({
+      _id: PropTypes.arrayOf(PropTypes.number),
+      name: PropTypes.arrayOf(PropTypes.string),
+      mainImages: PropTypes.arrayOf(
+        PropTypes.arrayOf(
+          PropTypes.shape({
+            path: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            originalname: PropTypes.string.isRequired,
+          })
+        )
+      ),
+    }),
+    bookmarks: PropTypes.number.isRequired,
+    repliesCount: PropTypes.number.isRequired,
+  }),
+};

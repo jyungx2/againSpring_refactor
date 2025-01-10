@@ -1,11 +1,23 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import PropTypes from 'prop-types';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosInstance from '@hooks/useAxiosInstance';
 
 export default function QnAPostDetailPage() {
+  const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+
+  const { id } = useParams();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['qnaDetail', id],
+    queryFn: () => axios.get(`/posts/${id}`),
+    select: (res) => res.data,
+  });
 
   // 관리자 여부 체크 (실제 구현 시에는 상태 관리나 context에서 가져와야 함)
   const isAdmin = false;
@@ -52,10 +64,26 @@ export default function QnAPostDetailPage() {
     });
   };
 
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>로딩중...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl text-red-500'>에러가 발생했습니다</div>
+      </div>
+    );
+  }
+
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        Q&amp;A
+        Q&A
       </h1>
 
       <section className='flex flex-col'>
@@ -72,9 +100,9 @@ export default function QnAPostDetailPage() {
               className='text-2xl font-medium text-grey-50 flex items-center gap-2'
               id='title'
             >
-              피그마 너무 어려운데요.
+              {data?.item?.title}
               <span className='inline-block px-5 py-2 rounded-[20px] text-white text-base bg-grey-20'>
-                답변대기
+                {data?.item?.repliesCount ? '답변완료' : '답변대기'}
               </span>
             </h2>
           </div>
@@ -86,7 +114,7 @@ export default function QnAPostDetailPage() {
               작성자
             </label>
             <p className='text-2xl font-medium text-grey-50' id='writer'>
-              홍길동
+              {data?.item?.user?.name}
             </p>
           </div>
           <div className='border-b border-grey-10'>
@@ -96,7 +124,7 @@ export default function QnAPostDetailPage() {
                   작성일
                 </label>
                 <p className='text-xl text-grey-40' id='date'>
-                  2024-01-01 00:00:00
+                  {data?.item?.createdAt}
                 </p>
               </div>
               <div className='flex items-center'>
@@ -104,16 +132,12 @@ export default function QnAPostDetailPage() {
                   조회수
                 </label>
                 <p className='text-xl text-grey-40' id='views'>
-                  0
+                  {data?.item?.views}
                 </p>
               </div>
             </div>
 
-            {Array.from({ length: 10 }, (_, i) => (
-              <p key={i} className='py-4 text-xl'>
-                여기에 글 내용이 들어갑니다 {i + 1}번째 줄
-              </p>
-            ))}
+            {data?.item?.content}
           </div>
         </div>
 
@@ -200,3 +224,24 @@ export default function QnAPostDetailPage() {
     </div>
   );
 }
+
+QnAPostDetailPage.propTypes = {
+  item: PropTypes.shape({
+    _id: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
+    product_id: PropTypes.number, // 일반 QnA는 product_id가 선택적
+    seller_id: PropTypes.number,
+    views: PropTypes.number.isRequired,
+    user: PropTypes.shape({
+      _id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string,
+    }).isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+    bookmarks: PropTypes.number.isRequired,
+    repliesCount: PropTypes.number.isRequired,
+  }),
+};

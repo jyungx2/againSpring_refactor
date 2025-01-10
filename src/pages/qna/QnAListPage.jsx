@@ -8,6 +8,35 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import QnAListItem from './QnAListItem';
 
+/**
+ * TODO: QnA 게시물 상세페이지 분기 처리 구현 순서
+ * 1. QnAListItem 컴포넌트 수정
+ *    - product_id 유무에 따른 Link path 분기 처리
+ *    - const detailPath = item.product_id ? `/qna/product/${item._id}` : `/qna/${item._id}`;
+ *
+ * 2. 라우터 설정 추가 (App.jsx 또는 라우터 설정 파일)
+ *    - /qna/:id -> QnAPostDetailPage
+ *    - /qna/product/:id -> ProductQnAPostDetailPage
+ *
+ * 3. 상세페이지 컴포넌트에서 데이터 fetching 로직 구현
+ *    - useParams로 id 파라미터 가져오기
+ *    - useQuery로 상세 데이터 조회
+ *    - const { data } = useQuery({
+ *        queryKey: ['qnaDetail', id],
+ *        queryFn: () => axios.get(`/posts/${id}`),
+ *        select: (res) => res.data
+ *      });
+ *
+ * 4. 로딩 상태 처리
+ *    - if (isLoading) return <div>로딩중...</div>;
+ *
+ * 5. 에러 상태 처리
+ *    - if (error) return <div>에러가 발생했습니다</div>;
+ *
+ * 6. product_id가 있는 경우 상품 정보 표시
+ *    - selectedProductInfo 상태를 실제 product 데이터로 설정
+ */
+
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
   const response = await axios.get('/users');
@@ -25,20 +54,6 @@ export default function QnAListPage() {
     queryFn: () => fetchUserInfo(axios),
   });
 
-  // console.log('userDate는 ', userData);
-  // console.log('userDate 첫번째 회원의 type은 ', userData?.item[0]?.type);
-  // console.log(
-  //   'userDate 모든 회원의 type은 ',
-  //   userData?.item.map((user) => user.type)
-  // );
-
-  /**
-   * TODO 게시판 목록 조회하기
-   * 1. {{url}}/posts?type=qna
-   * 2. 제목(title), 작성자(user.name), 작성일(createdAt, updatedAt 중 가장 최근 날짜에 작성된 것으로)
-   * 3. React Query를 사용해 게시글 목록 데이터 fetch
-   * 4. 게시글 목록을 ListItem 컴포넌트로 매핑
-   */
   const { data } = useQuery({
     queryKey: ['posts', 'qna'],
     queryFn: () => axios.get('/posts', { params: { type: 'qna' } }),
@@ -53,36 +68,11 @@ export default function QnAListPage() {
     return <div>로딩중...</div>;
   }
 
-  // TODO 글 번호는 오름차순으로, 작성일은 내림차순으로 정렬하기 (완료)
-
   const qnaPostList = data.item.map((item, index) => (
     <QnAListItem key={item._id} item={item} number={data.item.length - index} />
   ));
 
   const MySwal = withReactContent(Swal);
-
-  /**
-   * TODO 비 로그인 상태이면 로그인 페이지로 이동
-   * 1. userStore import 하기(완료)
-   * 2. useUserStore hook으로부터 user 상태 가져오기(완료)
-   * 3. onClick 핸들러 함수 작성하기(완료)
-   * 4. Link 컴포넌트를 button으로 변경하기(완료)
-   * 5. button에 onClick 핸들러 연결하기(완료)
-   * 6. navigate import 하기(완료)
-   * 7. useNavigate hook 사용(아직 구현 안 함)
-   */
-
-  /**
-   * TODO 로그인 상태인데 type=user가 아니면 권한 없음 처리
-   * 1. axios instance import 하기(완료)
-   * 2. React Query의 useQuery hook import 하기(완료)
-   * 3. 사용자 정보 조회 API 함수 작성하기(완료)
-   * 4. useQuery로 사용자 정보 가져오기(완료)
-   * 5. questionButton 함수에서 권한 체크 로직 추가하기 (완료)
-   *   - 비 로그인 -> 로그인 페이지 이동 (기존 로직 유지)
-   *   - 로그인 & type !== 'user' -> 권한 없음 alert
-   *   - 로그인 & type === 'user' -> 글쓰기 페이지로 이동
-   */
 
   const questionButton = () => {
     if (!user) {

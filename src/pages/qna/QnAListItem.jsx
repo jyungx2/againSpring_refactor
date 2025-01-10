@@ -2,8 +2,11 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 export default function QnAListItem({ item, number }) {
-  const detailPath =
-    item.title === '상품' ? '/qna/product/detail' : '/qna/detail';
+  // product_id 유무에 따른 Link path 분기 처리
+  const detailPath = item.product_id
+    ? `/qna/product/detail/${item._id}`
+    : `/qna/detail/${item._id}`;
+
   return (
     <tr className='border-b border-grey-10'>
       <td className='py-5 text-left pl-5'>{number}</td>
@@ -35,6 +38,7 @@ QnAListItem.propTypes = {
   item: PropTypes.shape({
     _id: PropTypes.number.isRequired,
     title: PropTypes.string,
+    product_id: PropTypes.number,
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
     }),

@@ -283,7 +283,7 @@ export default function QnANewPostPage() {
     <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-52'>
       {/* 페이지 제목 */}
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        Q&amp;A
+        Q&A
       </h1>
 
       {/* 상품 정보 불러오기 */}
