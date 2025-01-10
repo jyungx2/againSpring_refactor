@@ -1,4 +1,4 @@
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'quill/dist/quill.snow.css';
 import '../../assets/styles/fonts.css';
 import { useEffect, useState } from 'react';
@@ -8,95 +8,13 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
 /**
- * TODO: 선택된 상품 정보 표시 구현
- *
- * 1. 상품 정보 상태 관리 (완료)
- *  - selectedProduct 상태 추가
- *  - 상태 초기값은 null로 설정
- *
- * 2. QnAProductModal에 onProductSelect prop 전달(완료)
- *  - Modal 컴포넌트에 onProductSelect 함수 전달
- *  - 선택된 상품 정보를 상태에 저장하는 로직 구현
- *
- * 3. 선택된 상품 정보 표시 UI 구현 (완료)
- *  - 상품 이미지 표시
- *    - mainImages가 있을 경우 첫 번째 이미지 표시
- *    - 없을 경우 NoImage 표시 (현재 UI 활용)
- *  - 상품명 표시
- *    - 현재 "상품명: " 부분에 선택된 상품명 표시
- *  - 상품 상세보기 링크 업데이트
- *    - Link 컴포넌트의 to prop을 선택된 상품의 ID를 사용하도록 수정
- *
- * 4. 상품 선택 상태에 따른 UI 처리 (완료)
- *  - 상품이 선택되지 않은 경우 기본 UI 표시
- *  - 상품이 선택된 경우 해당 상품 정보 표시
- *  - 조건부 렌더링을 통해 처리
- *
- * 5. 상품 정보 초기화 처리
- *  - 새로운 상품 선택 시 이전 선택 정보 초기화
- *  - Modal 닫을 때 불필요한 경우 선택 정보 유지
- */
-
-/**
- * TODO: 상품 정보 초기화 처리 구현
- *
- * 1. Modal 관련 상태 및 핸들러 정리 (완료)
- *  - isModalOpen 상태 확인
- *  - openModal, closeModal 핸들러 확인
- *  - selectedProductInfo 상태 확인
- *
- * 2. 상품 선택 처리 개선 (완료)
- *  - handleProductSelect 함수 내에서
- *    - 이전 선택 정보 확인
- *    - 새로운 상품 정보로 업데이트
- *    - 필요한 경우 관련 UI 상태 초기화
- *
- * 3. Modal 닫기 처리 개선 (완료)
- *  - closeModal 함수 내에서
- *    - 선택 완료된 경우: 현재 선택 정보 유지
- *    - 선택 취소된 경우: 이전 선택 정보 유지
- *    - Modal 내부 상태 초기화 (검색어, 페이지 등)
- *
- * 4. 상품 재선택 시나리오 처리
- *  - 이미 선택된 상품이 있는 상태에서 Modal 열기
- *  - Modal 내에서 이전 선택 상품 표시
- *  - 새로운 선택 시 이전 정보 교체
- *
- * 5. 엣지 케이스 처리
- *  - Modal이 취소로 닫힐 때 처리
- *  - 선택 없이 Modal이 닫힐 때 처리
- *  - 네트워크 오류 발생 시 처리
- *  - 잘못된 상품 데이터 처리
- *
- * 6. 상태 동기화 확인
- *  - selectedProductInfo 상태와 UI 동기화
- *  - Modal 상태와 메인 화면 상태 동기화
- *  - 새로고침 시 상태 초기화 처리
- */
-
-/**
- * TODO: 선택된 상품 데이터 구조
- *
- * selectedProduct: {
- *   _id: string,
- *   name: string,
- *   price: number,
- *   mainImages: Array<{path: string}>,
- *   // ... 기타 필요한 상품 정보
- * } | null
- */
-
-/**
  * 새로운 게시글을 작성하기 위한 페이지 컴포넌트
  * React-Quill 에디터를 사용하여 리치 텍스트 편집 기능을 제공
  * 이미지 업로드, 텍스트 스타일링, 게시글 저장 기능 포함
  */
 export default function QnANewPostPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchkeyword, setSearchKeyword] = useState('');
-  const [pageSize, setPageSize] = useState(5);
   const [previousSelection, setPreviousSelection] = useState(null); // 이전 선택 정보 저장용
-  const [searchParams, setSearchParams] = useSearchParams();
 
   // Modal 열 때 현재 선택 정보 저장
   const openModal = () => {
@@ -129,9 +47,6 @@ export default function QnANewPostPage() {
 
   // Modal 상태 초기화 함수
   const resetModalState = () => {
-    setSearchKeyword('');
-    setPageSize(5);
-    setSearchParams({}); // URL 파라미터 초기화
     setIsModalOpen(false);
   };
 
@@ -139,31 +54,7 @@ export default function QnANewPostPage() {
 
   const [selectedProductInfo, setSelectedProductInfo] = useState(null);
 
-  // TODO: 페이지네이션 관련 상태 및 핸들러 추가
-  const [currentPage, setCurrentPage] = useState(1);
-  const handlePageChange = (page) => {
-    // 페이지 변경 로직
-  };
-
   // 상품 선택 처리 함수
-  // const handleProductSelect = (product) => {
-  //   // 1. 이전 선택 정보와 새로운 선택이 다른지 확인
-  //   if (selectedProductInfo?._id !== product._id) {
-  //     // 2. 새로운 상품 정보로 업데이트하기 전에 필요한 처리
-  //     // 예 : 이전 상품 관련 임시 데이터나 UI 상태 초기화
-
-  //     // 3. 새로운 상품 정보 저장
-  //     setSelectedProductInfo(product);
-
-  //     // 4. 선택 완료 후 필요한 처리
-  //     // 예 : 성공 메시지 표시나 UI 업데이트
-  //     console.log(`상품이 선택되었습니다: ${product.name}`);
-  //   } else {
-  //     // 5. 같은 상품을 다시 선택한 경우
-  //     console.log('이미 선택된 상품입니다.');
-  //   }
-  // };
-
   const handleProductSelect = (product) => {
     try {
       // 유효성 검사
@@ -259,8 +150,6 @@ export default function QnANewPostPage() {
     'list',
     'link',
     'image',
-    // 'ordered', // 오류 나서 주석 처리
-    // 'bullet', // 오류 나서 주석 처리
   ];
 
   // Quill 에디터 초기화
@@ -382,33 +271,6 @@ export default function QnANewPostPage() {
       </h1>
 
       {/* 상품 정보 불러오기 */}
-
-      {/**
-       * TODO: 선택된 상품 정보 표시 UI 구현
-       *
-       * 1. 조건부 렌더링 구조 만들기(완료)
-       * - selectedProductInfo 유무에 따라 다른 UI 표시
-       * - selectedProductInfo가 null일 떄는 기본 UI
-       * - selectedProductInfo가 잇을 때는 상품 정보 표시
-       *
-       * 2. 이미지 표시 구현 (완료)
-       * - mainImages 배열 체크
-       * - 이미지가 있을 경우
-       *  - https://11.fesp.shop + mainImages[0].path
-       *  - alt 속성에는 상품명
-       * -이미지가 없을 경우 "No Image" 표시
-       *
-       * 3. 상품 정보 표시(완료)
-       * - 상품명: selectedProductInfo.name
-       * - Link 컴포넌트 to 속성: `/detail/${selectedProductInfo._id}`
-       *
-       * 4. 테스트(완료)
-       * - 상품 선택 전 기본 UI 확인
-       * - 상품 선택 후 정보 표시 확인
-       * - 이미지 로드 확인
-       * - 상품 상세보기 링크 작동 확인
-       */}
-
       {selectedProductInfo ? (
         <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
           <div className='mr-6'>
