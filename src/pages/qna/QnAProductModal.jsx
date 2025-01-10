@@ -352,9 +352,9 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
   };
 
   return (
-    <div className='p-6 bg-white rounded-lg relative'>
+    <div className='max-h-[calc(100vh-4rem)] flex flex-col'>
       {/* 헤더 */}
-      <div className='bg-primary-40 text-white p-3 -mx-6 -mt-6 mb-6 flex justify-between items-center rounded-t-lg'>
+      <div className='bg-primary-40 text-white p-3 flex justify-between items-center'>
         <h2 className='text-lg font-medium'>상품검색</h2>
         <button
           onClick={onClose}
@@ -364,158 +364,128 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
         </button>
       </div>
 
-      {/* 검색 영역 */}
-      <div className='p-4 bg-white rounded mb-4 border border-grey-20'>
-        <div className='flex gap-2 items-center'>
-          <select className='border border-grey-20 rounded p-2 w-32 focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'>
-            <option>상품명</option>
+      {/* 메인 콘텐츠 */}
+      <div className='p-6 flex-1 flex flex-col min-h-0'>
+        {/* 검색 영역 */}
+        <div className='bg-white rounded mb-4 border border-grey-20 p-4'>
+          <div className='flex gap-2 items-center'>
+            <select className='border border-grey-20 rounded p-2 w-32 focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'>
+              <option>상품명</option>
+            </select>
+            <input
+              type='text'
+              defaultValue={params.keyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              ref={searchRef}
+              className='border border-grey-20 rounded p-2 flex-1 focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'
+              placeholder='검색어를 입력하세요'
+            />
+            <button
+              onClick={handleSearch}
+              className='bg-primary-40 text-white px-4 py-2 rounded hover:bg-primary-50 transition-colors'
+            >
+              검색하기
+            </button>
+          </div>
+        </div>
+
+        {/* 검색 결과 카운트 & 정렬 옵션 */}
+        <div className='flex justify-between items-center mb-4'>
+          <p className='text-lg text-grey-60'>
+            총 <span className='font-medium'>{searchCount}</span>개의 상품이
+            검색되었습니다
+          </p>
+          <select className='border border-grey-20 rounded p-1 text-lg focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'>
+            <option value='default'>기본순</option>
+            <option value='price-asc'>낮은 가격순</option>
+            <option value='price-desc'>높은 가격순</option>
+            <option value='latest'>신상품순</option>
           </select>
-          <input
-            type='text'
-            defaultValue={params.keyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
-            ref={searchRef}
-            className='border border-grey-20 rounded p-2 flex-1 focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'
-            placeholder='검색어를 입력하세요'
-          />
+        </div>
+
+        {/* 검색 결과 테이블 */}
+        <div className='flex-1 min-h-0'>
+          <table className='w-full border-t border-grey-20'>
+            <thead>
+              <tr className='bg-primary-5 text-base'>
+                <th className='p-2 text-left border-b border-grey-20 w-24 text-grey-60'>
+                  상품 이미지
+                </th>
+                <th className='p-2 text-left border-b border-grey-20 text-grey-60'>
+                  상품 정보
+                </th>
+                <th className='p-2 text-left border-b border-grey-20 w-16 text-grey-60'>
+                  선택
+                </th>
+              </tr>
+            </thead>
+            <tbody className='divide-y divide-grey-20'>
+              {products.length > 0
+                ? products.map((product) => (
+                    <tr key={product._id}>
+                      <td className='py-1 pl-2'>
+                        {product.mainImages?.length > 0 ? (
+                          <img
+                            src={`https://11.fesp.shop${product.mainImages[0].path}`}
+                            alt={product.name}
+                            className='w-24 h-24 object-cover rounded'
+                          />
+                        ) : (
+                          <div className='w-24 h-24 bg-grey-10 rounded flex items-center justify-center'>
+                            <span className='text-grey-40'>No Image</span>
+                          </div>
+                        )}
+                      </td>
+                      <td className='py-1 pl-1'>
+                        <h3 className='font-medium mb-1'>{product.name}</h3>
+                        <p className='text-primary-40'>
+                          {product.price.toLocaleString()}원
+                        </p>
+                      </td>
+                      <td className='py-1 pl-2 text-center'>
+                        <input
+                          type='radio'
+                          name='productSelection'
+                          checked={selectedProduct === product._id}
+                          onChange={() => setSelectedProduct(product._id)}
+                          className='w-4 h-4 text-primary-40 border-grey-20 focus:ring-primary-30'
+                        />
+                      </td>
+                    </tr>
+                  ))
+                : !loading && (
+                    <tr>
+                      <td colSpan='3' className='text-center p-8'>
+                        <div className='flex flex-col items-center gap-2'>
+                          <span className='text-4xl'>🔍</span>
+                          <p className='text-grey-60'>검색 결과가 없습니다.</p>
+                          <p className='text-sm text-grey-40'>
+                            다른 검색어로 시도해보세요.
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* 페이지네이션 */}
+        {!loading && products.length > 0 && (
+          <div className='mt-6'>
+            <Pagination />
+          </div>
+        )}
+
+        {/* 하단 버튼 */}
+        <div className='flex justify-center gap-4 mt-6'>
           <button
-            onClick={handleSearch}
-            className='bg-primary-40 text-white px-4 py-2 rounded hover:bg-primary-50 transition-colors'
+            onClick={handleSelect}
+            className='px-6 py-2 bg-grey-10 text-grey-60 rounded hover:bg-grey-20 transition-colors'
           >
-            검색하기
+            선택
           </button>
         </div>
-      </div>
-      {/* 검색 결과 카운트 & 페이지 사이즈 */}
-      <div className='flex justify-between items-center mb-4'>
-        <p className='text-lg text-grey-60'>
-          총 <span className='font-medium'>{searchCount}</span>개의 상품이
-          검색되었습니다
-        </p>
-        <select
-          value={pageSize}
-          onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-          className='border border-grey-20 rounded p-1 text-lg focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'
-        >
-          <option value={5}>5개씩 보기</option>
-          <option value={10}>10개씩 보기</option>
-          <option value={15}>15개씩 보기</option>
-        </select>
-      </div>
-
-      {/* 검색 결과 테이블 */}
-      <table className='w-full border-t border-grey-20'>
-        <thead>
-          <tr className='bg-primary-5'>
-            <th className='p-3 text-left border-b border-grey-20 w-1/3 text-grey-60'>
-              상품 이미지
-            </th>
-            <th className='p-3 text-left border-b border-grey-20 text-grey-60'>
-              상품 정보
-            </th>
-            <th className='p-3 text-left border-b border-grey-20 w-24 text-grey-60'>
-              선택
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.length > 0
-            ? products.map((product) => (
-                <tr key={product._id} className='border-b border-grey-20'>
-                  {/* TODO 이미지 표시 로직 수정
-                1. map 함수 내부에서는 현재 순회 중인 product 객체를 사용해야 함
-                - products 배열이 아닌 현재 product의 mainImages 체크 필요 
-                - 조건문의 주체를 products에서 product로 변경 (수정 완료)
-
-                2. Optional Chaining(옵셔널 체이닝) 위치 확인
-                - 배열 전체가 아닌 현재 상품의 속성을 체크해야 함
-                - mainImages 배열의 존재 여부를 확인하는 위치 변경 */}
-                  <td className='p-3'>
-                    {product.mainImages?.length > 0 ? (
-                      <img
-                        src={`https://11.fesp.shop${product.mainImages[0].path}`}
-                        alt={product.name}
-                        className='w-32 h-32 object-cover rounded'
-                      />
-                    ) : (
-                      <div className='w-32 h-32 bg-grey-10 rounded flex items-center justify-center'>
-                        <span className='text-grey-40'>No Image</span>
-                      </div>
-                    )}
-                  </td>
-                  <td className='p-3'>
-                    <h3 className='font-medium mb-2'>{product.name}</h3>
-                    <p className='text-primary-40'>
-                      {product.price.toLocaleString()}원
-                    </p>
-                  </td>
-                  <td className='p-3 text-center'>
-                    <input
-                      type='radio'
-                      name='productSelection'
-                      checked={selectedProduct === product._id}
-                      onChange={() => setSelectedProduct(product._id)}
-                      className='w-4 h-4 text-primary-40 border-grey-20 focus:ring-primary-30'
-                    />
-                  </td>
-                </tr>
-              ))
-            : !loading && (
-                <tr>
-                  <td colSpan='3' className='text-center p-8'>
-                    <div className='flex flex-col items-center gap-2'>
-                      <span className='text-4xl'>🔍</span>
-                      <p className='text-grey-60'>검색 결과가 없습니다.</p>
-                      <p className='text-sm text-grey-40'>
-                        다른 검색어로 시도해보세요.
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              )}
-          {loading && (
-            <tr>
-              <td colSpan='3' className='text-center p-8'>
-                <div className='flex flex-col items-center gap-2'>
-                  <div className='animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-40'></div>
-                  <p className='text-grey-60'>
-                    상품 정보를 불러오는 중입니다...
-                  </p>
-                </div>
-              </td>
-            </tr>
-          )}
-
-          {error && (
-            <tr>
-              <td colSpan='3' className='text-center p-8'>
-                <div className='flex flex-col items-center gap-2 text-error'>
-                  <span className='text-4xl'>⚠️</span>
-                  <p className='font-medium'>오류가 발생했습니다</p>
-                  <p className='text-sm'>{error}</p>
-                  <button
-                    onClick={handleSearch}
-                    className='mt-2 px-4 py-2 bg-grey-10 rounded hover:bg-grey-20 transition-colors'
-                  >
-                    다시 시도
-                  </button>
-                </div>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-      {!loading && products.length > 0 && <Pagination />}
-
-      {/* 하단 버튼 */}
-      <div className='flex justify-center gap-4 mt-6'>
-        <button
-          onClick={handleSelect}
-          className='px-6 py-2 bg-grey-10 text-grey-60 rounded hover:bg-grey-20 transition-colors'
-        >
-          선택
-        </button>
       </div>
     </div>
   );
