@@ -5,6 +5,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import ErrorMsg from "@components/ErrorMsg";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "@store/userStore";
+import { useState } from "react";
 
 const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -31,6 +32,22 @@ function Signup() {
   const axios = useAxiosInstance();
   const navigate = useNavigate();
   const setUser = useUserStore((store) => store.setUser);
+  const [profileImage, setProfileImage] = useState();
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; // 사용자가 업로드한 파일
+    if (file) {
+      // 이전 URL 정리
+      if (profileImage) {
+        URL.revokeObjectURL(profileImage);
+      }
+
+      // 새로운 URL 생성
+      const newImageUrl = URL.createObjectURL(file); // 이미지 파일 미리보기 위해 파일 객체를 URL로 변환
+      // ** createObjectURL로 생성한 URL은 브라우저에서만 유효하고, 파일을 서버로 전송하려면 FormData 등을 사용해야 함 **
+      setProfileImage(newImageUrl);
+    }
+  };
 
   const registerUser = useMutation({
     mutationFn: async (userInfo) => {
@@ -117,18 +134,29 @@ function Signup() {
               <div
                 id="fildupload_profile_img"
                 className="relative mx-auto w-[100px] h-[100px]"
-                accept="image/jepg, image/jpg, image/png, image/gif, image/svg+xml"
               >
-                <div className="w-full h-full bg-[url('./icons/profile.svg')] bg-cover bg-center"></div>
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="프로필사진 미리보기"
+                    className="w-full h-full border border-grey-20 rounded-full object-cover p-1"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[url('./icons/profile.svg')]"></div>
+                )}
 
                 <div className="absolute bottom-[4px] right-0 rounded-full border border-grey-30 bg-white cursor-pointer">
-                  <button className={`box-border w-12 h-12 ${styles.camera}`}>
+                  <button
+                    type="button"
+                    className={`box-border w-12 h-12 ${styles.camera}`}
+                  >
                     <input
                       type="file"
                       id="attach"
                       accept="image/*"
                       className={`${styles.hidden}`}
                       {...register("attach")} // ∵ files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
+                      onChange={handleFileChange}
                     />
                   </button>
                 </div>
