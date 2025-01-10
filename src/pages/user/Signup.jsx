@@ -34,16 +34,19 @@ function Signup() {
       "password-confirm": 11111111,
     },
   });
-  console.log(errors);
 
   const axios = useAxiosInstance();
   const navigate = useNavigate();
   const setUser = useUserStore((store) => store.setUser);
-  const [profileImage, setProfileImage] = useState();
+  const [profileImage, setProfileImage] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // 사용자가 업로드한 파일
-    console.log("handleFileChange:", "실행됨");
+    console.log("file: ", file);
+    const watchAll = watch();
+    console.log("watchAll: ", watchAll);
+    console.log("watchAll.attach: ", watchAll.attach);
+
     if (file) {
       // 이전 URL 정리
       if (profileImage) {
@@ -57,12 +60,16 @@ function Signup() {
     }
   };
 
+  const handleDelete = () => {
+    setProfileImage("");
+  };
+
   const registerUser = useMutation({
     mutationFn: async (userInfo) => {
-      console.log("Initial userInfo: ", userInfo); // name, email, password, password-confirm 정보가 담긴 객체
+      console.log("Initial userInfo: ", userInfo); // name, email, password, password-confirm, attach 정보가 담긴 객체
 
       // 프로필 이미지 등록 로직 구현
-      if (userInfo.attach.length > 0) {
+      if (userInfo.attach?.length > 0) {
         const profileFormData = new FormData();
         profileFormData.append("attach", userInfo.attach[0]); // ∵ files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
 
@@ -105,7 +112,7 @@ function Signup() {
       console.error(err);
 
       // 클라이언트 측에서 유효성 검사에 실패한 오류를 1차적으로 처리
-      if (err.response.data.errors) {
+      if (err.response?.data.errors) {
         err.reponse.data.errors.forEach(
           (error) => setError(error.path, { message: error.msg })
           // errors 객체를 생성하는 함수 - 객체이기 때문에 키값과 밸류값, 두가지 매개변수를 필요로 함
@@ -167,25 +174,27 @@ function Signup() {
                         >
                           <i className="fa-solid fa-pen"></i>
                           <span className="whitespace-nowrap">등록</span>
-                          <input
-                            type="file"
-                            id="attach"
-                            accept="image/*"
-                            className="hidden"
-                            {...register("attach")}
-                            onChange={() => {
-                              console.log("onChange triggered");
-                              handleFileChange();
-                            }}
-                            ref={inputFileRef}
-                          />
                         </li>
-                        <li className="flex items-center gap-[12px] p-2 hover:bg-sky-100 rounded cursor-pointer">
+                        <li
+                          className="flex items-center gap-[12px] p-2 hover:bg-sky-100 rounded cursor-pointer"
+                          onClick={handleDelete}
+                        >
                           <i className="fa-regular fa-trash-can"></i>
                           <span className="whitespace-nowrap">삭제</span>
                         </li>
                       </ul>
                     )}
+                    <input
+                      type="file"
+                      id="attach"
+                      accept="image/*"
+                      className="hidden"
+                      {...register("attach")}
+                      onChange={(e) => {
+                        handleFileChange(e);
+                      }}
+                      ref={inputFileRef}
+                    />
                   </button>
                 </div>
               </div>
