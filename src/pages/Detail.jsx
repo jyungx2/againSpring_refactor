@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
@@ -274,10 +275,9 @@ function Cart() {
                   key={tab}
                   onClick={() => setActiveTab(tab)} // 탭 클릭 시 활성화된 탭을 변경
                   className={`w-[430px] pt-[20px] pb-[20px] cursor-pointer px-4 py-2 text-center text-[15px] 
-                    ${
-                      activeTab === tab
-                        ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
-                        : "border-2 border-gray-300 text-gray-500"
+                    ${activeTab === tab
+                      ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
+                      : "border-2 border-gray-300 text-gray-500"
                     }`}
                 >
                   {tab}
