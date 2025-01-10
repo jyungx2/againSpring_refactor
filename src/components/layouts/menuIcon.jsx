@@ -24,7 +24,7 @@ const MenuIcons = () => {
           </a>
           {user.profile && (
             <img
-              className="w-12 h-12 rounded-full object-contain"
+              className="w-12 h-12 rounded-full object-cover"
               src={`https://11.fesp.shop${user.profile}`}
               alt="프로필 이미지"
             />

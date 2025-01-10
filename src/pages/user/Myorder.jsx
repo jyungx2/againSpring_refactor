@@ -1,4 +1,8 @@
+import useUserStore from "@store/userStore";
+
 function Myorder() {
+  const { user } = useUserStore();
+
   return (
     <>
       <div className="flex box-border max-w-[1200px] mx-auto px-6">
@@ -13,13 +17,21 @@ function Myorder() {
         </div>
 
         <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[40px]">
-          <div className="flex items-center justify-center gap-[30px] box-border p-[60px] overflow-hidden">
-            <div className="w-[700px] flex items-start gap-[10px]">
-              <img
-                className="w-[100px] aspect-square object-contain"
-                src="/icons/profile.svg"
-              />
-              <p>이지영님 안녕하세요.</p>
+          <div className="flex items-center justify-center gap-[30px] box-border p-[30px] overflow-hidden">
+            <div className="w-[700px] flex items-start gap-[20px]">
+              {user?.profile ? (
+                <img
+                  className="w-[100px] h-[100px] aspect-square object-cover border border-grey-40 rounded-full box-border p-1"
+                  src={`https://11.fesp.shop${user.profile}`}
+                  alt="프로필 이미지"
+                />
+              ) : (
+                <img
+                  className="w-[100px] aspect-square object-contain"
+                  src="/icons/profile.svg"
+                />
+              )}
+              <p>{user?.name}님, 안녕하세요.</p>
             </div>
 
             <div className="flex gap-[20px]">
