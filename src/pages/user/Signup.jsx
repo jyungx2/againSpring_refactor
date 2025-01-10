@@ -19,6 +19,12 @@ function Signup() {
     mode: "onSubmit",
     reValidateMode: "onChange",
     criteriaMode: "all",
+    defaultValues: {
+      name: "여름",
+      email: "y20@market.com",
+      password: 11111111,
+      "password-confirm": 11111111,
+    },
   });
   console.log(errors);
 
@@ -33,7 +39,7 @@ function Signup() {
       // 프로필 이미지 등록 로직 구현
       if (userInfo.attach.length > 0) {
         const profileFormData = new FormData();
-        profileFormData.append("attach", userInfo.attach[0]);
+        profileFormData.append("attach", userInfo.attach[0]); // ∵ files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
 
         const fileRes = await axios.post("/files", profileFormData, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -53,12 +59,18 @@ function Signup() {
       user.password = userInfo.password; // 굳이 해줄 필요? (안 쓰면 422 에러)
       console.log(user); // password 속성 당연히 존재
 
-      const userLogin = await axios.post(`/users/login`, user);
+      // 로그인 요청
+      const resLogin = await axios.post(`/users/login`, user);
+      const userLogin = resLogin.data.item;
+      delete userLogin["password-confirm"]; // 보안상 비밀번호 확인을 지움.
+      console.log(userLogin);
+
       setUser({
         _id: userLogin._id,
         name: userLogin.name,
+        profile: userLogin.image.path,
         accessToken: userLogin.token.accessToken,
-        refreshToken: user.token.refreshToken,
+        refreshToken: userLogin.token.refreshToken,
       });
 
       alert("회원가입이 완료되었습니다.");
@@ -116,7 +128,7 @@ function Signup() {
                       id="attach"
                       accept="image/*"
                       className={`${styles.hidden}`}
-                      {...register("attach")} // files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
+                      {...register("attach")} // ∵ files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
                     />
                   </button>
                 </div>
