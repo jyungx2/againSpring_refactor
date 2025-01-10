@@ -19,7 +19,7 @@ function Myorder() {
         <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[40px]">
           <div className="flex items-center justify-center gap-[30px] box-border p-[30px] overflow-hidden">
             <div className="w-[700px] flex items-start gap-[20px]">
-              {user?.profile ? (
+              {user.profile ? (
                 <img
                   className="w-[100px] h-[100px] aspect-square object-cover border border-grey-40 rounded-full box-border p-1"
                   src={`https://11.fesp.shop${user.profile}`}
@@ -31,7 +31,7 @@ function Myorder() {
                   src="/icons/profile.svg"
                 />
               )}
-              <p>{user?.name}님, 안녕하세요.</p>
+              <p>{user.name}님, 안녕하세요.</p>
             </div>
 
             <div className="flex gap-[20px]">
