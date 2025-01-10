@@ -110,9 +110,7 @@ function Signup() {
                 <div className="w-full h-full bg-[url('./icons/profile.svg')] bg-cover bg-center"></div>
 
                 <div className="absolute bottom-[4px] right-0 rounded-full border border-grey-30 bg-white cursor-pointer">
-                  <button
-                    className={`box-border w-12 h-12 ${styles.camera} cursor-pointer`}
-                  >
+                  <button className={`box-border w-12 h-12 ${styles.camera}`}>
                     <input
                       type="file"
                       id="attach"
@@ -151,7 +149,6 @@ function Signup() {
                 </div>
                 <ErrorMsg target={errors.name} />
               </div>
-
               <div className="id-collection">
                 <div>
                   <div
@@ -224,7 +221,6 @@ function Signup() {
                   <ErrorMsg target={errors["password-confirm"]} />
                 </div>
               </div>
-
               <button className="font-gowunBold w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
                 가입하기
               </button>
