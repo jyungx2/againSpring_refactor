@@ -96,9 +96,20 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
 
     loadProductData(params);
   }, [searchParams]);
+
   // 검색 핸들러
   const handleSearch = async (e) => {
     if (e) e.preventDefault();
+
+    if (searchKeyword.trim().length === 0) {
+      MySwal.fire({
+        title: '알림',
+        text: '검색어를 입력하세요',
+        icon: 'info',
+        confirmButtonText: '확인',
+      });
+      return;
+    }
 
     const trimmedKeyWord = searchKeyword.trim();
     const requestParams = {
