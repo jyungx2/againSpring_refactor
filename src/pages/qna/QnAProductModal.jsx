@@ -1,21 +1,31 @@
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useQnaProductSearchStore from '@store/qnaProductSearchStore';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useSearchParams } from 'react-router-dom';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 export default function QnAProductModal({ onClose, onProductSelect }) {
+  // API 인스턴스
   const axiosInstance = useAxiosInstance();
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [pageSize, setPageSize] = useState(5);
-  const searchRef = useRef('');
   const MySwal = withReactContent(Swal);
 
+  // 검색 관련 상태
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // 페이지네이션 상태
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 0,
+    pageSize: 5,
+  });
+
+  // Zustand 스토어에서 상태 가져오기
   const {
     products,
     loading,
-    error,
+    // error,
     searchCount,
     selectedProduct,
     setProducts,
@@ -25,111 +35,94 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     setSelectedProduct,
   } = useQnaProductSearchStore();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  // 에러 처리 유틸리티
+  const handleApiError = (err) => {
+    const errorMessage =
+      err.response?.status === 404
+        ? '상품을 찾을 수 없습니다'
+        : '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-
-  const params = {
-    keyword: searchParams.get('keyword') || '',
-    page: searchParams.get('page') || 1,
-    limit: 5,
+    setError(errorMessage);
+    MySwal.fire({
+      title: '오류',
+      text: errorMessage,
+      icon: 'error',
+      confirmButtonText: '확인',
+    });
   };
 
-  useEffect(() => {
-    const currentKeyword = searchParams.get('keyword') || '';
-    const currentPage = parseInt(searchParams.get('page')) || 1;
-    const currentLimit = parseInt(searchParams.get('limit')) || 5;
-
-    setSearchKeyword(currentKeyword);
-    setPageSize(currentLimit);
-
-    const loadInitialData = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const params = {
-          page: currentPage,
-          limit: currentLimit,
-        };
-
-        if (currentKeyword) {
-          params.title = currentKeyword;
-        }
-
-        const response = await axiosInstance.get('/products', { params });
-        setProducts(response.data.item);
-        setSearchCount(response.data.pagination.total);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadInitialData();
-  }, [searchParams]);
-
-  // pagination 정보를 받아올 때 total pages 계산
-  useEffect(() => {
-    const loadInitialData = async () => {
-      try {
-        const response = await axiosInstance.get('/products', { params });
-        setProducts(response.data.item);
-        setSearchCount(response.data.pagination.total);
-
-        // 전체 페이지 수 계산
-        setTotalPages(Math.ceil(response.data.pagination.total / pageSize));
-      } catch (err) {
-        setError(err.message);
-      }
-    };
-    loadInitialData();
-  }, [searchParams]);
-
-  const handleSearch = async (e) => {
-    if (e) e.preventDefault();
-
-    const trimmedKeyWord = searchKeyword.trim();
+  // 상품 데이터 로딩
+  const loadProductData = async (params) => {
     setLoading(true);
-    setError(null);
-
     try {
-      const params = {
-        page: 1,
-        limit: pageSize,
-        ...(trimmedKeyWord && { title: trimmedKeyWord }),
-      };
-
-      setSearchParams({
-        ...(trimmedKeyWord && { keyword: trimmedKeyWord }),
-        page: '1',
-        limit: pageSize.toString(),
-      });
-
+      // apiParams 변환 과정 제거하고 params 직접 전달
       const response = await axiosInstance.get('/products', { params });
+
       setProducts(response.data.item);
       setSearchCount(response.data.pagination.total);
+      setPagination((prev) => ({
+        ...prev,
+        totalPages: Math.ceil(
+          response.data.pagination.total / pagination.pageSize
+        ),
+      }));
+      return response;
     } catch (err) {
-      const errorMessage =
-        err.response?.status === 404
-          ? '상품을 찾을 수 없습니다'
-          : '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
-
-      setError(errorMessage);
-
-      MySwal.fire({
-        title: '오류',
-        text: errorMessage,
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      handleApiError(err);
     } finally {
       setLoading(false);
     }
   };
 
+  // 초기 데이터 로딩
+  useEffect(() => {
+    const currentKeyword = searchParams.get('keyword') || '';
+    const currentPage = parseInt(searchParams.get('page')) || 1;
+    const currentLimit =
+      parseInt(searchParams.get('limit')) || pagination.pageSize;
+
+    setSearchKeyword(currentKeyword);
+    setPagination((prev) => ({
+      ...prev,
+      currentPage,
+      pageSize: currentLimit,
+    }));
+
+    const params = {
+      page: currentPage,
+      limit: currentLimit,
+      ...(currentKeyword && { keyword: currentKeyword }), // title -> keyword
+    };
+
+    loadProductData(params);
+  }, [searchParams]);
+  // 검색 핸들러
+  const handleSearch = async (e) => {
+    if (e) e.preventDefault();
+
+    const trimmedKeyWord = searchKeyword.trim();
+    const requestParams = {
+      page: 1,
+      limit: pagination.pageSize,
+      ...(trimmedKeyWord && { keyword: trimmedKeyWord }),
+    };
+
+    try {
+      const response = await loadProductData(requestParams);
+
+      if (response) {
+        setSearchParams({
+          ...(trimmedKeyWord && { keyword: trimmedKeyWord }),
+          page: '1',
+          limit: pagination.pageSize.toString(),
+        });
+      }
+    } catch (error) {
+      handleApiError(error);
+    }
+  };
+
+  // 상품 선택 핸들러
   const handleSelect = () => {
     try {
       const selected = products.find((p) => p._id === selectedProduct);
@@ -158,53 +151,59 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     }
   };
 
+  // 페이지 변경 핸들러
   const handlePageChange = async (page) => {
     try {
       setLoading(true);
       const params = {
         page,
-        limit: pageSize,
-        ...(searchKeyword.trim() && { title: searchKeyword.trim() }),
+        limit: pagination.pageSize,
+        ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }), // title -> keyword
       };
 
-      // URL 파라미터 업데이트
       setSearchParams({
         ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
         page: page.toString(),
-        limit: pageSize.toString(),
+        limit: pagination.pageSize.toString(),
       });
 
-      const response = await axiosInstance.get('/products', { params });
-      setProducts(response.data.item);
-      setCurrentPage(page);
+      await loadProductData(params);
+      setPagination((prev) => ({ ...prev, currentPage: page }));
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      handleApiError(err);
     }
   };
 
+  // 페이지네이션 컴포넌트
   const Pagination = () => {
-    const pageNumbers = [];
-    const maxVisiblePages = 3; // 한 번에 보여줄 페이지 번호 수
+    const calculatePageRange = (currentPage, totalPages, maxVisiblePages) => {
+      const startPage = Math.max(
+        1,
+        currentPage - Math.floor(maxVisiblePages / 2)
+      );
+      const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+      return {
+        startPage: Math.max(1, endPage - maxVisiblePages + 1),
+        endPage,
+      };
+    };
 
-    // 보여줄 페이지 번호 계산
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    const { startPage, endPage } = calculatePageRange(
+      pagination.currentPage,
+      pagination.totalPages,
+      3
+    );
 
-    // startPage 재조정
-    startPage = Math.max(1, endPage - maxVisiblePages + 1);
-
-    // 페이지 번호 배열 생성
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
+    const pageNumbers = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
 
     return (
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-        {currentPage > 1 && (
+        {pagination.currentPage > 1 && (
           <button
-            onClick={() => handlePageChange(currentPage - 1)}
+            onClick={() => handlePageChange(pagination.currentPage - 1)}
             className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
           >
             Prev
@@ -216,7 +215,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
             key={number}
             onClick={() => handlePageChange(number)}
             className={`${
-              currentPage === number
+              pagination.currentPage === number
                 ? 'bg-secondary-20 text-white'
                 : 'bg-grey-20 text-black'
             } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40`}
@@ -225,9 +224,9 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
           </button>
         ))}
 
-        {currentPage < totalPages && (
+        {pagination.currentPage < pagination.totalPages && (
           <button
-            onClick={() => handlePageChange(currentPage + 1)}
+            onClick={() => handlePageChange(pagination.currentPage + 1)}
             className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
           >
             Next
@@ -239,49 +238,59 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
 
   return (
     <div className='max-h-[calc(100vh-4rem)] flex flex-col'>
-      {/* 헤더 */}
-      <div className='bg-primary-40 text-white p-3 flex justify-between items-center'>
+      {/* 헤더 영역 */}
+      <header className='bg-primary-40 text-white p-3 flex justify-between items-center'>
         <h2 className='text-lg font-medium'>상품검색</h2>
         <button
           onClick={onClose}
           className='text-white hover:text-primary-5 px-3 transition-colors'
+          aria-label='닫기'
         >
           ✕
         </button>
-      </div>
+      </header>
 
-      {/* 메인 콘텐츠 */}
-      <div className='p-6 flex-1 flex flex-col min-h-0'>
-        {/* 검색 영역 */}
-        <div className='bg-white rounded mb-4 border border-grey-20 p-4'>
+      {/* 메인 콘텐츠 영역 */}
+      <main className='p-6 flex-1 flex flex-col min-h-0'>
+        {/* 검색 폼 */}
+        <form
+          onSubmit={handleSearch}
+          className='bg-white rounded mb-4 border border-grey-20 p-4'
+        >
           <div className='flex gap-2 items-center'>
-            <select className='border border-grey-20 rounded p-2 w-32 focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'>
+            <select
+              className='border border-grey-20 rounded p-2 w-32 focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'
+              aria-label='검색 조건'
+            >
               <option>상품명</option>
             </select>
             <input
               type='text'
-              defaultValue={params.keyword}
+              value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
-              ref={searchRef}
               className='border border-grey-20 rounded p-2 flex-1 focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'
               placeholder='검색어를 입력하세요'
+              aria-label='검색어 입력'
             />
             <button
-              onClick={handleSearch}
+              type='submit'
               className='bg-primary-40 text-white px-4 py-2 rounded hover:bg-primary-50 transition-colors'
             >
               검색하기
             </button>
           </div>
-        </div>
+        </form>
 
-        {/* 검색 결과 카운트 & 정렬 옵션 */}
+        {/* 검색 결과 요약 & 정렬 옵션 */}
         <div className='flex justify-between items-center mb-4'>
           <p className='text-lg text-grey-60'>
             총 <span className='font-medium'>{searchCount}</span>개의 상품이
             검색되었습니다
           </p>
-          <select className='border border-grey-20 rounded p-1 text-lg focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'>
+          <select
+            className='border border-grey-20 rounded p-1 text-lg focus:border-primary-30 focus:ring-1 focus:ring-primary-30 text-grey-60'
+            aria-label='정렬 기준'
+          >
             <option value='default'>기본순</option>
             <option value='price-asc'>낮은 가격순</option>
             <option value='price-desc'>높은 가격순</option>
@@ -290,7 +299,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
         </div>
 
         {/* 검색 결과 테이블 */}
-        <div className='flex-1 min-h-0'>
+        <div className='flex-1 min-h-0 overflow-auto'>
           <table className='w-full border-t border-grey-20'>
             <thead>
               <tr className='bg-primary-5 text-base'>
@@ -315,6 +324,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
                             src={`https://11.fesp.shop${product.mainImages[0].path}`}
                             alt={product.name}
                             className='w-24 h-24 object-cover rounded'
+                            loading='lazy'
                           />
                         ) : (
                           <div className='w-24 h-24 bg-grey-10 rounded flex items-center justify-center'>
@@ -335,6 +345,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
                           checked={selectedProduct === product._id}
                           onChange={() => setSelectedProduct(product._id)}
                           className='w-4 h-4 text-primary-40 border-grey-20 focus:ring-primary-30'
+                          aria-label={`${product.name} 선택`}
                         />
                       </td>
                     </tr>
@@ -343,7 +354,13 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
                     <tr>
                       <td colSpan='3' className='text-center p-8'>
                         <div className='flex flex-col items-center gap-2'>
-                          <span className='text-4xl'>🔍</span>
+                          <span
+                            className='text-4xl'
+                            role='img'
+                            aria-label='검색'
+                          >
+                            🔍
+                          </span>
                           <p className='text-grey-60'>검색 결과가 없습니다.</p>
                           <p className='text-sm text-grey-40'>
                             다른 검색어로 시도해보세요.
@@ -363,16 +380,17 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
           </div>
         )}
 
-        {/* 하단 버튼 */}
+        {/* 하단 버튼 영역 */}
         <div className='flex justify-center gap-4 mt-6'>
           <button
             onClick={handleSelect}
             className='px-6 py-2 bg-grey-10 text-grey-60 rounded hover:bg-grey-20 transition-colors'
+            disabled={!selectedProduct}
           >
             선택
           </button>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
