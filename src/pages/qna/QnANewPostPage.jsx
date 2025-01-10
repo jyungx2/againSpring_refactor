@@ -15,6 +15,8 @@ import Swal from 'sweetalert2';
 export default function QnANewPostPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [previousSelection, setPreviousSelection] = useState(null); // 이전 선택 정보 저장용
+  const [error, setError] = useState(null);
+  const [selectedProductInfo, setSelectedProductInfo] = useState(null);
 
   // Modal 열 때 현재 선택 정보 저장
   const openModal = () => {
@@ -50,9 +52,23 @@ export default function QnANewPostPage() {
     setIsModalOpen(false);
   };
 
-  const [error, setError] = useState(null);
-
-  const [selectedProductInfo, setSelectedProductInfo] = useState(null);
+  const handleProductRemove = () => {
+    MySwal.fire({
+      title: '선택된 상품을 제거하시겠습니까?',
+      text: '제거된 상품 정보는 복구할 수 없습니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '네',
+      cancelButtonText: '아니오',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setSelectedProductInfo(null); // 선택된 상품 정보 초기화
+        MySwal.fire('제거 완료', '선택된 상품이 제거되었습니다.', 'success');
+      }
+    });
+  };
 
   // 상품 선택 처리 함수
   const handleProductSelect = (product) => {
@@ -273,12 +289,20 @@ export default function QnANewPostPage() {
       {/* 상품 정보 불러오기 */}
       {selectedProductInfo ? (
         <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
-          <div className='mr-6'>
+          <div className='mr-6 relative'>
             {selectedProductInfo.mainImages?.length > 0 ? (
-              <img
-                src={`https://11.fesp.shop${selectedProductInfo.mainImages[0].path}`}
-                className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'
-              />
+              <>
+                <img
+                  src={`https://11.fesp.shop${selectedProductInfo.mainImages[0].path}`}
+                  className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'
+                />
+                <button
+                  onClick={handleProductRemove}
+                  className='absolute -top-3 -right-3 w-6 h-6 bg-black text-white rounded-full flex items-center justify-center hover:bg-grey-70 transition-colors'
+                >
+                  x
+                </button>
+              </>
             ) : (
               <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
                 No Image
