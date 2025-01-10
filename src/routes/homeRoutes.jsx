@@ -57,7 +57,7 @@ const homeRoutes = [
       { path: "qna/detail", element: <QnAPostDetailPage /> },
       { path: "qna/product/detail", element: <ProductQnAPostDetailPage /> },
       { path: "qna/product/edit", element: <ProductQnAEditPostPage /> },
-      { path: "cart", element: <Cart /> },
+      { path: "cart/:userId", element: <Cart /> },
     ],
   },
 ];

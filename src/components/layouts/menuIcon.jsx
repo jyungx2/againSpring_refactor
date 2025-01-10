@@ -13,8 +13,9 @@ const MenuIcons = () => {
   };
 
   const handleCartClick = (e) => {
+    console.log(user);
     if (user) {
-      navigate(`/cart/${user.id}`);
+      navigate(`/cart/${user._id}`);
     } else {
       e.preventDefault();
       alert("로그인이 필요합니다.");
@@ -33,6 +34,12 @@ const MenuIcons = () => {
           >
             로그아웃
           </button>
+          <a
+            className="text-gray-700 hover:text-secondary"
+            onClick={handleCartClick}
+          >
+            <i className="fas fa-shopping-cart"></i>
+          </a>
         </form>
       ) : (
         <>
@@ -46,7 +53,6 @@ const MenuIcons = () => {
             <i className="fas fa-user"></i>
           </a>
           <a
-            href="/cart"
             className="text-gray-700 hover:text-secondary"
             onClick={handleCartClick}
           >

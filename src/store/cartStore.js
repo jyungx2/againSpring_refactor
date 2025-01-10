@@ -1,25 +1,33 @@
 import { create } from "zustand";
 import useAxiosInstance from "../hooks/useAxiosInstance";
+import useUserStore from "@store/userStore";
 
 export const cartStore = create((set) => {
   const axiosInstance = useAxiosInstance();
 
   return {
     cartItemsList: [],
-    shippingCost: 3000, // 기본 배송비
+    shippingCost: 0,
     loading: false,
     error: null,
     fetchCartItems: async () => {
       set({ loading: true, error: null });
-      try {
-        const response = await axiosInstance.get("/carts/");
 
-        const products = response.data.item.map((product) => ({
-          id: product.product._id,
-          name: product.product.name,
-          price: product.product.price,
-          quantity: product.quantity,
-          image: product.product.image.url,
+      const { user } = useUserStore.getState();
+
+      try {
+        const response = await axiosInstance.get("/carts/", {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        });
+
+        const products = response.data.item.map((item) => ({
+          id: item.product._id,
+          name: item.product.name,
+          price: item.product.price,
+          quantity: item.quantity,
+          image: item.product.image.url,
         }));
 
         set({

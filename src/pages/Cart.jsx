@@ -1,14 +1,23 @@
 import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { cartStore } from "../store/cartStore";
+import useUserStore from "@store/userStore";
 import { Helmet } from "react-helmet-async";
 
 function Cart() {
+  const { userId } = useParams();
   const { cartItemsList, shippingCost, fetchCartItems, loading, error } =
     cartStore();
+  const { user } = useUserStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCartItems();
-  }, [fetchCartItems]);
+    if (!user) {
+      navigate("/login");
+    } else {
+      fetchCartItems(userId);
+    }
+  }, [user, fetchCartItems, navigate, userId]);
 
   const totalPrice = cartItemsList.reduce(
     (total, item) => total + item.price * item.quantity,
