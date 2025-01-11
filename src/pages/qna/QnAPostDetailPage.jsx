@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
+import CommentList from '@pages/comment/CommentList';
 
 export default function QnAPostDetailPage() {
   const axios = useAxiosInstance();
@@ -18,24 +19,6 @@ export default function QnAPostDetailPage() {
     queryFn: () => axios.get(`/posts/${id}`),
     select: (res) => res.data,
   });
-
-  // 관리자 여부 체크 (실제 구현 시에는 상태 관리나 context에서 가져와야 함)
-  const isAdmin = false;
-
-  // 댓글 작성 시도 시 관리자 체크
-  const handleCommentSubmit = () => {
-    if (!isAdmin) {
-      MySwal.fire({
-        title: '권한 없음',
-        text: '관리자만 댓글을 작성할 수 있습니다.',
-        icon: 'warning',
-        confirmButtonText: '확인',
-        confirmButtonColor: '#3085d6',
-      });
-      return;
-    }
-    // 관리자인 경우 댓글 작성 로직 실행
-  };
 
   // 게시글 삭제
   const deleteCheckBtn = () => {
@@ -142,30 +125,11 @@ export default function QnAPostDetailPage() {
         </div>
 
         {/* 댓글 섹션 */}
-        <section className='mb-8'>
-          {/* 댓글 입력 */}
-          <div className='flex flex-col gap-4 border border-grey-5 p-6 mb-6'>
-            <textarea
-              className='w-full min-h-[80px] resize-y border border-grey-30 p-2 text-xl'
-              placeholder='관리자만 작성하실 수 있습니다.'
-              id='reply-text'
-              disabled={!isAdmin}
-            />
-            <div className='flex justify-end'>
-              <button
-                type='submit'
-                className={`rounded-lg px-6 py-2 text-xl ${
-                  isAdmin
-                    ? 'bg-secondary-20 text-white'
-                    : 'bg-grey-20 text-grey-50 cursor-not-allowed'
-                }`}
-                onClick={handleCommentSubmit}
-              >
-                작성
-              </button>
-            </div>
-          </div>
-        </section>
+        <CommentList
+          comments={data?.item?.replies || []}
+          postId={id}
+          isAdmin={true} // 관리자용 페이지이므로 true로 설정
+        />
 
         {/* 하단 네비게이션 */}
         <div className='border-t border-grey-10 pt-8 pb-4'>
