@@ -5,17 +5,17 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import ErrorMsg from "@components/ErrorMsg";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "@store/userStore";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 function Signup() {
   // Dropdown
-  const [isOpen, setIsOpen] = useState(false);
-  const handleOpen = () => {
-    setIsOpen(!isOpen);
-  };
-  const inputFileRef = useRef(null);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const handleOpen = () => {
+  //   setIsOpen(!isOpen);
+  // };
+  // const inputFileRef = useRef(null);
 
   const {
     register,
@@ -60,9 +60,9 @@ function Signup() {
     }
   };
 
-  const handleDelete = () => {
-    setProfileImage("");
-  };
+  // const handleDelete = () => {
+  //   setProfileImage("");
+  // };
 
   const registerUser = useMutation({
     mutationFn: async (userInfo) => {
@@ -159,43 +159,22 @@ function Signup() {
                 ) : (
                   <div className="w-full h-full bg-[url('./icons/profile.svg')]"></div>
                 )}
-
-                <div className="absolute bottom-[4px] right-0 rounded-full border border-grey-30 bg-white hover:bg-grey-5">
-                  <button
-                    type="button"
-                    className={`box-border w-12 h-12 ${styles.camera} `}
-                    onClick={handleOpen}
-                  >
-                    {isOpen && (
-                      <ul className="absolute left-6 top-full mt-1 p-2 shadow rounded-lg flex flex-col gap-[8px] bg-white">
-                        <li
-                          className="flex items-center gap-[10px] p-2 pr-8 hover:bg-sky-100 rounded cursor-pointer"
-                          onClick={() => inputFileRef.current.click()}
-                        >
-                          <i className="fa-solid fa-pen"></i>
-                          <span className="whitespace-nowrap">등록</span>
-                        </li>
-                        <li
-                          className="flex items-center gap-[12px] p-2 hover:bg-sky-100 rounded cursor-pointer"
-                          onClick={handleDelete}
-                        >
-                          <i className="fa-regular fa-trash-can"></i>
-                          <span className="whitespace-nowrap">삭제</span>
-                        </li>
-                      </ul>
-                    )}
-                    <input
-                      type="file"
-                      id="attach"
-                      accept="image/*"
-                      className="hidden"
-                      {...register("attach")}
-                      onChange={(e) => {
-                        handleFileChange(e);
-                      }}
-                      ref={inputFileRef}
+                <div className="absolute bottom-1 right-0 rounded-full border border-grey-30 bg-white p-2 cursor-pointer">
+                  <label htmlFor="attach">
+                    <img
+                      src="/icons/camera.svg"
+                      alt="이미지 첨부"
+                      className="cursor-pointer"
                     />
-                  </button>
+                  </label>
+                  <input
+                    type="file"
+                    id="attach"
+                    accept="image/*"
+                    className="hidden"
+                    {...register("attach")} // ∵ files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
+                    onChange={handleFileChange}
+                  />
                 </div>
               </div>
 
