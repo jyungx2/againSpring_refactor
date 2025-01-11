@@ -94,7 +94,7 @@ const CommentListItem = ({ comment, isAdmin, user, post }) => {
             <button
               type='button'
               className='rounded-lg bg-grey-20 text-white px-6 py-2 text-2xl'
-              onClick={() => setIsEditing(false)}
+              onClick={handleEditCancel}
             >
               취소
             </button>
@@ -103,13 +103,12 @@ const CommentListItem = ({ comment, isAdmin, user, post }) => {
       ) : (
         <>
           <p className='text-xl text-grey-80 mt-4 pl-3'>{comment.content}</p>
-          {(user && user?._id == comment?.user_id) ||
-            (isAdmin && (
-              <div className='flex mt-4'>
-                <button onClick={() => handleEditStart(comment)}>수정</button>
-                <button onClick={() => handleDelete(comment.id)}>삭제</button>
-              </div>
-            ))}
+          {(isAdmin || user?._id === comment?.user?._id) && (
+            <div className='flex mt-4'>
+              <button onClick={() => handleEditStart(comment)}>수정</button>
+              <button onClick={() => handleDelete(comment.id)}>삭제</button>
+            </div>
+          )}
         </>
       )}
     </div>
