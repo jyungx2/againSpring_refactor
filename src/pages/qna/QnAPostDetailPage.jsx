@@ -2,19 +2,21 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
-import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import CommentList from '@pages/comment/CommentList';
 import { useEffect, useState } from 'react';
+import useUserStore from '@store/userStore';
 
 export default function QnAPostDetailPage() {
   const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const [replies, setReplies] = useState([]);
-
   const { id } = useParams();
+
+  const { user } = useUserStore();
+  const isAdmin = user?.type === 'admin';
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['qnaDetail', id],
@@ -139,8 +141,7 @@ export default function QnAPostDetailPage() {
         <CommentList
           comments={replies}
           setReplies={setReplies}
-          postId={id}
-          isAdmin={false}
+          isAdmin={isAdmin}
           post={data.item}
         />
 
@@ -201,24 +202,3 @@ export default function QnAPostDetailPage() {
     </div>
   );
 }
-
-QnAPostDetailPage.propTypes = {
-  item: PropTypes.shape({
-    _id: PropTypes.number.isRequired,
-    type: PropTypes.string.isRequired,
-    product_id: PropTypes.number, // 일반 QnA는 product_id가 선택적
-    seller_id: PropTypes.number,
-    views: PropTypes.number.isRequired,
-    user: PropTypes.shape({
-      _id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      image: PropTypes.string,
-    }).isRequired,
-    title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
-    bookmarks: PropTypes.number.isRequired,
-    repliesCount: PropTypes.number.isRequired,
-  }),
-};
