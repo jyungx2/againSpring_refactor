@@ -18,9 +18,8 @@ function Signup() {
 
   const handleClearFile = () => {
     setProfileImage(undefined);
-    console.log(watch().attach);
     setValue("attach", []);
-    console.log(watch().attach);
+    handleOpen();
   };
 
   const {
