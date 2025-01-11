@@ -195,15 +195,6 @@ export default function QnANewPostPage() {
     input.onchange = async () => {
       const file = input.files[0];
       if (file) {
-        /**
-         * TODO: 여기에 실제 이미지 업로드 로직 구현해야 함
-         *
-         * 1. 서버 파일 데이터 저장 요청
-         * 2. 서버가 저장된 사진 값을 반환 ({{url}}/files/00-sample/Gb4OJkEX2k.jpg)
-         * 3. 이걸 가지고 이미지 주소에 넣어주면 됨
-         *
-         */
-
         // FormData 객체 생성 및 파일 추가
         const formData = new FormData();
         formData.append('attach', file);

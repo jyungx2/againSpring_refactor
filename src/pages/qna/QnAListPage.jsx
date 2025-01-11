@@ -8,35 +8,6 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import QnAListItem from './QnAListItem';
 
-/**
- * TODO: QnA 게시물 상세페이지 분기 처리 구현 순서
- * 1. QnAListItem 컴포넌트 수정
- *    - product_id 유무에 따른 Link path 분기 처리
- *    - const detailPath = item.product_id ? `/qna/product/${item._id}` : `/qna/${item._id}`;
- *
- * 2. 라우터 설정 추가 (App.jsx 또는 라우터 설정 파일)
- *    - /qna/:id -> QnAPostDetailPage
- *    - /qna/product/:id -> ProductQnAPostDetailPage
- *
- * 3. 상세페이지 컴포넌트에서 데이터 fetching 로직 구현
- *    - useParams로 id 파라미터 가져오기
- *    - useQuery로 상세 데이터 조회
- *    - const { data } = useQuery({
- *        queryKey: ['qnaDetail', id],
- *        queryFn: () => axios.get(`/posts/${id}`),
- *        select: (res) => res.data
- *      });
- *
- * 4. 로딩 상태 처리
- *    - if (isLoading) return <div>로딩중...</div>;
- *
- * 5. 에러 상태 처리
- *    - if (error) return <div>에러가 발생했습니다</div>;
- *
- * 6. product_id가 있는 경우 상품 정보 표시
- *    - selectedProductInfo 상태를 실제 product 데이터로 설정
- */
-
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
   const response = await axios.get('/users');
