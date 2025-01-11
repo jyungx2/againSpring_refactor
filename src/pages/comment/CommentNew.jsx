@@ -12,7 +12,7 @@ const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isAdmin && post?.user?._id != user?._id) {
+    if (!(isAdmin || post?.user?._id === user?._id)) {
       MySwal.fire({
         title: '권한 없음',
         text: '답변은 작성자와 관리자만 댓글을 작성할 수 있습니다.',
@@ -60,7 +60,7 @@ const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
        * 그래서 useState로 replies를 관리하게 해서 강제로 새로고침을 일어나게함
        */
       const result = await response.json();
-      if (result.item && post.replies) {
+      if (result.item) {
         setReplies([...comments, result.item]);
       }
     };
@@ -74,11 +74,11 @@ const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
         className='w-full min-h-[80px] resize-y border border-grey-30 p-2 text-xl'
         placeholder={
           // 관리자도 아니고 작성자도 아니라면 작성권한 없음
-          !isAdmin && post?.user?._id != user?._id
+          !(isAdmin || post?.user?._id === user?._id)
             ? '답변은 작성자와 관리자만 작성할 수 있습니다.'
             : '댓글을 입력하세요'
         }
-        disabled={!isAdmin && post?.user?._id != user?._id}
+        disabled={!(isAdmin || post?.user?._id === user?._id)}
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
@@ -86,10 +86,10 @@ const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
         <button
           type='submit'
           onClick={handleSubmit}
-          disabled={!isAdmin && post?.user?._id != user?._id}
+          disabled={!(isAdmin || post?.user?._id === user?._id)}
           className={`rounded-lg px-6 py-2 ${
-            !isAdmin && post?.user?._id != user?._id
-              ? 'bg-grey-20'
+            !(isAdmin || post?.user?._id === user?._id)
+              ? 'bg-secondary-20bg-grey-20'
               : 'bg-secondary-20'
           } text-white`}
         >
