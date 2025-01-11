@@ -19,6 +19,9 @@ export default function QnANewPostPage() {
   const [error, setError] = useState(null);
   const [selectedProductInfo, setSelectedProductInfo] = useState(null);
   const { user } = useUserStore();
+  const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
 
   // Modal 열 때 현재 선택 정보 저장
   const openModal = () => {
@@ -104,9 +107,6 @@ export default function QnANewPostPage() {
   };
 
   // 게시글 작성 중 취소 버튼 눌렀을 떄
-  const MySwal = withReactContent(Swal);
-  const navigate = useNavigate();
-  const [title, setTitle] = useState('');
 
   // 취소 확인 버튼
   const cancelCheckBtn = () => {
@@ -261,7 +261,6 @@ export default function QnANewPostPage() {
       productId = selectedProductInfo?._id;
     }
 
-    console.log(user);
     const data = {
       type: 'qna',
       title: title,
@@ -283,7 +282,10 @@ export default function QnANewPostPage() {
       });
 
       const result = await response.json();
-      console.log('이미지 업로드 성공:', result);
+
+      if (result.ok === 1) {
+        navigate('/qna');
+      }
     };
 
     saveData();
