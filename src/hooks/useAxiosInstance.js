@@ -1,10 +1,12 @@
 import axios from "axios";
 import useUserStore from "@store/userStore";
+import { useNavigate } from "react-router-dom";
 
 const REFRESH_url = "/auth/refresh";
 
 function useAxiosInstance() {
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
+  const navigate = useNavigate();
 
   const instance = axios.create({
     baseURL: "https://11.fesp.sho",
@@ -27,6 +29,50 @@ function useAxiosInstance() {
     };
     return config;
   });
+
+  instance.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    async (error) => {
+      console.error("인터셉터 결과(에러): ", error);
+      const { config, response } = error;
+
+      // 401 에러는 "Unauthorized" (인증되지 않음) 상태를 나타내는 HTTP 상태 코드
+
+      if (response.status === 401) {
+        if (config.url === REFRESH_url) {
+          // 1. REFRESH_URL로 요청했는데도 오류가 났다면 로그인하도록
+          navigateLogin();
+        } else if (user) {
+          // 🌟🌟토큰 만료 시간을 짧게 설정 요청 필요🌟🌟
+          // 2. 로그인 했으나 accessToken 만료된 경우,
+          // -> refresh 토큰으로 accessToken 재발급 요청
+          const refreshRes = await instance.get(REFRESH_url, {
+            headers: { Authorization: `Bearer ${user.refreshToken}` },
+          });
+          // 새로 발급받은 accessToken 추출
+          console.log(refreshRes);
+          console.log(refreshRes.data.accessToken);
+          const accessToken = refreshRes.data.accessToken;
+
+          // 로그인 유저 상태 설정
+          setUser({ ...user, accessToken });
+          config.headers.Authorization = `Bearer ${accessToken}`;
+
+          // 인터셉터 무한루프를 방지하기 위해 instance 대신, axios 요청
+          return axios(config);
+        }
+      }
+    }
+  );
+
+  function navigateLogin() {
+    const goToLogin = confirm(
+      "로그인 후 이용 가능합니다. 로그인 페이지로 이동하시겠습니까?"
+    );
+    goToLogin && navigate("/login", { state: { from: location.pathname } });
+  }
 
   return instance;
 }
