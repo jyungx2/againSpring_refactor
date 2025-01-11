@@ -6,11 +6,13 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import CommentList from '@pages/comment/CommentList';
+import { useEffect, useState } from 'react';
 
 export default function QnAPostDetailPage() {
   const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+  const [replies, setReplies] = useState([]);
 
   const { id } = useParams();
 
@@ -19,6 +21,12 @@ export default function QnAPostDetailPage() {
     queryFn: () => axios.get(`/posts/${id}`),
     select: (res) => res.data,
   });
+
+  useEffect(() => {
+    if (data?.item?.replies) {
+      setReplies(data?.item?.replies);
+    }
+  }, [data]);
 
   // 게시글 삭제
   const deleteCheckBtn = () => {
@@ -62,6 +70,8 @@ export default function QnAPostDetailPage() {
       </div>
     );
   }
+
+  console.log('data', data);
 
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
@@ -127,9 +137,11 @@ export default function QnAPostDetailPage() {
 
         {/* 댓글 섹션 */}
         <CommentList
-          comments={data?.item?.replies || []}
+          comments={replies}
+          setReplies={setReplies}
           postId={id}
-          isAdmin={true} // 관리자용 페이지이므로 true로 설정
+          isAdmin={false}
+          post={data.item}
         />
 
         {/* 하단 네비게이션 */}
