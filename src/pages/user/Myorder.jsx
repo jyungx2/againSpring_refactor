@@ -21,7 +21,7 @@ function Myorder() {
             <div className="w-[700px] flex items-start gap-[20px]">
               {user.profile ? (
                 <img
-                  className="w-[100px] h-[100px] aspect-square object-cover border border-grey-40 rounded-full box-border p-1"
+                  className="w-[100px] h-[100px] aspect-square object-cover border border-grey-20 rounded-full box-border p-1"
                   src={`https://11.fesp.shop${user.profile}`}
                   alt="프로필 이미지"
                 />
