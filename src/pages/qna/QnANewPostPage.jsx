@@ -269,26 +269,58 @@ export default function QnANewPostPage() {
 
     if (productId) data.product_id = productId;
 
+    MySwal.fire({
+      title: '게시물을 등록하시겠습니까?',
+      text: '잘못 등록한 경우 상세페이지에서 수정 및 삭제가 가능합니다.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '네',
+      cancelButtonText: '아니요',
+    }).then((result) => {
+      // '네'를 선택했을 때만 서버에 저장
+      if (result.isConfirmed) {
+        saveData();
+      }
+    });
+
     const saveData = async () => {
       // 서버에 게시글 저장 요청
-      const response = await fetch('https://11.fesp.shop/posts', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'client-id': 'final02',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-      });
+      try {
+        const response = await fetch('https://11.fesp.shop/posts', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'client-id': 'final02',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        });
 
-      const result = await response.json();
-
-      if (result.ok === 1) {
-        navigate('/qna');
+        const result = await response.json();
+        if (result.ok === 1) {
+          MySwal.fire({
+            title: '등록 완료',
+            text: '게시글 등록이 완료되었습니다.',
+            confirmButtonText: '확인',
+            icon: 'success',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate('/qna');
+            }
+          });
+        }
+      } catch (error) {
+        console.error('게시글 저장 중 오류 발생:', error);
+        MySwal.fire({
+          title: '등록 실패',
+          text: '게시글 등록에 실패했습니다. 다시 시도해주세요.',
+          icon: 'error',
+          confirmButtonText: '확인',
+        });
       }
     };
-
-    saveData();
   };
 
   return (
