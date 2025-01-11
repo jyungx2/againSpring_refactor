@@ -60,8 +60,15 @@ const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
        * 그래서 useState로 replies를 관리하게 해서 강제로 새로고침을 일어나게함
        */
       const result = await response.json();
-      if (result.item) {
+      if (result.item && result.ok === 1) {
         setReplies([...comments, result.item]);
+        setContent('');
+        MySwal.fire({
+          title: '등록 완료',
+          text: '댓글이 등록되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+        });
       }
     };
 
