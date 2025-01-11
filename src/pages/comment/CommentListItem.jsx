@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const CommentListItem = ({ comment, postId, isAdmin, user, post }) => {
+const CommentListItem = ({ comment, isAdmin, user, post }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
 
@@ -27,9 +27,9 @@ const CommentListItem = ({ comment, postId, isAdmin, user, post }) => {
   // 수정 완료
   const updateComment = useMutation({
     mutationFn: ({ commentId, content }) =>
-      axios.put(`/posts/${postId}/replies/${commentId}`, { content }),
+      axios.put(`/posts/${post._id}/replies/${commentId}`, { content }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', postId]);
+      queryClient.invalidateQueries(['comments', post._id]);
       setIsEditing(false);
       MySwal.fire({
         title: '수정 완료',
@@ -43,9 +43,9 @@ const CommentListItem = ({ comment, postId, isAdmin, user, post }) => {
   // 댓글 삭제
   const deleteComment = useMutation({
     mutationFn: (commentId) =>
-      axios.delete(`/posts/${postId}/replies/${commentId}`),
+      axios.delete(`/posts/${post._id}/replies/${commentId}`),
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', postId]);
+      queryClient.invalidateQueries(['comments', post._id]);
       MySwal.fire({
         title: '삭제 완료',
         text: '댓글이 삭제되었습니다.',
@@ -120,11 +120,21 @@ export default CommentListItem;
 
 CommentListItem.propTypes = {
   comment: PropTypes.shape({
-    user: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      _id: PropTypes.string,
+    }),
+    user_id: PropTypes.string,
     createdAt: PropTypes.string.isRequired,
   }).isRequired,
-  postId: PropTypes.string.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    _id: PropTypes.string,
+    type: PropTypes.string,
+  }),
+  post: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+  }).isRequired,
 };

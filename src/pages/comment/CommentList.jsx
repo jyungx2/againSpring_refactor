@@ -3,7 +3,7 @@ import CommentNew from '@pages/comment/CommentNew';
 import PropTypes from 'prop-types';
 import useUserStore from '@store/userStore';
 
-const CommentList = ({ comments = [], postId, post, setReplies }) => {
+const CommentList = ({ comments = [], post, setReplies }) => {
   const { user } = useUserStore();
   const isAdmin = user?.type === 'admin'; // admin 체크
 
@@ -14,14 +14,12 @@ const CommentList = ({ comments = [], postId, post, setReplies }) => {
         <CommentListItem
           key={comment.id}
           comment={comment}
-          postId={postId}
           isAdmin={isAdmin}
           user={user}
           post={post}
         />
       ))}
       <CommentNew
-        postId={postId}
         isAdmin={isAdmin}
         post={post}
         comments={comments}
@@ -36,12 +34,19 @@ export default CommentList;
 CommentList.propTypes = {
   comments: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
+      user: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+      }),
       createdAt: PropTypes.string.isRequired,
     })
-  ).isRequired,
-  postId: PropTypes.string.isRequired,
-  isAdmin: PropTypes.bool,
+  ),
+  post: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+  setReplies: PropTypes.func.isRequired,
 };

@@ -103,6 +103,19 @@ const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
 export default CommentNew;
 
 CommentNew.propTypes = {
-  postId: PropTypes.string.isRequired,
-  isAdmin: PropTypes.bool,
+  isAdmin: PropTypes.bool.isRequired,
+  post: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+    }),
+    replies: PropTypes.array,
+  }).isRequired,
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  setReplies: PropTypes.func.isRequired,
 };
