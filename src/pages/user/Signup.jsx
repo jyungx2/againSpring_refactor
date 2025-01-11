@@ -11,11 +11,17 @@ const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 function Signup() {
   // Dropdown
-  // const [isOpen, setIsOpen] = useState(false);
-  // const handleOpen = () => {
-  //   setIsOpen(!isOpen);
-  // };
-  // const inputFileRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleClearFile = () => {
+    setProfileImage(undefined);
+    console.log(watch().attach);
+    setValue("attach", []);
+    console.log(watch().attach);
+  };
 
   const {
     register,
@@ -23,6 +29,7 @@ function Signup() {
     setError,
     formState: { errors },
     watch,
+    setValue,
   } = useForm({
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -59,18 +66,15 @@ function Signup() {
       // ** createObjectURL로 생성한 URL은 브라우저에서만 유효하고, 파일을 서버로 전송하려면 FormData 등을 사용해야 함 **
       setProfileImage(newImageUrl);
     }
+    setIsOpen(false);
   };
-
-  // const handleDelete = () => {
-  //   setProfileImage("");
-  // };
 
   const registerUser = useMutation({
     mutationFn: async (userInfo) => {
       console.log("Initial userInfo: ", userInfo); // name, email, password, password-confirm, attach 정보가 담긴 객체
 
       // 프로필 이미지 등록 로직 구현
-      if (userInfo.attach.length > 0) {
+      if (userInfo.attach?.length > 0) {
         const profileFormData = new FormData();
         profileFormData.append("attach", userInfo.attach[0]); // ∵ files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
 
@@ -101,7 +105,7 @@ function Signup() {
       setUser({
         _id: userLogin._id,
         name: userLogin.name,
-        profile: userLogin.image.path,
+        profile: userLogin.image?.path,
         accessToken: userLogin.token.accessToken,
         refreshToken: userLogin.token.refreshToken,
       });
@@ -160,25 +164,53 @@ function Signup() {
                 ) : (
                   <div className="w-full h-full bg-[url('./icons/profile.svg')]"></div>
                 )}
-                <div className="absolute bottom-1 right-0 rounded-full border border-grey-30 bg-white p-2 cursor-pointer">
-                  <label htmlFor="attach">
-                    <img
-                      src="/icons/camera.svg"
-                      alt="이미지 첨부"
-                      className="cursor-pointer"
-                    />
-                  </label>
-                  <input
-                    type="file"
-                    id="attach"
-                    accept="image/*"
-                    className="hidden"
-                    {...register("attach", {
-                      // handleFileShow는 미리보기 UI만 담당하고, 실제 폼 데이터 관리는 register()에 맡긴다! (=> 굳이 setValue로 attach속성 값을 직접 설정할 필요 없다.)
-                      // ∵ register()가 이미 파일 데이터를 관리하고 있는데, setValue로 다시 값을 설정하려고 하면 두 방식이 충돌하여 가입하기 버튼 눌렀을 시, api요청이 정상적으로 이루어지지 않음.
-                      onChange: (e) => handleFileShow(e),
-                    })}
-                  />
+
+                <div
+                  className="absolute bottom-1 right-0 rounded-full border border-grey-30 bg-white p-2 cursor-pointer"
+                  onClick={handleOpen}
+                >
+                  <button
+                    type="button"
+                    className={`${styles.camera}`}
+                    onClick={(e) => {
+                      e.stopPropagation(); // 이벤트 버블링 방지
+                      handleOpen();
+                    }}
+                  >
+                    {isOpen && (
+                      <div className="absolute left-6 top-full mt-1 p-2 shadow rounded-lg flex flex-col gap-[8px] bg-white">
+                        <label
+                          className="flex items-center gap-[10px] p-2 pr-8 hover:bg-sky-100 rounded cursor-pointer"
+                          htmlFor="attach"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <i className="fa-solid fa-pen"></i>
+                          <span className="whitespace-nowrap">등록</span>
+                          <input
+                            type="file"
+                            id="attach"
+                            accept="image/*"
+                            className="hidden"
+                            {...register("attach", {
+                              onChange: (e) => {
+                                handleFileShow(e);
+                              },
+                            })}
+                          />
+                        </label>
+                        <div
+                          className="flex items-center gap-[12px] p-2 hover:bg-sky-100 rounded cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleClearFile();
+                          }}
+                        >
+                          <i className="fa-regular fa-trash-can"></i>
+                          <span className="whitespace-nowrap">삭제</span>
+                        </div>
+                      </div>
+                    )}
+                  </button>
                 </div>
               </div>
 
