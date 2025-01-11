@@ -182,7 +182,9 @@ export default function ProductQnAPostDetailPage() {
               </div>
             </div>
 
-            {data?.item?.content}
+            <div
+              dangerouslySetInnerHTML={{ __html: data?.item?.content }}
+            ></div>
           </div>
         </div>
 

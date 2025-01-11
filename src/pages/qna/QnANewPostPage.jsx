@@ -6,6 +6,7 @@ import { useQuill } from 'react-quilljs';
 import QnAProductModal from '@pages/qna/QnAProductModal';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import useUserStore from '@store/userStore';
 
 /**
  * 새로운 게시글을 작성하기 위한 페이지 컴포넌트
@@ -17,6 +18,7 @@ export default function QnANewPostPage() {
   const [previousSelection, setPreviousSelection] = useState(null); // 이전 선택 정보 저장용
   const [error, setError] = useState(null);
   const [selectedProductInfo, setSelectedProductInfo] = useState(null);
+  const { user } = useUserStore();
 
   // Modal 열 때 현재 선택 정보 저장
   const openModal = () => {
@@ -239,6 +241,8 @@ export default function QnANewPostPage() {
     };
   };
 
+  console.log(selectedProductInfo);
+
   // Quill 에디터 이미지 핸들러 등록
   useEffect(() => {
     if (quill) {
@@ -247,36 +251,43 @@ export default function QnANewPostPage() {
   }, [quill]);
 
   /**
-   * 게시글 저장 처리 함수(임시 비활성화)
    * 에디터의 내용을 서버에 POST 요청으로 전송
    */
-  // const newPostSaveBtn = () => {
-  //   console.log(quill.root.innerHTML);
+  const newPostSaveBtn = () => {
+    let productId;
 
-  //   const saveData = async () => {
-  //     // 저장할 게시글 데이터 구성
-  //     const data = {
-  //       type: 'qna',
-  //       title: '글쓰기 테스트',
-  //       content: quill.root.innerHTML,
-  //     };
+    // 제품 등록이 되어있는지 체크
+    if (selectedProductInfo) {
+      productId = selectedProductInfo?._id;
+    }
 
-  //     // 서버에 게시글 저장 요청
-  //     const response = await fetch('https://11.fesp.shop/posts', {
-  //       method: 'POST',
-  //       body: JSON.stringify(data),
-  //       headers: {
-  //         'client-id': 'final02',
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
+    console.log(user);
+    const data = {
+      type: 'qna',
+      title: title,
+      content: quill.root.innerHTML,
+    };
 
-  //     const result = await response.json();
-  //     console.log('이미지 업로드 성공:', result);
-  //   };
+    if (productId) data.product_id = productId;
 
-  //   saveData();
-  // };
+    const saveData = async () => {
+      // 서버에 게시글 저장 요청
+      const response = await fetch('https://11.fesp.shop/posts', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'client-id': 'final02',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
+
+      const result = await response.json();
+      console.log('이미지 업로드 성공:', result);
+    };
+
+    saveData();
+  };
 
   return (
     // 게시글 작성 페이지 레이아웃
@@ -369,8 +380,11 @@ export default function QnANewPostPage() {
       {/* 하단 버튼 그룹 */}
       <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         {/* 등록 버튼 */}
-        <button className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-secondary-20 text-white'>
-          <Link to='/qna'>등록하기</Link>
+        <button
+          onClick={newPostSaveBtn}
+          className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-secondary-20 text-white'
+        >
+          등록하기
         </button>
         {/* 취소 버튼 */}
         <button
