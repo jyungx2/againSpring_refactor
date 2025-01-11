@@ -12,6 +12,7 @@ export default function ProductQnAPostDetailPage() {
   const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+  const [replies, setReplies] = useState([]);
 
   const [selectedProductInfo, setSelectedProductInfo] = useState(null);
 
@@ -32,6 +33,11 @@ export default function ProductQnAPostDetailPage() {
         _id: data.item.product._id[0], // 배열의 첫 번째 항목 사용
         mainImages: data.item.product.mainImages[0], // 첫 번째 이미지 세트 사용
       });
+    }
+    console.log('data 감지', data);
+
+    if (data?.item?.replies) {
+      setReplies(data?.item?.replies);
     }
   }, [data]);
 
@@ -190,9 +196,11 @@ export default function ProductQnAPostDetailPage() {
 
         {/* 댓글 섹션 */}
         <CommentList
-          comments={data?.item?.replies || []}
+          comments={replies}
+          setReplies={setReplies}
           postId={id}
           isAdmin={false}
+          post={data.item}
         />
         {/* 하단 네비게이션 */}
         <div className='border-t border-grey-10 pt-8 pb-4'>
