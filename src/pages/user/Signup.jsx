@@ -35,8 +35,8 @@ function Signup() {
     reValidateMode: "onChange",
     criteriaMode: "all",
     defaultValues: {
-      name: "여름",
-      email: "y20@market.com",
+      name: "김마켓",
+      email: "kimarket2@market.com",
       password: 11111111,
       "password-confirm": 11111111,
     },
@@ -225,7 +225,7 @@ function Signup() {
                     id="name"
                     type="text"
                     placeholder="이름"
-                    className={`${styles.inputUnset}`}
+                    className={`${styles.inputUnset} ${styles.inputCustom}`}
                     {...register("name", {
                       required: "이름은 필수입니다.",
                       minLength: {
@@ -253,7 +253,7 @@ function Signup() {
                       id="email"
                       type="email"
                       placeholder="이메일"
-                      className={`${styles.inputUnset}`}
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
                       {...register("email", {
                         required: "이메일은 필수입니다.",
                         pattern: {
@@ -277,7 +277,7 @@ function Signup() {
                       id="password"
                       type="password"
                       placeholder="비밀번호"
-                      className={`${styles.inputUnset}`}
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
                       {...register("password", {
                         required: "비밀번호는 필수입니다.",
                         minLength: {
@@ -301,7 +301,7 @@ function Signup() {
                       id="password-confirm"
                       type="password"
                       placeholder="비밀번호 확인"
-                      className={`${styles.inputUnset}`}
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
                       {...register("password-confirm", {
                         required: "비밀번호 확인은 필수입니다.",
                         validate: (value) =>
