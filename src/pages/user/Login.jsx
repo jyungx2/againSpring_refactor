@@ -28,6 +28,7 @@ function Login() {
       setUser({
         _id: user._id,
         name: user.name,
+        type: user.type,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
       });
@@ -113,7 +114,7 @@ function Login() {
               />
               <label
                 htmlFor="stay-login"
-                className="flex items-center gap-3 mt-14 before:content-[''] before:w-[20px] before:h-[20px] before:inline-block before:bg-[url('/icons/emptybox.svg')] peer-checked:before:bg-[url('/icons/checkbox.svg')]"
+                className="flex items-center gap-3 mt-14 before:content-[""] before:w-[20px] before:h-[20px] before:inline-block before:bg-[url("/icons/emptybox.svg")] peer-checked:before:bg-[url("/icons/checkbox.svg")]"
               >
                 자동 로그인
               </label>
