@@ -28,7 +28,7 @@ function Login() {
       setUser({
         _id: user._id,
         name: user.name,
-        profile: user.image.path,
+        profile: user.image?.path,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
       });
