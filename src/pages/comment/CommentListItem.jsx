@@ -1,29 +1,79 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import useAxiosInstance from '@hooks/useAxiosInstance';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-/**
- * TODO 댓글 아이템
- * - 개별 댓글 아이템 표시
- * - 수정/삭제 기능 포함
- * - 사용자 권한에 따른 UI 처리
- */
-const CommentListItem = ({ comment, postId }) => {
+const CommentListItem = ({ comment, postId, isAdmin, user, post }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
 
-  const handleUpdate = async () => {
-    // API 호출 로직
+  const axios = useAxiosInstance();
+  const MySwal = withReactContent(Swal);
+  const queryClient = useQueryClient();
+
+  // 수정 시작
+  const handleEditStart = () => {
     setIsEditing(false);
+    setEditContent(comment.content);
   };
 
-  const handleDelete = async () => {
-    // API 호출 로직
+  const handleEditCancel = () => {
+    setIsEditing(false);
+    setEditContent(comment.content);
+  };
+
+  // 수정 완료
+  const updateComment = useMutation({
+    mutationFn: ({ commentId, content }) =>
+      axios.put(`/posts/${postId}/replies/${commentId}`, { content }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['comments', postId]);
+      setIsEditing(false);
+      MySwal.fire({
+        title: '수정 완료',
+        text: '댓글이 수정되었습니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+      });
+    },
+  });
+
+  // 댓글 삭제
+  const deleteComment = useMutation({
+    mutationFn: (commentId) =>
+      axios.delete(`/posts/${postId}/replies/${commentId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['comments', postId]);
+      MySwal.fire({
+        title: '삭제 완료',
+        text: '댓글이 삭제되었습니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+      });
+    },
+  });
+
+  const handleDelete = async (commentId) => {
+    const result = await MySwal.fire({
+      title: '댓글을 삭제하시겠습니까?',
+      text: '삭제된 댓글은 복구할 수 없습니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+    });
+
+    if (result.isConfirmed) {
+      deleteComment.mutate(commentId);
+    }
   };
 
   return (
     <div className='py-8 border-b border-grey-10'>
       <div className='flex items-center'>
-        <span className='text-2xl font-medium'>{comment.name}</span>
+        <span className='text-2xl font-medium mr-3'>{comment?.user?.name}</span>
         <span className='text-2xl font-normal'>{comment.createdAt}</span>
       </div>
       {isEditing ? (
@@ -37,7 +87,7 @@ const CommentListItem = ({ comment, postId }) => {
             <button
               type='button'
               className='rounded-lg px-6 py-2 bg-secondary-20 text-white text-2xl cursor-pointer'
-              onClick={handleUpdate}
+              onClick={updateComment}
             >
               수정완료
             </button>
@@ -53,22 +103,13 @@ const CommentListItem = ({ comment, postId }) => {
       ) : (
         <>
           <p className='text-xl text-grey-80 mt-4 pl-3'>{comment.content}</p>
-          <div className='flex mt-4'>
-            <button
-              type='button'
-              className='text-2xl text-grey-40 hover:text-grey-70 font-normal relative ml-4'
-              onClick={() => setIsEditing(true)}
-            >
-              수정
-            </button>
-            <button
-              type='button'
-              className="text-2xl text-grey-40 hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
-              onClick={handleDelete}
-            >
-              삭제
-            </button>
-          </div>
+          {(user && user?._id == comment?.user_id) ||
+            (isAdmin && (
+              <div className='flex mt-4'>
+                <button onClick={() => handleEditStart(comment)}>수정</button>
+                <button onClick={() => handleDelete(comment.id)}>삭제</button>
+              </div>
+            ))}
         </>
       )}
     </div>
@@ -79,6 +120,7 @@ export default CommentListItem;
 
 CommentListItem.propTypes = {
   comment: PropTypes.shape({
+    user: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
     content: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
