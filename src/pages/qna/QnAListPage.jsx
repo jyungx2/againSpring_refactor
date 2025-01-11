@@ -61,8 +61,6 @@ export default function QnAListPage() {
     staleTime: 1000 * 10,
   });
 
-  console.log('qna 게시판 글 목록', data);
-
   // 데이터 로딩 중일 때 표시할 UI
   if (!data) {
     return <div>로딩중...</div>;

@@ -34,7 +34,6 @@ export default function ProductQnAPostDetailPage() {
         mainImages: data.item.product.mainImages[0], // 첫 번째 이미지 세트 사용
       });
     }
-    console.log('data 감지', data);
 
     if (data?.item?.replies) {
       setReplies(data?.item?.replies);

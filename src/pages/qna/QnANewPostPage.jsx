@@ -191,13 +191,10 @@ export default function QnANewPostPage() {
     input.setAttribute('accept', 'image/*');
     input.click();
 
-    console.log('이미지 업로드 버튼 클릭');
-
     // 파일 선택 시 이벤트 처리
     input.onchange = async () => {
       const file = input.files[0];
       if (file) {
-        console.log('file data 변경 또는 입력' + file);
         /**
          * TODO: 여기에 실제 이미지 업로드 로직 구현해야 함
          *
@@ -220,11 +217,8 @@ export default function QnANewPostPage() {
           },
         });
 
-        console.log(response);
-
         // 업로드 결과 처리
         const result = await response.json();
-        console.log('이미지 업로드 성공:', result.item[0].path);
 
         // 전체 이미지 URL 생성
         const imageUrl = `https://11.fesp.shop${result.item[0].path}`;
@@ -240,8 +234,6 @@ export default function QnANewPostPage() {
       }
     };
   };
-
-  console.log(selectedProductInfo);
 
   // Quill 에디터 이미지 핸들러 등록
   useEffect(() => {

@@ -32,9 +32,6 @@ const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
       return;
     }
 
-    console.log('tt');
-    // API 호출 로직
-
     const data = {
       content: content,
     };
