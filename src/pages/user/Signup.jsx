@@ -192,10 +192,7 @@ function Signup() {
                         </label>
                         <div
                           className="flex items-center gap-[12px] p-2 hover:bg-sky-100 rounded cursor-pointer"
-                          onClick={() => {
-                            // e.stopPropagation();
-                            handleClearFile();
-                          }}
+                          onClick={handleClearFile}
                         >
                           <i className="fa-regular fa-trash-can"></i>
                           <span className="whitespace-nowrap">삭제</span>
