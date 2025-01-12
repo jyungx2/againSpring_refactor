@@ -5,11 +5,15 @@ import { useForm } from "react-hook-form";
 import useUserStore from "@store/userStore";
 import { useNavigate } from "react-router-dom";
 import ErrorMsg from "@components/ErrorMsg";
+import { useState } from "react";
 
 function Login() {
   const axios = useAxiosInstance();
   const setUser = useUserStore((store) => store.setUser);
   const navigate = useNavigate();
+
+  const [autoLogin, setAutoLogin] = useState(false);
+  console.log(autoLogin);
 
   const {
     register,
@@ -31,6 +35,7 @@ function Login() {
         profile: user.image?.path,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
+        autoLogin,
       });
 
       alert(user.name + "님 로그인 되었습니다.");
@@ -111,6 +116,8 @@ function Login() {
                 type="checkbox"
                 id="stay-login"
                 className={`${styles.inputUnset} ${styles.checkboxCustom} peer`}
+                checked={autoLogin}
+                onChange={(e) => setAutoLogin(e.target.checked)}
               />
               <label
                 htmlFor="stay-login"
