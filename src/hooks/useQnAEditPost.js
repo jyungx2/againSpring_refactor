@@ -16,16 +16,60 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
   const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
 
+  // Quill 인스턴스가 설정되면 내용을 업데이트
   useEffect(() => {
-    if (initialData) {
-      setTitle(initialData.title);
-      setContent(initialData.content);
-      setOriginalData(initialData);
+    if (quillInstance && originalData?.content) {
+      quillInstance.root.innerHTML = originalData.content;
     }
-  }, [initialData]);
+  }, [quillInstance, originalData]);
+
+  const fetchPostData = async (postId) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`/posts/${postId}`);
+
+      if (response.data.ok) {
+        const data = response.data.item;
+        setTitle(data.title);
+        setContent(data.content);
+        setOriginalData(data);
+
+        // 상품 정보가 있는 경우 상품 데이터 조회
+        if (data.product?._id) {
+          setSelectedProduct({
+            _id: data.product._id[0],
+            name: data.product.name[0],
+            price: data.product.price,
+            mainImages: data.product.mainImages[0],
+          });
+        }
+
+        // Quill 에디터 내용 설정
+        if (quillInstance) {
+          quillInstance.root.innerHTML = data.content;
+        }
+      }
+    } catch (error) {
+      MySwal.fire({
+        title: '오류 발생',
+        text:
+          error.response?.data?.message ||
+          '게시글 로딩 중 오류가 발생했습니다.',
+        icon: 'error',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (post._id) {
+      fetchPostData(post._id);
+    }
+  }, [post._id]);
 
   const handleUpdate = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
 
     const currentContent = quillInstance?.root.innerHTML || '';
 
@@ -70,8 +114,8 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
   const handleCancel = () => {
     const hasChanges =
       title !== originalData?.title ||
-      content !== originalData?.content ||
-      selectedProduct?._id !== originalData?.product_id;
+      quillInstance?.root.innerHTML !== originalData?.content ||
+      selectedProduct?._id !== originalData?.product?._id;
 
     if (hasChanges) {
       MySwal.fire({
@@ -91,63 +135,15 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
     }
   };
 
-  const fetchPostData = async (postId) => {
-    try {
-      setIsLoading(true);
-      const response = await axios.get(`/posts/${postId}`);
-
-      if (response.data.ok) {
-        const data = response.data.item;
-        setTitle(data.title);
-        setContent(data.content);
-        setOriginalData(data);
-
-        // 상품 정보가 있는 경우 상품 데이터 조회
-        if (data.product_id) {
-          try {
-            const productResponse = await axios.get(
-              `/products/${data.product_id}`
-            );
-            if (productResponse.data.ok) {
-              setSelectedProduct(productResponse.data.item);
-            }
-          } catch (productError) {
-            console.error('상품 정보 로딩 중 오류 발생:', productError);
-          }
-        }
-
-        // Quill 에디터 내용 설정
-        if (quillInstance) {
-          quillInstance.root.innerHTML = data.content;
-        }
-      }
-    } catch (error) {
-      MySwal.fire({
-        title: '오류 발생',
-        text:
-          error.response?.data?.message ||
-          '게시글 로딩 중 오류가 발생했습니다.',
-        icon: 'error',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (post._id) {
-      fetchPostData(post._id);
-    }
-  }, [post._id]);
-
   return {
     title,
     setTitle,
     content,
-    setContent,
     isLoading,
     setQuillInstance,
     handleUpdate,
     handleCancel,
+    selectedProduct,
+    setSelectedProduct,
   };
 };
