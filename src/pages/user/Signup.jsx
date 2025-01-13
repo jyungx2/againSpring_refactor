@@ -166,17 +166,10 @@ function Signup() {
                 )}
 
                 <div
-                  className="absolute bottom-1 right-0 rounded-full border border-grey-30 bg-white p-2 cursor-pointer"
+                  className="absolute bottom-1 right-0 rounded-full border border-grey-30 bg-white p-2 cursor-pointer "
                   onClick={handleOpen}
                 >
-                  <button
-                    type="button"
-                    className={`${styles.camera}`}
-                    onClick={(e) => {
-                      e.stopPropagation(); // 이벤트 버블링 방지
-                      handleOpen();
-                    }}
-                  >
+                  <button type="button" className={`${styles.camera}`}>
                     {isOpen && (
                       <div className="absolute left-6 top-full mt-1 p-2 shadow rounded-lg flex flex-col gap-[8px] bg-white">
                         <label
@@ -200,10 +193,7 @@ function Signup() {
                         </label>
                         <div
                           className="flex items-center gap-[12px] p-2 hover:bg-sky-100 rounded cursor-pointer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleClearFile();
-                          }}
+                          onClick={handleClearFile}
                         >
                           <i className="fa-regular fa-trash-can"></i>
                           <span className="whitespace-nowrap">삭제</span>

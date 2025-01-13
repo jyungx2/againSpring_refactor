@@ -8,6 +8,11 @@ function Cart() {
   const { state } = useLocation(); // navigate로 전달된 데이터
   const { id } = useParams(); // URL의 파라미터 값
 
+  const getImage = (path) => {
+    const baseURL = "https://11.fesp.shop";
+    return `${baseURL}${path}`
+  }
+
   const tabContent = {
     상세정보: (
       <div>
@@ -145,26 +150,19 @@ function Cart() {
           {/*🦋🍓 장바구니에 아이템이 있을 때 */}
           {cartItemsList.map((item) => (
             <div className="flex ml-[80px] mt-[50px]">
-              <div className="flex flex-col  mr-[10px] ">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-[80px] h-[90px] mb-[30px] object-cover mr-[32px]"
-                />
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-[80px] h-[90px] mb-[30px] object-cover mr-[100px]"
-                />
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-[80px] h-[90px] mb-[20px] object-cover mr-[100px]"
-                />
+              <div className="flex flex-col mr-[30px]">
+                {state.mainImages?.map((image, index) => (
+                  <img
+                    key={index} // map() 사용 시 고유 key 필요
+                    src={getImage(image.path)} // 경로 변환 함수 사용
+                    alt={`상품 이미지 ${index + 1}`}
+                    className="w-[80px] h-[90px] mb-[10px] object-cover mr-[32px]"
+                  />
+                ))}
               </div>
               <img
-                src={item.image}
-                alt={item.name}
+                src={getImage(state.mainImages?.[0]?.path)}
+                alt="메인 상품 이미지"
                 className="w-[370px] h-[492px] mb-[20px] object-cover mr-[70px]"
               />
 
@@ -274,10 +272,9 @@ function Cart() {
                   key={tab}
                   onClick={() => setActiveTab(tab)} // 탭 클릭 시 활성화된 탭을 변경
                   className={`w-[430px] pt-[20px] pb-[20px] cursor-pointer px-4 py-2 text-center text-[15px] 
-                    ${
-                      activeTab === tab
-                        ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
-                        : "border-2 border-gray-300 text-gray-500"
+                    ${activeTab === tab
+                      ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
+                      : "border-2 border-gray-300 text-gray-500"
                     }`}
                 >
                   {tab}
