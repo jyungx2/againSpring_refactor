@@ -109,15 +109,15 @@ export default CommentNew;
 CommentNew.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   post: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
+    _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     user: PropTypes.shape({
-      _id: PropTypes.string.isRequired,
+      _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     }),
     replies: PropTypes.array,
   }).isRequired,
   comments: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       content: PropTypes.string.isRequired,
     })
   ).isRequired,
