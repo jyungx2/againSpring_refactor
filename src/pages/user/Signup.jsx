@@ -4,35 +4,111 @@ import { useMutation } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import ErrorMsg from "@components/ErrorMsg";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "@store/userStore";
+import { useState } from "react";
 
 const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 function Signup() {
+  // Dropdown
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleClearFile = () => {
+    setProfileImage(undefined);
+    setValue("attach", []);
+    handleOpen();
+  };
+
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
     watch,
+    setValue,
   } = useForm({
     mode: "onSubmit",
     reValidateMode: "onChange",
     criteriaMode: "all",
+    defaultValues: {
+      name: "김마켓",
+      email: "kimarket2@market.com",
+      password: 11111111,
+      "password-confirm": 11111111,
+    },
   });
-  console.log(errors);
 
   const axios = useAxiosInstance();
   const navigate = useNavigate();
+  const setUser = useUserStore((store) => store.setUser);
+  const [profileImage, setProfileImage] = useState();
+
+  const handleFileShow = (e) => {
+    const file = e.target.files[0]; // 사용자가 업로드한 파일
+    console.log("file: ", file);
+    const watchAll = watch();
+    console.log("watchAll: ", watchAll);
+    console.log("watchAll.attach: ", watchAll.attach);
+
+    if (file) {
+      // 이전 URL 정리
+      if (profileImage) {
+        URL.revokeObjectURL(profileImage);
+      }
+
+      // 새로운 URL 생성
+      const newImageUrl = URL.createObjectURL(file); // 이미지 파일 미리보기 위해 파일 객체를 URL로 변환
+      console.log(newImageUrl);
+      // ** createObjectURL로 생성한 URL은 브라우저에서만 유효하고, 파일을 서버로 전송하려면 FormData 등을 사용해야 함 **
+      setProfileImage(newImageUrl);
+    }
+    setIsOpen(false);
+  };
 
   const registerUser = useMutation({
-    mutationFn: (userInfo) => {
-      console.log("Initial userInfo: ", userInfo); // name, email, password, password-confirm 정보가 담긴 객체
+    mutationFn: async (userInfo) => {
+      console.log("Initial userInfo: ", userInfo); // name, email, password, password-confirm, attach 정보가 담긴 객체
+
+      // 프로필 이미지 등록 로직 구현
+      if (userInfo.attach?.length > 0) {
+        const profileFormData = new FormData();
+        profileFormData.append("attach", userInfo.attach[0]); // ∵ files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
+
+        const fileRes = await axios.post("/files", profileFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        userInfo.image = fileRes.data.item[0];
+        delete userInfo.attach;
+      }
 
       userInfo.type = "user";
       console.log("Final userInfo: ", userInfo);
       return axios.post(`/users`, userInfo);
     },
-    onSuccess: () => {
+    onSuccess: async (res, userInfo) => {
+      const user = res.data.item;
+      console.log(user); // password 속성 존재 (undefined X)
+      user.password = userInfo.password; // 굳이 해줄 필요? (안 쓰면 422 에러)
+      console.log(user); // password 속성 당연히 존재
+
+      // 로그인 요청
+      const resLogin = await axios.post(`/users/login`, user);
+      const userLogin = resLogin.data.item;
+      delete userLogin["password-confirm"]; // 보안상 비밀번호 확인을 지움.
+      console.log(userLogin);
+
+      setUser({
+        _id: userLogin._id,
+        name: userLogin.name,
+        profile: userLogin.image?.path,
+        accessToken: userLogin.token.accessToken,
+        refreshToken: userLogin.token.refreshToken,
+      });
+
       alert("회원가입이 완료되었습니다.");
       navigate("/");
     },
@@ -40,7 +116,7 @@ function Signup() {
       console.error(err);
 
       // 클라이언트 측에서 유효성 검사에 실패한 오류를 1차적으로 처리
-      if (err.response.data.errors) {
+      if (err.response?.data.errors) {
         err.reponse.data.errors.forEach(
           (error) => setError(error.path, { message: error.msg })
           // errors 객체를 생성하는 함수 - 객체이기 때문에 키값과 밸류값, 두가지 매개변수를 필요로 함
@@ -77,16 +153,52 @@ function Signup() {
               <div
                 id="fildupload_profile_img"
                 className="relative mx-auto w-[100px] h-[100px]"
-                accept="image/jepg, image/jpg, image/png, image/gif, image/svg+xml"
               >
-                <div className="w-full h-full bg-[url('./icons/profile.svg')] bg-cover bg-center"></div>
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="프로필사진 미리보기"
+                    className="w-full h-full border border-grey-20 rounded-full object-cover p-1"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[url('./icons/profile.svg')]"></div>
+                )}
 
-                <div className="absolute bottom-[4px] right-0 rounded-full  border border-grey-30">
-                  <button className="box-border w-10 h-10 bg-white rounded-full cursor-pointer">
-                    <img
-                      className="w-7 h-7 mx-auto mt-1"
-                      src="/icons/camera.svg"
-                    />
+                <div
+                  className="absolute bottom-1 right-0 rounded-full border border-grey-30 bg-white p-2 cursor-pointer "
+                  onClick={handleOpen}
+                >
+                  <button type="button" className={`${styles.camera}`}>
+                    {isOpen && (
+                      <div className="absolute left-6 top-full mt-1 p-2 shadow rounded-lg flex flex-col gap-[8px] bg-white">
+                        <label
+                          className="flex items-center gap-[10px] p-2 pr-8 hover:bg-sky-100 rounded cursor-pointer"
+                          htmlFor="attach"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <i className="fa-solid fa-pen"></i>
+                          <span className="whitespace-nowrap">등록</span>
+                          <input
+                            type="file"
+                            id="attach"
+                            accept="image/*"
+                            className="hidden"
+                            {...register("attach", {
+                              onChange: (e) => {
+                                handleFileShow(e);
+                              },
+                            })}
+                          />
+                        </label>
+                        <div
+                          className="flex items-center gap-[12px] p-2 hover:bg-sky-100 rounded cursor-pointer"
+                          onClick={handleClearFile}
+                        >
+                          <i className="fa-regular fa-trash-can"></i>
+                          <span className="whitespace-nowrap">삭제</span>
+                        </div>
+                      </div>
+                    )}
                   </button>
                 </div>
               </div>
@@ -102,7 +214,7 @@ function Signup() {
                     id="name"
                     type="text"
                     placeholder="이름"
-                    className={`${styles.inputUnset}`}
+                    className={`${styles.inputUnset} ${styles.inputCustom}`}
                     {...register("name", {
                       required: "이름은 필수입니다.",
                       minLength: {
@@ -118,7 +230,6 @@ function Signup() {
                 </div>
                 <ErrorMsg target={errors.name} />
               </div>
-
               <div className="id-collection">
                 <div>
                   <div
@@ -131,7 +242,7 @@ function Signup() {
                       id="email"
                       type="email"
                       placeholder="이메일"
-                      className={`${styles.inputUnset}`}
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
                       {...register("email", {
                         required: "이메일은 필수입니다.",
                         pattern: {
@@ -155,7 +266,7 @@ function Signup() {
                       id="password"
                       type="password"
                       placeholder="비밀번호"
-                      className={`${styles.inputUnset}`}
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
                       {...register("password", {
                         required: "비밀번호는 필수입니다.",
                         minLength: {
@@ -179,7 +290,7 @@ function Signup() {
                       id="password-confirm"
                       type="password"
                       placeholder="비밀번호 확인"
-                      className={`${styles.inputUnset}`}
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
                       {...register("password-confirm", {
                         required: "비밀번호 확인은 필수입니다.",
                         validate: (value) =>
@@ -191,7 +302,6 @@ function Signup() {
                   <ErrorMsg target={errors["password-confirm"]} />
                 </div>
               </div>
-
               <button className="font-gowunBold w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
                 가입하기
               </button>
