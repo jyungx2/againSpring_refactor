@@ -38,32 +38,38 @@ function useAxiosInstance() {
     },
     async (error) => {
       console.error("인터셉터 결과(에러): ", error);
-      const { config } = error; // response 속성이 안 보는이는데, 어떻게 뽑아냄?
+      const { config, response } = error; // response 속성이 안 보는이는데, 어떻게 뽑아냄? => 잘못된 baseUrl로 발생하는 오류의 경우, reponse객체가 없거나 undefined로 나타나기 때문에 안 보였던 것..
 
       // 401 에러는 "Unauthorized" (인증되지 않음) 상태를 나타내는 HTTP 상태 코드
+      // 토큰 만료나 인증 실패와 관련된 처리만을 정확히 구분하여 처리하기 위해 추가한 조건문
+      if (response.status === 401) {
+        if (config.url === REFRESH_url) {
+          // 1. REFRESH_URL로 요청했는데도 오류가 났다면 로그인하도록
+          navigateLogin();
+        } else if (user) {
+          // 🌟🌟토큰 만료 시간을 짧게 설정 요청 필요🌟🌟
+          // 2. 로그인 했으나 accessToken 만료된 경우,
+          // -> refresh 토큰으로 accessToken 재발급 요청
+          const refreshRes = await instance.get(REFRESH_url, {
+            headers: { Authorization: `Bearer ${user.refreshToken}` },
+          });
+          // 새로 발급받은 accessToken 추출
+          console.log(refreshRes);
+          console.log(refreshRes.data.accessToken);
+          const accessToken = refreshRes.data.accessToken;
 
-      if (config.url === REFRESH_url) {
-        // 1. REFRESH_URL로 요청했는데도 오류가 났다면 로그인하도록
-        navigateLogin();
-      } else if (user) {
-        // 🌟🌟토큰 만료 시간을 짧게 설정 요청 필요🌟🌟
-        // 2. 로그인 했으나 accessToken 만료된 경우,
-        // -> refresh 토큰으로 accessToken 재발급 요청
-        const refreshRes = await instance.get(REFRESH_url, {
-          headers: { Authorization: `Bearer ${user.refreshToken}` },
-        });
-        // 새로 발급받은 accessToken 추출
-        console.log(refreshRes);
-        console.log(refreshRes.data.accessToken);
-        const accessToken = refreshRes.data.accessToken;
+          // 로그인 유저 상태 설정
+          setUser({ ...user, accessToken });
+          config.headers.Authorization = `Bearer ${accessToken}`;
 
-        // 로그인 유저 상태 설정
-        setUser({ ...user, accessToken });
-        config.headers.Authorization = `Bearer ${accessToken}`;
-
-        // 인터셉터 무한루프를 방지하기 위해 instance 대신, axios 요청
-        return axios(config);
+          // 인터셉터 무한루프를 방지하기 위해 instance 대신, axios 요청
+          return axios(config);
+        } else {
+          navigateLogin();
+        }
       }
+      // 인증실패 오류(401)로 인한 에러 외에, 에러를 명시적으로 reject()하여 Promise 체이닝에서 발생한 오류를 적절히 처리하기 위해 사용
+      // 👉 비동기 함수에서는 오류를 throw로 던지거나, Promise.reject()로 반환하여 해당 오류가 나중에 catch()나 async/await에서 처리될 수 있도록 하기 위함..
       return Promise.reject(error);
     }
   );
