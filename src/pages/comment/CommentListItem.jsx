@@ -5,63 +5,6 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-// CommentListItem.jsx 내부 구현 순서
-
-/**
- * TODO 1: 상태 관리 (완료)
- * - isEditing: 수정 모드 여부를 관리하는 상태
- * - editContent: 수정할 댓글 내용을 관리하는 상태
- * useState로 각각 초기화
- */
-
-/**
- * TODO 2: 수정 모드 진입/취소 핸들러 (완료)
- * - handleEditStart(): 
- *   1. isEditing을 true로 설정
- *   2. editContent를 현재 댓글 내용으로 설정
- * 
- * - handleEditCancel():
- *   1. isEditing을 false로 설정
- *   2. editContent를 원래 댓글 내용으로 초기화
- */
-
-/**
- * TODO 3: 댓글 수정 API 연동 (완료)
- * - updateComment mutation 설정:
- *   1. mutationFn에서 PATCH 요청 구현 (/posts/{postId}/replies/{commentId})
- *   2. onSuccess 핸들러에서:
- *      - 댓글 목록 쿼리 무효화
- *      - 수정 모드 종료 (isEditing false)
- *      - 성공 알림 표시
- */
-
-/**
- * TODO 4: 댓글 삭제 API 연동 (완료)
- * - deleteComment mutation 설정:
- *   1. mutationFn에서 DELETE 요청 구현 (/posts/{postId}/replies/{commentId})
- *   2. onSuccess 핸들러에서:
- *      - 댓글 목록 쿼리 무효화
- *      - 성공 알림 표시
- */
-
-/**
- * TODO 5: 삭제 확인 핸들러 (완료)
- * - handleDelete():
- *   1. 삭제 확인 다이얼로그 표시
- *   2. 사용자가 확인 시 deleteComment mutation 실행
- */
-
-/**
- * TODO 6: UI 구현 (완료)
- * - 조건부 렌더링으로 수정 모드 UI 구현:
- *   1. isEditing이 true일 때:
- *      - 텍스트 에리어로 댓글 내용 표시
- *      - 수정 완료/취소 버튼 표시
- *   2. isEditing이 false일 때:
- *      - 일반 텍스트로 댓글 내용 표시
- *      - 수정/삭제 버튼 표시 (권한 있는 사용자만)
- */
-
 const CommentListItem = ({ comment, isAdmin, user, post }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
