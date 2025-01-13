@@ -11,14 +11,14 @@ const TansoMain = () => {
   ];
 
   return (
-    <div className="bg-grey-5 min-h-screen py-8 px-4 font-gowun">
+    <div className="bg-grey-5 w-[1200px] mx-auto px-6 py-8 font-gowun">
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
         <h1 className="text-4xl font-gowunBold text-primary-50 mb-6">
           탄소 발자국 계산기
         </h1>
-        {/* <p className="text-grey-60 mb-6">
-          당신의 생활에서 탄소 발자국을 계산하고, 줄일 방법을 찾아보세요.
-        </p> */}
+        <p className="text-grey-60 mb-6">
+          다시, 봄에서 상품을 구매하셨나요? 탄소 발자국을 계산해보세요!
+        </p>
         <div className="space-y-6">
           {inputs
             .filter(({ id }) => id !== "transportation")
@@ -80,12 +80,20 @@ const TansoMain = () => {
             />
           </div>
         </div>
-        <button
-          onClick={() => alert(`총 CO₂ 배출량: ${calculateCO2()} kg`)}
-          className="mt-6 bg-primary-50 text-white py-2 px-4 rounded hover:bg-primary-70"
-        >
-          계산하기
-        </button>
+        <div className="mt-6 flex space-x-4">
+          <button
+            onClick={() => alert(`총 CO₂ 배출량: ${calculateCO2()} kg`)}
+            className="bg-primary-50 text-white py-2 px-4 rounded hover:bg-primary-70"
+          >
+            계산하기
+          </button>
+          <button className="bg-primary-50 text-white py-2 px-4 rounded hover:bg-primary-70">
+            총 결과 보기
+          </button>
+          <button className="bg-primary-50 text-white py-2 px-4 rounded hover:bg-primary-70">
+            생활 속 실천 방안
+          </button>
+        </div>
         <div className="mt-4 text-lg font-medium text-secondary-20">
           총 CO₂ 배출량: {calculateCO2()} kg
         </div>
