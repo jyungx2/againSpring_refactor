@@ -25,6 +25,7 @@ const Menu = () => {
       links: ['/notice', '/QnA'],
     },
     { name: '이벤트', links: ['/event'] },
+    { name: '탄소발자국', links: ['/tanso'] },
   ];
 
   return (
