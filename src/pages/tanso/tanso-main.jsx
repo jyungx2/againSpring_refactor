@@ -16,31 +16,37 @@ const TansoMain = () => {
         <h1 className="text-4xl font-gowunBold text-primary-50 mb-6">
           탄소 발자국 계산기
         </h1>
-        <p className="text-grey-60 mb-6">
+        {/* <p className="text-grey-60 mb-6">
           당신의 생활에서 탄소 발자국을 계산하고, 줄일 방법을 찾아보세요.
-        </p>
+        </p> */}
         <div className="space-y-6">
-          {inputs.map(({ id, label, value }) => (
-            <div key={id} className="flex items-center justify-between">
-              <label
-                htmlFor={id}
-                className="text-lg font-medium text-primary-70 w-1/2"
+          {inputs
+            .filter(({ id }) => id !== "transportation")
+            .map(({ id, label, value }) => (
+              <div
+                key={id}
+                className="bg-white border border-gray-200 rounded-lg shadow-sm p-4"
               >
-                {label}
-              </label>
-              <input
-                type="number"
-                id={id}
-                value={value}
-                onChange={(e) => setField(id, parseFloat(e.target.value) || 0)}
-                className="w-1/3 border border-grey-20 rounded p-2 text-center"
-              />
-            </div>
-          ))}
+                <label
+                  htmlFor={id}
+                  className="text-lg font-medium text-primary-70 block mb-2"
+                >
+                  {label}
+                </label>
+                <input
+                  type="number"
+                  id={id}
+                  value={value}
+                  onChange={(e) => setField(id, parseFloat(e.target.value) || 0)}
+                  className="w-full border border-grey-20 rounded p-2 text-center"
+                />
+              </div>
+            ))}
 
-          <div className="bg-white shadow-md rounded-lg p-4">
+          {/* 교통수단 선택 */}
+          <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
             <h3 className="text-lg font-medium text-primary-70 mb-4">교통</h3>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 mb-4">
               {transportOptions.map(({ id, label }) => (
                 <label key={id} className="flex items-center space-x-2">
                   <input
@@ -55,6 +61,23 @@ const TansoMain = () => {
                 </label>
               ))}
             </div>
+            <label
+              htmlFor="transportation"
+              className="text-lg font-medium text-primary-70 block mb-2"
+            >
+              교통 거리 (km)
+            </label>
+            <input
+              type="number"
+              id="transportation"
+              value={
+                inputs.find((input) => input.id === "transportation")?.value || 0
+              }
+              onChange={(e) =>
+                setField("transportation", parseFloat(e.target.value) || 0)
+              }
+              className="w-full border border-grey-20 rounded p-2 text-center"
+            />
           </div>
         </div>
         <button
