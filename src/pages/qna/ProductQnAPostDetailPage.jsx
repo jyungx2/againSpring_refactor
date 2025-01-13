@@ -119,17 +119,7 @@ export default function ProductQnAPostDetailPage() {
             <div className='text-xl'>상품명: {selectedProduct.name}</div>
             <div className='flex gap-4'>
               <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
-                <Link
-                  to={`/detail/${selectedProduct?._id}`}
-                  state={{
-                    _id: selectedProduct._id,
-                    name: selectedProduct.name,
-                    mainImages: [selectedProduct.mainImages],
-                    price: selectedProduct.price,
-                  }}
-                >
-                  상품상세보기
-                </Link>
+                <Link to={`/detail/${selectedProduct?._id}`}>상품상세보기</Link>
               </button>
             </div>
           </div>

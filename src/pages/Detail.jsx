@@ -1,12 +1,14 @@
-import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
+import useAxiosInstance from '@hooks/useAxiosInstance';
 
 function Cart() {
   //더미 상품 데이터
   const [activeTab, setActiveTab] = useState("가"); // 기본 활성 탭은 '가'
-  const { state } = useLocation(); // navigate로 전달된 데이터
+  // const { state } = useLocation(); // navigate로 전달된 데이터 <- 코드 삭제 요청드립니다.
   const { id } = useParams(); // URL의 파라미터 값
+  const axiosInstance = useAxiosInstance();
 
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop";
@@ -60,7 +62,7 @@ function Cart() {
   };
 
   const dummyItems = [
-    state || {
+    {
       id: 1,
       name: "상품 A",
       price: 15000,
@@ -69,14 +71,16 @@ function Cart() {
     },
   ];
 
-  const [cartItemsList] = useState(dummyItems);
+  const [cartItemsList, setCartItemsList] = useState(dummyItems);
 
   const shippingCost = 3000; //배송비
-  const totalPrice = cartItemsList.reduce(
-    //가격계산
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  // 코드 수정(ohDASEUL) : totalPrice 개발 부탁드립니다. (일단은 주석 처리 했습니다.)
+  const totalPrice = 0;
+  // const totalPrice = cartItemsList.reduce(
+  //   //가격계산
+  //   (total, item) => total + item.price * item.quantity,
+  //   0
+  // );
 
   const totalOrderAmount = totalPrice + shippingCost; // 가격계산결과
 
@@ -90,6 +94,19 @@ function Cart() {
     { name: "식품", links: ["/inquiry"] },
   ];
 
+  // 코드 추가(ohDASEUL) : 제품 id로 API(url만 있어도 제품이 나오도록 값을 수정)
+   useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const response = await axiosInstance.get(`/products/${id}`);
+          setCartItemsList([response?.data?.item])
+        } catch (error) {
+          console.error("Failed to fetch products:", error);
+        }
+      };
+  
+      fetchProducts();
+    }, []);
   return (
     <div className="flex justify-center px-[16px]">
       {/* 화면 가운데 정렬 및 좌우 패딩을 추가한 외부 컨테이너 */}
@@ -148,10 +165,11 @@ function Cart() {
         {/* 장바구니에 아이템이 없을 경우 */}
         <div>
           {/*🦋🍓 장바구니에 아이템이 있을 때 */}
+          {/* 코드 수정(ohDASEUL) : state -> item (링크를 통해 state 값을 전달하지 않아도 되기 때문에 state는 필요없습니다.)  */}
           {cartItemsList.map((item) => (
             <div className="flex ml-[80px] mt-[50px]">
               <div className="flex flex-col mr-[30px]">
-                {state?.mainImages?.map((image, index) => (
+                {item?.mainImages?.map((image, index) => (
                   <img
                     key={index} // map() 사용 시 고유 key 필요
                     src={getImage(image.path)} // 경로 변환 함수 사용
@@ -161,7 +179,7 @@ function Cart() {
                 ))}
               </div>
               <img
-                src={getImage(state?.mainImages?.[0]?.path)}
+                src={getImage(item?.mainImages?.[0]?.path)}
                 alt="메인 상품 이미지"
                 className="w-[370px] h-[492px] mb-[20px] object-cover mr-[70px]"
               />
@@ -178,7 +196,7 @@ function Cart() {
 
                 <dl className="flex">
                   <dt className=" mr-[90px] mb-[16px]">판매가</dt>
-                  <dd>{item.price.toLocaleString()}</dd>
+                  <dd>{item?.price?.toLocaleString()}</dd>
                 </dl>
 
                 <dl className="flex">
@@ -227,7 +245,7 @@ function Cart() {
                         </dd>
 
                         <dd className="text-center py-[10px]">
-                          {item.price.toLocaleString()}원
+                          {item?.price?.toLocaleString()}원
                         </dd>
                       </div>
                     </dd>
@@ -239,10 +257,10 @@ function Cart() {
                         총 상품 금액(수량):
                       </dt>
                       <dd className=" text-grey-80 font-gowunBold py-[10px] text-[21px]">
-                        {(item.price * item.quantity).toLocaleString()}원
+                        {(item?.price * item?.quantity)?.toLocaleString()}원
                       </dd>
                       <dd className=" text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
-                        {item.quantity.toLocaleString()}개
+                        {item?.quantity?.toLocaleString()}개
                       </dd>
                     </div>
                     <div className="flex mb-[16px] mt-[70px] ">
