@@ -13,7 +13,7 @@ export default function ProductQnAPostDetailPage() {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const [replies, setReplies] = useState([]);
-  const [selectedProductInfo, setSelectedProductInfo] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const { id } = useParams();
   const { user } = useUserStore();
   const isAdmin = user?.type === 'admin';
@@ -27,11 +27,12 @@ export default function ProductQnAPostDetailPage() {
 
   useEffect(() => {
     if (data?.item?.product) {
-      // product 객체의 구조가 API 응답과 다릅니다
-      setSelectedProductInfo({
+      console.log('first',data)
+      setSelectedProduct({
         ...data.item.product,
         name: data.item.product.name[0], // 배열의 첫 번째 항목 사용
         _id: data.item.product._id[0], // 배열의 첫 번째 항목 사용
+        price: data.item.product.price,
         mainImages: data.item.product.mainImages[0], // 첫 번째 이미지 세트 사용
       });
     }
@@ -101,12 +102,12 @@ export default function ProductQnAPostDetailPage() {
       </h1>
 
       {/* 상품 정보 불러오기 */}
-      {selectedProductInfo ? (
+      {selectedProduct ? (
         <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
           <div className='mr-6 relative'>
-            {selectedProductInfo.mainImages?.length > 0 ? (
+            {selectedProduct.mainImages?.length > 0 ? (
               <img
-                src={`https://11.fesp.shop${selectedProductInfo.mainImages[0].path}`}
+                src={`https://11.fesp.shop${selectedProduct.mainImages[0].path}`}
                 className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'
               />
             ) : (
@@ -116,10 +117,10 @@ export default function ProductQnAPostDetailPage() {
             )}
           </div>
           <div className='flex flex-col gap-4 justify-center h-32'>
-            <div className='text-xl'>상품명: {selectedProductInfo.name}</div>
+            <div className='text-xl'>상품명: {selectedProduct.name}</div>
             <div className='flex gap-4'>
               <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
-                <Link to={`/detail/${selectedProductInfo._id}`}>
+                <Link to={`/detail/${selectedProduct?._id}`} state={selectedProduct}>
                   상품상세보기
                 </Link>
               </button>
@@ -161,7 +162,11 @@ export default function ProductQnAPostDetailPage() {
               id='title'
             >
               {data?.item?.title}
-              <span className='inline-block px-5 py-2 rounded-[20px] text-white text-base bg-primary-40'>
+              <span
+                className={`inline-block px-5 py-2 rounded-[20px] text-white text-sm ml-2.5 ${
+                  data?.item?.repliesCount ? 'bg-primary-40' : 'bg-grey-20'
+                }`}
+              >
                 {data?.item?.repliesCount ? '답변완료' : '답변대기'}
               </span>
             </h2>
