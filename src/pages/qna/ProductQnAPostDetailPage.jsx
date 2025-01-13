@@ -139,7 +139,7 @@ export default function ProductQnAPostDetailPage() {
             </div>
             <div className='flex gap-4'>
               <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
-                <Link to='/detail'>상품상세보기</Link>
+                <Link to='#'>상품상세보기</Link>
               </button>
             </div>
           </div>

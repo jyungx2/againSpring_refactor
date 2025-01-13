@@ -80,12 +80,12 @@ export default function ProductQnAEditPostPage() {
           </div>
           <div className='flex flex-col gap-4 justify-center h-32'>
             <div className='text-lg'>
-              상품명: {selectedProduct.name} <br />
+              상품명: {selectedProduct ? selectedProduct.name : ''}
               {selectedProduct.price?.toLocaleString()}원
             </div>
             <div className='flex gap-4'>
               <button className='px-6 py-2.5 bg-black text-white text-base rounded hover:bg-gray-800'>
-                <Link to={`/detail/${selectedProduct._id}`}>상품상세보기</Link>
+                <Link to={`/detail/${selectedProduct?._id}`}>상품상세보기</Link>
               </button>
               <button
                 className='px-6 py-2.5 border border-black text-base rounded hover:bg-gray-50'
