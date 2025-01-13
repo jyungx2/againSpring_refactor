@@ -47,7 +47,7 @@ export const cartStore = create((set, get) => {
           name: item.product.name,
           price: item.product.price,
           quantity: item.quantity,
-          image: item.product.image.url,
+          image: item.product.image.path,
           _id: item._id,
         }));
 

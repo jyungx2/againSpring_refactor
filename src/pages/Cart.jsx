@@ -109,7 +109,7 @@ function Cart() {
                     </td>
                     <td className="flex items-start py-[20px]">
                       <img
-                        src={item.image}
+                        src={`https://11.fesp.shop${item.image}`}
                         alt={item.name}
                         className="w-[80px] h-[80px] object-cover mr-[8px]"
                       />
