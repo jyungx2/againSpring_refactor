@@ -151,7 +151,7 @@ function Cart() {
           {cartItemsList.map((item) => (
             <div className="flex ml-[80px] mt-[50px]">
               <div className="flex flex-col mr-[30px]">
-                {state.mainImages?.map((image, index) => (
+                {state?.mainImages?.map((image, index) => (
                   <img
                     key={index} // map() 사용 시 고유 key 필요
                     src={getImage(image.path)} // 경로 변환 함수 사용
@@ -161,7 +161,7 @@ function Cart() {
                 ))}
               </div>
               <img
-                src={getImage(state.mainImages?.[0]?.path)}
+                src={getImage(state?.mainImages?.[0]?.path)}
                 alt="메인 상품 이미지"
                 className="w-[370px] h-[492px] mb-[20px] object-cover mr-[70px]"
               />

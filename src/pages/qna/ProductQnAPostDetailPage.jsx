@@ -27,12 +27,11 @@ export default function ProductQnAPostDetailPage() {
 
   useEffect(() => {
     if (data?.item?.product) {
-      console.log('first',data)
+      console.log('first', data);
       setSelectedProduct({
         ...data.item.product,
         name: data.item.product.name[0], // 배열의 첫 번째 항목 사용
         _id: data.item.product._id[0], // 배열의 첫 번째 항목 사용
-        price: data.item.product.price,
         mainImages: data.item.product.mainImages[0], // 첫 번째 이미지 세트 사용
       });
     }
@@ -120,7 +119,15 @@ export default function ProductQnAPostDetailPage() {
             <div className='text-xl'>상품명: {selectedProduct.name}</div>
             <div className='flex gap-4'>
               <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
-                <Link to={`/detail/${selectedProduct?._id}`} state={selectedProduct}>
+                <Link
+                  to={`/detail/${selectedProduct?._id}`}
+                  state={{
+                    _id: selectedProduct._id,
+                    name: selectedProduct.name,
+                    mainImages: [selectedProduct.mainImages],
+                    price: selectedProduct.price,
+                  }}
+                >
                   상품상세보기
                 </Link>
               </button>
