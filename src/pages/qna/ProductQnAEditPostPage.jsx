@@ -55,36 +55,73 @@ export default function ProductQnAEditPostPage() {
       </h1>
 
       {/* 상품 정보 불러오기 */}
-      <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
-        <div className='mr-6'>
-          <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
-            상품 Image
+      {selectedProduct ? (
+        <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+          <div className='mr-6 relative'>
+            {selectedProduct.mainImages?.length > 0 ? (
+              <>
+                <img
+                  src={`https://11.fesp.shop${selectedProduct.mainImages[0].path}`}
+                  alt={selectedProduct.name}
+                  className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'
+                />
+                <button
+                  onClick={() => setSelectedProduct(null)}
+                  className='absolute -top-3 -right-3 w-6 h-6 bg-black text-white rounded-full flex items-center justify-center hover:bg-grey-70 transition-colors'
+                >
+                  x
+                </button>
+              </>
+            ) : (
+              <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+                No Image
+              </div>
+            )}
           </div>
-        </div>
-        <div className='flex flex-col gap-4 justify-center h-32'>
-          {selectedProduct ? (
+          <div className='flex flex-col gap-4 justify-center h-32'>
             <div className='text-lg'>
               상품명: {selectedProduct.name} <br />
-              {selectedProduct.price.toLocaleString()}원
+              {selectedProduct.price?.toLocaleString()}원
             </div>
-          ) : (
-            <div className='text-lg text-gray-400'>상품을 선택해주세요</div>
-          )}
-          <div className='flex gap-4'>
-            <button className='px-6 py-2.5 bg-black text-white text-base rounded hover:bg-gray-800'>
-              <Link to={`/detail/${selectedProduct?._id || ''}`}>
-                상품상세보기
-              </Link>
-            </button>
-            <button
-              className='px-6 py-2.5 border border-black text-base rounded hover:bg-gray-50'
-              onClick={openModal}
-            >
-              상품정보선택
-            </button>
+            <div className='flex gap-4'>
+              <button className='px-6 py-2.5 bg-black text-white text-base rounded hover:bg-gray-800'>
+                <Link to={`/detail/${selectedProduct._id}`}>상품상세보기</Link>
+              </button>
+              <button
+                className='px-6 py-2.5 border border-black text-base rounded hover:bg-gray-50'
+                onClick={openModal}
+              >
+                상품정보선택
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+          <div className='mr-6'>
+            <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+              No Image
+            </div>
+          </div>
+          <div className='flex flex-col gap-4 justify-center h-32'>
+            <div className='text-lg text-gray-400'>상품을 선택해주세요</div>
+            <div className='flex gap-4'>
+              <button
+                className='px-6 py-2.5 bg-black text-white text-base rounded hover:bg-gray-800'
+                disabled
+              >
+                상품상세보기
+              </button>
+              <button
+                className='px-6 py-2.5 border border-black text-base rounded hover:bg-gray-50'
+                onClick={openModal}
+              >
+                상품정보선택
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <input
         className='w-full mb-4 box-border border py-2 px-4 rounded-md text-xl h-[50px]'

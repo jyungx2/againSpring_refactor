@@ -39,8 +39,7 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
           setSelectedProduct({
             _id: data.product._id[0],
             name: data.product.name[0],
-            price: data.product.price,
-            mainImages: data.product.mainImages[0],
+            mainImages: data.product.mainImages?.[0] || [],
           });
         }
 
