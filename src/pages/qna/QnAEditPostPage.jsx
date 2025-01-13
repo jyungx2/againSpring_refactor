@@ -4,7 +4,7 @@ import '../../assets/styles/fonts.css';
 import { useEffect } from 'react';
 import { useQuill } from 'react-quilljs';
 import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
-import { useQnAEditPost } from '@hooks/useEditPost';
+import { useQnAEditPost } from '@hooks/useQnAEditPost';
 import { handleImageUpload } from '@utils/imageUpload';
 
 export default function QnAEditPostPage() {
@@ -25,7 +25,7 @@ export default function QnAEditPostPage() {
   } = useQnAEditPost(
     { _id: id },
     null, // initialData는 API에서 받아와야 함
-    '/qna/detail'
+    `/qna/detail/${id}`
   );
 
   useEffect(() => {

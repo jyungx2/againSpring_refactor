@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';
 import QnAProductModal from '@pages/qna/QnAProductModal';
 import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
-import { useQnAEditPost } from '@hooks/useEditPost';
+import { useQnAEditPost } from '@hooks/useQnAEditPost';
 import { handleImageUpload } from '@utils/imageUpload';
 
 export default function ProductQnAEditPostPage() {
@@ -32,7 +32,7 @@ export default function ProductQnAEditPostPage() {
   } = useQnAEditPost(
     { _id: id },
     null, // initialData는 API에서 받아와야 함
-    '/qna/product/detail'
+    `/qna/product/detail/${id}`
   );
 
   const handleProductSelect = (product) => {
