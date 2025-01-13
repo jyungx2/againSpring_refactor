@@ -1,32 +1,8 @@
-import useTansoStore from "../../store/tansoStore";
+import useTanso from "@hooks/useTanso";
 
 const TansoMain = () => {
-  const {
-    electricity,
-    gas,
-    water,
-    transportation,
-    waste,
-    setField,
-  } = useTansoStore();
+  const { inputs, setField, calculateCO2 } = useTanso();
 
-  const inputs = [
-    { id: "electricity", label: "전기 사용량 (kWh)", value: electricity },
-    { id: "gas", label: "가스 사용량 (m³)", value: gas },
-    { id: "water", label: "수도 사용량 (L)", value: water },
-    { id: "transportation", label: "교통 거리 (km)", value: transportation },
-    { id: "waste", label: "폐기물 배출량 (kg)", value: waste },
-  ];
-
-  const calculateCO2 = () => {
-    return (
-      electricity * 0.233 +
-      gas * 0.150 +
-      water * 0.120 +
-      transportation * 0.200 +
-      waste * 0.100
-    ).toFixed(2);
-  };
 
   return (
     <div className="bg-grey-5 min-h-screen py-8 px-4 font-gowun">
