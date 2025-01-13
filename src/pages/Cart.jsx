@@ -153,6 +153,17 @@ function Cart() {
 
             <hr className="mb-[12px]" />
 
+            <div className="flex justify-start mb-[40px]">
+              <button className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]">
+                장바구니 비우기
+              </button>
+              <button className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30">
+                선택 상품 삭제
+              </button>
+            </div>
+
+            <hr className="mb-[12px] border-grey-50" />
+
             <div className="flex justify-between">
               <p className="text-[14px] font-gowun">
                 총 주문 상품{" "}
@@ -198,7 +209,7 @@ function Cart() {
               </div>
             </div>
 
-            <hr className="my-[16px]" />
+            <hr className="my-[16px] border-grey-50" />
 
             <div className="flex justify-center mb-[16px]">
               <button className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[15px] text-center hover:bg-primary-50">
