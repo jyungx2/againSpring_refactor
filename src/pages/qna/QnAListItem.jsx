@@ -7,6 +7,9 @@ export default function QnAListItem({ item, number }) {
     ? `/qna/product/detail/${item._id}`
     : `/qna/detail/${item._id}`;
 
+    // 답변 완료 여부 체크 - admin이 작성한 댓글이 있는지 확인
+  const hasAdminReply = item.replies?.some(reply => reply.user?.type === 'admin');
+
   return (
     <tr className='border-b border-grey-10'>
       <td className='py-5 text-left pl-5'>{number}</td>
@@ -20,10 +23,10 @@ export default function QnAListItem({ item, number }) {
         </Link>
         <span
           className={`inline-block px-5 py-2 rounded-[20px] text-white text-sm ml-2.5 ${
-            item.repliesCount ? 'bg-primary-40' : 'bg-grey-20'
+            hasAdminReply  ? 'bg-primary-40' : 'bg-grey-20'
           }`}
         >
-          {item.repliesCount ? '답변완료' : '답변대기'}
+          {hasAdminReply ? '답변완료' : '답변대기'}
         </span>
       </td>
       <td className='py-5 text-right pr-2.5'>{item.user.name}</td>

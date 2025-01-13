@@ -16,6 +16,8 @@ export default function QnAPostDetailPage() {
   const { id } = useParams();
   const queryClient = useQueryClient();
 
+  const [hasAdminReply, setHasAdminReply] = useState(false);
+
   const { user } = useUserStore();
   const isAdmin = user?.type === 'admin';
 
@@ -27,7 +29,12 @@ export default function QnAPostDetailPage() {
 
   useEffect(() => {
     if (data?.item?.replies) {
-      setReplies(data?.item?.replies);
+      setReplies(data.item.replies);
+      // admin 답변 여부 체크
+      const adminReplyExists = data.item.replies.some(
+        (reply) => reply.user?.email === 'admin@market.com'
+      );
+      setHasAdminReply(adminReplyExists);
     }
   }, [data]);
 
@@ -84,6 +91,14 @@ export default function QnAPostDetailPage() {
     );
   }
 
+  if (!data?.item) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>데이터를 찾을 수 없습니다</div>
+      </div>
+    );
+  }
+
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
@@ -105,8 +120,12 @@ export default function QnAPostDetailPage() {
               id='title'
             >
               {data?.item?.title}
-              <span className='inline-block px-5 py-2 rounded-[20px] text-white text-base bg-grey-20'>
-                {data?.item?.repliesCount ? '답변완료' : '답변대기'}
+              <span
+                className={`inline-block px-5 py-2 rounded-[20px] text-white text-sm ml-2.5 ${
+                  hasAdminReply ? 'bg-primary-40' : 'bg-grey-20'
+                }`}
+              >
+                {hasAdminReply ? '답변완료' : '답변대기'}
               </span>
             </h2>
           </div>

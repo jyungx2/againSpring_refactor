@@ -19,6 +19,8 @@ export default function ProductQnAPostDetailPage() {
   const isAdmin = user?.type === 'admin';
   const queryClient = useQueryClient();
 
+  const [hasAdminReply, setHasAdminReply] = useState(false);
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['qnaDetail', id],
     queryFn: () => axios.get(`/posts/${id}`),
@@ -37,7 +39,12 @@ export default function ProductQnAPostDetailPage() {
     }
 
     if (data?.item?.replies) {
-      setReplies(data?.item?.replies);
+      setReplies(data.item.replies);
+      // admin 답변 여부 체크
+      const adminReplyExists = data.item.replies.some(
+        (reply) => reply.user?.email === 'admin@market.com'
+      );
+      setHasAdminReply(adminReplyExists);
     }
   }, [data]);
 
@@ -90,6 +97,14 @@ export default function ProductQnAPostDetailPage() {
     return (
       <div className='flex justify-center items-center min-h-screen'>
         <div className='text-xl text-red-500'>에러가 발생했습니다</div>
+      </div>
+    );
+  }
+
+  if (!data?.item) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>데이터를 찾을 수 없습니다</div>
       </div>
     );
   }
@@ -161,10 +176,10 @@ export default function ProductQnAPostDetailPage() {
               {data?.item?.title}
               <span
                 className={`inline-block px-5 py-2 rounded-[20px] text-white text-sm ml-2.5 ${
-                  data?.item?.repliesCount ? 'bg-primary-40' : 'bg-grey-20'
+                  hasAdminReply ? 'bg-primary-40' : 'bg-grey-20'
                 }`}
               >
-                {data?.item?.repliesCount ? '답변완료' : '답변대기'}
+                {hasAdminReply ? '답변완료' : '답변대기'}
               </span>
             </h2>
           </div>
