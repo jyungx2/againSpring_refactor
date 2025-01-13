@@ -23,6 +23,7 @@ import MainContentSection from "@pages/MainContentSection";
 import InfoSection from "@pages/InfoSection";
 import EventMainPage from "@pages/eventPage/EventMainPage";
 import EventDetailPage from "@pages/eventPage/EventDetailPage";
+import TansoPage from "@pages/tanso/tanso-main";
 
 const homeRoutes = [
   {
@@ -60,6 +61,7 @@ const homeRoutes = [
       { path: "qna/product/edit", element: <ProductQnAEditPostPage /> },
       { path: "event", element: <EventMainPage /> },
       { path: "event/detail/:id", element: <EventDetailPage /> },
+      { path: "tanso", element: <TansoPage /> },
     ],
   },
 ];
