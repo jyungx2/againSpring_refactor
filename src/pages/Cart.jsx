@@ -77,12 +77,7 @@ function Cart() {
             <table className="w-full table-auto">
               <thead>
                 <tr className="font-semibold border-b">
-                  <th className="w-[2%] text-left py-[20px]">
-                    <input
-                      type="checkbox"
-                      className="w-[16px] h-[16px] cursor-pointer"
-                    />
-                  </th>
+                  <th className="w-[2%] text-left py-[20px]"></th>
                   <th className="w-[62%] text-left py-[20px] font-gowun text-grey-40 text-[14px]">
                     상품 정보
                   </th>
