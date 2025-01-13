@@ -3,7 +3,7 @@ import '../../assets/styles/fonts.css';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import CommentList from '@pages/comment/CommentList';
 import useUserStore from '@store/userStore';
@@ -17,6 +17,7 @@ export default function ProductQnAPostDetailPage() {
   const { id } = useParams();
   const { user } = useUserStore();
   const isAdmin = user?.type === 'admin';
+  const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['qnaDetail', id],
@@ -40,8 +41,28 @@ export default function ProductQnAPostDetailPage() {
     }
   }, [data]);
 
-  const deleteCheckBtn = () => {
-    MySwal.fire({
+  // 게시글 삭제
+  const deletePost = useMutation({
+    mutationFn: () => axios.delete(`/posts/${id}`),
+    onSuccess: () => {
+      // 상세 페이지 쿼리는 삭제하고, 목록 쿼리만 무효화
+      queryClient.removeQueries(['qnaDetail', id]);
+      queryClient.invalidateQueries(['posts']);
+      MySwal.fire({
+        title: '삭제 완료',
+        text: '게시글이 삭제되었습니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/qna');
+        }
+      });
+    },
+  });
+
+  const deleteCheckBtn = async () => {
+    const result = await MySwal.fire({
       title: '게시글을 삭제하시겠습니까?',
       text: '삭제된 게시글은 복구할 수 없습니다.',
       icon: 'warning',
@@ -50,20 +71,11 @@ export default function ProductQnAPostDetailPage() {
       cancelButtonColor: '#d33',
       confirmButtonText: '네',
       cancelButtonText: '아니요',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        MySwal.fire({
-          title: '삭제 완료',
-          text: '게시글이 삭제되었습니다.',
-          confirmButtonText: '확인',
-          icon: 'success',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate('/qna');
-          }
-        });
-      }
     });
+
+    if (result.isConfirmed) {
+      deletePost.mutate();
+    }
   };
 
   if (isLoading) {
