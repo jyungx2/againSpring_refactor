@@ -38,7 +38,7 @@ function useAxiosInstance() {
     },
     async (error) => {
       console.error("인터셉터 결과(에러): ", error);
-      const { config } = error;
+      const { config } = error; // response 속성이 안 보는이는데, 어떻게 뽑아냄?
 
       // 401 에러는 "Unauthorized" (인증되지 않음) 상태를 나타내는 HTTP 상태 코드
 
