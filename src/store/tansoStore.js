@@ -6,6 +6,7 @@ const useTansoStore = create((set) => ({
   water: 0,
   transportation: 0,
   waste: 0,
+  transportType: "gasoline", // 기본값 설정
   setField: (field, value) => set({ [field]: value }),
 }));
 

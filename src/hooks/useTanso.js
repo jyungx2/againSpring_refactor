@@ -7,6 +7,7 @@ const useTanso = () => {
     water,
     transportation,
     waste,
+    transportType,
     setField,
   } = useTansoStore();
 
@@ -18,17 +19,27 @@ const useTanso = () => {
     { id: "waste", label: "폐기물 배출량 (kg)", value: waste },
   ];
 
+  const transportFactors = {
+    gasoline: (distance) => (distance / 16.04) * 2.097,
+    diesel: (distance) => (distance / 15.35) * 2.582,
+    lpg: (distance) => (distance / 11.06) * 1.868,
+    none: () => 0,
+  };
+
   const calculateCO2 = () => {
+    const transportCO2 =
+      transportFactors[transportType](transportation) || 0;
+
     return (
-      electricity * 0.233 +
-      gas * 0.150 +
-      water * 0.120 +
-      transportation * 0.200 +
-      waste * 0.100
+      electricity * 0.4781 +
+      gas * 2.176 +
+      water * 0.237 +
+      waste * 0.5573 +
+      transportCO2
     ).toFixed(2);
   };
 
-  return { inputs, setField, calculateCO2 };
+  return { inputs, setField, calculateCO2, transportType };
 };
 
 export default useTanso;

@@ -1,8 +1,14 @@
 import useTanso from "@hooks/useTanso";
 
 const TansoMain = () => {
-  const { inputs, setField, calculateCO2 } = useTanso();
+  const { inputs, setField, calculateCO2, transportType } = useTanso();
 
+  const transportOptions = [
+    { id: "gasoline", label: "휘발유" },
+    { id: "diesel", label: "경유" },
+    { id: "lpg", label: "LPG" },
+    { id: "none", label: "승용차 없음" },
+  ];
 
   return (
     <div className="bg-grey-5 min-h-screen py-8 px-4 font-gowun">
@@ -31,6 +37,25 @@ const TansoMain = () => {
               />
             </div>
           ))}
+
+          <div className="bg-white shadow-md rounded-lg p-4">
+            <h3 className="text-lg font-medium text-primary-70 mb-4">교통</h3>
+            <div className="flex space-x-4">
+              {transportOptions.map(({ id, label }) => (
+                <label key={id} className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="transportType"
+                    value={id}
+                    checked={transportType === id}
+                    onChange={(e) => setField("transportType", e.target.value)}
+                    className="form-radio text-primary-50"
+                  />
+                  <span>{label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
         <button
           onClick={() => alert(`총 CO₂ 배출량: ${calculateCO2()} kg`)}
