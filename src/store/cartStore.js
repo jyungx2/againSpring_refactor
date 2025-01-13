@@ -26,6 +26,15 @@ export const cartStore = create((set, get) => {
 
       const { user } = useUserStore.getState();
 
+      if (!user || !user.accessToken) {
+        console.error("Access Token이 존재하지 않습니다.");
+        set({
+          loading: false,
+          error: "로그인이 필요합니다.",
+        });
+        return;
+      }
+
       try {
         const response = await axiosInstance.get("/carts/", {
           headers: {
@@ -39,6 +48,7 @@ export const cartStore = create((set, get) => {
           price: item.product.price,
           quantity: item.quantity,
           image: item.product.image.url,
+          _id: item._id,
         }));
 
         set({
@@ -49,8 +59,8 @@ export const cartStore = create((set, get) => {
         });
       } catch (error) {
         console.error(
-          "Error fetching cart items:",
-          error.response?.data || error
+          "Error fetching cart items",
+          error.response?.data || error.message
         );
         set({
           loading: false,
@@ -59,17 +69,48 @@ export const cartStore = create((set, get) => {
       }
     },
 
-    updateItemQuantity: (productId, newQuantity) => {
+    updateItemQuantity: async (productId, newQuantity) => {
       const { cartItemsList } = get();
+      const cartItem = cartItemsList.find((item) => item.id === productId);
 
-      const updatedCartItemsList = cartItemsList.map((item) =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
-      );
+      if (cartItem) {
+        const { user } = useUserStore.getState();
 
-      set({
-        cartItemsList: updatedCartItemsList,
-        totalOrderAmount: computeTotalOrderAmount(),
-      });
+        try {
+          const response = await axiosInstance.patch(
+            `/carts/${cartItem._id}`,
+            { quantity: newQuantity },
+            {
+              headers: {
+                Authorization: `Bearer ${user.accessToken}`,
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            const updatedCartItemsList = cartItemsList.map((item) =>
+              item.id === productId ? { ...item, quantity: newQuantity } : item
+            );
+
+            set({
+              cartItemsList: updatedCartItemsList,
+              totalOrderAmount: computeTotalOrderAmount(),
+            });
+          } else {
+            set({ error: "장바구니 상품 수량 변경 실패." });
+          }
+        } catch (error) {
+          console.error(
+            "Error updating item quantity:",
+            error.response?.data || error.message
+          );
+          set({
+            error: "장바구니 상품 수량 변경 실패.",
+          });
+        }
+      } else {
+        console.error("해당 상품 ID에 대한 장바구니 상품이 없음", productId);
+      }
     },
   };
 });
