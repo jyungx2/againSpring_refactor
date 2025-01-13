@@ -6,8 +6,14 @@ import { Helmet } from "react-helmet-async";
 
 function Cart() {
   const { userId } = useParams();
-  const { cartItemsList, shippingCost, fetchCartItems, loading, error } =
-    cartStore();
+  const {
+    cartItemsList,
+    shippingCost,
+    fetchCartItems,
+    loading,
+    error,
+    updateItemQuantity,
+  } = cartStore();
   const { user } = useUserStore();
   const navigate = useNavigate();
 
@@ -26,8 +32,13 @@ function Cart() {
 
   const totalOrderAmount = totalPrice + shippingCost;
 
+  const handleQuantityChange = (item, change) => {
+    const newQuantity = Math.max(0, item.quantity + change);
+    updateItemQuantity(item.id, newQuantity);
+  };
+
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
 
   return (
     <div className="flex justify-center px-[16px]">
@@ -37,10 +48,9 @@ function Cart() {
           <meta
             name="description"
             content="장바구니에 담긴 상품을 확인하세요."
-          />{" "}
+          />
         </Helmet>
-        {loading && <p>로딩 중...</p>}
-        {error && <p className="text-red-500">{error}</p>}{" "}
+
         <div className="flex items-center mb-[16px]">
           <h1 className="text-[24px] font-gowun text-grey-80 mr-[8px]">
             장바구니
@@ -50,6 +60,7 @@ function Cart() {
           </span>
         </div>
         <hr className="mb-0 border-t border-grey-20" />
+
         {cartItemsList.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[256px]">
             <img
@@ -111,13 +122,19 @@ function Cart() {
                     <td className="text-center py-[20px] border-l border-grey-20">
                       <div className="flex justify-center h-full">
                         <div className="flex items-center h-[32px] border border-grey-20">
-                          <button className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10">
+                          <button
+                            className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10"
+                            onClick={() => handleQuantityChange(item, -1)}
+                          >
                             -
                           </button>
                           <span className="w-[50px] h-full flex items-center justify-center border-grey-200 text-black text-[12px]">
                             {item.quantity}
                           </span>
-                          <button className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10">
+                          <button
+                            className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
+                            onClick={() => handleQuantityChange(item, 1)}
+                          >
                             +
                           </button>
                         </div>
