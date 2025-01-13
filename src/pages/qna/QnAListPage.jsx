@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import QnAListItem from './QnAListItem';
+import { useState } from 'react';
 
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
@@ -16,6 +17,8 @@ const fetchUserInfo = async (axios) => {
 
 export default function QnAListPage() {
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const limit = 12; // 페이지당 12개로 제한
 
   const { user } = useUserStore();
   const axios = useAxiosInstance();
@@ -26,8 +29,15 @@ export default function QnAListPage() {
   });
 
   const { data } = useQuery({
-    queryKey: ['posts', 'qna'],
-    queryFn: () => axios.get('/posts', { params: { type: 'qna' } }),
+    queryKey: ['posts', 'qna', page], // page를 queryKey에 추가
+    queryFn: () =>
+      axios.get('/posts', {
+        params: {
+          type: 'qna',
+          page,
+          limit,
+        },
+      }),
     select: (res) => res.data,
     staleTime: 1000 * 10,
   });
@@ -38,7 +48,11 @@ export default function QnAListPage() {
   }
 
   const qnaPostList = data.item.map((item, index) => (
-    <QnAListItem key={item._id} item={item} number={data.item.length - index} />
+    <QnAListItem
+      key={item._id}
+      item={item}
+      number={data.pagination.total - ((page - 1) * limit + index)}
+    />
   ));
 
   const MySwal = withReactContent(Swal);
@@ -116,18 +130,28 @@ export default function QnAListPage() {
         </table>
       </div>
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-        <button className='bg-secondary-20 text-white w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40'>
-          1
-        </button>
-        <button className='bg-grey-20 text-black w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'>
-          2
-        </button>
-        <button className='bg-grey-20 text-black w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'>
-          3
-        </button>
-        <button className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'>
-          Next
-        </button>
+        {Array.from({ length: data?.pagination?.totalPages || 0 }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => setPage(i + 1)}
+            className={`${
+              page === i + 1
+                ? 'bg-secondary-20 text-white'
+                : 'bg-grey-20 text-black'
+            } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
+          >
+            {i + 1}
+          </button>
+        ))}
+        {data?.pagination?.totalPages > 0 &&
+          page < data.pagination.totalPages && (
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+            >
+              Next
+            </button>
+          )}
       </div>
       <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
         <div className='relative w-[120px]'>
