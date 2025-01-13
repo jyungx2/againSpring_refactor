@@ -12,17 +12,21 @@ const MenuIcons = () => {
     alert(`${user.name} 님, 정상적으로 로그아웃 되었습니다.`);
     navigate("/");
   };
+  console.log("menuIcon - user 상태:", user);
 
+  /*
   // 컴포넌트가 "처음" 마운트될 때 "상태를 확인"하고 UI를 갱신
   useEffect(() => {
-    // 로컬스토리지에서 사용자 정보를 불러오는 작업 => 로컬저장소에 유저 정보가 남아 있다면, 그 유저정보를 가져와서 setUser를 이용해 다시 스토리지에 저장한다.
-    // ✅ 이때, autoLogin: true라는 속성값도 같이 넘어오므로 다시 로컬스토리지에 저장 가능
-    const localStoredUser = localStorage.getItem("user");
-    if (localStoredUser) {
-      setUser(JSON.parse(localStoredUser));
+    const localUser = localStorage.getItem("user");
+    // const sessionUser = sessionStorage.getItem("user");
+    if (localUser) {
+      setUser(JSON.parse(localUser));
     }
-  }, [setUser]); // setUser는 함수이고, 함수는 변하지 않기 때문에 사실상 setUser를 디펜던시 배열에 넣어도 useEffect는 한 번만 실행(= 빈 배열 넣은 것과 동일한 동작!)
-  // => 함수는 디펜던시에 넣으나마나, 무조건 useEffect 내부의 함수는 한 번만 실행되므로, 여기서 setUser를 넣는 것은 선택사항이다. 하지만 리액트 최적화의 권장사항으로서 ESLink 경고가 뜨니까 일단 넣어놓은 것.
+    // } else if (sessionUser) {
+    //   setUser(JSON.parse(sessionUser));
+    // }
+  }, [setUser]);
+  */
 
   return (
     <div className="absolute top-4 right-6 flex space-x-6 items-center">
