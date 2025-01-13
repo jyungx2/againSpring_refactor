@@ -104,6 +104,7 @@ function Signup() {
       setUser({
         _id: userLogin._id,
         name: userLogin.name,
+        type: userLogin.type,
         profile: userLogin.image?.path,
         accessToken: userLogin.token.accessToken,
         refreshToken: userLogin.token.refreshToken,

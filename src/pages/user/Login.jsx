@@ -12,9 +12,7 @@ function Login() {
   const setUser = useUserStore((store) => store.setUser);
   const navigate = useNavigate();
   const location = useLocation();
-
   const [autoLogin, setAutoLogin] = useState(false);
-  console.log(autoLogin);
 
   const {
     register,
@@ -33,6 +31,7 @@ function Login() {
       setUser({
         _id: user._id,
         name: user.name,
+        type: user.type,
         profile: user.image?.path,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,

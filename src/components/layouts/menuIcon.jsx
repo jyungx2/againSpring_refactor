@@ -1,9 +1,8 @@
 import useUserStore from "@store/userStore";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const MenuIcons = () => {
-  const { user, resetUser, setUser } = useUserStore();
+  const { user, resetUser } = useUserStore();
   const navigate = useNavigate();
 
   const handleLogout = (e) => {
@@ -12,21 +11,6 @@ const MenuIcons = () => {
     alert(`${user.name} 님, 정상적으로 로그아웃 되었습니다.`);
     navigate("/");
   };
-  console.log("menuIcon - user 상태:", user);
-
-  /*
-  // 컴포넌트가 "처음" 마운트될 때 "상태를 확인"하고 UI를 갱신
-  useEffect(() => {
-    const localUser = localStorage.getItem("user");
-    // const sessionUser = sessionStorage.getItem("user");
-    if (localUser) {
-      setUser(JSON.parse(localUser));
-    }
-    // } else if (sessionUser) {
-    //   setUser(JSON.parse(sessionUser));
-    // }
-  }, [setUser]);
-  */
 
   return (
     <div className="absolute top-4 right-6 flex space-x-6 items-center">
