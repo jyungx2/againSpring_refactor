@@ -44,7 +44,7 @@ const homeRoutes = [
         ),
       },
       { path: "login", element: <Login /> },
-      { path: "login/auth", element: <Auth /> },
+      { path: "users/login/kakao", element: <Auth /> },
       { path: "signup", element: <Signup /> },
       { path: "tos", element: <TermsOfService /> },
       { path: "order/:userId", element: <Myorder /> },
