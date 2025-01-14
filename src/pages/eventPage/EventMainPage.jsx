@@ -5,14 +5,14 @@ import ListItem from './EventListItem';
 export default function EventMainPage() {
   const eventList = [
     {
-      number: 2,
+      id: 2,
       title: '2025년 1월 회원가입 이벤트',
       author: '다시,봄',
       date: '2025-01-01',
       isActive: true,
     },
     {
-      number: 1,
+      id: 1,
       title: '2024년 12월 윈터 이벤트',
       author: '다시,봄',
       date: '2024-12-01',
@@ -49,8 +49,8 @@ export default function EventMainPage() {
           <tbody>
             {eventList.map((item) => (
               <ListItem
-                key={item.number}
-                number={item.number}
+                key={item.id}
+                number={item.id}
                 title={item.title}
                 author={item.author}
                 date={item.date}
