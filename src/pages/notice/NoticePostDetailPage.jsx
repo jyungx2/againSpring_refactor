@@ -1,40 +1,45 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import useAxiosInstance from '@hooks/useAxiosInstance';
 
 export default function NoticePostDetailPage() {
-  /**
-   * TODO:
-   * 1. API 연동
-   *    - fetch('/posts/{id}') 호출 구현
-   *    - useState로 post 상태 관리 추가
-   *    - useEffect로 데이터 fetching
-   *    - loading, error 상태 처리
-   *
-   * 2. 데이터 바인딩
-   *    - 제목 -> item.title
-   *    - 작성자 -> item.user.name
-   *    - 작성일 -> item.updatedAt || item.createdAt
-   *    - 조회수 -> item.views
-   *    - 내용 -> item.content
-   *    - 더미 텍스트 제거
-   *
-   * 3. 삭제 기능
-   *    - deleteCheckBtn 함수에 실제 DELETE API 호출 추가
-   *    - 성공/실패 처리
-   *    - 삭제 후 목록 페이지로 이동
-   *
-   * 4. 이전글/다음글
-   *    - API에서 이전글/다음글 정보 받아오기
-   *    - 네비게이션 링크에 해당 게시글 ID 추가
-   */
-
+  const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+  const { id } = useParams();
+  const queryClient = useQueryClient();
 
-  const deleteCheckBtn = () => {
-    MySwal.fire({
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['noticeDetail', id],
+    queryFn: () => axios.get(`/posts/${id}`),
+    select: (res) => res.data,
+  });
+
+  // 게시글 삭제
+  const deletePost = useMutation({
+    mutationFn: () => axios.delete(`/posts/${id}`),
+    onSuccess: () => {
+      // 상세 페이지 쿼리는 삭제하고, 목록 쿼리만 무효화
+      queryClient.removeQueries(['noticeDetail', id]);
+      queryClient.invalidateQueries(['posts']);
+      MySwal.fire({
+        title: '삭제 완료',
+        text: '게시글이 삭제되었습니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/notice');
+        }
+      });
+    },
+  });
+
+  const deleteCheckBtn = async () => {
+    const result = await MySwal.fire({
       title: '게시글을 삭제하시겠습니까?',
       text: '삭제된 게시글은 복구할 수 없습니다.',
       icon: 'warning',
@@ -43,21 +48,36 @@ export default function NoticePostDetailPage() {
       cancelButtonColor: '#d33',
       confirmButtonText: '네',
       cancelButtonText: '아니요',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        MySwal.fire({
-          title: '삭제 완료',
-          text: '게시글이 삭제되었습니다.',
-          confirmButtonText: '확인',
-          icon: 'success',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate('/notice');
-          }
-        });
-      }
     });
+
+    if (result.isConfirmed) {
+      deletePost.mutate();
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>로딩중...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl text-red-500'>에러가 발생했습니다</div>
+      </div>
+    );
+  }
+
+  if (!data?.item) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>데이터를 찾을 수 없습니다</div>
+      </div>
+    );
+  }
 
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
@@ -76,7 +96,7 @@ export default function NoticePostDetailPage() {
               제목
             </label>
             <h2 className='text-xl font-medium text-grey-50' id='title'>
-              공지사항 입니다.
+              {data?.item?.title}
             </h2>
           </div>
           <div className='flex items-center gap-[100px] py-4 border-b border-grey-10'>
@@ -87,7 +107,7 @@ export default function NoticePostDetailPage() {
               작성자
             </label>
             <p className='text-xl font-medium text-grey-50' id='writer'>
-              다시, 봄
+              {data?.item?.user?.name}
             </p>
           </div>
           <div className='border-b border-grey-10'>
@@ -97,7 +117,7 @@ export default function NoticePostDetailPage() {
                   작성일
                 </label>
                 <p className='text-lg text-grey-40' id='date'>
-                  2024-01-01 00:00:00
+                  {data?.item?.createdAt}
                 </p>
               </div>
               <div className='flex items-center'>
@@ -105,16 +125,13 @@ export default function NoticePostDetailPage() {
                   조회수
                 </label>
                 <p className='text-lg text-grey-40' id='views'>
-                  0
+                  {data?.item?.views}
                 </p>
               </div>
             </div>
-
-            {Array.from({ length: 10 }, (_, i) => (
-              <p key={i} className='py-4 text-lg'>
-                여기에 글 내용이 들어갑니다 {i + 1}번째 줄
-              </p>
-            ))}
+            <div
+              dangerouslySetInnerHTML={{ __html: data?.item?.content }}
+            ></div>
           </div>
         </div>
 
@@ -132,14 +149,12 @@ export default function NoticePostDetailPage() {
                 type='button'
                 className='border border-grey-10 rounded px-9 py-3 text-lg'
               >
-                <Link to='/notice/edit'>수정</Link>
+                <Link to={`/notice/edit/${id}`}>수정</Link>
               </button>
               <button
                 type='button'
                 className='border border-grey-10 rounded px-9 py-3 text-lg'
-                onClick={() => {
-                  deleteCheckBtn();
-                }}
+                onClick={deleteCheckBtn}
               >
                 삭제
               </button>
