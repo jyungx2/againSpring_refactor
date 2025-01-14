@@ -19,14 +19,11 @@ function useAxiosInstance() {
   });
 
   instance.interceptors.request.use((config) => {
-    console.log(config);
-
     if (user && config.url !== REFRESH_url) {
       config.headers.Authorization = `Bearer ${user.accessToken}`;
     }
 
     config.params = {
-      delay: 1000,
       ...config.params,
     };
     return config;
@@ -51,8 +48,6 @@ function useAxiosInstance() {
             headers: { Authorization: `Bearer ${user.refreshToken}` },
           });
           // 새로 발급받은 accessToken 추출
-          console.log(refreshRes);
-          console.log(refreshRes.data.accessToken);
           const accessToken = refreshRes.data.accessToken;
 
           // 로그인 유저 상태 설정
