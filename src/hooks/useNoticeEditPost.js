@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-export const useNoticeEditPost = (post, returnPath) => {
+export const useNoticeEditPost = (post, initialData = null, returnPath) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +76,6 @@ export const useNoticeEditPost = (post, returnPath) => {
       const response = await axios.patch(`/posts/${post._id}`, {
         title,
         content: currentContent,
-        ...(selectedProduct && { product_id: selectedProduct._id }),
       });
 
       if (response.data.ok) {
@@ -103,8 +102,7 @@ export const useNoticeEditPost = (post, returnPath) => {
   const handleCancel = () => {
     const hasChanges =
       title !== originalData?.title ||
-      quillInstance?.root.innerHTML !== originalData?.content ||
-      selectedProduct?._id !== originalData?.product?._id;
+      quillInstance?.root.innerHTML !== originalData?.content
 
     if (hasChanges) {
       MySwal.fire({

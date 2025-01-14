@@ -4,7 +4,7 @@ import '../../assets/styles/fonts.css';
 import { useEffect } from 'react';
 import { useQuill } from 'react-quilljs';
 import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
-import { useQnAEditPost } from '@hooks/useQnAEditPost';
+import { useNoticeEditPost  } from '@hooks/useNoticeEditPost';
 import { handleImageUpload } from '@utils/imageUpload';
 
 export default function NoticeEditPostPage() {
@@ -22,7 +22,7 @@ export default function NoticeEditPostPage() {
       setQuillInstance,
       handleUpdate,
       handleCancel,
-    } = useQnAEditPost(
+    } = useNoticeEditPost(
       { _id: id },
       null, // initialData는 API에서 받아와야 함
       `/notice/detail/${id}`
