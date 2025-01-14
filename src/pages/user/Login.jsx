@@ -6,6 +6,7 @@ import useUserStore from "@store/userStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import ErrorMsg from "@components/ErrorMsg";
 import { useState } from "react";
+import { handleKakaoLogin } from "@utils/kakaoUtils";
 
 function Login() {
   const axios = useAxiosInstance();
@@ -60,13 +61,13 @@ function Login() {
     },
   });
 
-  const KAKAO_url = "https://kauth.kakao.com/oauth/authorize";
-  const API_KEY = "7b635f7b3d4379252462f78787fc908b";
-  const REDIRECT_URI = "http://localhost:5173/users/login/kakao";
+  // const KAKAO_url = "https://kauth.kakao.com/oauth/authorize";
+  // const API_KEY = "7b635f7b3d4379252462f78787fc908b";
+  // const REDIRECT_URI = "http://localhost:5173/users/login/kakao";
 
-  const handleKakaoLogin = () => {
-    window.location.href = `${KAKAO_url}?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-  };
+  // const handleKakaoLogin = () => {
+  //   window.location.href = `${KAKAO_url}?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  // };
 
   return (
     <>
