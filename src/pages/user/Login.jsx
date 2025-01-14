@@ -32,7 +32,6 @@ function Login() {
       setUser({
         _id: user._id,
         name: user.name,
-        type: user.type,
         profile: user.image?.path,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
