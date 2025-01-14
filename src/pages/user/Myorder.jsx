@@ -1,4 +1,5 @@
 import useUserStore from "@store/userStore";
+import { Link } from "react-router-dom";
 
 function Myorder() {
   const { user } = useUserStore();
@@ -7,8 +8,8 @@ function Myorder() {
     <>
       <div className="flex box-border max-w-[1200px] mx-auto px-6">
         <div className="flex flex-col gap-[24px] pt-[24px] min-w-[180px]">
-          <a>주문조회</a>
-          <a>1:1 문의</a>
+          <Link to={`/order/${user._id}`}>주문조회</Link>
+          <Link to={`/query/${user._id}`}>1:1 문의</Link>
           <a>위시리스트</a>
           <a>쿠폰</a>
           <a>포인트</a>

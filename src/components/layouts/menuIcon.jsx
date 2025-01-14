@@ -27,11 +27,14 @@ const MenuIcons = () => {
     <div className="absolute top-4 right-6 flex space-x-6 items-center">
       {user ? (
         <form className="flex gap-[20px] items-center" onSubmit={handleLogout}>
-          <Link to="/order" className="text-gray-700 hover:text-primary-30">
+          <Link
+            to={`/order/${user._id}`}
+            className="text-gray-700 hover:text-primary-30"
+          >
             <i className="fas fa-user"></i>
           </Link>
           <Link
-            to="/cart"
+            to={`/cart/${user._id}`}
             className="text-gray-700 hover:text-primary-30 cursor-pointer"
             onClick={handleCartClick}
           >
