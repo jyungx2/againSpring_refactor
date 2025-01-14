@@ -1,17 +1,15 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Link } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Link } from "react-router-dom";
-import { useState } from "react";
 
 const Slider = () => {
-  const [activeSlide] = useState(2); // 3번째 슬라이드 활성화 (링크 설정)
   const slides = [
     { id: 1, src: "/images/banner-1.png", alt: "Event 1" },
     { id: 2, src: "/images/banner-2.png", alt: "Event 2" },
-    { id: 3, src: "/images/subscription_event.png", alt: "Event 3" },
+    { id: 3, src: "/images/subscription_event.png", alt: "Event 3", link: "/event/detail/2" },
   ];
 
   return (
@@ -28,9 +26,8 @@ const Slider = () => {
         >
           {slides.map((slide) => (
             <SwiperSlide key={slide.id}>
-              {/* 동적 경로 생성 */}
-              {slide.id === activeSlide ? (
-                <Link to={`/event/detail/${slide.id}`}>
+              {slide.link ? (
+                <Link to={slide.link}>
                   <img
                     src={slide.src}
                     alt={slide.alt}
@@ -52,12 +49,11 @@ const Slider = () => {
                   }}
                 />
               )}
-
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
-    </div >
+    </div>
   );
 };
 
