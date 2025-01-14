@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
+import useUserStore from '@store/userStore';
 
 export default function NoticePostDetailPage() {
   const axios = useAxiosInstance();
@@ -11,12 +12,19 @@ export default function NoticePostDetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const queryClient = useQueryClient();
+  const { user } = useUserStore();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['noticeDetail', id],
     queryFn: () => axios.get(`/posts/${id}`),
     select: (res) => res.data,
   });
+
+  // 현재 사용자가 관리자이고 게시글 작성자인지 확인하는 함수
+  const isAuthorizedToEdit = () => {
+    if (!user || !data?.item) return false;
+    return user.type === 'admin' && user.id === data.item.user_id;
+  };
 
   // 게시글 삭제
   const deletePost = useMutation({
@@ -144,21 +152,23 @@ export default function NoticePostDetailPage() {
             >
               <Link to='/notice'>목록</Link>
             </button>
-            <div className='flex gap-3'>
-              <button
-                type='button'
-                className='border border-grey-10 rounded px-9 py-3 text-lg'
-              >
-                <Link to={`/notice/edit/${id}`}>수정</Link>
-              </button>
-              <button
-                type='button'
-                className='border border-grey-10 rounded px-9 py-3 text-lg'
-                onClick={deleteCheckBtn}
-              >
-                삭제
-              </button>
-            </div>
+            {isAuthorizedToEdit() && (
+              <div className='flex gap-3'>
+                <button
+                  type='button'
+                  className='border border-grey-10 rounded px-9 py-3 text-lg'
+                >
+                  <Link to={`/notice/edit/${id}`}>수정</Link>
+                </button>
+                <button
+                  type='button'
+                  className='border border-grey-10 rounded px-9 py-3 text-lg'
+                  onClick={deleteCheckBtn}
+                >
+                  삭제
+                </button>
+              </div>
+            )}
           </div>
 
           <nav className='mb-4'>
