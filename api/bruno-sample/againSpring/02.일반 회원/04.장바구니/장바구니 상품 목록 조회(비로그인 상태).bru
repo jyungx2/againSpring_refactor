@@ -12,15 +12,30 @@ post {
 
 body:json {
   {
-      "products": [
-          {
-              "_id": 3,
-              "quantity": 1
-          },
-          {
-              "_id": 4,
-              "quantity": 2
-          }
-      ]
+    "products": [
+      {
+        "_id": 4,
+        "quantity": 2,
+        "quantityInStock": 11,
+        "seller_id": 3,
+        "name": "레고 테크닉 42151 부가티 볼리드",
+        "image": {
+          "url": "/files/sample-bugatti.png",
+          "fileName": "sample-bugatti.png",
+          "orgName": "부가티.png"
+        },
+        "price": 90000,
+        "extra": {
+          "isNew": false,
+          "isBest": true,
+          "category": [
+            "PC03",
+            "PC0303"
+          ],
+          "sort": 1
+        }
+      }
+    ]
   }
+  
 }
