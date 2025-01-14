@@ -32,7 +32,6 @@ const useUserStore = create(
     storage: createJSONStorage(() => {
       // 위의 UserStore의 setUser 함수에서 autoLogin이라는 속성은 무조건 localStorage에 저장해줬었음. (이 값에 의해 자동로그인 여부가 결정되므로 항상 로컬에 킵하고 있어야 나중에 바로 로그인시킬지 말지 결정 가능하기 때문)
       const autoLogin = localStorage.getItem("autoLogin") === "true";
-      console.log(autoLogin);
 
       // autoLogin 값에 따라 저장소를 동적으로 선택
       return autoLogin ? localStorage : sessionStorage;
