@@ -24,8 +24,7 @@ function Login() {
   });
 
   const login = useMutation({
-    mutationFn: (loginData) =>
-      axios.post(`/users/login?expiresIn=10s`, loginData),
+    mutationFn: (loginData) => axios.post(`/users/login`, loginData),
     onSuccess: (res) => {
       const user = res.data.item;
 
