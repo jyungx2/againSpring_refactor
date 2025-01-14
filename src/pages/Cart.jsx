@@ -17,6 +17,7 @@ function Cart() {
     selectItem,
     deselectItem,
     deleteSelectedItems,
+    clearCart,
   } = cartStore();
   const { user } = useUserStore();
   const navigate = useNavigate();
@@ -51,6 +52,10 @@ function Cart() {
 
   const handleDeleteSelected = () => {
     deleteSelectedItems();
+  };
+
+  const handleClearCart = () => {
+    clearCart();
   };
 
   if (loading) return <div>Loading...</div>;
@@ -172,7 +177,10 @@ function Cart() {
             <hr className="mb-[12px]" />
 
             <div className="flex justify-start mb-[40px]">
-              <button className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]">
+              <button
+                className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]"
+                onClick={handleClearCart}
+              >
                 장바구니 비우기
               </button>
               <button
