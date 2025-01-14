@@ -73,8 +73,8 @@ function Cart() {
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="flex justify-center px-[16px]">
-      <div className="container mx-auto px-[24px] my-[40px]">
+    <div className="flex justify-center ">
+      <div className="container w-[1200px] px-[16px] my-[40px]">
         <Helmet>
           <title>장바구니</title>
           <meta

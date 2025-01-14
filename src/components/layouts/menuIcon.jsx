@@ -13,7 +13,6 @@ const MenuIcons = () => {
   };
 
   const handleCartClick = (e) => {
-    console.log(user);
     if (user) {
       navigate(`/cart/${user._id}`);
     } else {
