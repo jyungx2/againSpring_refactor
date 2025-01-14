@@ -141,8 +141,16 @@ function Cart() {
                       <div className="flex justify-center h-full">
                         <div className="flex items-center h-[32px] border border-grey-20">
                           <button
-                            className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10"
-                            onClick={() => handleQuantityChange(item, -1)}
+                            className={`w-[24px] h-full border-r border-grey-20 ${
+                              item.quantity <= 1
+                                ? "opacity-50"
+                                : "hover:bg-grey-10"
+                            }`}
+                            onClick={() =>
+                              item.quantity > 1 &&
+                              handleQuantityChange(item, -1)
+                            }
+                            disabled={item.quantity <= 1}
                           >
                             -
                           </button>
