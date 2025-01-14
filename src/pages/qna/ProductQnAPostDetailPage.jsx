@@ -1,191 +1,75 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import useAxiosInstance from '@hooks/useAxiosInstance';
+import CommentList from '@pages/comment/CommentList';
+import useUserStore from '@store/userStore';
 
 export default function ProductQnAPostDetailPage() {
+  const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+  const [replies, setReplies] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const { id } = useParams();
+  const { user } = useUserStore();
+  const isAdmin = user?.type === 'admin';
+  const queryClient = useQueryClient();
 
-  // 댓글 입력 상태 관리
-  const [newComment, setNewComment] = useState('');
+  const [hasAdminReply, setHasAdminReply] = useState(false);
 
-  // 댓글 더미 데이터 상태관리
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      name: '다시, 봄',
-      content: '내일 출고 예정 입니다.',
-      createdAt: '2024-01-01 00:00:00',
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['qnaDetail', id],
+    queryFn: () => axios.get(`/posts/${id}`),
+    select: (res) => res.data,
+  });
+
+  useEffect(() => {
+    if (data?.item?.product) {
+      console.log('first', data);
+      setSelectedProduct({
+        ...data.item.product,
+        name: data.item.product.name[0], // 배열의 첫 번째 항목 사용
+        _id: data.item.product._id[0], // 배열의 첫 번째 항목 사용
+        mainImages: data.item.product.mainImages[0], // 첫 번째 이미지 세트 사용
+      });
+    }
+
+    if (data?.item?.replies) {
+      setReplies(data.item.replies);
+      // admin 답변 여부 체크
+      const adminReplyExists = data.item.replies.some(
+        (reply) => reply.user?.email === 'admin@market.com'
+      );
+      setHasAdminReply(adminReplyExists);
+    }
+  }, [data]);
+
+  // 게시글 삭제
+  const deletePost = useMutation({
+    mutationFn: () => axios.delete(`/posts/${id}`),
+    onSuccess: () => {
+      // 상세 페이지 쿼리는 삭제하고, 목록 쿼리만 무효화
+      queryClient.removeQueries(['qnaDetail', id]);
+      queryClient.invalidateQueries(['posts']);
+      MySwal.fire({
+        title: '삭제 완료',
+        text: '게시글이 삭제되었습니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/qna');
+        }
+      });
     },
-  ]);
+  });
 
-  // 새 댓글 작성 취소
-  const handleNewCommentCancel = () => {
-    if (newComment.trim() !== '') {
-      MySwal.fire({
-        title: '작성 중인 댓글이 있습니다. <br/> 취소하시겠습니까?',
-        text: '작성 중인 내용이 모두 삭제됩니다.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '네',
-        cancelButtonText: '아니요',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          setNewComment('');
-        }
-      });
-    } else {
-      setNewComment('');
-    }
-  };
-
-  // 새 댓글 등록
-  const handleNewCommentSubmit = () => {
-    if (newComment.trim() === '') {
-      MySwal.fire({
-        title: '알림',
-        text: '댓글 내용을 입력해주세요.',
-        icon: 'warning',
-        confirmButtonText: '확인',
-      });
-      return;
-    }
-
-    const newCommentObj = {
-      id: comments.length + 1,
-      name: '다시, 봄',
-      content: newComment,
-      createdAt: '2024-01-01 00:00:00',
-    };
-
-    setComments([...comments, newCommentObj]);
-    setNewComment('');
-
-    MySwal.fire({
-      title: '등록 완료',
-      text: '댓글이 등록되었습니다.',
-      icon: 'success',
-      confirmButtonText: '확인',
-    });
-  };
-
-  // 수정 중인 댓글 ID와 수정 내용 상태 관리
-  const [editingId, setEditingId] = useState(null);
-  const [editContent, setEditContent] = useState('');
-
-  // 수정 모드 시작
-  const handleEditStart = (comment) => {
-    setEditingId(comment.id);
-    setEditContent(comment.content);
-  };
-
-  // 수정 취소 확인
-  const handleEditCancel = (comment) => {
-    // 현재 수정 중인 내용이 원본과 다른지 확인
-    const contentChanged = editContent.trim() !== comment.content.trim();
-
-    if (contentChanged) {
-      MySwal.fire({
-        title: '수정 중인 댓글이 있습니다. <br/> 취소하시겠습니까?',
-        text: '기존에 작성된 댓글로 복구됩니다.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '네',
-        cancelButtonText: '아니요',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          MySwal.fire({
-            title: '취소 완료',
-            text: '댓글 수정이 취소되었습니다.',
-            confirmButtonText: '확인',
-            icon: 'success',
-          }).then(() => {
-            setEditingId(null);
-            setEditContent('');
-          });
-        }
-      });
-    } else {
-      // 변경사항이 없으면 바로 수정 모드 종료
-      setEditingId(null);
-      setEditContent('');
-    }
-  };
-
-  // 수정 완료
-  const handleEditComplete = (commentId) => {
-    if (editContent.trim() === '') {
-      MySwal.fire({
-        title: '알림',
-        text: '댓글 내용을 입력해주세요.',
-        icon: 'warning',
-        confirmButtonText: '확인',
-      });
-      return;
-    }
-
-    MySwal.fire({
-      title: '댓글을 수정하시겠습니까?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네',
-      cancelButtonText: '아니요',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setComments(
-          comments.map((comment) =>
-            comment.id === commentId
-              ? { ...comment, content: editContent }
-              : comment
-          )
-        );
-        setEditingId(null);
-        setEditContent('');
-
-        MySwal.fire({
-          title: '수정 완료',
-          text: '댓글이 수정되었습니다.',
-          icon: 'success',
-          confirmButtonText: '확인',
-        });
-      }
-    });
-  };
-
-  // 댓글 삭제
-  const handleCommentDelete = (commentId) => {
-    MySwal.fire({
-      title: '댓글을 삭제하시겠습니까?',
-      text: '삭제된 댓글은 복구할 수 없습니다.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네',
-      cancelButtonText: '아니요',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setComments(comments.filter((comment) => comment.id !== commentId));
-        MySwal.fire({
-          title: '삭제 완료',
-          text: '댓글이 삭제되었습니다.',
-          confirmButtonText: '확인',
-          icon: 'success',
-        });
-      }
-    });
-  };
-
-  const deleteCheckBtn = () => {
-    MySwal.fire({
+  const deleteCheckBtn = async () => {
+    const result = await MySwal.fire({
       title: '게시글을 삭제하시겠습니까?',
       text: '삭제된 게시글은 복구할 수 없습니다.',
       icon: 'warning',
@@ -194,46 +78,86 @@ export default function ProductQnAPostDetailPage() {
       cancelButtonColor: '#d33',
       confirmButtonText: '네',
       cancelButtonText: '아니요',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        MySwal.fire({
-          title: '삭제 완료',
-          text: '게시글이 삭제되었습니다.',
-          confirmButtonText: '확인',
-          icon: 'success',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate('/qna');
-          }
-        });
-      }
     });
+
+    if (result.isConfirmed) {
+      deletePost.mutate();
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>로딩중...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl text-red-500'>에러가 발생했습니다</div>
+      </div>
+    );
+  }
+
+  if (!data?.item) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>데이터를 찾을 수 없습니다</div>
+      </div>
+    );
+  }
 
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        Q&amp;A
+        Q&A
       </h1>
 
       {/* 상품 정보 불러오기 */}
-      <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
-        <div className='mr-6'>
-          <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-base text-gray-600'>
-            상품 Image
+      {selectedProduct ? (
+        <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+          <div className='mr-6 relative'>
+            {selectedProduct.mainImages?.length > 0 ? (
+              <img
+                src={`https://11.fesp.shop${selectedProduct.mainImages[0].path}`}
+                className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'
+              />
+            ) : (
+              <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+                No Image
+              </div>
+            )}
+          </div>
+          <div className='flex flex-col gap-4 justify-center h-32'>
+            <div className='text-xl'>상품명: {selectedProduct.name}</div>
+            <div className='flex gap-4'>
+              <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
+                <Link to={`/detail/${selectedProduct?._id}`}>상품상세보기</Link>
+              </button>
+            </div>
           </div>
         </div>
-        <div className='flex flex-col gap-4 justify-center h-32'>
-          <div className='text-xl'>
-            상품명: 대나무 칫솔 (소형) <br /> 1,400원
+      ) : (
+        <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+          <div className='mr-6 relative'>
+            <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+              No Image
+            </div>
           </div>
-          <div className='flex gap-4'>
-            <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
-              <Link to='/detail'>상품상세보기</Link>
-            </button>
+          <div className='flex flex-col gap-4 justify-center h-32'>
+            <div className='text-xl'>
+              상품명: 대나무 칫솔 (소형) <br /> 1,400원
+            </div>
+            <div className='flex gap-4'>
+              <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
+                <Link to='#'>상품상세보기</Link>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <section className='flex flex-col'>
         {/* 게시글 헤더 */}
@@ -249,9 +173,13 @@ export default function ProductQnAPostDetailPage() {
               className='text-2xl font-medium text-grey-50 flex items-center gap-2'
               id='title'
             >
-              상품 관련 문의
-              <span className='inline-block px-5 py-2 rounded-[20px] text-white text-base bg-primary-40'>
-                답변완료
+              {data?.item?.title}
+              <span
+                className={`inline-block px-5 py-2 rounded-[20px] text-white text-sm ml-2.5 ${
+                  hasAdminReply ? 'bg-primary-40' : 'bg-grey-20'
+                }`}
+              >
+                {hasAdminReply ? '답변완료' : '답변대기'}
               </span>
             </h2>
           </div>
@@ -263,7 +191,7 @@ export default function ProductQnAPostDetailPage() {
               작성자
             </label>
             <p className='text-2xl font-medium text-grey-50' id='writer'>
-              홍길동
+              {data?.item?.user?.name}
             </p>
           </div>
 
@@ -275,7 +203,7 @@ export default function ProductQnAPostDetailPage() {
                   작성일
                 </label>
                 <p className='text-xl text-grey-40' id='date'>
-                  2024-01-01 00:00:00
+                  {data?.item?.createdAt}
                 </p>
               </div>
               <div className='flex items-center'>
@@ -283,111 +211,24 @@ export default function ProductQnAPostDetailPage() {
                   조회수
                 </label>
                 <p className='text-xl text-grey-40' id='views'>
-                  0
+                  {data?.item?.views}
                 </p>
               </div>
             </div>
 
-            {Array.from({ length: 10 }, (_, i) => (
-              <p key={i} className='py-4 text-xl'>
-                여기에 글 내용이 들어갑니다 {i + 1}번째 줄
-              </p>
-            ))}
+            <div
+              dangerouslySetInnerHTML={{ __html: data?.item?.content }}
+            ></div>
           </div>
         </div>
 
         {/* 댓글 섹션 */}
-        <section className='mb-8'>
-          {comments.map((comment) => (
-            <div key={comment.id} className='py-8 border-b border-grey-10'>
-              <div className='flex items-center'>
-                <label className='text-2xl font-medium flex items-center gap-2 pl-3'>
-                  {comment.name}
-                </label>
-                <p className='text-2xl text-grey-50 font-normal ml-3'>
-                  {comment.createdAt}
-                </p>
-              </div>
-              {editingId === comment.id ? (
-                // 수정모드
-                <div className='mt-4 p-6'>
-                  <textarea
-                    className='w-full min-h-[80px] resize-y border border-grey-30 p-2 rounded text-2xl'
-                    value={editContent}
-                    onChange={(e) => setEditContent(e.target.value)}
-                  />
-                  <div className='flex gap-2 mt-2 justify-end'>
-                    <button
-                      type='button'
-                      className='rounded-lg px-6 py-2 bg-secondary-20 text-white text-2xl cursor-pointer'
-                      onClick={() => handleEditComplete(comment.id)}
-                    >
-                      수정완료
-                    </button>
-                    <button
-                      type='button'
-                      className='rounded-lg bg-grey-20 text-white px-6 py-2 text-2xl'
-                      onClick={() => handleEditCancel(comment)}
-                    >
-                      취소
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <p className='text-xl text-grey-80 mt-4 pl-3'>
-                    {comment.content}
-                  </p>
-                  <div className='flex mt-4'>
-                    <button
-                      type='button'
-                      className='text-2xl text-grey-40 hover:text-grey-70 font-normal relative ml-4'
-                      onClick={() => handleEditStart(comment)}
-                    >
-                      수정
-                    </button>
-                    <button
-                      type='button'
-                      className="text-2xl text-grey-40 hover:text-grey-70 font-normal relative ml-4 before:content-['/'] before:absolute before:left-[-8px]"
-                      onClick={() => handleCommentDelete(comment.id)}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
-
-          {/* 댓글 입력 */}
-          <div className='flex flex-col gap-4 border border-grey-5 p-6 mb-6'>
-            <textarea
-              className='w-full min-h-[80px] resize-y border border-grey-30 p-2 text-xl'
-              placeholder='댓글을 입력하세요.'
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-            />
-            <div className='flex justify-end gap-2'>
-              <button
-                type='submit'
-                onClick={handleNewCommentSubmit}
-                className='rounded-lg px-6 py-2 bg-secondary-20 text-white cursor-pointer text-xl'
-              >
-                작성
-              </button>
-              {newComment.trim() !== '' && (
-                <button
-                  type='button'
-                  onClick={handleNewCommentCancel}
-                  className='rounded-lg bg-grey-20 text-white px-6 py-2 text-xl'
-                >
-                  취소
-                </button>
-              )}
-            </div>
-          </div>
-        </section>
-
+        <CommentList
+          comments={replies}
+          setReplies={setReplies}
+          isAdmin={isAdmin}
+          post={data.item}
+        />
         {/* 하단 네비게이션 */}
         <div className='border-t border-grey-10 pt-8 pb-4'>
           <div className='flex justify-between mb-5'>
@@ -402,7 +243,7 @@ export default function ProductQnAPostDetailPage() {
                 type='button'
                 className='border border-grey-10 rounded px-9 py-2 text-xl'
               >
-                <Link to='/qna/product/edit'>수정</Link>
+                <Link to={`/qna/product/edit/${id}`}>수정</Link>
               </button>
               <button
                 type='button'
