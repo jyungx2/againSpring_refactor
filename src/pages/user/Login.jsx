@@ -20,7 +20,7 @@ function Login() {
     setError,
     formState: { errors },
   } = useForm({
-    defaultValues: { email: "kimejoa2@market.com", password: "11111111" },
+    defaultValues: { email: "kimejoa@market.com", password: "11111111" },
   });
 
   const login = useMutation({
@@ -56,6 +56,14 @@ function Login() {
       }
     },
   });
+
+  const KAKAO_url = "https://kauth.kakao.com/oauth/authorize";
+  const API_KEY = "7b635f7b3d4379252462f78787fc908b";
+  const REDIRECT_URL = "http://localhost:5173/login/auth";
+
+  const handleAuthCode = () => {
+    window.location.href = `${KAKAO_url}?client_id=${API_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
+  };
 
   return (
     <>
@@ -107,7 +115,10 @@ function Login() {
                 <button className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-primary-40 text-white mb-[10px] focus-within:bg-primary-30">
                   로그인
                 </button>
-                <button className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-kakao text-black focus-within:bg-kakao-hover">
+                <button
+                  className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-kakao text-black focus-within:bg-kakao-hover"
+                  onClick={handleAuthCode}
+                >
                   카카오톡으로 시작하기
                 </button>
               </div>
