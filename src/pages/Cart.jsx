@@ -54,14 +54,15 @@ function Cart() {
     deleteSelectedItems();
   };
 
-  const handleClearCart = () => {
-    clearCart();
+  const handleClearCart = async () => {
+    await clearCart();
+    alert("장바구니가 비워졌습니다.");
   };
 
   const handleOrder = async () => {
-    alert("주문이 완료되었습니다.");
-
     await clearCart();
+    alert("주문이 완료되었습니다.");
+    navigate("/");
   };
 
   if (loading) return <div>Loading...</div>;

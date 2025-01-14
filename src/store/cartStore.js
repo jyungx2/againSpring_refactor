@@ -183,8 +183,6 @@ export const cartStore = create((set, get) => {
           selectedItems: [],
           error: null,
         });
-
-        alert("장바구니가 비워졌습니다.");
       } catch {
         set({ error: "장바구니 비우기에 실패했습니다." });
       }
