@@ -1,9 +1,26 @@
 import { create } from "zustand";
-import useAxiosInstance from "../hooks/useAxiosInstance";
+import axios from "axios";
 import useUserStore from "@store/userStore";
 
+const axiosInstance = () => {
+  const { user } = useUserStore.getState();
+
+  return axios.create({
+    baseURL: "https://11.fesp.shop",
+    timeout: 1000 * 15,
+    headers: {
+      "Content-Type": "application/json",
+      accept: "application/json",
+      "client-id": "final02",
+      Authorization: user?.accessToken
+        ? `Bearer ${user.accessToken}`
+        : undefined,
+    },
+  });
+};
+
 export const cartStore = create((set, get) => {
-  const axiosInstance = useAxiosInstance();
+  const instance = axiosInstance();
 
   const computeTotalOrderAmount = () => {
     const { cartItemsList, shippingCost } = get();
@@ -38,7 +55,7 @@ export const cartStore = create((set, get) => {
       }
 
       try {
-        const response = await axiosInstance.get("/carts/", {
+        const response = await instance.get("/carts/", {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
@@ -81,7 +98,7 @@ export const cartStore = create((set, get) => {
         const { user } = useUserStore.getState();
 
         try {
-          const response = await axiosInstance.patch(
+          const response = await instance.patch(
             `/carts/${cartItem._id}`,
             { quantity: newQuantity },
             {
@@ -146,7 +163,7 @@ export const cartStore = create((set, get) => {
         .map((item) => item._id);
 
       try {
-        await axiosInstance.delete(`/carts/`, {
+        await instance.delete(`/carts/`, {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
@@ -172,7 +189,7 @@ export const cartStore = create((set, get) => {
       const { user } = useUserStore.getState();
 
       try {
-        await axiosInstance.delete("/carts/cleanup", {
+        await instance.delete("/carts/cleanup", {
           headers: {
             Authorization: `Bearer ${user.accessToken}`,
           },
