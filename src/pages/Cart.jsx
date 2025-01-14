@@ -73,10 +73,10 @@ function Cart() {
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="flex justify-center ">
+    <div className="flex justify-center">
       <div className="container w-[1200px] px-[16px] my-[40px]">
         <Helmet>
-          <title>장바구니</title>
+          <title>다시, 봄 장바구니</title>
           <meta
             name="description"
             content="장바구니에 담긴 상품을 확인하세요."
