@@ -64,7 +64,7 @@ function Login() {
   const API_KEY = "7b635f7b3d4379252462f78787fc908b";
   const REDIRECT_URI = "http://localhost:5173/users/login/kakao";
 
-  const handleAuthCode = () => {
+  const handleKakaoLogin = () => {
     window.location.href = `${KAKAO_url}?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   };
 
@@ -120,7 +120,7 @@ function Login() {
                 </button>
                 <button
                   className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-kakao text-black focus-within:bg-kakao-hover"
-                  onClick={handleAuthCode}
+                  onClick={handleKakaoLogin}
                 >
                   카카오톡으로 시작하기
                 </button>

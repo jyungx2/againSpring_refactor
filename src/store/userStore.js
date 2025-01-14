@@ -22,6 +22,10 @@ const UserStore = (set) => ({
     set({ user: null });
     localStorage.removeItem("user");
     sessionStorage.removeItem("user");
+
+    if (localStorage.getItem("kakaoToken")) {
+      localStorage.removeItem("kakaoToken");
+    }
   },
 });
 
