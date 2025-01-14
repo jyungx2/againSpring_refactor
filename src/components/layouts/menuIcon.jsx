@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const MenuIcons = () => {
   const { user, resetUser } = useUserStore();
+
   const navigate = useNavigate();
 
   const handleLogout = (e) => {
@@ -12,6 +13,16 @@ const MenuIcons = () => {
     navigate("/");
   };
 
+  const handleCartClick = (e) => {
+    if (user) {
+      navigate(`/cart/${user._id}`);
+    } else {
+      e.preventDefault();
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="absolute top-4 right-6 flex space-x-6 items-center">
       {user ? (
@@ -19,7 +30,10 @@ const MenuIcons = () => {
           <a href="/order" className="text-gray-700 hover:text-primary-30">
             <i className="fas fa-user"></i>
           </a>
-          <a href="/cart" className="text-gray-700 hover:text-primary-30">
+          <a
+            className="text-gray-700 hover:text-primary-30 cursor-pointer"
+            onClick={handleCartClick}
+          >
             <i className="fas fa-shopping-cart"></i>
           </a>
           <a href="/search" className="text-gray-700 hover:text-primary-30">
