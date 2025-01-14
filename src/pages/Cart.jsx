@@ -58,6 +58,12 @@ function Cart() {
     clearCart();
   };
 
+  const handleOrder = async () => {
+    alert("주문이 완료되었습니다.");
+
+    await clearCart();
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
 
@@ -249,7 +255,10 @@ function Cart() {
             <hr className="my-[16px] border-grey-50" />
 
             <div className="flex justify-center mb-[16px]">
-              <button className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[15px] text-center hover:bg-primary-50">
+              <button
+                className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[15px] text-center hover:bg-primary-50"
+                onClick={handleOrder}
+              >
                 주문하기
               </button>
             </div>
