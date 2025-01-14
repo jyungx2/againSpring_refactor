@@ -20,7 +20,9 @@ export const cartStore = create((set, get) => {
     totalOrderAmount: 0,
     loading: false,
     error: null,
+    selectedItems: [],
 
+    // 장바구니 목록 표시
     fetchCartItems: async () => {
       set({ loading: true, error: null });
 
@@ -49,6 +51,7 @@ export const cartStore = create((set, get) => {
           quantity: item.quantity,
           image: item.product.image.path,
           _id: item._id,
+          user_id: item.user_id || user._id,
         }));
 
         set({
@@ -69,6 +72,7 @@ export const cartStore = create((set, get) => {
       }
     },
 
+    // 수량 변경
     updateItemQuantity: async (productId, newQuantity) => {
       const { cartItemsList } = get();
       const cartItem = cartItemsList.find((item) => item.id === productId);
@@ -110,6 +114,56 @@ export const cartStore = create((set, get) => {
         }
       } else {
         console.error("해당 상품 ID에 대한 장바구니 상품이 없음", productId);
+      }
+    },
+
+    // 체크박스 선택한 상품 추가
+    selectItem: (id) => {
+      set((state) => ({
+        selectedItems: [...state.selectedItems, id],
+      }));
+    },
+
+    // 체크박스 선택 해제
+    deselectItem: (id) => {
+      set((state) => ({
+        selectedItems: state.selectedItems.filter((itemId) => itemId !== id),
+      }));
+    },
+
+    // 선택한 상품 삭제
+    deleteSelectedItems: async () => {
+      const { selectedItems, cartItemsList } = get();
+      const { user } = useUserStore.getState();
+
+      if (selectedItems.length === 0) {
+        set({ error: "선택한 상품이 없습니다." });
+        return;
+      }
+
+      const selectedCartItemIds = cartItemsList
+        .filter((item) => selectedItems.includes(item.id))
+        .map((item) => item._id);
+
+      try {
+        await axiosInstance.delete(`/carts/`, {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+          data: { carts: selectedCartItemIds },
+        });
+
+        set((state) => ({
+          cartItemsList: state.cartItemsList.filter(
+            (item) => !selectedItems.includes(item.id)
+          ),
+          selectedItems: [],
+          error: null,
+        }));
+
+        alert("선택한 상품이 삭제되었습니다.");
+      } catch {
+        set({ error: "상품 삭제에 실패했습니다." });
       }
     },
   };

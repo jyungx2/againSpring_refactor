@@ -13,6 +13,10 @@ function Cart() {
     loading,
     error,
     updateItemQuantity,
+    selectedItems,
+    selectItem,
+    deselectItem,
+    deleteSelectedItems,
   } = cartStore();
   const { user } = useUserStore();
   const navigate = useNavigate();
@@ -35,6 +39,18 @@ function Cart() {
   const handleQuantityChange = (item, change) => {
     const newQuantity = Math.max(0, item.quantity + change);
     updateItemQuantity(item.id, newQuantity);
+  };
+
+  const handleCheckboxChange = (itemId) => {
+    if (selectedItems.includes(itemId)) {
+      deselectItem(itemId);
+    } else {
+      selectItem(itemId);
+    }
+  };
+
+  const handleDeleteSelected = () => {
+    deleteSelectedItems();
   };
 
   if (loading) return <div>Loading...</div>;
@@ -100,6 +116,8 @@ function Cart() {
                       <input
                         type="checkbox"
                         className="w-[16px] h-[16px] cursor-pointer"
+                        checked={selectedItems.includes(item.id)}
+                        onChange={() => handleCheckboxChange(item.id)}
                       />
                     </td>
                     <td className="flex items-start py-[20px]">
@@ -157,7 +175,10 @@ function Cart() {
               <button className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]">
                 장바구니 비우기
               </button>
-              <button className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30">
+              <button
+                className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]"
+                onClick={handleDeleteSelected}
+              >
                 선택 상품 삭제
               </button>
             </div>
