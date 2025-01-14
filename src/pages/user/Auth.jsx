@@ -7,9 +7,8 @@ function Auth() {
   const API_KEY = "7b635f7b3d4379252462f78787fc908b";
   const REDIRECT_URI = "http://localhost:5173/users/login/kakao";
 
-  const bringToken = async () => {
+  const getKakaoToken = async () => {
     const authToken = new URL(window.location.href).searchParams.get("code");
-    console.log(authToken);
 
     const res = await axios.post(
       "https://kauth.kakao.com/oauth/token",
@@ -32,15 +31,15 @@ function Auth() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await bringToken();
-        console.log("data: ", data);
+        const data = await getKakaoToken();
 
+        // kakaoToken = kakao측으로부터 받은 유저의 액세스토큰
         if (data) {
-          localStorage.setItem("token", JSON.stringify(data.access_token));
+          localStorage.setItem("kakaoToken", JSON.stringify(data.access_token));
           navigate("/");
         }
       } catch (err) {
-        console.error("Error fetching token: ", err);
+        console.error("Error fetching kakao accessToken: ", err);
       }
     };
     fetchData();
