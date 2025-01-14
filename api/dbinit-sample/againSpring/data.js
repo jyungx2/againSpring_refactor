@@ -107,19 +107,19 @@ export const initData = async (clientId, nextSeq) => {
     product: [
       {
         _id: await nextSeq("product"),
-        seller_id: 2,
-        price: 18900,
-        shippingFees: 3000,
-        show: true,
-        active: true,
+        seller_id: 2, // 상품을 등록한 판매자의 고유 ID
+        price: 18900, // 상품의 가격 (원)
+        shippingFees: 3000, // 상품 배송비 (디폴트 3000원)
+        show: true, // 상품의 노출 여부(사용자에게)
+        active: true, //활성 상태 여부(true일 경우 상품이 활성화되어 판매가능)
         name: "[그리네라] 대나무화장지30M 30롤",
-        quantity: 100,
-        buyQuantity: 100,
-        mainImages: [
+        quantity: 100, //총 재고 수량 (디폴트 100개)
+        buyQuantity: 0, // 판매된 수량 (디폴트 0개)
+        mainImages: [ // 대표 이미지 
           {
-            path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(1).jpg`,
-            name: "[bamboo] toilet_paper(1).jpg",
-            originalname: "[bamboo] toilet_paper(1).jpg",
+            path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(1).jpg`, // 이미지 저장 경로
+            name: "[bamboo] toilet_paper(1).jpg", // 이미지 이름
+            originalname: "[bamboo] toilet_paper(1).jpg", // 업로드 당시 오리지널 이름
           },
           {
             path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(2).jpg`,
@@ -132,19 +132,20 @@ export const initData = async (clientId, nextSeq) => {
             originalname: "[bamboo] toilet_paper(3).jpg",
           },
         ],
+        // 상품 상세 설명 ▼ (이미지로 대체했습니다.)
         content: `
           <div class="product-detail">
               <div align="center">
                 <img src="/files/${clientId}/[bathroom] bamboo_toilet_paper_Detail.jpg" alt="[그리네라] 대나무화장지30M 30롤">
               </div>
           </div>`,
-        createdAt: getTime(-41, -60 * 60 * 2),
-        updatedAt: getTime(-40, -60 * 15),
-        extra: {
-          isNew: true,
-          isBest: true,
-          category: ["all-of-list", "bathroom"],
-          sort: 5,
+        createdAt: getTime(-41, -60 * 60 * 2), // 상품 등록일 (사용X)
+        updatedAt: getTime(-40, -60 * 15), // 상품 최신화 등록일 (사용X)
+        extra: { 
+          isNew: true, // 새로운 상품 (true일 경우 new 아이콘 같은거 표시 가능 / 메인 페이지 노출 가능)
+          isBest: true, // 베스트 상품 (이하 동일)
+          category: ["all-of-list", "bathroom"], // 상품 카테고리 (메뉴 카테고리 별로 상품 분류 작업 가능)
+          sort: 5, // 정렬 우선순위 (값이 낮을 수록 목록에서 먼저 표시됨 / 동일한 값일 경우 최신 등록 순으로 표시됨)
         },
       },
       {
@@ -156,7 +157,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[자연상점] 대나무 칫솔 (일반형)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[bathroom] bamboo_toothbrush.jpg`,
@@ -188,7 +189,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[사이로] 두둥 푸딩 거품 샤워타월",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[bathroom] body_towel(1).jpg`,
@@ -230,7 +231,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[에코브릭] 약산성 바디워시바",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[bathroom] body_wash(1).jpg`,
@@ -272,7 +273,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[조르단] 그린클린 치실 (30ml)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[bathroom] dental_floss.jpg`,
@@ -305,7 +306,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[탄소창고] 오목이 비누받침",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[bathroom] soap_dish(1).jpg`,
@@ -343,7 +344,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[자연상점] 동그라미 고체치약 (30정)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[bathroom] solid_toothpaste.jpg`,
@@ -375,7 +376,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[지구샵] 실리콘 칫솔뚜껑",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[bathroom] toothbrush_cover.jpg`,
@@ -409,7 +410,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[벨르썸] 캠핑 산으로 바다로",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] cutting board(1).jpg`,
@@ -447,7 +448,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[동구밭] 식기세척기 세제 타블렛 240g",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] Detergent.png`,
@@ -479,7 +480,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[퀸비스토어] 바른행주 1장 (2겹)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] long_umbrella.jpg`,
@@ -512,7 +513,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[아트앤허그] 담비 주방장갑(1p)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] gloves(1).png`,
@@ -555,7 +556,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[자누담] 해초접시 (1set-10개입)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] plate(1).jpg`,
@@ -593,7 +594,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[온전히지구] 그대로수세미 (압착형)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] scrubber(1).jpg`,
@@ -635,7 +636,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[탄소창고] 다회용 스푼&포크 세트",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] Spoon&Fork_Set.jpg`,
@@ -678,7 +679,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[퀸비스토어] 스테인리스 빨대",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] stainless_steel_straw(1).jpg`,
@@ -716,7 +717,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[탄소창고] 스탠드주걱",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] stand_spatula(1).jpg`,
@@ -754,7 +755,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[소락] 다시백 티백",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] tea_bag.jpg`,
@@ -787,7 +788,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[그리네라] 대나무 키친타올 100매 (12입)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] towel(1).jpg`,
@@ -835,7 +836,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[슈가랩] 사탕수수로 만든 지퍼백",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[kitchen] zipper_bags.jpg`,
@@ -870,7 +871,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[비긴에코] 초강력 초간단 캡슐 세탁조클리너 10개",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[laundry] Cleaner.jpg`,
@@ -903,7 +904,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[비긴에코] 섬유유연제 건조기시트 프루티플로럴 80매",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[laundry] dryer_sheet(1).png`,
@@ -941,7 +942,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[꽃마리] 세탁용 과탄산소다솝",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[laundry] Percarbonate_soda(1).jpg`,
@@ -979,7 +980,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[블루워시] 고체 세탁세제 (제라늄/70정)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[laundry] solid_detergent.jpg`,
@@ -1014,7 +1015,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[에콜그린] 옥수수콘 커피필터 50매 (사다리꼴형)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] coffee_filter.jpg`,
@@ -1047,7 +1048,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[project1907] 플랫 파우치 (Flat Pouch)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] flat_pouch.jpg`,
@@ -1080,7 +1081,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[탄소창고] 쑥쑥화분",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] flowerpot(1).jpg`,
@@ -1118,7 +1119,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[project1907] 키즈토트백 (KIDS Tote Bag)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] kdis_tote_bag.jpg`,
@@ -1151,7 +1152,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[project1907] 장우산(대)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] long_umbrella.jpg`,
@@ -1184,7 +1185,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "굴 담은 탈취제",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] oyster_deodorant(1).jpg`,
@@ -1222,7 +1223,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[project1907] 여권케이스 (Passport Case)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] passport_case.jpg`,
@@ -1255,7 +1256,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[project1907] 비건 백팩 (Vegan Backpack)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] vegan_bagpack.jpg`,
@@ -1288,7 +1289,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[project1907] 비건 호보백 (Vegan Hobo bag)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] vegan_hobo_bag.jpg`,
@@ -1321,7 +1322,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[업앤업] 밀랍초",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[life] wax_candle.jpg`,
@@ -1356,7 +1357,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[에콜그린] 옥수수콘 생분해 강아지 배변패드 (10매)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[pet] dog_pad.jpg`,
@@ -1391,7 +1392,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[자연상점] 아자아자! 입학 응원 세트",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[stationery] admission_gift.jpg`,
@@ -1424,7 +1425,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[스테이그린] 사탕수수 메모지 - Check list",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[stationery] check_list.jpg`,
@@ -1457,7 +1458,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[지구나무] A5 재생지 노트(유선)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[stationery] note.jpg`,
@@ -1490,7 +1491,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[지구나무] 페이퍼 클립 (높은음자리표) - 10개입",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[stationery] paper_clip.jpg`,
@@ -1523,7 +1524,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[지구나무] 신문지 업사이클링 연필(5개입)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[stationery] pencil.gif`,
@@ -1556,7 +1557,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[지구나무] [RE]재생가죽 펜슬캡",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[stationery] pencil_cap.jpg`,
@@ -1589,7 +1590,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[지구나무] 폐나무 분말 연필깎이",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[stationery] pencil_sharpener.jpg`,
@@ -1622,7 +1623,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[프린텍]재생지포스트잇 세로형 100매",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[stationery] postit(1).jpg`,
@@ -1660,7 +1661,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "[자연상점] 신문지 연필세트 (연필3개+크라프트연필통)",
         quantity: 100,
-        buyQuantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/[stationery] stationery_set.jpg`,
