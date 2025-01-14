@@ -65,6 +65,10 @@ function Cart() {
     navigate("/");
   };
 
+  const handleOrderAgain = () => {
+    navigate("/");
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
 
@@ -265,7 +269,10 @@ function Cart() {
             </div>
 
             <div className="mt-[8px] flex justify-center">
-              <button className="text-black text-[15px] border-b border-grey-40">
+              <button
+                className="text-black text-[15px] border-b border-grey-40"
+                onClick={handleOrderAgain}
+              >
                 다음에 다시 주문하기
               </button>
             </div>
