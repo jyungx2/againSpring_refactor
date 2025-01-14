@@ -20,7 +20,10 @@ function Login() {
     setError,
     formState: { errors },
   } = useForm({
-    defaultValues: { email: "kimejoa@market.com", password: "11111111" },
+    defaultValues: {
+      email: "dlwldud1234@market.com",
+      password: "11111111",
+    },
   });
 
   const login = useMutation({

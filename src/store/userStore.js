@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-// ✅ 사용자가 로그인하거나 회원가입할 때 실행되는 코드 (👉 사용자의 행동에 의해 호출)
+// ✅ setUser(): 사용자가 로그인하거나 회원가입할 때 실행되는 코드 (👉 사용자의 행동에 의해 호출)
 const UserStore = (set) => ({
   user: null,
   setUser: (user) => {
@@ -9,6 +9,7 @@ const UserStore = (set) => ({
     localStorage.setItem("autoLogin", JSON.stringify(user.autoLogin));
 
     // setOptions()를 사용하여 user의 autoLogin 값에 따라 저장소를 동적으로 설정가능
+    // persist를 쓰면서 동시에 조건문을 활용해 동적으로 스토리지 종류를 컨트롤 가능!
     useUserStore.persist.setOptions({
       storage: createJSONStorage(() =>
         user.autoLogin ? localStorage : sessionStorage
