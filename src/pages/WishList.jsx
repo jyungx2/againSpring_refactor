@@ -16,10 +16,12 @@ const Wishlist = () => {
   return (
     <div className="mt-[40px] max-w-full">
       <div className="flex items-center mb-[16px]">
-        <h2 className="text-[24px] font-gowun text-grey-80">위시리스트</h2>
-        <button className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 ml-[14px]">
-          등록하기
-        </button>
+        <h2 className="text-[24px] font-gowun text-grey-80 mr-[8px]">
+          위시리스트
+        </h2>
+        <span className="flex items-center justify-center w-[20px] h-[20px] bg-black bg-opacity-20 text-white rounded-full">
+          {wishlistItems.length}
+        </span>
       </div>
       {loading ? (
         <div className="flex justify-center items-center h-[240px]">
@@ -41,7 +43,7 @@ const Wishlist = () => {
             {wishlistItems.map((item) => (
               <div
                 key={item.id}
-                className="border border-grey-20 rounded-md flex-none w-[180px] h-[240px] bg-gray-200 relative cursor-pointer group"
+                className="border border-grey-20 rounded-md flex-none w-[180px] h-[240px] relative cursor-pointer group"
               >
                 <button
                   className="absolute top-[5px] right-[5px] text-red-600 hover:text-red-800 text-[14px] focus:outline-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
@@ -55,19 +57,24 @@ const Wishlist = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="flex flex-col justify-between text-[16px] font-gowun text-left h-[60px] p-[4px] ">
+                <div className="absolute left-0 right-0 p-[4px] bg-white transition-transform duration-200 group-hover:translate-y-[-80%]">
                   <span
-                    className="overflow-hidden text-ellipsis whitespace-nowrap"
+                    className="block overflow-hidden text-ellipsis whitespace-nowrap"
                     title={item.name}
                   >
                     {item.name}
                   </span>
                   <span
-                    className="overflow-hidden text-ellipsis whitespace-nowrap"
+                    className="block overflow-hidden text-ellipsis whitespace-nowrap"
                     title={`${item.price.toLocaleString()}원`}
                   >
                     {item.price.toLocaleString()}원
                   </span>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 h-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <button className="w-full h-full bg-blue-500 text-white text-[14px] font-gowun hover:bg-blue-600">
+                    장바구니 추가
+                  </button>
                 </div>
               </div>
             ))}
