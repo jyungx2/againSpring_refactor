@@ -279,6 +279,8 @@ function Cart() {
             </div>
           </div>
         )}
+        <hr className="mt-[12px] mb-[16px]" />
+
         <Wishlist />
       </div>
     </div>
