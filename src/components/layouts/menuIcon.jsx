@@ -25,41 +25,6 @@ const MenuIcons = () => {
     }
   };
 
-  const getUserKakaoInfo = async (token) => {
-    const user = await axios.get("https://kapi.kakao.com/v2/user/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-      },
-    });
-
-    return user.data;
-  };
-
-  const kakaoToken = localStorage.getItem("kakaoToken");
-  useEffect(() => {
-    const setUserFromKakao = async () => {
-      try {
-        if (kakaoToken) {
-          const kakaoUser = await getUserKakaoInfo(kakaoToken);
-          console.log("kakao user: ", kakaoUser);
-
-          setUser({
-            _id: kakaoUser.id,
-            name: kakaoUser.properties.nickname,
-            profile: kakaoUser.properties.profile_image,
-            accessToken: kakaoToken,
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        // 카카오에서 받은 액세스토큰(kakaoToken)이 유효하지 않으면 삭제
-        localStorage.removeItem("kakaoToken");
-      }
-    };
-    setUserFromKakao();
-  }, []);
-
   return (
     <div className="absolute top-4 right-6 flex space-x-6 items-center">
       {user ? (
