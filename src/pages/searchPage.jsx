@@ -1,11 +1,17 @@
 import { useState } from "react";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const instance = useAxiosInstance();
+  const navigate = useNavigate();
+
+  const handleProductClick = (id) => {
+    navigate(`/products/${id}`);
+  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -30,6 +36,8 @@ const SearchPage = () => {
       setErrorMessage("검색 중 문제가 발생했습니다.");
     }
   };
+
+
 
   return (
     <div className="w-[1200px] mx-auto px-6 py-8 p-6 flex flex-col items-center">
@@ -58,6 +66,7 @@ const SearchPage = () => {
             <li
               key={product._id}
               className="border p-6 rounded shadow hover:shadow-md cursor-pointer"
+              onClick={() => handleProductClick(product._id)}
             >
               <img
                 src={`https://11.fesp.shop${product.mainImages?.[0]?.path}`}
