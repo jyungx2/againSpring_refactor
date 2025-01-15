@@ -13,9 +13,9 @@ export default function QnAPostDetailPage() {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const [replies, setReplies] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const { id } = useParams();
   const queryClient = useQueryClient();
-
   const [hasAdminReply, setHasAdminReply] = useState(false);
 
   const { user } = useUserStore();
@@ -28,6 +28,18 @@ export default function QnAPostDetailPage() {
   });
 
   useEffect(() => {
+    // 상품 정보가 있고, 필요한 데이터가 모두 존재할 때만 selectedProduct 설정
+    if (data?.item?.product?.name?.[0] && data?.item?.product?._id?.[0]) {
+      setSelectedProduct({
+        ...data.item.product,
+        name: data.item.product.name[0],
+        _id: data.item.product._id[0],
+        mainImages: data.item.product.mainImages[0],
+      });
+    } else {
+      setSelectedProduct(null);
+    }
+
     if (data?.item?.replies) {
       setReplies(data.item.replies);
       // admin 답변 여부 체크
@@ -104,6 +116,31 @@ export default function QnAPostDetailPage() {
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&A
       </h1>
+      {/* 상품 정보 불러오기 - 상품 정보가 있을 때만 렌더링 */}
+      {selectedProduct && (
+        <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
+          <div className='mr-6 relative'>
+            {selectedProduct.mainImages?.length > 0 ? (
+              <img
+                src={`https://11.fesp.shop${selectedProduct.mainImages[0].path}`}
+                className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'
+              />
+            ) : (
+              <div className='w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600'>
+                No Image
+              </div>
+            )}
+          </div>
+          <div className='flex flex-col gap-4 justify-center h-32'>
+            <div className='text-xl'>상품명: {selectedProduct.name}</div>
+            <div className='flex gap-4'>
+              <button className='px-6 py-2.5 bg-black text-white text-lg rounded hover:bg-gray-800'>
+                <Link to={`/detail/${selectedProduct?._id}`}>상품상세보기</Link>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <section className='flex flex-col'>
         {/* 게시글 헤더 */}
@@ -187,7 +224,11 @@ export default function QnAPostDetailPage() {
                 type='button'
                 className='border border-grey-10 rounded px-9 py-2 text-xl'
               >
-                <Link to={`/qna/edit/${id}`}>수정</Link>
+                <Link
+                  to={`/qna/${selectedProduct ? 'product/' : ''}edit/${id}`}
+                >
+                  수정
+                </Link>
               </button>
               <button
                 type='button'
