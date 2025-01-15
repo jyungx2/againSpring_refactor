@@ -5,6 +5,7 @@ import withReactContent from 'sweetalert2-react-content';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import useUserStore from '@store/userStore';
+import { useEffect, useState } from 'react';
 
 export default function NoticePostDetailPage() {
   const axios = useAxiosInstance();
@@ -13,6 +14,11 @@ export default function NoticePostDetailPage() {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const { user } = useUserStore();
+
+  const [previousNumberLink, setPreviousNumberLink] = useState();
+  const [previousTitle, setPreviousTitle] = useState();
+  const [nextNumberLink, setNextNumberLink] = useState();
+  const [nextTitle, setNextTitle] = useState();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['noticeDetail', id],
@@ -25,6 +31,64 @@ export default function NoticePostDetailPage() {
     if (!user || !data?.item) return false;
     return user.type === 'admin' && user.id === data.item.user_id;
   };
+
+  useEffect(() => {
+    // 이전글 다음글 찾는 로직
+    async function findPreNextPostInfo(id) {
+      try {
+        const response = await axios.get(`/posts`, {
+          params: {
+            page: 1,
+            limit: 100,
+            type: 'notice',
+          },
+        });
+        if (response?.data && response?.data?.item) {
+          const nowIndexData = findItemById(response.data.item, id);
+          const itemList = response?.data?.item;
+
+          if (nowIndexData.index > 0) {
+            // 이전글 구하기
+            setNextNumberLink(
+              `/notice/detail/${itemList[Number(nowIndexData.index) - 1]?._id}`
+            );
+            setNextTitle(`${itemList[Number(nowIndexData.index) - 1]?.title}`);
+          } else {
+            setNextNumberLink(`#`);
+            setNextTitle('');
+          }
+
+          if (nowIndexData.index < itemList.length - 1) {
+            setPreviousNumberLink(
+              `/notice/detail/${itemList[Number(nowIndexData.index) + 1]?._id}`
+            );
+            setPreviousTitle(
+              `${itemList[Number(nowIndexData.index) + 1]?.title}`
+            );
+          } else {
+            setPreviousNumberLink(`#`);
+            setPreviousTitle('');
+          }
+        }
+      } catch (error) {
+        console.log(`notice 게시판 에러발생`, error);
+      }
+      return null;
+    }
+
+    findPreNextPostInfo(id);
+  }, [data]);
+
+  // 두 가지 모두 제공하는 유틸리티 함수
+  function findItemById(objectList, searchId) {
+    const index = objectList.findIndex((item) => {
+      return item._id == searchId;
+    });
+    return {
+      item: index !== -1 ? objectList[index] : null,
+      index: index,
+    };
+  }
 
   // 게시글 삭제
   const deletePost = useMutation({
@@ -174,25 +238,25 @@ export default function NoticePostDetailPage() {
           <nav className='mb-4'>
             <div className='border-t border-b border-grey-5'>
               <div className='flex items-center border-b border-grey-5 min-h-[60px]'>
-                <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-lg font-medium shrink-0'>
-                  <span className='text-sm mr-2'>▲</span>이전글
+                <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-xl font-medium shrink-0'>
+                  <span className='text-base mr-2'>▲</span>다음글
                 </div>
                 <Link
-                  to='#'
-                  className='flex-1 px-4 py-4 text-lg text-grey-80 hover:text-secondary-20 truncate'
+                  to={nextNumberLink}
+                  className='flex-1 px-4 py-4 text-xl text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  이전 공지글
+                  {nextTitle || '다음 글이 없습니다'}
                 </Link>
               </div>
               <div className='flex items-center min-h-[60px]'>
-                <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-lg font-medium shrink-0'>
-                  <span className='text-sm mr-2'>▼</span>다음글
+                <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-xl font-medium shrink-0'>
+                  <span className='text-base mr-2'>▼</span>이전글
                 </div>
                 <Link
-                  to='#'
-                  className='flex-1 px-4 py-4 text-lg text-grey-80 hover:text-secondary-20 truncate'
+                  to={previousNumberLink}
+                  className='flex-1 px-4 py-4 text-xl text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  다음 공지글
+                  {previousTitle || '이전 글이 없습니다'}
                 </Link>
               </div>
             </div>
