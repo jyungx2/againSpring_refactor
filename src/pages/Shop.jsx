@@ -48,7 +48,7 @@ function Shop() {
     };
 
     fetchProducts();
-  }, [axiosInstance]);
+  }, []);
 
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop";
