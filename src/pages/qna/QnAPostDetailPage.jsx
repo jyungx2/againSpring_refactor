@@ -224,11 +224,7 @@ export default function QnAPostDetailPage() {
                 type='button'
                 className='border border-grey-10 rounded px-9 py-2 text-xl'
               >
-                <Link
-                  to={`/qna/${selectedProduct ? 'product/' : ''}edit/${id}`}
-                >
-                  수정
-                </Link>
+                <Link to={`/qna/edit/${id}`}>수정</Link>
               </button>
               <button
                 type='button'

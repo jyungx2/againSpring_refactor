@@ -11,6 +11,7 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
   const [originalData, setOriginalData] = useState(null);
   const [quillInstance, setQuillInstance] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isProductPost, setIsProductPost] = useState(false);
 
   const navigate = useNavigate();
   const axios = useAxiosInstance();
@@ -36,6 +37,7 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
 
         // 상품 정보가 있는 경우 상품 데이터 조회
         if (data.product?._id) {
+          setIsProductPost(true); // 추가
           setSelectedProduct({
             _id: data.product._id[0],
             name: data.product.name[0],
@@ -49,13 +51,8 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
         }
       }
     } catch (error) {
-      MySwal.fire({
-        title: '오류 발생',
-        text:
-          error.response?.data?.message ||
-          '게시글 로딩 중 오류가 발생했습니다.',
-        icon: 'error',
-      });
+      // ... 에러 처리
+      console.error('에러: ', error);
     } finally {
       setIsLoading(false);
     }
@@ -144,5 +141,6 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
     handleCancel,
     selectedProduct,
     setSelectedProduct,
+    isProductPost,
   };
 };
