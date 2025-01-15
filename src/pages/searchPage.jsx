@@ -9,6 +9,7 @@ const SearchPage = () => {
   const instance = useAxiosInstance();
   const navigate = useNavigate();
   const [searchHistory, setSearchHistory] = useState([]);
+  const [isSearchPerformed, setIsSearchPerformed] = useState(false);
 
   const handleProductClick = (id) => {
     navigate(`/products/${id}`);
@@ -20,7 +21,10 @@ const SearchPage = () => {
       setErrorMessage("[필수] 상품명을 입력해주세요.");
       return;
     }
-    setSearchHistory((prev) => [...new Set([searchTerm, ...prev])]);
+    setSearchHistory((prev) => [...new Set([searchTerm, ...prev])]); // r검색 기록 중복 제거
+
+    setErrorMessage(""); // 에러 메시지 초기화
+    setIsSearchPerformed(true); // 검색 수행 상태 업데이트
 
     try {
       // console.log("URL:", `/api/products?query=${searchTerm}`);
@@ -99,12 +103,13 @@ const SearchPage = () => {
               <p className="text-lg text-gray-700 font-bold">
                 {product.price.toLocaleString()}원
               </p>
-
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500">검색 결과가 없습니다.</p>
+        isSearchPerformed && ( // 검색 수행 이후에만 결과 없음 메시지 표시
+          <p className="text-gray-500 mt-4">검색 결과가 없습니다.</p>
+        )
       )}
     </div>
   );
