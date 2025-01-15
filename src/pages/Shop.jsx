@@ -147,11 +147,10 @@ function Shop() {
               {Array.from({ length: totalPages }).map((_, index) => (
                 <button
                   key={index}
-                  className={`${
-                    currentPage === index + 1
-                      ? "bg-secondary-20 text-white"
-                      : "bg-grey-20 text-black"
-                  } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40`}
+                  className={`${currentPage === index + 1
+                    ? "bg-secondary-20 text-white"
+                    : "bg-grey-20 text-black"
+                    } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40`}
                   onClick={() => handlePageChange(index + 1)}
                 >
                   {index + 1}

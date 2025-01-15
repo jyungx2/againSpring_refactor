@@ -1,33 +1,65 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import useAxiosInstance from '@hooks/useAxiosInstance';
+import CommentList from '@pages/comment/CommentList';
+import { useEffect, useState } from 'react';
+import useUserStore from '@store/userStore';
 
 export default function QnAPostDetailPage() {
+  const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
+  const [replies, setReplies] = useState([]);
+  const { id } = useParams();
+  const queryClient = useQueryClient();
 
-  // 관리자 여부 체크 (실제 구현 시에는 상태 관리나 context에서 가져와야 함)
-  const isAdmin = false;
+  const [hasAdminReply, setHasAdminReply] = useState(false);
 
-  // 댓글 작성 시도 시 관리자 체크
-  const handleCommentSubmit = () => {
-    if (!isAdmin) {
-      MySwal.fire({
-        title: '권한 없음',
-        text: '관리자만 댓글을 작성할 수 있습니다.',
-        icon: 'warning',
-        confirmButtonText: '확인',
-        confirmButtonColor: '#3085d6',
-      });
-      return;
+  const { user } = useUserStore();
+  const isAdmin = user?.type === 'admin';
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['qnaDetail', id],
+    queryFn: () => axios.get(`/posts/${id}`),
+    select: (res) => res.data,
+  });
+
+  useEffect(() => {
+    if (data?.item?.replies) {
+      setReplies(data.item.replies);
+      // admin 답변 여부 체크
+      const adminReplyExists = data.item.replies.some(
+        (reply) => reply.user?.email === 'admin@market.com'
+      );
+      setHasAdminReply(adminReplyExists);
     }
-    // 관리자인 경우 댓글 작성 로직 실행
-  };
+  }, [data]);
 
   // 게시글 삭제
-  const deleteCheckBtn = () => {
-    MySwal.fire({
+  const deletePost = useMutation({
+    mutationFn: () => axios.delete(`/posts/${id}`),
+    onSuccess: () => {
+      // 상세 페이지 쿼리는 삭제하고, 목록 쿼리만 무효화
+      queryClient.removeQueries(['qnaDetail', id]);
+      queryClient.invalidateQueries(['posts']);
+      MySwal.fire({
+        title: '삭제 완료',
+        text: '게시글이 삭제되었습니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/qna');
+        }
+      });
+    },
+  });
+
+  const deleteCheckBtn = async () => {
+    const result = await MySwal.fire({
       title: '게시글을 삭제하시겠습니까?',
       text: '삭제된 게시글은 복구할 수 없습니다.',
       icon: 'warning',
@@ -36,26 +68,41 @@ export default function QnAPostDetailPage() {
       cancelButtonColor: '#d33',
       confirmButtonText: '네',
       cancelButtonText: '아니요',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        MySwal.fire({
-          title: '삭제 완료',
-          text: '게시글이 삭제되었습니다.',
-          confirmButtonText: '확인',
-          icon: 'success',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate('/qna');
-          }
-        });
-      }
     });
+
+    if (result.isConfirmed) {
+      deletePost.mutate();
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>로딩중...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl text-red-500'>에러가 발생했습니다</div>
+      </div>
+    );
+  }
+
+  if (!data?.item) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <div className='text-xl'>데이터를 찾을 수 없습니다</div>
+      </div>
+    );
+  }
 
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        Q&amp;A
+        Q&A
       </h1>
 
       <section className='flex flex-col'>
@@ -72,9 +119,13 @@ export default function QnAPostDetailPage() {
               className='text-2xl font-medium text-grey-50 flex items-center gap-2'
               id='title'
             >
-              피그마 너무 어려운데요.
-              <span className='inline-block px-5 py-2 rounded-[20px] text-white text-base bg-grey-20'>
-                답변대기
+              {data?.item?.title}
+              <span
+                className={`inline-block px-5 py-2 rounded-[20px] text-white text-sm ml-2.5 ${
+                  hasAdminReply ? 'bg-primary-40' : 'bg-grey-20'
+                }`}
+              >
+                {hasAdminReply ? '답변완료' : '답변대기'}
               </span>
             </h2>
           </div>
@@ -86,7 +137,7 @@ export default function QnAPostDetailPage() {
               작성자
             </label>
             <p className='text-2xl font-medium text-grey-50' id='writer'>
-              홍길동
+              {data?.item?.user?.name}
             </p>
           </div>
           <div className='border-b border-grey-10'>
@@ -96,7 +147,7 @@ export default function QnAPostDetailPage() {
                   작성일
                 </label>
                 <p className='text-xl text-grey-40' id='date'>
-                  2024-01-01 00:00:00
+                  {data?.item?.createdAt}
                 </p>
               </div>
               <div className='flex items-center'>
@@ -104,44 +155,23 @@ export default function QnAPostDetailPage() {
                   조회수
                 </label>
                 <p className='text-xl text-grey-40' id='views'>
-                  0
+                  {data?.item?.views}
                 </p>
               </div>
             </div>
-
-            {Array.from({ length: 10 }, (_, i) => (
-              <p key={i} className='py-4 text-xl'>
-                여기에 글 내용이 들어갑니다 {i + 1}번째 줄
-              </p>
-            ))}
+            <div
+              dangerouslySetInnerHTML={{ __html: data?.item?.content }}
+            ></div>
           </div>
         </div>
 
         {/* 댓글 섹션 */}
-        <section className='mb-8'>
-          {/* 댓글 입력 */}
-          <div className='flex flex-col gap-4 border border-grey-5 p-6 mb-6'>
-            <textarea
-              className='w-full min-h-[80px] resize-y border border-grey-30 p-2 text-xl'
-              placeholder='관리자만 작성하실 수 있습니다.'
-              id='reply-text'
-              disabled={!isAdmin}
-            />
-            <div className='flex justify-end'>
-              <button
-                type='submit'
-                className={`rounded-lg px-6 py-2 text-xl ${
-                  isAdmin
-                    ? 'bg-secondary-20 text-white'
-                    : 'bg-grey-20 text-grey-50 cursor-not-allowed'
-                }`}
-                onClick={handleCommentSubmit}
-              >
-                작성
-              </button>
-            </div>
-          </div>
-        </section>
+        <CommentList
+          comments={replies}
+          setReplies={setReplies}
+          isAdmin={isAdmin}
+          post={data.item}
+        />
 
         {/* 하단 네비게이션 */}
         <div className='border-t border-grey-10 pt-8 pb-4'>
@@ -157,7 +187,7 @@ export default function QnAPostDetailPage() {
                 type='button'
                 className='border border-grey-10 rounded px-9 py-2 text-xl'
               >
-                <Link to='/qna/edit'>수정</Link>
+                <Link to={`/qna/edit/${id}`}>수정</Link>
               </button>
               <button
                 type='button'

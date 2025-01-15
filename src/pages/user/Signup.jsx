@@ -34,8 +34,8 @@ function Signup() {
     reValidateMode: "onChange",
     criteriaMode: "all",
     defaultValues: {
-      name: "김마켓",
-      email: "kimarket2@market.com",
+      name: "김이조",
+      email: "kimejoa@market.com",
       password: 11111111,
       "password-confirm": 11111111,
     },
@@ -104,6 +104,7 @@ function Signup() {
       setUser({
         _id: userLogin._id,
         name: userLogin.name,
+        type: userLogin.type,
         profile: userLogin.image?.path,
         accessToken: userLogin.token.accessToken,
         refreshToken: userLogin.token.refreshToken,

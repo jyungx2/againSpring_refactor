@@ -3,13 +3,16 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import useUserStore from "@store/userStore";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ErrorMsg from "@components/ErrorMsg";
+import { useState } from "react";
 
 function Login() {
   const axios = useAxiosInstance();
   const setUser = useUserStore((store) => store.setUser);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [autoLogin, setAutoLogin] = useState(false);
 
   const {
     register,
@@ -17,7 +20,7 @@ function Login() {
     setError,
     formState: { errors },
   } = useForm({
-    defaultValues: { email: "y40@market.com", password: "11111111" },
+    defaultValues: { email: "kimejoa2@market.com", password: "11111111" },
   });
 
   const login = useMutation({
@@ -28,13 +31,15 @@ function Login() {
       setUser({
         _id: user._id,
         name: user.name,
+        type: user.type, // 코드 추가(ohDASEUL) : qna 게시판에서 사용함
         profile: user.image?.path,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
+        autoLogin,
       });
 
       alert(user.name + "님 로그인 되었습니다.");
-      navigate("/");
+      navigate(location.state?.from || "/");
     },
     onError: (err) => {
       console.error(err);
@@ -111,6 +116,8 @@ function Login() {
                 type="checkbox"
                 id="stay-login"
                 className={`${styles.inputUnset} ${styles.checkboxCustom} peer`}
+                checked={autoLogin}
+                onChange={(e) => setAutoLogin(e.target.checked)}
               />
               <label
                 htmlFor="stay-login"
