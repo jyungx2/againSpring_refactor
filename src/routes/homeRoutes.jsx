@@ -6,7 +6,7 @@ import TermsOfService from "@pages/user/TermsOfService";
 import Myorder from "@pages/user/Myorder";
 import Myreview from "@pages/user/Myreview";
 import Myquery from "@pages/user/Myquery";
-import Shop from "@pages/Shop copy";
+import Shop from "@pages/Shop";
 import Detail from "@pages/Detail";
 import MainProducts from "@pages/MainProducts";
 import NoticeListPage from "@pages/notice/NoticeListPage";
