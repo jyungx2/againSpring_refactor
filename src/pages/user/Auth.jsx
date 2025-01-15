@@ -48,7 +48,7 @@ function Auth() {
     } else {
       console.error("Auth code is missing. Please check the URL parameters.");
     }
-  }, [authCode]);
+  }, []);
 
   return <>🔥Auth Page🔥</>;
 }

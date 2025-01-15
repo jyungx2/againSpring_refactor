@@ -29,7 +29,7 @@ function Login() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "dlwldud1234@market.com",
+      email: "kimejoa@market.com",
       password: "11111111",
     },
   });
