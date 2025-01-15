@@ -1,18 +1,11 @@
+import Sidebar from "@pages/user/Sidebar";
 import styles from "./User.module.css";
 
 function Myreview() {
   return (
     <>
       <div className="flex box-border max-w-[1200px] mx-auto px-6 pb-0">
-        <div className="flex flex-col gap-[24px] pt-[24px] min-w-[180px]">
-          <a>주문조회</a>
-          <a>1:1 문의</a>
-          <a>위시리스트</a>
-          <a>쿠폰</a>
-          <a>포인트</a>
-          <a>정보 수정</a>
-          <a>회원탈퇴</a>
-        </div>
+        <Sidebar />
 
         <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[20px]">
           <div className="flex items-start p-[30px] text-[16px] border-t-2 border-black gap-[18px]">

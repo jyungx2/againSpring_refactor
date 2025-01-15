@@ -1,3 +1,4 @@
+import Sidebar from "@pages/user/Sidebar";
 import useUserStore from "@store/userStore";
 
 function Myorder() {
@@ -6,15 +7,7 @@ function Myorder() {
   return (
     <>
       <div className="flex box-border max-w-[1200px] mx-auto px-6">
-        <div className="flex flex-col gap-[24px] pt-[24px] min-w-[180px]">
-          <a>주문조회</a>
-          <a>1:1 문의</a>
-          <a>위시리스트</a>
-          <a>쿠폰</a>
-          <a>포인트</a>
-          <a>정보 수정</a>
-          <a>회원탈퇴</a>
-        </div>
+        <Sidebar />
 
         <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[40px]">
           <div className="flex items-center justify-center gap-[30px] box-border p-[30px] overflow-hidden">
