@@ -111,6 +111,8 @@ export default function QnAPostDetailPage() {
     );
   }
 
+  const canEditDelete = isAdmin || user?._id === data?.item?.user?._id;
+
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
@@ -219,21 +221,23 @@ export default function QnAPostDetailPage() {
             >
               <Link to='/qna'>목록</Link>
             </button>
-            <div className='flex gap-3'>
-              <button
-                type='button'
-                className='border border-grey-10 rounded px-9 py-2 text-xl'
-              >
-                <Link to={`/qna/edit/${id}`}>수정</Link>
-              </button>
-              <button
-                type='button'
-                className='border border-grey-10 rounded px-9 py-2 text-xl'
-                onClick={deleteCheckBtn}
-              >
-                삭제
-              </button>
-            </div>
+            {canEditDelete && (
+              <div className='flex gap-3'>
+                <button
+                  type='button'
+                  className='border border-grey-10 rounded px-9 py-2 text-xl'
+                >
+                  <Link to={`/qna/edit/${id}`}>수정</Link>
+                </button>
+                <button
+                  type='button'
+                  className='border border-grey-10 rounded px-9 py-2 text-xl'
+                  onClick={deleteCheckBtn}
+                >
+                  삭제
+                </button>
+              </div>
+            )}
           </div>
 
           <nav className='mb-4'>
