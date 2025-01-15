@@ -25,11 +25,7 @@ const QnAListItem = ({ item, number }) => {
       <td className='py-5 text-left pl-5'>{number}</td>
       <td>
         <Link
-          to={
-            item.product_id
-              ? `/qna/product/detail/${item._id}`
-              : `/qna/detail/${item._id}`
-          }
+          to={`/qna/detail/${item._id}`}
           className='flex items-center py-5 pl-5 gap-2'
         >
           {item.product && item.product.image && (
