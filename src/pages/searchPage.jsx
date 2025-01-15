@@ -13,10 +13,13 @@ const SearchPage = () => {
   const [isSearchPerformed, setIsSearchPerformed] = useState(false);
 
   const handleProductClick = (id) => {
-    navigate(`/products/${id}`);
+    // console.log(`Navigating to /products/${id}`);
+    // navigate(`/products/${id}`);
+    navigate(`/detail/${id}`);
   };
 
   const handleSearch = async (e) => {
+
     e.preventDefault();
     if (loading) return;
     if (!searchTerm.trim()) {
