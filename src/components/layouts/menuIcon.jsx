@@ -1,10 +1,8 @@
 import useUserStore from "@store/userStore";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useEffect } from "react";
 
 const MenuIcons = () => {
-  const { user, setUser, resetUser } = useUserStore();
+  const { user, resetUser } = useUserStore();
 
   const navigate = useNavigate();
 
