@@ -37,12 +37,15 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
 
         // 상품 정보가 있는 경우 상품 데이터 조회
         if (data.product?._id) {
-          setIsProductPost(true); // 추가
+          setIsProductPost(true);
           setSelectedProduct({
             _id: data.product._id[0],
             name: data.product.name[0],
             mainImages: data.product.mainImages?.[0] || [],
           });
+        } else {
+          setIsProductPost(false);
+          setSelectedProduct(null);
         }
 
         // Quill 에디터 내용 설정
@@ -80,11 +83,23 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
 
     try {
       setIsLoading(true);
-      const response = await axios.patch(`/posts/${post._id}`, {
+
+      // 업데이트할 데이터 객체 생성
+      const updateData = {
         title,
         content: currentContent,
-        ...(selectedProduct && { product_id: selectedProduct._id }),
-      });
+      };
+
+      // selectedProduct가 있을 때만 product_id 추가
+      if (selectedProduct) {
+        updateData.product_id = selectedProduct._id;
+      } else {
+        // selectedProduct가 null일 때 (상품이 제거되었을 때)
+        // product_id를 명시적으로 null로 설정하여 상품 연결 해제
+        updateData.product_id = null;
+      }
+
+      const response = await axios.patch(`/posts/${post._id}`, updateData);
 
       if (response.data.ok) {
         await MySwal.fire({
