@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { initData } from "../../api/dbinit-sample/againSpring/data"; // initData 함수 import
 import { useParams } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
-import useAxiosInstance from '@hooks/useAxiosInstance';
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 function Cart() {
   //더미 상품 데이터
@@ -12,8 +14,10 @@ function Cart() {
 
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop";
-    return `${baseURL}${path}`
-  }
+    return `${baseURL}${path}`;
+  };
+
+  const [quantity, setQuantity] = useState(1); // 초기값 1로 설정
 
   const tabContent = {
     상세정보: (
@@ -75,12 +79,26 @@ function Cart() {
 
   const shippingCost = 3000; //배송비
   // 코드 수정(ohDASEUL) : totalPrice 개발 부탁드립니다. (일단은 주석 처리 했습니다.)
-  const totalPrice = 0;
   // const totalPrice = cartItemsList.reduce(
   //   //가격계산
   //   (total, item) => total + item.price * item.quantity,
   //   0
   // );
+  //✨
+  const updateQuantity = (id, newQuantity) => {
+    setCartItemsList((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
+    );
+  };
+
+  const totalPrice = cartItemsList.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  //✨
 
   const totalOrderAmount = totalPrice + shippingCost; // 가격계산결과
 
@@ -95,18 +113,21 @@ function Cart() {
   ];
 
   // 코드 추가(ohDASEUL) : 제품 id로 API(url만 있어도 제품이 나오도록 값을 수정)
-   useEffect(() => {
-      const fetchProducts = async () => {
-        try {
-          const response = await axiosInstance.get(`/products/${id}`);
-          setCartItemsList([response?.data?.item])
-        } catch (error) {
-          console.error("Failed to fetch products:", error);
-        }
-      };
-  
-      fetchProducts();
-    }, []);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axiosInstance.get(`/products/${id}`);
+        // 상품 데이터에서 quantity 값을 1로 고정하여 업데이트
+        const product = response?.data?.item;
+        product.quantity = 1; // quantity를 1로 설정
+        setCartItemsList([product]);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      }
+    };
+    fetchProducts();
+  }, [id]);
+
   return (
     <div className="flex justify-center px-[16px]">
       {/* 화면 가운데 정렬 및 좌우 패딩을 추가한 외부 컨테이너 */}
@@ -231,13 +252,23 @@ function Cart() {
                         <dd className="text-center py-[10px] mr-[60px]">
                           <div className="flex justify-center">
                             <div className="flex items-center h-[32px] border border-grey-20">
-                              <button className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10">
+                              <button
+                                className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10"
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity - 1)
+                                }
+                              >
                                 -
                               </button>
-                              <span className="w-[50px] h-full flex items-center justify-center text-black text-[12px]">
+                              <span className="w-[50px] text-center">
                                 {item.quantity}
                               </span>
-                              <button className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10">
+                              <button
+                                className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity + 1)
+                                }
+                              >
                                 +
                               </button>
                             </div>
@@ -245,7 +276,7 @@ function Cart() {
                         </dd>
 
                         <dd className="text-center py-[10px]">
-                          {item?.price?.toLocaleString()}원
+                          {(item.price * item.quantity).toLocaleString()}원
                         </dd>
                       </div>
                     </dd>
@@ -257,7 +288,7 @@ function Cart() {
                         총 상품 금액(수량):
                       </dt>
                       <dd className=" text-grey-80 font-gowunBold py-[10px] text-[21px]">
-                        {(item?.price * item?.quantity)?.toLocaleString()}원
+                        {totalPrice.toLocaleString()}원
                       </dd>
                       <dd className=" text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
                         {item?.quantity?.toLocaleString()}개
@@ -290,9 +321,10 @@ function Cart() {
                   key={tab}
                   onClick={() => setActiveTab(tab)} // 탭 클릭 시 활성화된 탭을 변경
                   className={`w-[430px] pt-[20px] pb-[20px] cursor-pointer px-4 py-2 text-center text-[15px] 
-                    ${activeTab === tab
-                      ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
-                      : "border-2 border-gray-300 text-gray-500"
+                    ${
+                      activeTab === tab
+                        ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
+                        : "border-2 border-gray-300 text-gray-500"
                     }`}
                 >
                   {tab}

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { cartStore } from "../store/cartStore";
 import useUserStore from "@store/userStore";
 import { Helmet } from "react-helmet-async";
+import Wishlist from "@pages/WishList";
 
 function Cart() {
   const { userId } = useParams();
@@ -278,6 +279,9 @@ function Cart() {
             </div>
           </div>
         )}
+        <hr className="mt-[12px] mb-[16px]" />
+
+        <Wishlist />
       </div>
     </div>
   );
