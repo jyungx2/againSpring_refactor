@@ -2,11 +2,16 @@ import { useEffect } from "react";
 import { wishlistStore } from "../store/wishlistStore";
 
 const Wishlist = () => {
-  const { wishlistItems, fetchWishlistItems, loading, error } = wishlistStore();
+  const { wishlistItems, fetchWishlistItems, deleteItem, loading, error } =
+    wishlistStore();
 
   useEffect(() => {
     fetchWishlistItems();
   }, [fetchWishlistItems]);
+
+  const handleDeleteItem = (itemId) => {
+    deleteItem(itemId);
+  };
 
   return (
     <div className="mt-[40px] max-w-full">
@@ -38,7 +43,10 @@ const Wishlist = () => {
                 key={item.id}
                 className="border border-grey-20 rounded-md flex-none w-[180px] h-[240px] bg-gray-200 relative cursor-pointer group"
               >
-                <button className="absolute top-[5px] right-[5px] text-red-600 hover:text-red-800 text-[14px] focus:outline-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <button
+                  className="absolute top-[5px] right-[5px] text-red-600 hover:text-red-800 text-[14px] focus:outline-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  onClick={() => handleDeleteItem(item._id)}
+                >
                   X
                 </button>
                 <div className="w-full h-[180px] bg-gray-300 rounded-t-md flex items-center justify-center">

@@ -47,8 +47,13 @@ export const wishlistStore = create((set) => {
             Authorization: `Bearer ${user.accessToken}`,
           },
         });
+
         if (!response.data.item || response.data.item.length === 0) {
-          throw new Error("위시리스트가 비어있습니다.");
+          set({
+            wishlistItems: [],
+            loading: false,
+          });
+          return;
         }
 
         const wishlist = response.data.item.map((item) => ({
@@ -72,9 +77,38 @@ export const wishlistStore = create((set) => {
         );
         set({
           loading: false,
-          error: "위시리스트 아이템을 가져오는 데 실패했습니다.",
+          error: "위시리스트를 가져오는 데 실패했습니다.",
+        });
+      }
+    },
+
+    // 위시리스트 삭제
+    deleteItem: async (itemId) => {
+      const { user } = useUserStore.getState();
+
+      try {
+        await instance.delete(`/bookmarks/${itemId}`, {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        });
+
+        set((state) => ({
+          wishlistItems: state.wishlistItems.filter(
+            (item) => item._id !== itemId
+          ),
+        }));
+      } catch (error) {
+        console.error(
+          "Error deleting wishlist item",
+          error.response?.data || error.message
+        );
+        set({
+          error: "위시리스트 삭제에 실패했습니다.",
         });
       }
     },
   };
 });
+
+export default wishlistStore;
