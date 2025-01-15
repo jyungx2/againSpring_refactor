@@ -103,349 +103,81 @@ export const initData = async (clientId, nextSeq) => {
         },
       },
     ],
-    // 상품
+    // 카테고리 : bathroom =========================================================================================================
     product: [
       {
         _id: await nextSeq("product"),
-        seller_id: 2,
-        price: 22800,
-        shippingFees: 0,
-        show: true,
-        active: true,
-        name: "캥거루 스턴트 독 로봇완구",
-        quantity: 320,
-        buyQuantity: 310,
-        mainImages: [
+        seller_id: 2, // 상품을 등록한 판매자의 고유 ID
+        price: 18900, // 상품의 가격 (원)
+        shippingFees: 3000, // 상품 배송비 (디폴트 3000원)
+        show: true, // 상품의 노출 여부(사용자에게)
+        active: true, //활성 상태 여부(true일 경우 상품이 활성화되어 판매가능)
+        name: "[그리네라] 대나무화장지30M 30롤",
+        quantity: 100, //총 재고 수량 (디폴트 100개)
+        buyQuantity: 0, // 판매된 수량 (디폴트 0개)
+        mainImages: [ // 대표 이미지 
           {
-            path: `/files/${clientId}/sample-dog.jpg`,
-            name: "sample-dog.jpg",
-            originalname: "스턴트 독.jpg",
+            path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(1).jpg`, // 이미지 저장 경로
+            name: "[bamboo] toilet_paper(1).jpg", // 이미지 이름
+            originalname: "[bamboo] toilet_paper(1).jpg", // 업로드 당시 오리지널 이름
+          },
+          {
+            path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(2).jpg`,
+            name: "[bamboo] toilet_paper(2).jpg",
+            originalname: "[bamboo] toilet_paper(2).jpg",
+          },
+          {
+            path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(3).jpg`,
+            name: "[bamboo] toilet_paper(3).jpg",
+            originalname: "[bamboo] toilet_paper(3).jpg",
           },
         ],
+        // 상품 상세 설명 ▼ (이미지로 대체했습니다.)
         content: `
           <div class="product-detail">
-            <p>캥거루 스턴트 독 로봇완구 상세 설명</p>
+              <div align="center">
+                <img src="/files/${clientId}/[bathroom] bamboo_toilet_paper_Detail.jpg" alt="[그리네라] 대나무화장지30M 30롤">
+              </div>
           </div>`,
-        createdAt: getTime(-41, -60 * 60 * 2),
-        updatedAt: getTime(-40, -60 * 15),
-        extra: {
-          isNew: true,
-          isBest: true,
-          category: ["PC03", "PC0301"],
-          sort: 5,
+        createdAt: getTime(-41, -60 * 60 * 2), // 상품 등록일 (사용X)
+        updatedAt: getTime(-40, -60 * 15), // 상품 최신화 등록일 (사용X)
+        extra: { 
+          isNew: true, // 새로운 상품 (true일 경우 new 아이콘 같은거 표시 가능 / 메인 페이지 노출 가능)
+          isBest: true, // 베스트 상품 (이하 동일)
+          category: ["all-of-list", "bathroom"], // 상품 카테고리 (메뉴 카테고리 별로 상품 분류 작업 가능)
+          sort: 5, // 정렬 우선순위 (값이 낮을 수록 목록에서 먼저 표시됨 / 동일한 값일 경우 최신 등록 순으로 표시됨)
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 17260,
-        shippingFees: 2500,
+        price: 1400,
+        shippingFees: 3000,
         show: true,
         active: true,
-        name: "헬로카봇 스톰다이버",
-        quantity: 200,
-        buyQuantity: 198,
+        name: "[자연상점] 대나무 칫솔 (일반형)",
+        quantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-diver.jpg`,
-            name: "sample-diver.jpg",
-            originalname: "헬로카봇.jpg",
+            path: `/files/${clientId}/[bathroom] bamboo_toothbrush.jpg`,
+            name: "[bathroom] bamboo_toothbrush.jpg",
+            originalname: "[bathroom] bamboo_toothbrush.jpg",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>헬로카봇 스톰다이버 상세 설명</p>
+              <div align="center">
+                <img src="/files/${clientId}/[bathroom] bamboo_toothbrush_Detail.jpg" alt="[자연상점] 대나무 칫솔 (일반형)">
+              </div>
           </div>`,
         createdAt: getTime(-38, -60 * 60 * 6),
         updatedAt: getTime(-33, -60 * 55),
         extra: {
-          isNew: false,
+          isNew: true,
           isBest: true,
-          category: ["PC01", "PC0103"],
+          category: ["all-of-list", "bathroom"],
           sort: 4,
-        },
-      },
-      {
-        _id: await nextSeq("product"),
-        seller_id: 2,
-        price: 48870,
-        shippingFees: 0,
-        show: true,
-        active: true,
-        name: "레고 클래식 라지 조립 박스 10698",
-        quantity: 100,
-        buyQuantity: 99,
-        mainImages: [
-          {
-            path: `/files/${clientId}/sample-classic.jpg`,
-            name: "sample-classic.jpg",
-            originalname: "레고 클래식.jpg",
-          },
-        ],
-        content: `
-          <div class="product-detail">
-            <p>레고 클래식 라지 조립 박스 10698 상세 설명</p>
-          </div>`,
-        createdAt: getTime(-35, -60 * 60 * 6),
-        updatedAt: getTime(-10, -60 * 19),
-        extra: {
-          isNew: true,
-          isBest: true,
-          category: ["PC01", "PC0103"],
-          sort: 3,
-        },
-      },
-      {
-        _id: await nextSeq("product"),
-        seller_id: 3,
-        price: 45000,
-        shippingFees: 3500,
-        show: true,
-        active: true,
-        name: "레고 테크닉 42151 부가티 볼리드",
-        quantity: 100,
-        buyQuantity: 89,
-        mainImages: [
-          {
-            path: `/files/${clientId}/sample-bugatti.png`,
-            name: "sample-bugatti.png",
-            originalname: "부가티.png",
-          },
-        ],
-        content: `
-          <div class="product-detail">
-            <p>레고 테크닉 42151 부가티 볼리드 상세 설명</p>
-          </div>`,
-        createdAt: getTime(-33, -60 * 60 * 7),
-        updatedAt: getTime(-22, -60 * 60 * 3),
-        extra: {
-          isNew: false,
-          isBest: true,
-          category: ["PC03", "PC0303"],
-          sort: 1,
-        },
-      },
-      {
-        _id: await nextSeq("product"),
-        seller_id: 2,
-        price: 45000,
-        shippingFees: 3500,
-        show: true,
-        active: true,
-        name: "레고 마인크래프트 21246 깊고 어두운 전장",
-        quantity: 100,
-        buyQuantity: 98,
-        mainImages: [
-          {
-            path: `/files/${clientId}/sample-minecraft.png`,
-            name: "sample-minecraft.png",
-            originalname: "마인크래프트.png",
-          },
-        ],
-        content: `
-          <div class="product-detail">
-            <p>레고 마인크래프트 21246 깊고 어두운 전장 상세 설명</p>
-          </div>`,
-        createdAt: getTime(-30, -60 * 60 * 10),
-        updatedAt: getTime(-10, -60 * 56),
-        extra: {
-          isNew: true,
-          isBest: false,
-          today: true,
-          category: ["PC03", "PC0303"],
-          sort: 2,
-        },
-      },
-      {
-        _id: await nextSeq("product"),
-        seller_id: 2,
-        price: 54790,
-        shippingFees: 4000,
-        show: false,
-        active: true,
-        name: "레고 마블 76247 헐크버스터: 와칸다의 전투",
-        quantity: 100,
-        buyQuantity: 99,
-        mainImages: [
-          {
-            path: `/files/${clientId}/sample-hulk.png`,
-            name: "sample-hulk.png",
-            originalname: "헐크.png",
-          },
-        ],
-        content: `
-          <div class="product-detail">
-            <p>레고 마블 76247 헐크버스터: 와칸다의 전투 상세 설명</p>
-          </div>`,
-        createdAt: getTime(-30, -60 * 60 * 21),
-        updatedAt: getTime(-20, -60 * 10),
-        extra: {
-          isNew: false,
-          isBest: false,
-          category: ["PC03", "PC0303"],
-          sort: 1,
-        },
-      },
-      {
-        _id: await nextSeq("product"),
-        seller_id: 3,
-        price: 13000,
-        shippingFees: 3500,
-        show: true,
-        active: true,
-        name: "할리갈리 보드게임",
-        quantity: 100,
-        buyQuantity: 98,
-        mainImages: [
-          {
-            path: `/files/${clientId}/sample-halligalli.jpg`,
-            name: "sample-halligalli.jpg",
-            originalname: "할리갈리.jpg",
-          },
-        ],
-        content: `
-          <div class="product-detail">
-            <p>할리갈리 보드게임 상세 설명</p>
-          </div>`,
-        createdAt: getTime(-25, -60 * 60 * 12),
-        updatedAt: getTime(-24, -60 * 23),
-        extra: {
-          isNew: false,
-          isBest: true,
-          category: ["PC01", "PC0102", "PC010201"],
-          sort: 3,
-        },
-      },
-      {
-        _id: await nextSeq("product"),
-        seller_id: 2,
-        price: 26000,
-        shippingFees: 3000,
-        show: true,
-        active: true,
-        name: "루미큐브 클래식",
-        quantity: 100,
-        buyQuantity: 97,
-        mainImages: [
-          {
-            path: `/files/${clientId}/sample-rummikub.png`,
-            name: "sample-rummikub.png",
-            originalname: "루미큐브.png",
-          },
-        ],
-        content: `
-          <div class="product-detail">
-            <p>루미큐브 클래식 상세 설명</p>
-          </div>`,
-        createdAt: getTime(-22, -60 * 60 * 22),
-        updatedAt: getTime(-20, -60 * 33),
-        extra: {
-          isNew: true,
-          isBest: true,
-          category: ["PC01", "PC0102", "PC010202"],
-          sort: 8,
-        },
-      },
-      {
-        _id: await nextSeq("product"),
-        seller_id: 3,
-        price: 12000,
-        shippingFees: 3000,
-        show: true,
-        active: true,
-        name: "짱구는 못말려 숲속 산책 직소퍼즐",
-        quantity: 100,
-        buyQuantity: 96,
-        mainImages: [
-          {
-            path: `/files/${clientId}/sample-jjangu.jpg`,
-            name: "sample-jjangu.jpg",
-            originalname: "짱구.jpg",
-          },
-        ],
-        content: `
-          <div class="product-detail">
-            <p>짱구는 못말려 숲속 산책 직소퍼즐 상세 설명</p>
-          </div>`,
-        createdAt: getTime(-21, -60 * 60 * 4),
-        updatedAt: getTime(-16, -60 * 15),
-        extra: {
-          isNew: true,
-          isBest: false,
-          today: true,
-          category: ["PC03", "PC0302"],
-          sort: 2,
-        },
-      },
-      {
-        _id: await nextSeq("product"),
-        seller_id: 3,
-        price: 24000,
-        shippingFees: 0,
-        show: true,
-        active: true,
-        name: "라푼젤 그녀의 꿈 직소퍼즐 KD-1000-001 + 그림 엽서(랜덤) + 품질보증서",
-        quantity: 100,
-        buyQuantity: 95,
-        mainImages: [
-          {
-            path: `/files/${clientId}/sample-rapunzel.jpg`,
-            name: "sample-rapunzel.jpg",
-            originalname: "라푼젤.jpg",
-          },
-        ],
-        content: `
-          <div class="product-detail">
-            <p>라푼젤 그녀의 꿈 직소퍼즐 KD-1000-001 + 그림 엽서(랜덤) + 품질보증서 상세 설명</p>
-          </div>`,
-        createdAt: getTime(-18, -60 * 60 * 7),
-        updatedAt: getTime(-12, -60 * 33),
-        extra: {
-          isNew: false,
-          isBest: true,
-          category: ["PC01", "PC0101"],
-          sort: 4,
-        },
-      },
-      {
-        _id: await nextSeq("product"),
-        seller_id: 2,
-        price: 14400,
-        shippingFees: 3000,
-        show: true,
-        active: true,
-        name: "KC인증 스키비디 토일렛 피규어 블럭 8종 중국 호환 레고 블록 장난감 어린이 선물",
-        quantity: 100,
-        buyQuantity: 94,
-        mainImages: [
-          {
-            path: `/files/${clientId}/sample-skibidi01.jpg`,
-            name: "sample-skibidi01.jpg",
-            originalname: "피규어1.jpg",
-          },
-          {
-            path: `/files/${clientId}/sample-skibidi02.jpg`,
-            name: "sample-skibidi02.jpg",
-            originalname: "피규어2.jpg",
-          },
-        ],
-        content: `
-          <div align="center"><p>*크리스마스 배송 안내</p></div>
-          <div align="center"><p>택배사 물량 증가로 평소보다 2~3일 더 걸립니다.</p></div>
-          <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi03.jpg"></div>
-          <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi04.jpg"></div>
-          <div align="center"><br></div>
-          <div align="center"><p>*반품 안내</p></div>`,
-        createdAt: getTime(-16, -60 * 60 * 3),
-        updatedAt: getTime(-15, -60 * 45),
-        extra: {
-          isNew: false,
-          isBest: false,
-          today: true,
-          category: ["PC01", "PC0103"], // 어린이 > 레고
-          sort: 6,
         },
       },
       {
@@ -455,111 +187,1506 @@ export const initData = async (clientId, nextSeq) => {
         shippingFees: 3000,
         show: true,
         active: true,
-        name: "스키비디 토일렛 봉제 인형 (25cm-30cm) 시리즈 크리스마스 선물",
-        quantity: 999,
-        buyQuantity: 800,
+        name: "[사이로] 두둥 푸딩 거품 샤워타월",
+        quantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-skibidi11.jpg`,
-            name: "sample-skibidi11.jpg",
-            originalname: "토일렛.jpg",
+            path: `/files/${clientId}/[bathroom] body_towel(1).jpg`,
+            name: "[bathroom] body_towel(1).jpg",
+            originalname: "[bathroom] body_towel(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[bathroom] body_towel(2).jpg`,
+            name: "[bathroom] body_towel(2).jpg",
+            originalname: "[bathroom] body_towel(2).jpg",
+          },
+          {
+            path: `/files/${clientId}/[bathroom] body_towel(3).jpg`,
+            name: "[bathroom] body_towel(3).jpg",
+            originalname: "[bathroom] body_towel(3).jpg",
           },
         ],
         content: `
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi12.jpg"></div>
-          <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi13.jpg"></div>
-          <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi14.jpg"></div>
-          <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi15.jpg"></div>`,
+          <div class="product-detail">
+              <div align="center">
+                <img src="/files/${clientId}/[bathroom] body_towel_Detail.jpg" alt="[사이로] 두둥 푸딩 거품 샤워타월">
+              </div>
+          </div>`,
+        createdAt: getTime(-35, -60 * 60 * 6),
+        updatedAt: getTime(-10, -60 * 19),
+        extra: {
+          isNew: true,
+          isBest: true,
+          category: ["all-of-list", "bathroom"],
+          sort: 3,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 17800,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[에코브릭] 약산성 바디워시바",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[bathroom] body_wash(1).jpg`,
+            name: "[bathroom] body_wash(1).jpg",
+            originalname: "[bathroom] body_wash(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[bathroom] body_wash(2).jpg`,
+            name: "[bathroom] body_wash(2).jpg",
+            originalname: "[bathroom] body_wash(2).jpg",
+          },
+          {
+            path: `/files/${clientId}/[bathroom] body_wash(3).jpg`,
+            name: "[bathroom] body_wash(3).jpg",
+            originalname: "[bathroom] body_wash(3).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+              <div align="center">
+                <img src="/files/${clientId}/[bathroom] body_wash_Detail.jpg" alt="[에코브릭] 약산성 바디워시바">
+              </div>
+          </div>`,
+        createdAt: getTime(-33, -60 * 60 * 7),
+        updatedAt: getTime(-22, -60 * 60 * 3),
+        extra: {
+          isNew: true,
+          isBest: true,
+          category: ["all-of-list", "bathroom"],
+          sort: 1,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3900,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[조르단] 그린클린 치실 (30ml)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[bathroom] dental_floss.jpg`,
+            name: "[bathroom] dental_floss.jpg",
+            originalname: "[bathroom] dental_floss.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[bathroom] dental_floss_Detail.jpg" alt="[조르단] 그린클린 치실 (30ml)">
+              </div>
+          </div>`,
+        createdAt: getTime(-30, -60 * 60 * 10),
+        updatedAt: getTime(-10, -60 * 56),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "bathroom"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3500,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[탄소창고] 오목이 비누받침",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[bathroom] soap_dish(1).jpg`,
+            name: "[bathroom] soap_dish(1).jpg",
+            originalname: "[bathroom] soap_dish(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[bathroom] soap_dish(2).jpg`,
+            name: "[bathroom] soap_dish(2).jpg",
+            originalname: "[bathroom] soap_dish(2).jpg",
+          },
+          
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[bathroom] soap_dish_Detail.jpg" alt="[탄소창고] 오목이 비누받침">
+              </div>
+          </div>`,
+        createdAt: getTime(-30, -60 * 60 * 21),
+        updatedAt: getTime(-20, -60 * 10),
+        extra: {
+          isNew: true,
+          isBest: true,
+          category: ["all-of-list", "bathroom"],
+          sort: 1,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 4500,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[자연상점] 동그라미 고체치약 (30정)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[bathroom] solid_toothpaste.jpg`,
+            name: "[bathroom] solid_toothpaste.jpg",
+            originalname: "[bathroom] solid_toothpaste.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[bathroom] solid_toothpaste_Detail.jpg" alt="[자연상점] 동그라미 고체치약 (30정)">
+              </div>
+          </div>`,
+        createdAt: getTime(-25, -60 * 60 * 12),
+        updatedAt: getTime(-24, -60 * 23),
+        extra: {
+          isNew: true,
+          isBest: true,
+          category: ["all-of-list", "bathroom"],
+          sort: 3,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 800,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[지구샵] 실리콘 칫솔뚜껑",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[bathroom] toothbrush_cover.jpg`,
+            name: "[bathroom] toothbrush_cover.jpg",
+            originalname: "[bathroom] toothbrush_cover",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[bathroom] toothbrush_cover_Detail.jpg" alt="[지구샵] 실리콘 칫솔뚜껑">
+              </div>
+          </div>`,
+        createdAt: getTime(-22, -60 * 60 * 22),
+        updatedAt: getTime(-20, -60 * 33),
+        extra: {
+          isNew: true,
+          isBest: true,
+          category: ["all-of-list", "bathroom"],
+          sort: 8,
+        },
+      },
+
+      // 카테고리 : kitchen =========================================================================================================
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 120000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[벨르썸] 캠핑 산으로 바다로",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] cutting board(1).jpg`,
+            name: "[kitchen] cutting board(1).jpg",
+            originalname: "[kitchen] cutting board(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] cutting board(2).jpg`,
+            name: "[kitchen] cutting board(2).jpg",
+            originalname: "[kitchen] cutting board(2).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] cutting board_Detail.jpg" alt="[벨르썸] 캠핑 산으로 바다로">
+              </div>
+          </div>`,
+        createdAt: getTime(-21, -60 * 60 * 4),
+        updatedAt: getTime(-16, -60 * 15),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "kitchen"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 15900,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[동구밭] 식기세척기 세제 타블렛 240g",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] Detergent.png`,
+            name: "[kitchen] Detergent.png",
+            originalname: "[kitchen] Detergent.png",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] Detergent_Detail.jpg" alt="[동구밭] 식기세척기 세제 타블렛 240g">
+              </div>
+          </div>`,
+        createdAt: getTime(-18, -60 * 60 * 7),
+        updatedAt: getTime(-12, -60 * 33),
+        extra: {
+          isNew: true,
+          isBest: true,
+          category: ["all-of-list", "kitchen"],
+          sort: 4,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3500,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[퀸비스토어] 바른행주 1장 (2겹)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] long_umbrella.jpg`,
+            name: "[kitchen] long_umbrella.jpg",
+            originalname: "[kitchen] long_umbrella.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] long_umbrella.jpg" alt="[퀸비스토어] 바른행주 1장 (2겹)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "kitchen"],
+          sort: 6,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 14000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[아트앤허그] 담비 주방장갑(1p)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] gloves(1).png`,
+            name: "[kitchen] gloves(1).png",
+            originalname: "[kitchen] gloves(1).png",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] gloves(2).png`,
+            name: "[kitchen] gloves(2).png",
+            originalname: "[kitchen] gloves(2).png",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] gloves(3).png`,
+            name: "[kitchen] gloves(3).png",
+            originalname: "[kitchen] gloves(3).png",
+          },
+        ],
+        content: `
+           <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] gloves_Detail.jpg" alt="[아트앤허그] 담비 주방장갑(1p)">
+              </div>
+          </div>`,
         createdAt: getTime(-11, -60 * 60 * 12),
         updatedAt: getTime(-5, -60 * 60 * 6),
         extra: {
           isNew: true,
           isBest: true,
-          category: ["PC01", "PC0103"], // 어린이 > 레고
+          category: ["all-of-list", "kitchen"],
           sort: 7,
         },
       },
       // 13번 상품
       {
         _id: await nextSeq("product"),
-        seller_id: 3,
-        price: 21600,
-        shippingFees: 5500,
+        seller_id: 2,
+        price: 11500,
+        shippingFees: 3000,
         show: true,
         active: true,
-        name: "KC인증 스키비디 토일렛 피규어 블럭 4종 중국 호환 레고 블록 장난감 어린이 선물",
-        quantity: 99,
-        buyQuantity: 94,
+        name: "[자누담] 해초접시 (1set-10개입)",
+        quantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-skibidi21.jpg`,
-            name: "sample-skibidi21.jpg",
-            originalname: "스키비디.jpg",
+            path: `/files/${clientId}/[kitchen] plate(1).jpg`,
+            name: "[kitchen] plate(1).jpg",
+            originalname: "[kitchen] plate(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] plate(2).jpg`,
+            name: "[kitchen] plate(2).jpg",
+            originalname: "[kitchen] plate(2).jpg",
           },
         ],
         content: `
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi22.jpg"></div>
-          <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi23.jpg"></div>
-          <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi24.jpg"></div>`,
+           <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] plate_Detail.jpg" alt="[자누담] 해초접시 (1set-10개입)">
+              </div>
+          </div>`,
         createdAt: getTime(-10, -60 * 60 * 12),
         updatedAt: getTime(-5, -60 * 60 * 6),
         extra: {
           isNew: true,
-          isBest: false,
-          category: ["PC01", "PC0103"], // 어린이 > 레고
+          isBest: true,
+          category: ["all-of-list", "kitchen"],
           sort: 6,
         },
       },
-      // 14번 상품. shippingFees가 없을 경우 config.shippingFees 사용
+      // 14번 상품. 
       {
         _id: await nextSeq("product"),
-        seller_id: 3,
-        price: 12900,
-        // shippingFees: 3500,
+        seller_id: 2,
+        price: 1800,
+        shippingFees: 3000,
         show: true,
         active: true,
-        name: "푸쉬팝게임기 팝잇 푸시팝 게임기 두더지게임 핑거 뽁뽁이 애니멀 1+1",
-        quantity: 300,
-        buyQuantity: 298,
+        name: "[온전히지구] 그대로수세미 (압착형)",
+        quantity: 100,
+        buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-pushpop01.jpg`,
-            name: "sample-pushpop01.jpg",
-            originalname: "푸쉬팝1.jpg",
+            path: `/files/${clientId}/[kitchen] scrubber(1).jpg`,
+            name: "[kitchen] scrubber(1).jpg",
+            originalname: "[kitchen] scrubber(1).jpg",
           },
           {
-            path: `/files/${clientId}/sample-pushpop02.jpg`,
-            name: "sample-pushpop02.jpg",
-            originalname: "푸쉬팝2.jpg",
+            path: `/files/${clientId}/[kitchen] scrubber(2).jpg`,
+            name: "[kitchen] scrubber(2).jpg",
+            originalname: "[kitchen] scrubber(2).jpg",
           },
           {
-            path: `/files/${clientId}/sample-pushpop03.jpg`,
-            name: "sample-pushpop03.jpg",
-            originalname: "푸쉬팝3.jpg",
+            path: `/files/${clientId}/[kitchen] scrubber(3).jpg`,
+            name: "[kitchen] scrubber(3).jpg",
+            originalname: "[kitchen] scrubber(3).jpg",
           },
         ],
         content: `
-          <div align="center"><p>푸쉬팝게임기 팝잇 푸시팝 게임기 두더지게임 핑거 뽁뽁이 애니멀을 구매하시는 모든 분께 사은품(무작위)으로 하나 더 드립니다.</p></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-pushpop04.gif"></div>
-          <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-pushpop05.jpg"></div>
-          <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-pushpop06.jpg"></div>`,
+           <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] scrubber_Detail.jpg" alt="[온전히지구] 그대로수세미 (압착형)">
+              </div>
+          </div>`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
         extra: {
-          isNew: false,
+          isNew: true,
           isBest: true,
-          category: ["PC01", "PC0102"], // 어린이 > 보드게임
+          category: ["all-of-list", "kitchen"],
           sort: 5,
         },
       },
-      // 15번 상품. 옵션이 있는 경우 메인 상품 정보
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 5000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[탄소창고] 다회용 스푼&포크 세트",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] Spoon&Fork_Set.jpg`,
+            name: "[kitchen] Spoon&Fork_Set.jpg",
+            originalname: "[kitchen] Spoon&Fork_Set.jpg",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] Spoon&Fork_Set(2).jpg`,
+            name: "[kitchen] Spoon&Fork_Set(2).jpg",
+            originalname: "[kitchen] Spoon&Fork_Set(2).jpg",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] Spoon&Fork_Set(3).jpg`,
+            name: "[kitchen] Spoon&Fork_Set(3).jpg",
+            originalname: "[kitchen] Spoon&Fork_Set(3).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] Spoon&Fork_Set_Detail.jpg" alt="[탄소창고] 다회용 스푼&포크 세트">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "kitchen"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 1000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[퀸비스토어] 스테인리스 빨대",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] stainless_steel_straw(1).jpg`,
+            name: "[kitchen] stainless_steel_straw(1).jpg",
+            originalname: "[kitchen] stainless_steel_straw(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] stainless_steel_straw(2).jpg`,
+            name: "[kitchen] stainless_steel_straw(2).jpg",
+            originalname: "[kitchen] stainless_steel_straw(2).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] stainless_steel_straw_Detail.jpg" alt="[퀸비스토어] 스테인리스 빨대">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "kitchen"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 6500,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[탄소창고] 스탠드주걱",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] stand_spatula(1).jpg`,
+            name: "[kitchen] stand_spatula(1).jpg",
+            originalname: "[kitchen] stand_spatula(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] stand_spatula(2).jpg`,
+            name: "[kitchen] stand_spatula(2).jpg",
+            originalname: "[kitchen] stand_spatula(2).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] stand_spatula_Detail.jpg" alt="[탄소창고] 스탠드주걱">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "kitchen"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3500,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[소락] 다시백 티백",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] tea_bag.jpg`,
+            name: "[kitchen] tea_bag.jpg",
+            originalname: "[kitchen] tea_bag.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] tea_bag_Detail.jpg" alt="[소락] 다시백 티백">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "kitchen"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 18900,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[그리네라] 대나무 키친타올 100매 (12입)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] towel(1).jpg`,
+            name: "[kitchen] towel(1).jpg",
+            originalname: "[kitchen] towel(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] towel(2).jpg`,
+            name: "[kitchen] towel(2).jpg",
+            originalname: "[kitchen] towel(2).jpg",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] towel(3).jpg`,
+            name: "[kitchen] towel(3).jpg",
+            originalname: "[kitchen] towel(3).jpg",
+          },
+          {
+            path: `/files/${clientId}/[kitchen] towel(4).jpg`,
+            name: "[kitchen] towel(4).jpg",
+            originalname: "[kitchen] towel(4).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] towel_Detail.jpg" alt="[그리네라] 대나무 키친타올 100매 (12입)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "kitchen"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 2200,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[슈가랩] 사탕수수로 만든 지퍼백",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[kitchen] zipper_bags.jpg`,
+            name: "[kitchen] zipper_bags.jpg",
+            originalname: "[kitchen] zipper_bags.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[kitchen] zipper_bags_Detail.jpg" alt="[슈가랩] 사탕수수로 만든 지퍼백">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "kitchen"],
+          sort: 2,
+        },
+      },
+
+      // 카테고리 : laundry ====================================================================================
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 9900,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[비긴에코] 초강력 초간단 캡슐 세탁조클리너 10개",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[laundry] Cleaner.jpg`,
+            name: "[laundry] Cleaner.jpg",
+            originalname: "[laundry] Cleaner.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[laundry] Cleaner_Detail.jpeg" alt="[비긴에코] 초강력 초간단 캡슐 세탁조클리너 10개">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "laundry"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 10900,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[비긴에코] 섬유유연제 건조기시트 프루티플로럴 80매",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[laundry] dryer_sheet(1).png`,
+            name: "[laundry] dryer_sheet(1).png",
+            originalname: "[laundry] dryer_sheet(1).png",
+          },
+          {
+            path: `/files/${clientId}/[laundry] dryer_sheet(2).png`,
+            name: "[laundry] dryer_sheet(2).png",
+            originalname: "[laundry] dryer_sheet(2).png",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[laundry] dryer_sheet_Detail.jpg" alt="[비긴에코] 섬유유연제 건조기시트 프루티플로럴 80매">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "laundry"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 4300,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[꽃마리] 세탁용 과탄산소다솝",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[laundry] Percarbonate_soda(1).jpg`,
+            name: "[laundry] Percarbonate_soda(1).jpg",
+            originalname: "[laundry] Percarbonate_soda(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[laundry] Percarbonate_soda(2).jpg`,
+            name: "[laundry] Percarbonate_soda(2).jpg",
+            originalname: "[laundry] Percarbonate_soda(2).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[laundry] Percarbonate_soda_Detail.jpeg" alt="[꽃마리] 세탁용 과탄산소다솝">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "laundry"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 26000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[블루워시] 고체 세탁세제 (제라늄/70정)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[laundry] solid_detergent.jpg`,
+            name: "[laundry] solid_detergent.jpg",
+            originalname: "[laundry] solid_detergent.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[laundry] solid_detergent_Detail.jpg" alt="[블루워시] 고체 세탁세제 (제라늄/70정)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "laundry"],
+          sort: 2,
+        },
+      },
+
+      // 카테고리 : life =======================================================================================
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 5900,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[에콜그린] 옥수수콘 커피필터 50매 (사다리꼴형)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] coffee_filter.jpg`,
+            name: "[life] coffee_filter.jpg",
+            originalname: "[life] coffee_filter.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] coffee_filter_Detail.jpg" alt="[에콜그린] 옥수수콘 커피필터 50매 (사다리꼴형)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 12000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[project1907] 플랫 파우치 (Flat Pouch)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] flat_pouch.jpg`,
+            name: "[life] flat_pouch.jpg",
+            originalname: "[life] flat_pouch.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] flat_pouch_Detail.jpg" alt="[project1907] 플랫 파우치 (Flat Pouch)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 1500,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[탄소창고] 쑥쑥화분",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] flowerpot(1).jpg`,
+            name: "[life] flowerpot(1).jpg",
+            originalname: "[life] flowerpot(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[life] flowerpot(2).jpg`,
+            name: "[life] flowerpot(2).jpg",
+            originalname: "[life] flowerpot(2).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] flowerpot_Detail.jpg" alt="[탄소창고] 쑥쑥화분">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 42000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[project1907] 키즈토트백 (KIDS Tote Bag)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] kdis_tote_bag.jpg`,
+            name: "[life] kdis_tote_bag.jpg",
+            originalname: "[life] kdis_tote_bag.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] kdis_tote_bag_Detail.jpg" alt="[project1907] 키즈토트백 (KIDS Tote Bag)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 28000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[project1907] 장우산(대)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] long_umbrella.jpg`,
+            name: "[life] long_umbrella.jpg",
+            originalname: "[life] long_umbrella.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] long_umbrella_Detail.jpg" alt="[project1907] 장우산(대)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "굴 담은 탈취제",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] oyster_deodorant(1).jpg`,
+            name: "[life] oyster_deodorant(1).jpg",
+            originalname: "[life] oyster_deodorant(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[life] oyster_deodorant(2).jpg`,
+            name: "[life] oyster_deodorant(2).jpg",
+            originalname: "[life] oyster_deodorant(2).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] oyster_deodorant_Detail.jpg" alt="굴 담은 탈취제">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 13000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[project1907] 여권케이스 (Passport Case)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] passport_case.jpg`,
+            name: "[life] passport_case.jpg",
+            originalname: "[life] passport_case.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] passport_case_Detail.jpg" alt="[project1907] 여권케이스 (Passport Case)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 79000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[project1907] 비건 백팩 (Vegan Backpack)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] vegan_bagpack.jpg`,
+            name: "[life] vegan_bagpack.jpg",
+            originalname: "[life] vegan_bagpack.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] vegan_bagpack_Detail.jpg" alt="[project1907] 비건 백팩 (Vegan Backpack)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 90000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[project1907] 비건 호보백 (Vegan Hobo bag)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] vegan_hobo_bag.jpg`,
+            name: "[life] vegan_hobo_bag.jpg",
+            originalname: "[life] vegan_hobo_bag.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] vegan_hobo_bag_Detail.jpg" alt="[project1907] 비건 호보백 (Vegan Hobo bag)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 18000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[업앤업] 밀랍초",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[life] wax_candle.jpg`,
+            name: "[life] wax_candle.jpg",
+            originalname: "[life] wax_candle.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[life] wax_candle_Detail.png" alt="[업앤업] 밀랍초">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "life"],
+          sort: 2,
+        },
+      },
+
+      // 카테고리: pet ========================================================================================
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 11900,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[에콜그린] 옥수수콘 생분해 강아지 배변패드 (10매)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[pet] dog_pad.jpg`,
+            name: "[pet] dog_pad.jpg",
+            originalname: "[pet] dog_pad.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[pet] dog_pad_Detail.jpg" alt="[에콜그린] 옥수수콘 생분해 강아지 배변패드 (10매)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "pet"],
+          sort: 2,
+        },
+      },
+
+      // 카테고리: stationery ==============================================================================
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 17000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[자연상점] 아자아자! 입학 응원 세트",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[stationery] admission_gift.jpg`,
+            name: "[stationery] admission_gift.jpg",
+            originalname: "[stationery] admission_gift.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[stationery] admission_gift_Detail.jpg" alt="[자연상점] 아자아자! 입학 응원 세트">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "stationery"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[스테이그린] 사탕수수 메모지 - Check list",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[stationery] check_list.jpg`,
+            name: "[stationery] check_list.jpg",
+            originalname: "[stationery] check_list.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[stationery] check_list_Detail.jpg" alt="[스테이그린] 사탕수수 메모지 - Check list">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "stationery"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 1500,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[지구나무] A5 재생지 노트(유선)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[stationery] note.jpg`,
+            name: "[stationery] note.jpg",
+            originalname: "[stationery] note.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[stationery] note_Detail.jpg" alt="[지구나무] A5 재생지 노트(유선)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "stationery"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 4800,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[지구나무] 페이퍼 클립 (높은음자리표) - 10개입",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[stationery] paper_clip.jpg`,
+            name: "[stationery] paper_clip.jpg",
+            originalname: "[stationery] paper_clip.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[stationery] paper_clip_Detail.jpg" alt="[지구나무] 페이퍼 클립 (높은음자리표) - 10개입">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "stationery"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[지구나무] 신문지 업사이클링 연필(5개입)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[stationery] pencil.gif`,
+            name: "[stationery] pencil.gif",
+            originalname: "[stationery] pencil.gif",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[stationery] pencil_Detail.jpg" alt="[지구나무] 신문지 업사이클링 연필(5개입)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "stationery"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[지구나무] [RE]재생가죽 펜슬캡",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[stationery] pencil_cap.jpg`,
+            name: "[stationery] pencil_cap.jpg",
+            originalname: "[stationery] pencil_cap.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[stationery] pencil_cap_Detail.jpg" alt="[지구나무] [RE]재생가죽 펜슬캡">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "stationery"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3500,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[지구나무] 폐나무 분말 연필깎이",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[stationery] pencil_sharpener.jpg`,
+            name: "[stationery] pencil_sharpener.jpg",
+            originalname: "[stationery] pencil_sharpener.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[stationery] pencil_sharpener_Detail.jpg" alt="[지구나무] 폐나무 분말 연필깎이">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "stationery"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 1600,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[프린텍]재생지포스트잇 세로형 100매",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[stationery] postit(1).jpg`,
+            name: "[stationery] postit(1).jpg",
+            originalname: "[stationery] postit(1).jpg",
+          },
+          {
+            path: `/files/${clientId}/[stationery] postit(2).jpg`,
+            name: "[stationery] postit(2).jpg",
+            originalname: "[stationery] postit(2).jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[stationery] postit_Detail.jpg" alt="[프린텍]재생지포스트잇 세로형 100매">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "stationery"],
+          sort: 2,
+        },
+      },
+      {
+        _id: await nextSeq("product"),
+        seller_id: 2,
+        price: 3000,
+        shippingFees: 3000,
+        show: true,
+        active: true,
+        name: "[자연상점] 신문지 연필세트 (연필3개+크라프트연필통)",
+        quantity: 100,
+        buyQuantity: 0,
+        mainImages: [
+          {
+            path: `/files/${clientId}/[stationery] stationery_set.jpg`,
+            name: "[stationery] stationery_set.jpg",
+            originalname: "[stationery] stationery_set.jpg",
+          },
+        ],
+        content: `
+          <div class="product-detail">
+            <div align="center">
+                <img src="/files/${clientId}/[stationery] stationery_set_Detail.jpg" alt="[자연상점] 신문지 연필세트 (연필3개+크라프트연필통)">
+              </div>
+          </div>`,
+        createdAt: getTime(-16, -60 * 60 * 3),
+        updatedAt: getTime(-15, -60 * 45),
+        extra: {
+          isNew: true,
+          isBest: true,
+          today: true,
+          category: ["all-of-list", "stationery"],
+          sort: 2,
+        },
+      },
+
+      // 옵션이 있는 경우 메인 상품 정보
       {
         _id: await nextSeq("product"),
         seller_id: 3,
@@ -567,13 +1694,13 @@ export const initData = async (clientId, nextSeq) => {
         shippingFees: 3500,
         show: true,
         active: true,
-        name: "샤넬 NO.5",
+        name: "테스트용 (메인상품정보1)",
         quantity: 999999,
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-pushpop01.jpg`,
-            name: "sample-pushpop01.jpg",
+            path: `/files/${clientId}/[kitchen] (1).jpg`,
+            name: "[kitchen] (1).jpg",
             originalname: "샤넬.jpg",
           },
         ],
@@ -590,8 +1717,8 @@ export const initData = async (clientId, nextSeq) => {
         seller_id: 3,
         price: 6900,
         shippingFees: 3500,
-        name: "샤넬 NO.5",
-        quantity: 1,
+        name: "테스트용 (메인상품정보2)",
+        quantity: 100,
         buyQuantity: 0,
         show: true,
         active: true,
@@ -665,7 +1792,7 @@ export const initData = async (clientId, nextSeq) => {
               name: "sample-classic.jpg",
               originalname: "레고 클래식.jpg",
             },
-            quantity: 1,
+            quantity: 100,
             price: 48870,
           },
           {
@@ -714,7 +1841,7 @@ export const initData = async (clientId, nextSeq) => {
               name: "sample-bugatti.png",
               originalname: "부가티.png",
             },
-            quantity: 1,
+            quantity: 100,
             price: 45000,
             review_id: 1,
           },
@@ -782,7 +1909,7 @@ export const initData = async (clientId, nextSeq) => {
               name: "sample-diver.jpg",
               originalname: "헬로카봇.jpg",
             },
-            quantity: 1,
+            quantity: 100,
             price: 17260,
             review_id: 2,
           },
@@ -871,7 +1998,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("cart"),
         user_id: 4,
         product_id: 2,
-        quantity: 1,
+        quantity: 100,
         createdAt: getTime(-4, -60 * 30),
         updatedAt: getTime(-3, -60 * 60 * 12),
       },
