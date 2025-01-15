@@ -8,6 +8,7 @@ const SearchPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const instance = useAxiosInstance();
   const navigate = useNavigate();
+  const [searchHistory, setSearchHistory] = useState([]);
 
   const handleProductClick = (id) => {
     navigate(`/products/${id}`);
@@ -19,6 +20,7 @@ const SearchPage = () => {
       setErrorMessage("[필수] 상품명을 입력해주세요.");
       return;
     }
+    setSearchHistory((prev) => [...new Set([searchTerm, ...prev])]);
 
     try {
       // console.log("URL:", `/api/products?query=${searchTerm}`);
@@ -36,6 +38,7 @@ const SearchPage = () => {
       setErrorMessage("검색 중 문제가 발생했습니다.");
     }
   };
+
 
 
 
@@ -57,17 +60,36 @@ const SearchPage = () => {
           검색
         </button>
       </form>
-
+      <div className="mb-4">
+        {searchHistory.length > 0 && (
+          <div>
+            <p className="text-2xl text-gray-600 text-center">최근 검색어</p>
+            <ul className="flex gap-2 text-center">
+              {searchHistory.map((term, index) => (
+                <li
+                  key={index}
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => setSearchTerm(term)}
+                >
+                  {term}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
       {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
 
       {results.length > 0 ? (
         <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
           {results.map((product) => (
             <li
+
               key={product._id}
               className="border p-6 rounded shadow hover:shadow-md cursor-pointer"
               onClick={() => handleProductClick(product._id)}
             >
+              <p className="text-xl text-center text-grey-40 mb-4">상품 클릭 시 해당 제품 페이지로 이동합니다.</p>
               <img
                 src={`https://11.fesp.shop${product.mainImages?.[0]?.path}`}
                 alt={product.name}
@@ -77,6 +99,7 @@ const SearchPage = () => {
               <p className="text-lg text-gray-700 font-bold">
                 {product.price.toLocaleString()}원
               </p>
+
             </li>
           ))}
         </ul>
