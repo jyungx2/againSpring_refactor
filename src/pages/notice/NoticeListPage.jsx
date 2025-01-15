@@ -1,47 +1,103 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ListItem from './NoticeListItem';
+import { useState } from 'react';
+import useUserStore from '@store/userStore';
+import useAxiosInstance from '@hooks/useAxiosInstance';
+import { useQuery } from '@tanstack/react-query';
+import NoticeListItem from './NoticeListItem';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
+// 사용자 정보 조회 API 함수
+const fetchUserInfo = async (axios) => {
+  const response = await axios.get('/users');
+  return response.data;
+};
 
 export default function NoticeListPage() {
-  /**
-   * TODO:
-   * 1. API 연동
-   *    - fetch('/posts?type=info') 호출 구현
-   *    - useState로 posts 상태 관리 추가
-   *    - useEffect로 데이터 fetching
-   *    - loading, error 상태 처리 ?
-   *
-   * 2. 페이지네이션
-   *    - 현재 하드코딩된 버튼을 API 응답 기반으로 동적 생성
-   *    - page 파라미터 처리
-   *
-   * 3. 검색 기능
-   *    - 검색 API 연동 (/posts?type=info&search=검색어)
-   *    - select와 input의 검색 조건 처리
-   */
+  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const limit = 12; // 페이지당 12개로 제한
 
-  // 실제로는 API에서 받아올 데이터
-  const items = [
-    {
-      id: 1,
-      title: '연말 휴무 및 택배 없는 날 안내',
-      date: '24/12/30',
-    },
-    {
-      id: 2,
-      title: '1월 신년 이벤트 안내',
-      date: '24/01/02',
-    },
-    {
-      id: 3,
-      title: '웹사이트 개편 안내',
-      date: '24/01/01',
-    },
-    {
-      id: 4,
-      title: '신규 상품 출시 안내',
-      date: '23/12/28',
-    },
-  ];
+  const { user } = useUserStore();
+  const axios = useAxiosInstance();
+
+  const { data: userData } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: () => fetchUserInfo(axios),
+  });
+
+  const { data } = useQuery({
+    queryKey: ['posts', 'notice', page], // page를 queryKey에 추가
+    queryFn: () =>
+      axios.get('/posts', {
+        params: {
+          type: 'notice',
+          page,
+          limit,
+        },
+      }),
+    select: (res) => res.data,
+    staleTime: 1000 * 10,
+  });
+
+  // 데이터 로딩 중일 때 표시할 UI
+  if (!data) {
+    return <div>로딩중...</div>;
+  }
+
+  const noticePostList = data.item.map((item, index) => (
+    <NoticeListItem
+      key={item._id}
+      item={item}
+      number={data.pagination.total - ((page - 1) * limit + index)}
+    />
+  ));
+
+  const MySwal = withReactContent(Swal);
+
+  const questionButton = () => {
+    if (!user) {
+      MySwal.fire({
+        title: '로그인이 필요합니다.',
+        text: ' 로그인 페이지로 이동하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '네',
+        cancelButtonText: '아니요',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          MySwal.fire({
+            title: '알림',
+            text: '로그인 페이지로 이동합니다',
+            confirmButtonText: '확인',
+            icon: 'info',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate('/login');
+            }
+          });
+        }
+      });
+    } else {
+      // 현재 로그인한 사용자의 type
+      const currentUserType = userData?.item.find(
+        (item) => item._id === user._id
+      )?.type;
+
+      if (currentUserType !== 'admin') {
+        MySwal.fire({
+          title: '권한이 없습니다',
+          text: '관리자만 질문을 작성할 수 있습니다',
+          icon: 'error',
+        });
+      } else {
+        navigate('/notice/new');
+      }
+    }
+  };
 
   return (
     <div className='w-[1200px] mx-auto px-6 mb-20'>
@@ -49,32 +105,40 @@ export default function NoticeListPage() {
         공지사항
       </h1>
       <div className='flex justify-end mb-5 w-full'>
-        <Link
-          to='/notice/new'
+        <button
+          onClick={questionButton}
           className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
         >
-          글쓰기
-        </Link>
+          작성하기
+        </button>
       </div>
       <div className='grid grid-cols-[repeat(4,280px)] justify-center gap-6 w-[calc(4_*_280px_+_3_*_24px)] mx-auto my-0'>
-        {items.map((item) => (
-          <ListItem key={item.id} title={item.title} date={item.date} />
-        ))}
+        {noticePostList}
       </div>
 
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-        <button className='bg-secondary-20 text-white w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40'>
-          1
-        </button>
-        <button className='bg-grey-20 text-black w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'>
-          2
-        </button>
-        <button className='bg-grey-20 text-black w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'>
-          3
-        </button>
-        <button className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'>
-          Next
-        </button>
+        {Array.from({ length: data?.pagination?.totalPages || 0 }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => setPage(i + 1)}
+            className={`${
+              page === i + 1
+                ? 'bg-secondary-20 text-white'
+                : 'bg-grey-20 text-black'
+            } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
+          >
+            {i + 1}
+          </button>
+        ))}
+        {data?.pagination?.totalPages > 0 &&
+          page < data.pagination.totalPages && (
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+            >
+              Next
+            </button>
+          )}
       </div>
 
       <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
