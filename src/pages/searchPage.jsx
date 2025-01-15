@@ -6,6 +6,7 @@ const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const instance = useAxiosInstance();
   const navigate = useNavigate();
   const [searchHistory, setSearchHistory] = useState([]);
@@ -17,12 +18,13 @@ const SearchPage = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    if (loading) return;
     if (!searchTerm.trim()) {
       setErrorMessage("[필수] 상품명을 입력해주세요.");
       return;
     }
+    setLoading(true);
     setSearchHistory((prev) => [...new Set([searchTerm, ...prev])]); // r검색 기록 중복 제거
-
     setErrorMessage(""); // 에러 메시지 초기화
     setIsSearchPerformed(true); // 검색 수행 상태 업데이트
 
@@ -40,6 +42,8 @@ const SearchPage = () => {
     } catch (error) {
       console.error("검색 실패:", error);
       setErrorMessage("검색 중 문제가 발생했습니다.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,9 +63,11 @@ const SearchPage = () => {
         />
         <button
           type="submit"
-          className="bg-primary-40 text-white px-6 py-3 rounded hover:bg-primary-20"
+          className={`px-6 py-3 rounded ${loading ? "bg-gray-300 cursor-not-allowed" : "bg-primary-40 text-white hover:bg-primary-20"
+            }`}
+          disabled={loading} // 로딩상태일경우 버튼 비활성화
         >
-          검색
+          {loading ? "검색 중..." : "검색"}
         </button>
       </form>
       <div className="mb-4">
