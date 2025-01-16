@@ -1,15 +1,18 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { wishlistStore } from "../store/wishlistStore";
+import cartStore from "../store/cartStore";
 
 const Wishlist = () => {
   const { wishlistItems, fetchWishlistItems, deleteItem, loading, error } =
     wishlistStore();
+
+  const { fetchCartItems } = cartStore();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchWishlistItems();
-  }, [fetchWishlistItems]);
+  }, []);
 
   const handleDeleteItem = (itemId) => {
     deleteItem(itemId);
@@ -17,6 +20,11 @@ const Wishlist = () => {
 
   const handleCardClick = (item) => {
     navigate(`/detail/${item._id}`, { state: item });
+  };
+
+  const handleAddToCart = async (productId) => {
+    await cartStore.getState().addToCart(productId, 1);
+    await fetchCartItems();
   };
 
   return (
@@ -48,7 +56,7 @@ const Wishlist = () => {
           <div className="flex space-x-[20px] flex-nowrap mb-[10px]">
             {wishlistItems.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="border border-grey-20 rounded-md flex-none w-[180px] h-[240px] relative cursor-pointer group"
                 onClick={() => handleCardClick(item)}
               >
@@ -87,7 +95,7 @@ const Wishlist = () => {
                     className="w-full h-full bg-primary-40 text-white text-[14px] font-gowun hover:bg-primary-50"
                     onClick={(e) => {
                       e.stopPropagation();
-                      console.log("장바구니에 추가");
+                      handleAddToCart(item.id);
                     }}
                   >
                     장바구니 추가

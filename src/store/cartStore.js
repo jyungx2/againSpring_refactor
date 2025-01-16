@@ -78,14 +78,38 @@ export const cartStore = create((set, get) => {
           loading: false,
         });
       } catch (error) {
-        console.error(
-          "Error fetching cart items",
-          error.response?.data || error.message
-        );
+        console.error(error.response?.data || error.message);
         set({
           loading: false,
           error: "장바구니 아이템을 가져오는 데 실패했습니다.",
         });
+      }
+    },
+
+    // 장바구니에 아이템 추가
+    addToCart: async (productId, quantity) => {
+      const { user } = useUserStore.getState();
+      const instance = axiosInstance();
+
+      try {
+        // 요청 본문 준비
+        const requestBody = {
+          product_id: productId,
+          quantity: quantity,
+        };
+
+        const response = await instance.post("/carts/", requestBody, {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        });
+
+        if (response.status === 201) {
+          await get().fetchCartItems();
+        }
+      } catch (error) {
+        console.error(error);
+        set({ error: "장바구니에 아이템 추가 실패." });
       }
     },
 
@@ -121,10 +145,7 @@ export const cartStore = create((set, get) => {
             set({ error: "장바구니 상품 수량 변경 실패." });
           }
         } catch (error) {
-          console.error(
-            "Error updating item quantity:",
-            error.response?.data || error.message
-          );
+          console.error(error.response?.data || error.message);
           set({
             error: "장바구니 상품 수량 변경 실패.",
           });

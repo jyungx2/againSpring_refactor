@@ -27,6 +27,7 @@ export const wishlistStore = create((set) => {
     loading: false,
     error: null,
 
+    // 위시리스트 목록 조회
     fetchWishlistItems: async () => {
       set({ loading: true, error: null });
 
