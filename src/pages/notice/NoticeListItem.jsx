@@ -35,7 +35,7 @@ export default function NoticeListItem({ item }) {
             />
             <div className='absolute inset-0 flex flex-col items-center justify-center gap-4'>
               <div className='w-40 h-0.5 bg-white'></div>
-              <h1 className='text-4xl font-bold text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]'>
+              <h1 className='text-4xl font-bold text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-center line-clamp-3 overflow-hidden'>
                 {item.title}
               </h1>
               <div className='w-40 h-0.5 bg-white'></div>
@@ -46,7 +46,7 @@ export default function NoticeListItem({ item }) {
             <img src='./images/notice-list-img.png' className='blur-sm' />
             <div className='absolute inset-0 flex flex-col items-center justify-center gap-4'>
               <div className='w-40 h-0.5 bg-white'></div>
-              <h1 className='text-4xl font-bold text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]'>
+              <h1 className='text-4xl font-bold text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] text-center line-clamp-2 overflow-hidden'>
                 {item.title}
               </h1>
               <div className='w-40 h-0.5 bg-white'></div>
