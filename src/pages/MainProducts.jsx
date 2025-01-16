@@ -23,20 +23,22 @@ const MainProducts = () => {
           setProducts(response.data.item); // API 데이터 저장
         }
       } catch (error) {
-        setError("Failed to load products.");
+        setError("상품을 불러오는데 실패했습니다:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, []); // 의존성 배열
 
   if (loading) return <p className="text-center mt-8">Loading...</p>;
   if (error) return <p className="text-center mt-8 text-red-500">{error}</p>;
 
-  // extra 필터링
+  // 새로운 상품과 베스트 상품, 할인 상품 필터링
   const newProducts = products.filter((product) => product.extra?.isNew);
+  const bestProducts = products.filter((product) => product.extra?.isBest);
+  // const discountedProducts = products.filter((product) => product.extra?.discount > 0);
 
   const renderSwiper = (title, items) => (
     <section className="my-8">
@@ -80,6 +82,8 @@ const MainProducts = () => {
     <div className="w-full px-6">
       <div className="max-w-[1200px] mx-auto">
         {renderSwiper("새로운 상품", newProducts)}
+        {renderSwiper("베스트 상품", bestProducts)}
+        {/* {renderSwiper("할인 상품", discountedProducts)} */}
       </div>
     </div>
   );
