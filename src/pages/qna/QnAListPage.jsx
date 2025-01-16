@@ -1,13 +1,11 @@
-// import { Link } from 'react-router-dom';
 import useUserStore from '@store/userStore';
 import '../../assets/styles/fonts.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import QnAListItem from './QnAListItem';
-import { useState } from 'react';
 
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
@@ -16,12 +14,15 @@ const fetchUserInfo = async (axios) => {
 };
 
 export default function QnAListPage() {
-  const navigate = useNavigate();
-  const [page, setPage] = useState(1);
-  const limit = 12; // 페이지당 12개로 제한
+  const PAGES_PER_GROUP = 5;
+  const limit = 12;
 
-  const { user } = useUserStore();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const axios = useAxiosInstance();
+  const { user } = useUserStore();
+
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
   const { data: userData } = useQuery({
     queryKey: ['userInfo'],
@@ -29,31 +30,18 @@ export default function QnAListPage() {
   });
 
   const { data } = useQuery({
-    queryKey: ['posts', 'qna', page], // page를 queryKey에 추가
+    queryKey: ['posts', 'qna', currentPage],
     queryFn: () =>
       axios.get('/posts', {
         params: {
           type: 'qna',
-          page,
+          page: currentPage,
           limit,
         },
       }),
     select: (res) => res.data,
     staleTime: 1000 * 10,
   });
-
-  // 데이터 로딩 중일 때 표시할 UI
-  if (!data) {
-    return <div>로딩중...</div>;
-  }
-
-  const qnaPostList = data.item.map((item, index) => (
-    <QnAListItem
-      key={item._id}
-      item={item}
-      number={data.pagination.total - ((page - 1) * limit + index)}
-    />
-  ));
 
   const MySwal = withReactContent(Swal);
 
@@ -100,6 +88,29 @@ export default function QnAListPage() {
     }
   };
 
+  // 데이터 로딩 중일 때 표시할 UI
+  if (!data) {
+    return <div>로딩중...</div>;
+  }
+
+  const totalData = data?.pagination?.total;
+  const totalPages = Math.ceil(totalData / limit);
+  const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
+  const startPage = (currentGroup - 1) * PAGES_PER_GROUP + 1;
+  const endPage = Math.min(currentGroup * PAGES_PER_GROUP, totalPages);
+  const prevGroupLastPage = startPage - 1;
+  const nextGroupFirstPage = endPage + 1;
+  const showPrevButton = currentGroup > 1;
+  const showNextButton = endPage < totalPages;
+
+  const qnaPostList = data.item.map((item, index) => (
+    <QnAListItem
+      key={item._id}
+      item={item}
+      number={data.pagination.total - ((currentPage - 1) * limit + index)}
+    />
+  ));
+
   return (
     <div className='w-[1200px] mx-auto px-6 mb-20'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
@@ -130,28 +141,43 @@ export default function QnAListPage() {
         </table>
       </div>
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-        {Array.from({ length: data?.pagination?.totalPages || 0 }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => setPage(i + 1)}
-            className={`${
-              page === i + 1
-                ? 'bg-secondary-20 text-white'
-                : 'bg-grey-20 text-black'
-            } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
-          >
-            {i + 1}
-          </button>
-        ))}
-        {data?.pagination?.totalPages > 0 &&
-          page < data.pagination.totalPages && (
-            <button
-              onClick={() => setPage((prev) => prev + 1)}
-              className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
-            >
-              Next
-            </button>
-          )}
+        {/* 페이지네이션 영역 */}
+        {totalPages > 1 && ( // 전체 페이지가 1보다 클 때만 표시
+          <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
+            {showPrevButton && (
+              <Link
+                to={`?page=${prevGroupLastPage}`}
+                className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+              >
+                Prev
+              </Link>
+            )}
+            {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+              const pageNum = startPage + i;
+              return (
+                <Link
+                  key={pageNum}
+                  to={`?page=${pageNum}`}
+                  className={`${
+                    currentPage === pageNum
+                      ? 'bg-secondary-20 text-white'
+                      : 'bg-grey-20 text-black'
+                  } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
+                >
+                  {pageNum}
+                </Link>
+              );
+            })}
+            {showNextButton && (
+              <Link
+                to={`?page=${nextGroupFirstPage}`}
+                className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+              >
+                Next
+              </Link>
+            )}
+          </div>
+        )}
       </div>
       <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
         <div className='relative w-[120px]'>

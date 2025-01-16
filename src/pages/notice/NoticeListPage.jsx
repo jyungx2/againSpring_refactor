@@ -1,6 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-import ListItem from './NoticeListItem';
-import { useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import useUserStore from '@store/userStore';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQuery } from '@tanstack/react-query';
@@ -15,12 +13,15 @@ const fetchUserInfo = async (axios) => {
 };
 
 export default function NoticeListPage() {
-  const navigate = useNavigate();
-  const [page, setPage] = useState(1);
-  const limit = 12; // 페이지당 12개로 제한
+  const PAGES_PER_GROUP = 5;
+  const limit = 12;
 
-  const { user } = useUserStore();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const axios = useAxiosInstance();
+  const { user } = useUserStore();
+
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
   const { data: userData } = useQuery({
     queryKey: ['userInfo'],
@@ -28,12 +29,12 @@ export default function NoticeListPage() {
   });
 
   const { data } = useQuery({
-    queryKey: ['posts', 'notice', page], // page를 queryKey에 추가
+    queryKey: ['posts', 'notice', currentPage],
     queryFn: () =>
       axios.get('/posts', {
         params: {
           type: 'notice',
-          page,
+          page: currentPage,
           limit,
         },
       }),
@@ -46,11 +47,21 @@ export default function NoticeListPage() {
     return <div>로딩중...</div>;
   }
 
+  const totalData = data?.pagination?.total;
+  const totalPages = Math.ceil(totalData / limit);
+  const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
+  const startPage = (currentGroup - 1) * PAGES_PER_GROUP + 1;
+  const endPage = Math.min(currentGroup * PAGES_PER_GROUP, totalPages);
+  const prevGroupLastPage = startPage - 1;
+  const nextGroupFirstPage = endPage + 1;
+  const showPrevButton = currentGroup > 1;
+  const showNextButton = endPage < totalPages;
+
   const noticePostList = data.item.map((item, index) => (
     <NoticeListItem
       key={item._id}
       item={item}
-      number={data.pagination.total - ((page - 1) * limit + index)}
+      number={data.pagination.total - ((currentPage - 1) * limit + index)}
     />
   ));
 
@@ -117,28 +128,43 @@ export default function NoticeListPage() {
       </div>
 
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-        {Array.from({ length: data?.pagination?.totalPages || 0 }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => setPage(i + 1)}
-            className={`${
-              page === i + 1
-                ? 'bg-secondary-20 text-white'
-                : 'bg-grey-20 text-black'
-            } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
-          >
-            {i + 1}
-          </button>
-        ))}
-        {data?.pagination?.totalPages > 0 &&
-          page < data.pagination.totalPages && (
-            <button
-              onClick={() => setPage((prev) => prev + 1)}
-              className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
-            >
-              Next
-            </button>
-          )}
+        {/* 페이지네이션 영역 */}
+        {totalPages > 1 && ( // 전체 페이지가 1보다 클 때만 표시
+          <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
+            {showPrevButton && (
+              <Link
+                to={`?page=${prevGroupLastPage}`}
+                className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+              >
+                Prev
+              </Link>
+            )}
+            {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+              const pageNum = startPage + i;
+              return (
+                <Link
+                  key={pageNum}
+                  to={`?page=${pageNum}`}
+                  className={`${
+                    currentPage === pageNum
+                      ? 'bg-secondary-20 text-white'
+                      : 'bg-grey-20 text-black'
+                  } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
+                >
+                  {pageNum}
+                </Link>
+              );
+            })}
+            {showNextButton && (
+              <Link
+                to={`?page=${nextGroupFirstPage}`}
+                className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+              >
+                Next
+              </Link>
+            )}
+          </div>
+        )}
       </div>
 
       <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
