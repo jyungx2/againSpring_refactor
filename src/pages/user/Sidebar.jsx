@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import styles from "./User.module.css";
 
 function Sidebar() {
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  console.log(currentPath);
+
   const links = [
     { label: "주문조회", path: "/order" },
     { label: "1:1 문의", path: "/query" },
@@ -13,7 +18,11 @@ function Sidebar() {
 
   const renderedLinks = links.map((link) => {
     return (
-      <Link key={link.label} to={link.path} className="mb-1">
+      <Link
+        key={link.label}
+        to={link.path}
+        className={`mb-2 ${currentPath === link.path ? styles.active : ""}`}
+      >
         {link.label}
       </Link>
     );
