@@ -57,12 +57,13 @@ function Myorder() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-[60px] p-[20px] text-[26px] font-gowunBold">
+          <div className="flex flex-col p-[20px] text-[26px]">
             <div>
-              <h1 className="order-list-header">주문 목록</h1>
+              <h1 className="mb-8 font-gowunBold">주문 목록</h1>
             </div>
-
-            {renderedOrderBundle}
+            <div className="flex flex-col gap-[50px] text-[26px] font-gowunBold">
+              {renderedOrderBundle}
+            </div>
           </div>
         </div>
       </div>

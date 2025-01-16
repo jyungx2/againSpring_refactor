@@ -1,10 +1,13 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 OrderItem.propTypes = {
   products: PropTypes.array,
 };
 
 function OrderItem({ products }) {
+  const navigate = useNavigate();
+
   const renderedItem = products.map((item) => {
     return (
       <div
@@ -13,7 +16,7 @@ function OrderItem({ products }) {
       >
         <div className="flex flex-col flex-grow justify-center p-[24px]">
           <div className="flex justify-between">
-            <div className="text-[24px] font-gowunBold">
+            <div className="text-[20px] font-gowunBold">
               주문완료
               <span className="text-[18px] text-secondary-50 font-gowunBold">
                 {" "}
@@ -28,8 +31,8 @@ function OrderItem({ products }) {
               src={`https://11.fesp.shop${item.image?.path}`}
             />
             <div className="flex flex-col justify-center gap-[20px]">
-              <p className="text-[20px]">{item.name}</p>
-              <p className="text-[20px]">
+              <p className="text-[18px]">{item.name}</p>
+              <p className="text-[18px]">
                 {item.price.toLocaleString()}원 · {item.quantity}개
               </p>
             </div>
@@ -39,19 +42,20 @@ function OrderItem({ products }) {
         <div className="flex flex-col justify-center gap-[20px] w-[240px] p-[24px] border-l border-grey-20">
           <button
             type="button"
-            className="text-[18px] border border-grey-20 h-[48px] rounded-lg"
+            className="text-[16px] border border-grey-20 h-[46px] rounded-lg"
           >
             배송 조회
           </button>
           <button
             type="button"
-            className="text-[18px] border border-grey-20 h-[48px] rounded-lg"
+            className="text-[16px] border border-grey-20 h-[46px] rounded-lg"
           >
             교환, 반품 신청
           </button>
           <button
             type="button"
-            className="text-[18px] text-primary-60 border border-primary-60 h-[48px] rounded-lg"
+            className="text-[16px] text-primary-60 border border-primary-60 h-[46px] rounded-lg"
+            onClick={() => navigate("/review")}
           >
             리뷰 작성하기
           </button>
