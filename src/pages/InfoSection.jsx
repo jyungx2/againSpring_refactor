@@ -59,7 +59,7 @@ const InfoSection = () => {
               {notices?.map((notice) => (
                 <li key={notice._id} className="flex justify-between items-center text-lg py-2">
                   <Link to={`/notice/detail/${notice._id}`} className="text-gray-800 hover:underline">
-                    {notice.title}
+                    • {notice.title}
                   </Link>
                   <span className="text-gray-500">{notice.createdAt.split("T")[0]}</span>
                 </li>
@@ -85,7 +85,7 @@ const InfoSection = () => {
               {qnas?.map((qna) => (
                 <li key={qna._id} className="flex justify-between items-center text-lg py-2">
                   <Link to={`/qna/detail/${qna._id}`} className="text-gray-800 hover:underline">
-                    {qna.title}
+                    • {qna.title}
                   </Link>
                   <span className="text-gray-500">{qna.createdAt.split("T")[0]}</span>
                 </li>
