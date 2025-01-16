@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import styles from "./User.module.css";
 
 function Sidebar() {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
-  console.log(currentPath);
+  const currentPath = window.location.pathname;
 
   const links = [
     { label: "주문조회", path: "/order" },

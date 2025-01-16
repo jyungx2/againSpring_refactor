@@ -44,7 +44,7 @@ function Myorder() {
               <h1 className="order-list-header">주문 목록</h1>
             </div>
 
-            <div className="flex flex-col rounded-[20px] p-[20px] shadow-[rgba(0,0,0,0.08)_0px_2px_4px_0px,_rgba(0,0,0,0.16)_0px_0px_1px_0px]">
+            <div className="flex flex-col rounded-[20px] p-[20px] shadow-[rgba(0,0,0,0.08)_0px_2px_4px_0px,_rgba(0,0,0,0.16)_0px_0px_1px_0px] shadow-red-600">
               <div className="flex justify-between items-center">
                 <p className="text-[20px] font-gowunBold">2024.12.25 주문</p>
                 <div className="flex items-center gap-[10px]">
@@ -53,7 +53,7 @@ function Myorder() {
                 </div>
               </div>
 
-              <div className="mt-[30px] flex flex-col gap-[20px] text-[16px] border border-grey-10 rounded-[12px] p-[20px]">
+              <div className="mt-[30px] flex flex-col gap-[20px] text-[16px] border border-grey-10 rounded-[12px] p-[20px] bg-red-200">
                 <div className="flex justify-between">
                   <div className="text-[20px] font-gowunBold">
                     주문완료
