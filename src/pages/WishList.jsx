@@ -1,9 +1,11 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { wishlistStore } from "../store/wishlistStore";
 
 const Wishlist = () => {
   const { wishlistItems, fetchWishlistItems, deleteItem, loading, error } =
     wishlistStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchWishlistItems();
@@ -11,6 +13,10 @@ const Wishlist = () => {
 
   const handleDeleteItem = (itemId) => {
     deleteItem(itemId);
+  };
+
+  const handleCardClick = (item) => {
+    navigate(`/detail/${item._id}`, { state: item });
   };
 
   return (
@@ -44,10 +50,14 @@ const Wishlist = () => {
               <div
                 key={item.id}
                 className="border border-grey-20 rounded-md flex-none w-[180px] h-[240px] relative cursor-pointer group"
+                onClick={() => handleCardClick(item)}
               >
                 <button
                   className="absolute top-[5px] right-[5px] text-red-600 hover:text-red-800 text-[14px] focus:outline-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  onClick={() => handleDeleteItem(item._id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteItem(item._id);
+                  }}
                 >
                   X
                 </button>
@@ -55,6 +65,7 @@ const Wishlist = () => {
                   <img
                     src={item.image}
                     className="w-full h-full object-cover"
+                    alt={item.name}
                   />
                 </div>
                 <div className="absolute left-0 right-0 p-[4px] bg-white transition-transform duration-200 group-hover:translate-y-[-80%]">
@@ -72,7 +83,13 @@ const Wishlist = () => {
                   </span>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 h-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <button className="w-full h-full bg-blue-500 text-white text-[14px] font-gowun hover:bg-blue-600">
+                  <button
+                    className="w-full h-full bg-primary-40 text-white text-[14px] font-gowun hover:bg-primary-50"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log("장바구니에 추가");
+                    }}
+                  >
                     장바구니 추가
                   </button>
                 </div>
