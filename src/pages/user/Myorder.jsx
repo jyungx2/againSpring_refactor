@@ -1,8 +1,10 @@
+import OrderBundle from "@pages/user/OrderBundle";
 import Sidebar from "@pages/user/Sidebar";
 import useUserStore from "@store/userStore";
 
 function Myorder() {
   const { user } = useUserStore();
+  console.log(user._id);
 
   return (
     <>
@@ -44,36 +46,7 @@ function Myorder() {
               <h1 className="order-list-header">주문 목록</h1>
             </div>
 
-            <div className="flex flex-col rounded-[20px] p-[20px] shadow-[rgba(0,0,0,0.08)_0px_2px_4px_0px,_rgba(0,0,0,0.16)_0px_0px_1px_0px] shadow-red-600">
-              <div className="flex justify-between items-center">
-                <p className="text-[20px] font-gowunBold">2024.12.25 주문</p>
-                <div className="flex items-center gap-[10px]">
-                  <p className="text-[18px] text-primary-70">주문 상세보기</p>
-                  <img className="w-[30px] h-[30px]" src="/icons/pointer.svg" />
-                </div>
-              </div>
-
-              <div className="mt-[30px] flex flex-col gap-[20px] text-[16px] border border-grey-10 rounded-[12px] p-[20px] bg-red-200">
-                <div className="flex justify-between">
-                  <div className="text-[20px] font-gowunBold">
-                    주문완료
-                    <span className="text-[18px] text-secondary-50 font-gowunBold">
-                      {" "}
-                      · 12/30 (목) 도착
-                    </span>
-                  </div>
-                  <img src="/icons/dots.svg" />
-                </div>
-
-                <div className="flex gap-[20px]">
-                  <img src="/icons/image.png" />
-                  <div className="flex flex-col justify-center gap-[20px]">
-                    <p>안티 헤어 로스 샴푸바</p>
-                    <p>12,900원 · 1개</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <OrderBundle />
           </div>
         </div>
       </div>
