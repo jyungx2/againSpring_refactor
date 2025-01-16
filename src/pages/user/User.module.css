@@ -64,3 +64,7 @@ img {
   justify-content: center;
   align-items: center;
 }
+
+.active {
+  @apply border-l-8 border-primary-40 pl-4 font-gowunBold;
+}
