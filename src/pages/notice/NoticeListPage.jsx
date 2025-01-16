@@ -3,8 +3,6 @@ import useUserStore from '@store/userStore';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import NoticeListItem from './NoticeListItem';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
 
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
@@ -42,6 +40,13 @@ export default function NoticeListPage() {
     staleTime: 1000 * 10,
   });
 
+  // 현재 로그인한 사용자
+  const userType =
+    user && userData.item?.find((item) => item._id === user._id)?.type;
+
+  // type이 admin 이거나 user인지 확인
+  const isAdmin = userType === 'admin';
+
   // 데이터 로딩 중일 때 표시할 UI
   if (!data) {
     return <div>로딩중...</div>;
@@ -65,63 +70,20 @@ export default function NoticeListPage() {
     />
   ));
 
-  const MySwal = withReactContent(Swal);
-
-  const questionButton = () => {
-    if (!user) {
-      MySwal.fire({
-        title: '로그인이 필요합니다.',
-        text: ' 로그인 페이지로 이동하시겠습니까?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '네',
-        cancelButtonText: '아니요',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          MySwal.fire({
-            title: '알림',
-            text: '로그인 페이지로 이동합니다',
-            confirmButtonText: '확인',
-            icon: 'info',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              navigate('/login');
-            }
-          });
-        }
-      });
-    } else {
-      // 현재 로그인한 사용자의 type
-      const currentUserType = userData?.item.find(
-        (item) => item._id === user._id
-      )?.type;
-
-      if (currentUserType !== 'admin') {
-        MySwal.fire({
-          title: '권한이 없습니다',
-          text: '관리자만 질문을 작성할 수 있습니다',
-          icon: 'error',
-        });
-      } else {
-        navigate('/notice/new');
-      }
-    }
-  };
-
   return (
     <div className='w-[1200px] mx-auto px-6 mb-20'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         공지사항
       </h1>
       <div className='flex justify-end mb-5 w-full'>
-        <button
-          onClick={questionButton}
-          className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
-        >
-          작성하기
-        </button>
+        {isAdmin && (
+          <button
+            onClick={() => navigate('/notice/new')}
+            className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
+          >
+            작성하기
+          </button>
+        )}
       </div>
       <div className='grid grid-cols-[repeat(4,280px)] justify-center gap-6 w-[calc(4_*_280px_+_3_*_24px)] mx-auto my-0'>
         {noticePostList}

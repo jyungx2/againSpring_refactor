@@ -1,8 +1,6 @@
 import useUserStore from '@store/userStore';
 import '../../assets/styles/fonts.css';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import QnAListItem from './QnAListItem';
@@ -43,50 +41,12 @@ export default function QnAListPage() {
     staleTime: 1000 * 10,
   });
 
-  const MySwal = withReactContent(Swal);
+  // 현재 로그인한 사용자
+  const userType =
+    user && userData.item?.find((item) => item._id === user._id)?.type;
 
-  const questionButton = () => {
-    if (!user) {
-      MySwal.fire({
-        title: '로그인이 필요합니다.',
-        text: ' 로그인 페이지로 이동하시겠습니까?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '네',
-        cancelButtonText: '아니요',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          MySwal.fire({
-            title: '알림',
-            text: '로그인 페이지로 이동합니다',
-            confirmButtonText: '확인',
-            icon: 'info',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              navigate('/login');
-            }
-          });
-        }
-      });
-    } else {
-      // 현재 로그인한 사용자의 type
-      const currentUserType = userData?.item.find(
-        (item) => item._id === user._id
-      )?.type;
-
-      if (currentUserType !== 'user') {
-        MySwal.fire({
-          title: '권한이 없습니다',
-          text: '일반 회원만 질문을 작성할 수 있습니다',
-          icon: 'error',
-        });
-      } else {
-        navigate('/qna/new');
-      }
-    }
-  };
+  // type이 admin 이거나 user인지 확인
+  const isAdminOrUser = userType === 'admin' || userType === 'user';
 
   // 데이터 로딩 중일 때 표시할 UI
   if (!data) {
@@ -118,12 +78,14 @@ export default function QnAListPage() {
       </h1>
 
       <div className='flex justify-end mb-5 w-full'>
-        <button
-          onClick={questionButton}
-          className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
-        >
-          질문하기
-        </button>
+        {isAdminOrUser && (
+          <button
+            onClick={() => navigate('/qna/new')}
+            className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
+          >
+            질문하기
+          </button>
+        )}
       </div>
       <div className='w-full mx-auto my-0 max-h-[906.11px] overflow-y-auto'>
         <table className='w-full border-collapse table-fixed'>
