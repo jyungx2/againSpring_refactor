@@ -1,8 +1,10 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import '../../assets/styles/fonts.css';
 import useUserStore from '@store/userStore';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import NoticeListItem from './NoticeListItem';
+import { useState } from 'react';
 
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
@@ -21,19 +23,60 @@ export default function NoticeListPage() {
 
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
+  const getSortParamsByOption = (sortOption) => {
+    const sortParams = {
+      default: undefined,
+      'title-asc': JSON.stringify({ title: 1 }), // 오름차순
+      'title-desc': JSON.stringify({ title: -1 }), // 내림차순
+      'date-asc': JSON.stringify({ createdAt: 1 }),
+      'date-desc': JSON.stringify({ createdAt: -1 }),
+      'view-asc': JSON.stringify({ views: 1 }),
+      'view-desc': JSON.stringify({ views: -1 }),
+    };
+
+    return sortParams[sortOption];
+  };
+
+  const [sortOption, setSortOption] = useState(() => {
+    const sortParam = searchParams.get('sort');
+    if (!sortParam) return 'default';
+    // URL의 sort 파라미터를 옵션값으로 변환하는 로직
+    const options = {
+      '{"title":1}': 'title-asc',
+      '{"title":-1}': 'title-desc',
+      '{"createdAt":1}': 'date-asc',
+      '{"createdAt":-1}': 'date-desc',
+      '{"views":1}': 'view-asc',
+      '{"views":-1}': 'view-desc',
+    };
+    return options[sortParam] || 'default';
+  });
+
+  const getPageLink = (pageNum) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNum.toString());
+    if (sortOption !== 'default') {
+      params.set('sort', getSortParamsByOption(sortOption));
+    }
+    return `?${params.toString()}`;
+  };
+
   const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ['userInfo'],
     queryFn: () => fetchUserInfo(axios),
   });
 
   const { data: noticeData, isLoading: isNoticeLoading } = useQuery({
-    queryKey: ['posts', 'notice', currentPage],
+    queryKey: ['posts', 'notice', currentPage, sortOption],
     queryFn: () =>
       axios.get('/posts', {
         params: {
           type: 'notice',
           page: currentPage,
           limit,
+          ...(sortOption !== 'default' && {
+            sort: getSortParamsByOption(sortOption),
+          }),
         },
       }),
     select: (res) => res.data,
@@ -48,6 +91,20 @@ export default function NoticeListPage() {
   if (!userData?.item || !noticeData?.item) {
     return <div>데이터를 불러오는데 실패했습니다.</div>;
   }
+
+  const handleSortChange = (e) => {
+    const newSortOption = e.target.value;
+    setSortOption(newSortOption);
+
+    // URL 파라미터 업데이트
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (newSortOption !== 'default') {
+      newSearchParams.set('sort', getSortParamsByOption(newSortOption));
+    } else {
+      newSearchParams.delete('sort');
+    }
+    navigate(`?${newSearchParams.toString()}`);
+  };
 
   const userType = user
     ? userData.item.find((item) => item._id === user._id)?.type
@@ -77,7 +134,22 @@ export default function NoticeListPage() {
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         공지사항
       </h1>
-      <div className='flex justify-end mb-5 w-full'>
+      <div className='flex justify-between items-center mb-4'>
+        <select
+          value={sortOption}
+          onChange={(e) => handleSortChange(e)}
+          className='border border-grey-20 rounded p-1 text-lg focus:border-secondary-30 focus:ring-1 focus:ring-secondary-30 text-grey-60'
+          aria-label='정렬 기준'
+        >
+          <option value='default'>기본순</option>
+          <option value='title-asc'>제목 오름차순</option>
+          <option value='title-desc'>제목 내림차순</option>
+          <option value='date-asc'>작성일 오름차순</option>
+          <option value='date-desc'>작성일 내림차순</option>
+          <option value='view-asc'>조회수 오름차순</option>
+          <option value='view-desc'>조회수 내림차순</option>
+        </select>
+
         {isAdmin && (
           <button
             onClick={() => navigate('/notice/new')}
@@ -97,18 +169,19 @@ export default function NoticeListPage() {
           <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
             {showPrevButton && (
               <Link
-                to={`?page=${prevGroupLastPage}`}
+                to={getPageLink(prevGroupLastPage)}
                 className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
               >
                 Prev
               </Link>
             )}
+
             {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
               const pageNum = startPage + i;
               return (
                 <Link
                   key={pageNum}
-                  to={`?page=${pageNum}`}
+                  to={getPageLink(pageNum)}
                   className={`${
                     currentPage === pageNum
                       ? 'bg-secondary-20 text-white'
@@ -119,9 +192,10 @@ export default function NoticeListPage() {
                 </Link>
               );
             })}
+
             {showNextButton && (
               <Link
-                to={`?page=${nextGroupFirstPage}`}
+                to={getPageLink(nextGroupFirstPage)}
                 className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
               >
                 Next
@@ -135,8 +209,8 @@ export default function NoticeListPage() {
         <div className='relative w-[120px]'>
           <select className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'>
             <option value='title'>제목</option>
-            <option value='date'>작성일</option>
-            <option value='author'>작성자</option>
+            <option value='content'>내용</option>
+            <option value='all'>제목+내용</option>
           </select>
         </div>
         <input

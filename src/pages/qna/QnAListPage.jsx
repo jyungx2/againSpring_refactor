@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import QnAListItem from './QnAListItem';
+import { useState } from 'react';
 
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
@@ -22,19 +23,60 @@ export default function QnAListPage() {
 
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
+  const getSortParamsByOption = (sortOption) => {
+    const sortParams = {
+      default: undefined,
+      'title-asc': JSON.stringify({ title: 1 }), // 오름차순
+      'title-desc': JSON.stringify({ title: -1 }), // 내림차순
+      'date-asc': JSON.stringify({ createdAt: 1 }),
+      'date-desc': JSON.stringify({ createdAt: -1 }),
+      'view-asc': JSON.stringify({ views: 1 }),
+      'view-desc': JSON.stringify({ views: -1 }),
+    };
+
+    return sortParams[sortOption];
+  };
+
+  const [sortOption, setSortOption] = useState(() => {
+    const sortParam = searchParams.get('sort');
+    if (!sortParam) return 'default';
+    // URL의 sort 파라미터를 옵션값으로 변환하는 로직
+    const options = {
+      '{"title":1}': 'title-asc',
+      '{"title":-1}': 'title-desc',
+      '{"createdAt":1}': 'date-asc',
+      '{"createdAt":-1}': 'date-desc',
+      '{"views":1}': 'view-asc',
+      '{"views":-1}': 'view-desc',
+    };
+    return options[sortParam] || 'default';
+  });
+
+  const getPageLink = (pageNum) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNum.toString());
+    if (sortOption !== 'default') {
+      params.set('sort', getSortParamsByOption(sortOption));
+    }
+    return `?${params.toString()}`;
+  };
+
   const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ['userInfo'],
     queryFn: () => fetchUserInfo(axios),
   });
 
   const { data: qnaData, isLoading: isQnaLoading } = useQuery({
-    queryKey: ['posts', 'qna', currentPage],
+    queryKey: ['posts', 'qna', currentPage, sortOption],
     queryFn: () =>
       axios.get('/posts', {
         params: {
           type: 'qna',
           page: currentPage,
           limit,
+          ...(sortOption !== 'default' && {
+            sort: getSortParamsByOption(sortOption),
+          }),
         },
       }),
     select: (res) => res.data,
@@ -49,6 +91,20 @@ export default function QnAListPage() {
   if (!userData?.item || !qnaData?.item) {
     return <div>데이터를 불러오는데 실패했습니다.</div>;
   }
+
+  const handleSortChange = (e) => {
+    const newSortOption = e.target.value;
+    setSortOption(newSortOption);
+
+    // URL 파라미터 업데이트
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (newSortOption !== 'default') {
+      newSearchParams.set('sort', getSortParamsByOption(newSortOption));
+    } else {
+      newSearchParams.delete('sort');
+    }
+    navigate(`?${newSearchParams.toString()}`);
+  };
 
   // 현재 로그인한 사용자
   const userType =
@@ -80,8 +136,22 @@ export default function QnAListPage() {
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&A
       </h1>
+      <div className='flex justify-between items-center mb-4'>
+        <select
+          value={sortOption}
+          onChange={(e) => handleSortChange(e)}
+          className='border border-grey-20 rounded p-1 text-lg focus:border-secondary-30 focus:ring-1 focus:ring-secondary-30 text-grey-60'
+          aria-label='정렬 기준'
+        >
+          <option value='default'>기본순</option>
+          <option value='title-asc'>제목 오름차순</option>
+          <option value='title-desc'>제목 내림차순</option>
+          <option value='date-asc'>작성일 오름차순</option>
+          <option value='date-desc'>작성일 내림차순</option>
+          <option value='view-asc'>조회수 오름차순</option>
+          <option value='view-desc'>조회수 내림차순</option>
+        </select>
 
-      <div className='flex justify-end mb-5 w-full'>
         {isAdminOrUser && (
           <button
             onClick={() => navigate('/qna/new')}
@@ -112,18 +182,19 @@ export default function QnAListPage() {
           <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
             {showPrevButton && (
               <Link
-                to={`?page=${prevGroupLastPage}`}
+                to={getPageLink(prevGroupLastPage)}
                 className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
               >
                 Prev
               </Link>
             )}
+
             {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
               const pageNum = startPage + i;
               return (
                 <Link
                   key={pageNum}
-                  to={`?page=${pageNum}`}
+                  to={getPageLink(pageNum)}
                   className={`${
                     currentPage === pageNum
                       ? 'bg-secondary-20 text-white'
@@ -134,9 +205,10 @@ export default function QnAListPage() {
                 </Link>
               );
             })}
+
             {showNextButton && (
               <Link
-                to={`?page=${nextGroupFirstPage}`}
+                to={getPageLink(nextGroupFirstPage)}
                 className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
               >
                 Next
@@ -149,8 +221,8 @@ export default function QnAListPage() {
         <div className='relative w-[120px]'>
           <select className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'>
             <option value='title'>제목</option>
-            <option value='date'>작성일</option>
-            <option value='author'>작성자</option>
+            <option value='content'>내용</option>
+            <option value='all'>제목+내용</option>
           </select>
         </div>
         <input
