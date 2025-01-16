@@ -13,6 +13,11 @@ const MainProducts = () => {
   const [error, setError] = useState(null);
   const axiosInstance = useAxiosInstance();
 
+  const getImage = (path) => {
+    const baseURL = "https://11.fesp.shop";
+    return `${baseURL}${path}`;
+  };
+
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -20,21 +25,21 @@ const MainProducts = () => {
       try {
         const response = await axiosInstance.get("/products");
         if (response.data.item) {
-          setProducts(response.data.item); // API 데이터 저장
+          setProducts(response.data.item);
         }
       } catch (error) {
-        setError("상품을 불러오는데 실패했습니다:", error);
+        console.error("error:", error);
+        setError("상품을 불러오는데 실패했습니다.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []); // 의존성 배열
+  }, []);
 
   if (loading) return <p className="text-center mt-8">Loading...</p>;
   if (error) return <p className="text-center mt-8 text-red-500">{error}</p>;
-
   // 새로운 상품과 베스트 상품, 할인 상품 필터링
   const newProducts = products.filter((product) => product.extra?.isNew);
   const bestProducts = products.filter((product) => product.extra?.isBest);
@@ -61,7 +66,7 @@ const MainProducts = () => {
                 style={{ width: "200px", height: "200px" }}
               >
                 <img
-                  src={product.mainImages[0]?.path}
+                  src={getImage(product.mainImages[0]?.path)}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
