@@ -9,7 +9,7 @@ function OrderItem({ products }) {
     return (
       <div
         key={item._id}
-        className="mt-[30px] flex gap-[20px] text-[16px] border border-grey-10 rounded-[12px] "
+        className="mt-[30px] flex text-[16px] border border-grey-10 rounded-[12px] "
       >
         <div className="flex flex-col flex-grow justify-center p-[24px]">
           <div className="flex justify-between">
