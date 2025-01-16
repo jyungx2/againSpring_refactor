@@ -21,12 +21,12 @@ export default function NoticeListPage() {
 
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
-  const { data: userData } = useQuery({
+  const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ['userInfo'],
     queryFn: () => fetchUserInfo(axios),
   });
 
-  const { data } = useQuery({
+  const { data: noticeData, isLoading: isNoticeLoading } = useQuery({
     queryKey: ['posts', 'notice', currentPage],
     queryFn: () =>
       axios.get('/posts', {
@@ -40,19 +40,21 @@ export default function NoticeListPage() {
     staleTime: 1000 * 10,
   });
 
-  // 현재 로그인한 사용자
-  const userType =
-    user && userData.item?.find((item) => item._id === user._id)?.type;
-
-  // type이 admin 이거나 user인지 확인
-  const isAdmin = userType === 'admin';
-
-  // 데이터 로딩 중일 때 표시할 UI
-  if (!data) {
+  if (isUserLoading || isNoticeLoading) {
     return <div>로딩중...</div>;
   }
 
-  const totalData = data?.pagination?.total;
+  // 에러 상태 처리
+  if (!userData?.item || !noticeData?.item) {
+    return <div>데이터를 불러오는데 실패했습니다.</div>;
+  }
+
+  const userType = user
+    ? userData.item.find((item) => item._id === user._id)?.type
+    : null;
+  const isAdmin = userType === 'admin';
+
+  const totalData = noticeData.pagination?.total || 0;
   const totalPages = Math.ceil(totalData / limit);
   const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
   const startPage = (currentGroup - 1) * PAGES_PER_GROUP + 1;
@@ -62,11 +64,11 @@ export default function NoticeListPage() {
   const showPrevButton = currentGroup > 1;
   const showNextButton = endPage < totalPages;
 
-  const noticePostList = data.item.map((item, index) => (
+  const noticePostList = noticeData.item.map((item, index) => (
     <NoticeListItem
       key={item._id}
       item={item}
-      number={data.pagination.total - ((currentPage - 1) * limit + index)}
+      number={totalData - ((currentPage - 1) * limit + index)}
     />
   ));
 
