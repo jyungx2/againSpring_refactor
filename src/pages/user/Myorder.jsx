@@ -10,7 +10,7 @@ function Myorder() {
   console.log(user._id);
 
   const { data } = useQuery({
-    queryKey: [],
+    queryKey: ["orders"],
     queryFn: () => axios.get(`/orders`),
     select: (res) => {
       console.log(res.data);

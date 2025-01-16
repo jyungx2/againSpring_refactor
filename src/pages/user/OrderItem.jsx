@@ -55,7 +55,7 @@ function OrderItem({ products }) {
           <button
             type="button"
             className="text-[16px] text-primary-60 border border-primary-60 h-[46px] rounded-lg"
-            onClick={() => navigate("/review")}
+            onClick={() => navigate("/review", { state: { item } })}
           >
             리뷰 작성하기
           </button>

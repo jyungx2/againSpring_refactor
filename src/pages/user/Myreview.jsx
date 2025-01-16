@@ -1,7 +1,12 @@
 import Sidebar from "@pages/user/Sidebar";
 import styles from "./User.module.css";
+import { useLocation } from "react-router-dom";
 
 function Myreview() {
+  const location = useLocation();
+  console.log("location: ", location);
+  console.log("location.state: ", location.state);
+  const item = location.state?.item;
   return (
     <>
       <div className="flex box-border max-w-[1200px] mx-auto px-6 pb-0">
@@ -16,10 +21,15 @@ function Myreview() {
             </div>
           </div>
           <div className="flex items-start p-[30px] text-[16px] border-t border-grey-30 gap-[18px]">
-            <img src="/images/product-1.png" />
-            <div className="flex flex-col gap-[20px]">
-              <p className="font-gowunBold">안티 헤어 로스 샴푸바</p>
-              <p>12,900원 - 1개</p>
+            <img
+              className="w-[140px] h-[140px] object-contain"
+              src={`https://11.fesp.shop${item.image?.path}`}
+            />
+            <div className="flex flex-col gap-[20px] text-[18px]">
+              <p>{item.name}</p>
+              <p className="text-[15px]">
+                {item.price.toLocaleString()}원 · {item.quantity}개
+              </p>
             </div>
           </div>
           <div className="flex items-start p-[30px] text-[16px] border-t border-grey-30 gap-[60px]">
