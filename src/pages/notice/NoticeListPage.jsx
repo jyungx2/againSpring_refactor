@@ -37,6 +37,10 @@ export default function NoticeListPage() {
     return sortParams[sortOption];
   };
 
+  const [periodType, setPeriodType] = useState('all-day');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
   const [sortOption, setSortOption] = useState(() => {
     const sortParam = searchParams.get('sort');
     if (!sortParam) return 'default';
@@ -67,7 +71,15 @@ export default function NoticeListPage() {
   });
 
   const { data: noticeData, isLoading: isNoticeLoading } = useQuery({
-    queryKey: ['posts', 'notice', currentPage, sortOption],
+    queryKey: [
+      'posts',
+      'notice',
+      currentPage,
+      sortOption,
+      periodType,
+      startDate,
+      endDate,
+    ],
     queryFn: () =>
       axios.get('/posts', {
         params: {
@@ -76,6 +88,11 @@ export default function NoticeListPage() {
           limit,
           ...(sortOption !== 'default' && {
             sort: getSortParamsByOption(sortOption),
+          }),
+          ...(periodType === 'custom' && {
+            // 기간 입력이 선택된 경우에만 날짜 파라미터 추가
+            startDate,
+            endDate,
           }),
         },
       }),
@@ -103,6 +120,34 @@ export default function NoticeListPage() {
     } else {
       newSearchParams.delete('sort');
     }
+    navigate(`?${newSearchParams.toString()}`);
+  };
+
+  const handlePeriodChange = (newPeriodType) => {
+    setPeriodType(newPeriodType);
+    const newSearchParams = new URLSearchParams(searchParams);
+
+    if (newPeriodType === 'custom') {
+      newSearchParams.set('startDate', startDate);
+      newSearchParams.set('endDate', endDate);
+    } else {
+      newSearchParams.delete('startDate');
+      newSearchParams.delete('endDate');
+    }
+
+    navigate(`?${newSearchParams.toString()}`);
+  };
+
+  const handleDateChange = (type, value) => {
+    if (type === 'start') {
+      setStartDate(value);
+    } else {
+      setEndDate(value);
+    }
+
+    // URL 파라미터 업데이트
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set(type === 'start' ? 'startDate' : 'endDate', value);
     navigate(`?${newSearchParams.toString()}`);
   };
 
@@ -135,6 +180,38 @@ export default function NoticeListPage() {
         공지사항
       </h1>
       <div className='flex justify-between items-center mb-4'>
+        <select
+          value={periodType}
+          onChange={(e) => handlePeriodChange(e.target.value)}
+          className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'
+        >
+          <option value='all-day'>전체기간</option>
+          <option value='one-day'>1일</option>
+          <option value='one-week'>1주</option>
+          <option value='one-month'>1개월</option>
+          <option value='six-month'>6개월</option>
+          <option value='one-year'>1년</option>
+          <option value='custom'>기간 입력</option>
+        </select>
+
+        {periodType === 'custom' && (
+          <div className='flex gap-2'>
+            <input
+              type='date'
+              value={startDate}
+              onChange={(e) => handleDateChange('start', e.target.value)}
+              className='h-[37px] px-2 border border-gray-300 rounded'
+            />
+            <span className='flex items-center'>~</span>
+            <input
+              type='date'
+              value={endDate}
+              onChange={(e) => handleDateChange('end', e.target.value)}
+              className='h-[37px] px-2 border border-gray-300 rounded'
+            />
+          </div>
+        )}
+
         <select
           value={sortOption}
           onChange={(e) => handleSortChange(e)}
