@@ -1,10 +1,26 @@
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import OrderBundle from "@pages/user/OrderBundle";
 import Sidebar from "@pages/user/Sidebar";
 import useUserStore from "@store/userStore";
+import { useQuery } from "@tanstack/react-query";
 
 function Myorder() {
+  const axios = useAxiosInstance();
   const { user } = useUserStore();
   console.log(user._id);
+
+  const { data } = useQuery({
+    queryKey: [],
+    queryFn: () => axios.get(`/orders`),
+    select: (res) => {
+      console.log(res.data);
+      return res.data;
+    },
+  });
+
+  const renderedOrderBundle = data?.item.map((bundle) => {
+    return <OrderBundle key={bundle._id} bundle={bundle} />;
+  });
 
   return (
     <>
@@ -41,12 +57,12 @@ function Myorder() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-[20px] p-[20px] text-[26px] font-gowunBold">
+          <div className="flex flex-col gap-[60px] p-[20px] text-[26px] font-gowunBold">
             <div>
               <h1 className="order-list-header">주문 목록</h1>
             </div>
 
-            <OrderBundle />
+            {renderedOrderBundle}
           </div>
         </div>
       </div>
