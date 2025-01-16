@@ -1,160 +1,85 @@
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { Link } from "react-router-dom";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 const MainProducts = () => {
-  const products = [
-    {
-      id: 1,
-      name: "비누",
-      price: "1,000,000원",
-      originalPrice: "1,200,000원",
-      imageUrl: "/images/product-1.png",
-    },
-    {
-      id: 2,
-      name: "비누",
-      price: "1,500,000원",
-      originalPrice: "1,800,000원",
-      imageUrl: "/images/product-1.png",
-    },
-    {
-      id: 3,
-      name: "비누",
-      price: "300,000원",
-      originalPrice: "350,000원",
-      imageUrl: "/images/product-1.png",
-    },
-    {
-      id: 4,
-      name: "비누",
-      price: "250,000원",
-      originalPrice: "300,000원",
-      imageUrl: "/images/product-1.png",
-    },
-    {
-      id: 5,
-      name: "비누",
-      price: "800,000원",
-      originalPrice: "900,000원",
-      imageUrl: "/images/product-1.png",
-    },
-    {
-      id: 6,
-      name: "비누",
-      price: "800,000원",
-      originalPrice: "900,000원",
-      imageUrl: "/images/product-1.png",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const axiosInstance = useAxiosInstance();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axiosInstance.get("/products");
+        if (response.data.item) {
+          setProducts(response.data.item); // API 데이터 저장
+        }
+      } catch (error) {
+        setError("Failed to load products.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) return <p className="text-center mt-8">Loading...</p>;
+  if (error) return <p className="text-center mt-8 text-red-500">{error}</p>;
+
+  // extra 필터링
+  const newProducts = products.filter((product) => product.extra?.isNew);
+
+  const renderSwiper = (title, items) => (
+    <section className="my-8">
+      <h2 className="text-3xl font-bold mb-6">{title}</h2>
+      <Swiper
+        modules={[Navigation, Pagination]}
+        spaceBetween={20}
+        slidesPerView={4}
+        navigation
+        className="product-slider custom-swiper"
+      >
+        {items.map((product) => (
+          <SwiperSlide key={product._id}>
+            <Link
+              to={`/detail/${product._id}`}
+              className="flex flex-col items-center text-center"
+            >
+              <div
+                className="bg-gray-200"
+                style={{ width: "200px", height: "200px" }}
+              >
+                <img
+                  src={product.mainImages[0]?.path}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <p className="mt-4 text-2xl">{product.name}</p>
+              <p className="text-lg text-gray-500 line-through">
+                {product.originalPrice || ""}
+              </p>
+              <p className="text-xl font-bold">{product.price}원</p>
+            </Link>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </section>
+  );
 
   return (
     <div className="w-full px-6">
       <div className="max-w-[1200px] mx-auto">
-        <section className="my-8">
-          <h2 className="text-3xl font-bold mb-6">추천제품</h2>
-          <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={20}
-            slidesPerView={4}
-            navigation
-            className="product-slider custom-swiper"
-          >
-            {products.map((product) => (
-              <SwiperSlide key={product.id}>
-                <Link
-                  to={`/detail/${product.id}`}
-                  className="flex flex-col items-center text-center"
-                >
-                  <div
-                    className="bg-gray-200"
-                    style={{ width: "200px", height: "200px" }}
-                  >
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className="mt-4 text-2xl">{product.name}</p>
-                  <p className="text-lg text-gray-500 line-through">
-                    {product.originalPrice}
-                  </p>
-                  <p className="text-xl font-bold">{product.price}</p>
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </section>
-
-        <section className="my-8">
-          <h2 className="text-3xl font-bold mb-6">신제품</h2>
-          <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={20}
-            slidesPerView={4}
-            navigation
-            className="product-slider custom-swiper"
-          >
-            {products.map((product) => (
-              <SwiperSlide key={product.id}>
-                <div className="flex flex-col items-center text-center">
-                  <div
-                    className="bg-gray-200"
-                    style={{ width: "200px", height: "200px" }}
-                  >
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className="mt-4 text-2xl">{product.name}</p>
-                  <p className="text-lg text-gray-500 line-through">
-                    {product.originalPrice}
-                  </p>
-                  <p className="text-xl font-bold">{product.price}</p>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </section>
-
-        <section className="my-8">
-          <h2 className="text-3xl font-bold mb-6">할인 제품</h2>
-          <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={20}
-            slidesPerView={4}
-            navigation
-            className="product-slider custom-swiper"
-          >
-            {products.map((product) => (
-              <SwiperSlide key={product.id}>
-                <div className="flex flex-col items-center text-center">
-                  <div
-                    className="bg-gray-200"
-                    style={{ width: "200px", height: "200px" }}
-                  >
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className="mt-4 text-2xl">{product.name}</p>
-                  <p className="text-lg text-gray-500 line-through">
-                    {product.originalPrice}
-                  </p>
-                  <p className="text-xl font-bold">{product.price}</p>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </section>
+        {renderSwiper("새로운 상품", newProducts)}
       </div>
     </div>
   );

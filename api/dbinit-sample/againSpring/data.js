@@ -143,7 +143,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-40, -60 * 15), // 상품 최신화 등록일 (사용X)
         extra: { 
           isNew: true, // 새로운 상품 (true일 경우 new 아이콘 같은거 표시 가능 / 메인 페이지 노출 가능)
-          isBest: true, // 베스트 상품 (이하 동일)
+          isBest: false, // 베스트 상품 (이하 동일)
           category: ["all-of-list", "bathroom"], // 상품 카테고리 (메뉴 카테고리 별로 상품 분류 작업 가능)
           sort: 5, // 정렬 우선순위 (값이 낮을 수록 목록에서 먼저 표시됨 / 동일한 값일 경우 최신 등록 순으로 표시됨)
         },
@@ -175,7 +175,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-33, -60 * 55),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 4,
         },
@@ -217,7 +217,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-10, -60 * 19),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 3,
         },
@@ -259,7 +259,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-22, -60 * 60 * 3),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
         },
@@ -291,7 +291,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-10, -60 * 56),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           today: true,
           category: ["all-of-list", "bathroom"],
           sort: 2,
@@ -330,7 +330,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-20, -60 * 10),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
         },
@@ -2427,7 +2427,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: "shippingFees",
         title: "배송비",
-        value: 3500,
+        value: 3000,
       },
       {
         _id: "freeShippingFees",
