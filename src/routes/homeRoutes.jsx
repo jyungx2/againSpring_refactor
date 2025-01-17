@@ -17,13 +17,14 @@ import QnAListPage from "@pages/qna/QnAListPage";
 import QnANewPostPage from "@pages/qna/QnANewPostPage";
 import QnAEditPostPage from "@pages/qna/QnAEditPostPage";
 import QnAPostDetailPage from "@pages/qna/QnAPostDetailPage";
-import MainContentSection from "@pages/MainContentSection";
+// import MainContentSection from "@pages/MainContentSection";
 import InfoSection from "@pages/InfoSection";
 import Cart from "@pages/Cart";
 import EventMainPage from "@pages/eventPage/EventMainPage";
 import EventDetailPage from "@pages/eventPage/EventDetailPage";
 import TansoPage from "@pages/tanso/tanso-main";
-import SearchPage from '@pages/SearchPage';
+import SearchPage from "@pages/SearchPage";
+import UncompletedPage from "@pages/user/UncompletedPage";
 
 const homeRoutes = [
   {
@@ -36,7 +37,7 @@ const homeRoutes = [
           <>
             <Slider />
             <MainProducts />
-            <MainContentSection />
+            {/* <MainContentSection /> */}
             <InfoSection />
           </>
         ),
@@ -62,6 +63,7 @@ const homeRoutes = [
       { path: "tanso", element: <TansoPage /> },
       { path: "cart/:userId", element: <Cart /> },
       { path: "/search", element: <SearchPage /> },
+      { path: "/uncompleted", element: <UncompletedPage /> },
     ],
   },
 ];
