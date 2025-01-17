@@ -14,8 +14,6 @@ function Myreview() {
   const order_id = location.state?.bundle._id;
 
   const axios = useAxiosInstance();
-  const queryClient = useQueryClient();
-  // const { type } = useParams();
 
   const [collection, setCollection] = useState([]); // 이미지 파일을 FormData로 변환하여 api 서버로 보내기 위한 상태관리
   const [reviewImage, setReviewImage] = useState([]); // "이미지 미리보기"를 위한 이미지 파일들의 'URL' 상태관리
@@ -27,17 +25,15 @@ function Myreview() {
     formState: { errors },
   } = useForm();
 
-  console.log(watch().attach); // 가장 마지막에 업로드된 이미지파일만 저장
-
   const addReview = useMutation({
     mutationFn: async (formData) => {
       // 리뷰 이미지 등록 로직 구현
       if (collection?.length > 0) {
         const reviewFormData = new FormData();
 
-        // 1. collection 배열에 담긴 모든 파일 추가
-        collection.forEach((file, index) => {
-          reviewFormData.append(`attach[${index}]`, file); // 배열 형태로 추가
+        // 🖍️ 수정사항 1) collection 배열에 담긴 모든 파일 추가
+        collection.forEach((file) => {
+          reviewFormData.append(`attach`, file); // index 지정할 필요 없이, append가 내부적으로 배열형태로 저장
         });
 
         try {
@@ -45,10 +41,12 @@ function Myreview() {
             headers: { "Content-Type": "multipart/form-data" },
           });
 
-          console.log("fileRes: ", fileRes);
-          console.log("fileRes.data: ", fileRes.data);
+          // 🖍️ 수정사항 3)
+          // API 문서에 명시된대로 필수가 아닌, 추가적인 속성은 extra 객체 안에 보내는 것이 원칙, 안전
+          formData.extra = {
+            image: fileRes.data.item,
+          };
 
-          formData.image = fileRes.data.item;
           delete formData.attach;
         } catch (err) {
           console.error("파일 업로드 실패: ", err);
@@ -59,13 +57,12 @@ function Myreview() {
       formData["product_id"] = item._id;
       formData.type = "review";
 
-      console.log(formData);
       return axios.post(`/replies`, formData);
     },
     onSuccess: (formData) => {
       alert("리뷰가 등록되었습니다.");
       console.log("전송된 데이터: ", formData);
-      queryClient.invalidateQueries({ queryKey: ["replies", type] });
+
       // navigate(`/${type}`); // 나의 리뷰 페이지로 이동.(추가작업)
     },
     onError: (err) => {
@@ -88,8 +85,10 @@ function Myreview() {
       console.log("추가된 이미지 URL: ", newImageUrl);
       setReviewImage((prev) => [...prev, newImageUrl]);
 
-      // watch().attach() 호출 결과를 상태에 추가
-      const newAttach = watch().attach; // 호출 결과 가져오기
+      // 🖍️ 수정사항 2) watch('attach') = 하나의 배열, 기존 코드로는 setCollection 함수로 이중 배열을 만든 셈!
+      // collection도 배열인데, 그 안에 newAttach(배열)을 또 넣었으니...
+      // ✅ 기존 코드 : newAttach = watch().attach
+      const newAttach = watch("attach")[0]; // 호출 결과(새로 등록된 이미지파일 ✨하나✨만) 가져오기
       setCollection((prev) => [...prev, newAttach]);
       console.log("collection: ", [...collection, newAttach]);
     }
