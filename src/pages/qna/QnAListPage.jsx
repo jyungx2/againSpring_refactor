@@ -31,7 +31,6 @@ export default function QnAListPage() {
   const [sortOption, setSortOption] = useState(() => {
     const sortParam = searchParams.get('sort');
     if (!sortParam) return 'default';
-    // URL의 sort 파라미터를 옵션값으로 변환하는 로직
     const options = {
       '{"title":1}': 'title-asc',
       '{"title":-1}': 'title-desc',
@@ -43,21 +42,67 @@ export default function QnAListPage() {
     return options[sortParam] || 'default';
   });
 
+  const calculateDateRange = (periodType) => {
+    const currentDate = new Date();
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    switch (periodType) {
+      case 'one-day':
+        return {
+          start: formatDate(new Date(currentDate.getTime() - oneDay)),
+          end: formatDate(currentDate),
+        };
+      case 'one-week':
+        return {
+          start: formatDate(new Date(currentDate.getTime() - oneDay * 7)),
+          end: formatDate(currentDate),
+        };
+      case 'one-month': {
+        const lastMonth = new Date(currentDate);
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+        return {
+          start: formatDate(lastMonth),
+          end: formatDate(currentDate),
+        };
+      }
+      case 'six-month': {
+        const sixMonthsAgo = new Date(currentDate);
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        return {
+          start: formatDate(sixMonthsAgo),
+          end: formatDate(currentDate),
+        };
+      }
+      case 'one-year': {
+        const oneYearAgo = new Date(currentDate);
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+        return {
+          start: formatDate(oneYearAgo),
+          end: formatDate(currentDate),
+        };
+      }
+      default:
+        return {
+          start: '',
+          end: '',
+        };
+    }
+  };
+
   const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ['userInfo'],
     queryFn: () => fetchUserInfo(axios),
   });
 
   const { data: qnaData, isLoading: isQnaLoading } = useQuery({
-    queryKey: [
-      'posts',
-      'qna',
-      currentPage,
-      sortOption,
-      periodType,
-      startDate,
-      endDate,
-    ],
+    queryKey: ['posts', 'qna', currentPage, sortOption],
     queryFn: () =>
       axios.get('/posts', {
         params: {
@@ -66,11 +111,6 @@ export default function QnAListPage() {
           limit,
           ...(sortOption !== 'default' && {
             sort: getSortParamsByOption(sortOption),
-          }),
-          ...(periodType === 'custom' && {
-            // 기간 입력이 선택된 경우에만 날짜 파라미터 추가
-            startDate,
-            endDate,
           }),
         },
       }),
@@ -84,11 +124,17 @@ export default function QnAListPage() {
     }
   }, [qnaData?.item]);
 
+  const formatDateForSearch = (dateString, isEndDate = false) => {
+    const formattedDate = dateString.replace(/-/g, '.');
+    return isEndDate
+      ? `${formattedDate} 23:59:59`
+      : `${formattedDate} 00:00:00`;
+  };
+
   const handleSortChange = (e) => {
     const newSortOption = e.target.value;
     setSortOption(newSortOption);
 
-    // URL 파라미터 업데이트
     const newSearchParams = new URLSearchParams(searchParams);
     if (newSortOption !== 'default') {
       newSearchParams.set('sort', getSortParamsByOption(newSortOption));
@@ -100,17 +146,18 @@ export default function QnAListPage() {
 
   const handlePeriodChange = (newPeriodType) => {
     setPeriodType(newPeriodType);
-    const newSearchParams = new URLSearchParams(searchParams);
 
     if (newPeriodType === 'custom') {
-      newSearchParams.set('startDate', startDate);
-      newSearchParams.set('endDate', endDate);
+      setStartDate(startDate);
+      setEndDate(endDate);
+    } else if (newPeriodType === 'all-day') {
+      setStartDate('');
+      setEndDate('');
     } else {
-      newSearchParams.delete('startDate');
-      newSearchParams.delete('endDate');
+      const { start, end } = calculateDateRange(newPeriodType);
+      setStartDate(start);
+      setEndDate(end);
     }
-
-    navigate(`?${newSearchParams.toString()}`);
   };
 
   const handleDateChange = (type, value) => {
@@ -119,11 +166,6 @@ export default function QnAListPage() {
     } else {
       setEndDate(value);
     }
-
-    // URL 파라미터 업데이트
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set(type === 'start' ? 'startDate' : 'endDate', value);
-    navigate(`?${newSearchParams.toString()}`);
   };
 
   const handleSearchChange = (e) => {
@@ -135,51 +177,87 @@ export default function QnAListPage() {
   };
 
   const handleSearch = () => {
-    const newSearchParams = new URLSearchParams(searchParams);
+    console.log('=== 검색 시작 ===');
+    const newSearchParams = new URLSearchParams();
 
-    if (searchText.trim()) {
-      // 검색어가 있을 때
-      newSearchParams.set('keyword', searchText);
-      newSearchParams.set('searchType', searchType);
-    } else {
-      // 검색어가 없을 때
-      newSearchParams.delete('keyword');
-      newSearchParams.delete('searchType');
-      setFilteredData(qnaData.item);
-      navigate(`?${newSearchParams.toString()}`);
-      return;
-    }
-
-    newSearchParams.set('page', '1');
-
-    navigate(`?${newSearchParams.toString()}`);
-
-    let apiSearchParams = {
+    let defaultSearchParams = {
       type: 'qna',
       page: 1,
       limit,
-      keyword: searchText,
-      searchType: searchType,
     };
+
+    console.log('검색어:', searchText.trim() ? searchText : '없음');
+    console.log('검색 타입:', searchType);
+
+    if (searchText.trim()) {
+      newSearchParams.set('keyword', searchText);
+      newSearchParams.set('searchType', searchType);
+      defaultSearchParams.keyword = searchText;
+      defaultSearchParams.searchType = searchType;
+    }
+
+    console.log('기간 타입:', periodType);
+    console.log('시작일:', startDate || '없음');
+    console.log('종료일:', endDate || '없음');
+
+    if (periodType !== 'all-day') {
+      if (periodType === 'custom' && startDate && endDate) {
+        defaultSearchParams.custom = JSON.stringify({
+          createdAt: {
+            $gte: formatDateForSearch(startDate),
+            $lt: formatDateForSearch(endDate, true),
+          },
+        });
+        newSearchParams.set('startDate', startDate);
+        newSearchParams.set('endDate', endDate);
+      } else if (periodType !== 'custom') {
+        const { start, end } = calculateDateRange(periodType);
+        defaultSearchParams.custom = JSON.stringify({
+          createdAt: {
+            $gte: formatDateForSearch(start),
+            $lt: formatDateForSearch(end, true),
+          },
+        });
+        newSearchParams.set('startDate', start);
+        newSearchParams.set('endDate', end);
+      }
+    }
+
+    if (sortOption !== 'default') {
+      const sortParam = getSortParamsByOption(sortOption);
+      newSearchParams.set('sort', sortParam);
+      defaultSearchParams.sort = sortParam;
+      console.log('정렬 옵션:', sortOption);
+    }
+
+    newSearchParams.set('page', '1');
+    console.log('최종 URL 파라미터:', newSearchParams.toString());
+    console.log('최종 API 파라미터:', defaultSearchParams);
+
+    navigate(`?${newSearchParams.toString()}`);
 
     axios
       .get('/posts', {
-        params: apiSearchParams,
+        params: defaultSearchParams,
       })
       .then((response) => {
-        let results = response.data.item;
-        setFilteredData(results);
+        console.log('검색 결과:', response.data);
+        setFilteredData(response.data.item || []);
       })
       .catch((error) => {
         console.error('검색 중 오류 발생', error);
+        setFilteredData([]);
+      })
+      .finally(() => {
+        console.log('=== 검색 종료 ===');
       });
   };
 
   const getSortParamsByOption = (sortOption) => {
     const sortParams = {
       default: undefined,
-      'title-asc': JSON.stringify({ title: 1 }), // 오름차순
-      'title-desc': JSON.stringify({ title: -1 }), // 내림차순
+      'title-asc': JSON.stringify({ title: 1 }),
+      'title-desc': JSON.stringify({ title: -1 }),
       'date-asc': JSON.stringify({ createdAt: 1 }),
       'date-desc': JSON.stringify({ createdAt: -1 }),
       'view-asc': JSON.stringify({ views: 1 }),
@@ -192,6 +270,20 @@ export default function QnAListPage() {
   const getPageLink = (pageNum) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', pageNum.toString());
+
+    if (searchText.trim()) {
+      params.set('keyword', searchText);
+      params.set('searchType', searchType);
+    }
+
+    if (periodType !== 'all-day') {
+      params.set('periodType', periodType);
+      if (periodType === 'custom') {
+        if (startDate) params.set('startDate', startDate);
+        if (endDate) params.set('endDate', endDate);
+      }
+    }
+
     if (sortOption !== 'default') {
       params.set('sort', getSortParamsByOption(sortOption));
     }
@@ -222,7 +314,6 @@ export default function QnAListPage() {
 
   const qnaPostList = searchText.trim() ? (
     filteredData.length > 0 ? (
-      // 검색 결과가 있을 때
       filteredData.map((item, index) => (
         <QnAListItem
           key={item._id}
@@ -231,7 +322,6 @@ export default function QnAListPage() {
         />
       ))
     ) : (
-      // 검색 결과가 없을 때
       <tr>
         <td colSpan='4' className='text-center py-16'>
           <div className='flex flex-col items-center gap-2'>
@@ -258,7 +348,6 @@ export default function QnAListPage() {
       </tr>
     )
   ) : (
-    // 검색어가 없을 때
     qnaData.item.map((item, index) => (
       <QnAListItem
         key={item._id}
