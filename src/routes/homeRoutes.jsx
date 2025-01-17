@@ -23,7 +23,7 @@ import Cart from "@pages/Cart";
 import EventMainPage from "@pages/eventPage/EventMainPage";
 import EventDetailPage from "@pages/eventPage/EventDetailPage";
 import TansoPage from "@pages/tanso/tanso-main";
-import SearchPage from "@pages/SearchPage";
+import SearchPage from "@pages/searchPage";
 import UncompletedPage from "@pages/user/UncompletedPage";
 
 const homeRoutes = [
