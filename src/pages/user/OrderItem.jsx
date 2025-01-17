@@ -2,10 +2,11 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 OrderItem.propTypes = {
+  bundle: PropTypes.object,
   products: PropTypes.array,
 };
 
-function OrderItem({ products }) {
+function OrderItem({ bundle, products }) {
   const navigate = useNavigate();
 
   const renderedItem = products.map((item) => {
@@ -55,7 +56,7 @@ function OrderItem({ products }) {
           <button
             type="button"
             className="text-[16px] text-primary-60 border border-primary-60 h-[46px] rounded-lg"
-            onClick={() => navigate("/review")}
+            onClick={() => navigate("/review", { state: { bundle, item } })}
           >
             리뷰 작성하기
           </button>
