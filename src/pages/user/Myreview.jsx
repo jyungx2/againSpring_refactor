@@ -47,6 +47,8 @@ function Myreview() {
       formData["order_id"] = order_id;
       formData["product_id"] = item._id;
       formData.type = "review";
+
+      console.log(formData);
       return axios.post(`/replies`, formData);
     },
     onSuccess: (formData) => {
@@ -65,8 +67,8 @@ function Myreview() {
     const file = e.target.files[0]; // 사용자가 업로드한 파일
     console.log("file: ", file);
     if (file) {
-      if (reviewImage.length >= 3) {
-        alert("최대 3개까지만 등록 가능합니다.");
+      if (reviewImage.length >= 10) {
+        alert("최대 10개까지만 등록 가능합니다.");
         return;
       }
 
@@ -132,38 +134,41 @@ function Myreview() {
 
             <div className="flex items-start p-[30px] text-[16px] border-t border-grey-30 gap-[60px]">
               <h2 className="font-gowunBold text-[20px]">사진첨부</h2>
-              <label
-                htmlFor="attach"
-                className="font-gowunBold h-[42px] leading-[42px] text-primary-70 text-[16px] px-[24px] border border-primary-30 rounded-[2px] box-border cursor-pointer"
-              >
-                사진 첨부하기
-              </label>
-              <input
-                type="file"
-                id="attach"
-                accept="image/*"
-                className="hidden"
-                {...register("attach", {
-                  onChange: (e) => {
-                    handlePictureShow(e);
-                  },
-                })}
-              />
-              <div
-                id="added-pictures"
-                className="flex gap-2 border border-grey-20 rounded-lg"
-              >
-                {reviewImage?.map((image, i) => {
-                  return (
-                    <div key={i} className="w-[80px] h-[80px] rounded-lg">
-                      <img
-                        src={image}
-                        alt={`리뷰사진 미리보기 ${i + 1}`}
-                        className="w-full h-full object-cover p-1"
-                      />
-                    </div>
-                  );
-                })}
+
+              <div className="flex flex-col gap-8">
+                <div className="flex items-center gap-8">
+                  <label
+                    htmlFor="attach"
+                    className="font-gowunBold h-[42px] leading-[42px] text-primary-70 text-[16px] px-[24px] border border-primary-30 rounded-[2px] box-border cursor-pointer"
+                  >
+                    사진 첨부하기
+                  </label>
+                  <p className="font-gowunBold">{reviewImage.length} / 10</p>
+                  <input
+                    type="file"
+                    id="attach"
+                    accept="image/*"
+                    className="hidden"
+                    {...register("attach", {
+                      onChange: (e) => {
+                        handlePictureShow(e);
+                      },
+                    })}
+                  />
+                </div>
+                <div className="flex gap-2">
+                  {reviewImage?.map((image, i) => {
+                    return (
+                      <div key={i} className="w-[80px] h-[80px] rounded-lg">
+                        <img
+                          src={image}
+                          alt={`리뷰사진 미리보기 ${i + 1}`}
+                          className="w-full h-full object-cover p-1"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
