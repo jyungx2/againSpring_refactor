@@ -33,7 +33,6 @@ export default function QnAPostDetailPage() {
   });
 
   useEffect(() => {
-    // 상품 정보가 있고, 필요한 데이터가 모두 존재할 때만 selectedProduct 설정
     if (data?.item?.product?.name?.[0] && data?.item?.product?._id?.[0]) {
       setSelectedProduct({
         ...data.item.product,
@@ -47,14 +46,12 @@ export default function QnAPostDetailPage() {
 
     if (data?.item?.replies) {
       setReplies(data.item.replies);
-      // admin 답변 여부 체크
       const adminReplyExists = data.item.replies.some(
         (reply) => reply.user?.email === 'admin@market.com'
       );
       setHasAdminReply(adminReplyExists);
     }
 
-    // 이전글 다음글 찾는 로직
     async function findPreNextPostInfo(id) {
       try {
         const response = await axios.get(`/posts`, {
@@ -69,7 +66,6 @@ export default function QnAPostDetailPage() {
           const itemList = response?.data?.item;
 
           if (nowIndexData.index > 0) {
-            // 이전글 구하기
             setNextNumberLink(
               `/qna/detail/${itemList[Number(nowIndexData.index) - 1]?._id}`
             );
@@ -100,7 +96,6 @@ export default function QnAPostDetailPage() {
     findPreNextPostInfo(id);
   }, [data]);
 
-  // 두 가지 모두 제공하는 유틸리티 함수
   function findItemById(objectList, searchId) {
     const index = objectList.findIndex((item) => {
       return item._id == searchId;
@@ -111,11 +106,9 @@ export default function QnAPostDetailPage() {
     };
   }
 
-  // 게시글 삭제
   const deletePost = useMutation({
     mutationFn: () => axios.delete(`/posts/${id}`),
     onSuccess: () => {
-      // 상세 페이지 쿼리는 삭제하고, 목록 쿼리만 무효화
       queryClient.removeQueries(['qnaDetail', id]);
       queryClient.invalidateQueries(['posts']);
       MySwal.fire({
@@ -179,7 +172,7 @@ export default function QnAPostDetailPage() {
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
         Q&A
       </h1>
-      {/* 상품 정보 불러오기 - 상품 정보가 있을 때만 렌더링 */}
+
       {selectedProduct && (
         <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
           <div className='mr-6 relative'>
@@ -206,7 +199,6 @@ export default function QnAPostDetailPage() {
       )}
 
       <section className='flex flex-col'>
-        {/* 게시글 헤더 */}
         <div className='border-t border-black'>
           <div className='flex items-center gap-[100px] py-4 border-b border-grey-10'>
             <label
@@ -265,7 +257,6 @@ export default function QnAPostDetailPage() {
           </div>
         </div>
 
-        {/* 댓글 섹션 */}
         <CommentList
           comments={replies}
           setReplies={setReplies}
@@ -273,7 +264,6 @@ export default function QnAPostDetailPage() {
           post={data.item}
         />
 
-        {/* 하단 네비게이션 */}
         <div className='border-t border-grey-10 pt-8 pb-4'>
           <div className='flex justify-between mb-5'>
             <button

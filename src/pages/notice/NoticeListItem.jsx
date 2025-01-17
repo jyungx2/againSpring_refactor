@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 
 export default function NoticeListItem({ item }) {
-  // content에서 첫 번째 이미지 URL 추출
   const firstImageUrl = useMemo(() => {
     if (!item.content) return null;
 
     try {
-      // Quill content에서 첫 번째 img 태그의 src 추출을 위한 정규식
       const imgRegex = /<img[^>]+src="([^">]+)"/;
       const match = item.content.match(imgRegex);
 
-      // 매칭된 이미지 URL이 없으면 반환
       return match ? match[1] : null;
     } catch (error) {
       console.error('에러: ', error);

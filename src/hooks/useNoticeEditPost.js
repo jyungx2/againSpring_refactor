@@ -15,7 +15,6 @@ export const useNoticeEditPost = (post, initialData = null, returnPath) => {
   const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
 
-  // Quill 인스턴스가 설정되면 내용을 업데이트
   useEffect(() => {
     if (quillInstance && originalData?.content) {
       quillInstance.root.innerHTML = originalData.content;
@@ -33,7 +32,6 @@ export const useNoticeEditPost = (post, initialData = null, returnPath) => {
         setContent(data.content);
         setOriginalData(data);
 
-        // Quill 에디터 내용 설정
         if (quillInstance) {
           quillInstance.root.innerHTML = data.content;
         }
@@ -102,7 +100,7 @@ export const useNoticeEditPost = (post, initialData = null, returnPath) => {
   const handleCancel = () => {
     const hasChanges =
       title !== originalData?.title ||
-      quillInstance?.root.innerHTML !== originalData?.content
+      quillInstance?.root.innerHTML !== originalData?.content;
 
     if (hasChanges) {
       MySwal.fire({

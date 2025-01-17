@@ -26,7 +26,6 @@ export default function QnANewPostPage() {
     formats: QUILL_FORMATS,
   });
 
-  // Modal 열 때 현재 선택 정보 저장
   const openModal = () => {
     setPreviousSelection(selectedProduct);
     setIsModalOpen(true);
@@ -97,7 +96,6 @@ export default function QnANewPostPage() {
     }
   };
 
-  // Quill 에디터 이미지 핸들러 등록
   useEffect(() => {
     if (quill) {
       quill
@@ -106,7 +104,6 @@ export default function QnANewPostPage() {
     }
   }, [quill]);
 
-  // 취소 확인 버튼
   const handleCancel = () => {
     const hasContent =
       title.trim() !== '' || (quill && quill.getText().trim() !== '');
@@ -173,7 +170,6 @@ export default function QnANewPostPage() {
         const response = await axios.post('/posts', data);
 
         if (response.data.ok === 1) {
-          // Q&A 목록 쿼리 무효화
           await queryClient.invalidateQueries({ queryKey: ['posts', 'qna'] });
 
           MySwal.fire({
@@ -207,7 +203,6 @@ export default function QnANewPostPage() {
         Q&A
       </h1>
 
-      {/* 상품 정보 표시 */}
       <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
         <div className='mr-6 relative'>
           {selectedProduct?.mainImages?.length > 0 ? (
@@ -256,7 +251,6 @@ export default function QnANewPostPage() {
         </div>
       </div>
 
-      {/* 제목 입력 */}
       <input
         className='w-full mb-4 box-border border py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
@@ -265,14 +259,12 @@ export default function QnANewPostPage() {
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      {/* Quill 에디터 */}
       <div className='w-full'>
         <div className='min-h-[400px] h-[60vh] max-h-[800px]'>
           <div ref={quillRef} className='h-full' />
         </div>
       </div>
 
-      {/* 버튼 그룹 */}
       <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         <button
           onClick={handleSave}
@@ -288,7 +280,6 @@ export default function QnANewPostPage() {
         </button>
       </div>
 
-      {/* 상품 선택 모달 */}
       {isModalOpen && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
           <div className='bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[calc(100vh-2rem)] overflow-hidden'>

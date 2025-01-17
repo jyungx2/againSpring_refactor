@@ -53,8 +53,8 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
   const getSortParamsByOption = (sortOption) => {
     const sortParams = {
       default: undefined,
-      'price-asc': JSON.stringify({ price: 1 }), // 오름차순
-      'price-desc': JSON.stringify({ price: -1 }), // 내림차순
+      'price-asc': JSON.stringify({ price: 1 }),
+      'price-desc': JSON.stringify({ price: -1 }),
       review: JSON.stringify({ replies: -1 }),
     };
 
@@ -64,7 +64,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
   const loadProductData = async (params) => {
     setLoading(true);
     try {
-      // apiParams 변환 과정 제거하고 params 직접 전달
       const response = await axiosInstance.get('/products', { params });
 
       setProducts(response.data.item);
@@ -99,7 +98,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     const params = {
       page: currentPage,
       limit: currentLimit,
-      ...(currentKeyword && { keyword: currentKeyword }), // title -> keyword
+      ...(currentKeyword && { keyword: currentKeyword }),
     };
 
     loadProductData(params);
@@ -260,7 +259,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
 
   return (
     <div className='max-h-[calc(100vh-4rem)] flex flex-col'>
-      {/* 헤더 영역 */}
       <header className='bg-primary-40 text-white p-3 flex justify-between items-center'>
         <h2 className='text-lg font-medium'>상품검색</h2>
         <button
@@ -272,9 +270,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
         </button>
       </header>
 
-      {/* 메인 콘텐츠 영역 */}
       <main className='p-6 flex-1 flex flex-col min-h-0'>
-        {/* 검색 폼 */}
         <form
           onSubmit={handleSearch}
           className='bg-white rounded mb-4 border border-grey-20 p-4'
@@ -303,7 +299,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
           </div>
         </form>
 
-        {/* 검색 결과 요약 & 정렬 옵션 */}
         <div className='flex justify-between items-center mb-4'>
           <p className='text-lg text-grey-60'>
             총 <span className='font-medium'>{searchCount}</span>개의 상품이
@@ -322,7 +317,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
           </select>
         </div>
 
-        {/* 검색 결과 테이블 */}
         <div className='flex-1 min-h-0 overflow-auto'>
           <table className='w-full border-t border-grey-20'>
             <thead>
@@ -413,14 +407,12 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
           </table>
         </div>
 
-        {/* 페이지네이션 */}
         {!loading && products.length > 0 && (
           <div className='mt-6'>
             <Pagination />
           </div>
         )}
 
-        {/* 하단 버튼 영역 */}
         <div className='flex justify-center gap-4 mt-6'>
           <button
             onClick={handleSelect}

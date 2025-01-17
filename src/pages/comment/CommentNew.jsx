@@ -21,9 +21,8 @@ const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
       setReplies([...comments, newComment]);
       setContent('');
 
-      // 게시글 상세 정보 쿼리 무효화
       queryClient.invalidateQueries(['qnaDetail', post._id.toString()]);
-      // 게시글 목록 쿼리 무효화
+
       queryClient.invalidateQueries(['posts']);
 
       MySwal.fire({

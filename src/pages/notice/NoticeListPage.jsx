@@ -170,7 +170,6 @@ export default function NoticeListPage() {
     setSearchText(e.target.value);
   };
 
-
   const handleSearch = () => {
     console.log('=== 검색 시작 ===');
     const newSearchParams = new URLSearchParams();
@@ -382,8 +381,7 @@ export default function NoticeListPage() {
       </div>
 
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-        {/* 페이지네이션 영역 */}
-        {totalPages > 1 && ( // 전체 페이지가 1보다 클 때만 표시
+        {totalPages > 1 && (
           <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
             {showPrevButton && (
               <Link
@@ -457,7 +455,7 @@ export default function NoticeListPage() {
             />
           </div>
         )}
-        
+
         <input
           type='text'
           value={searchText}

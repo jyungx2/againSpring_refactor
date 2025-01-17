@@ -6,16 +6,14 @@ import useAxiosInstance from '@hooks/useAxiosInstance';
 const QnAListItem = ({ item, number }) => {
   const axios = useAxiosInstance();
 
-  // 댓글 목록을 조회하는 쿼리
   const { data: repliesData } = useQuery({
     queryKey: ['replies', item._id],
     queryFn: () => axios.get(`/posts/${item._id}/replies`),
     select: (res) => res.data,
-    staleTime: 1000 * 60, // 1분
-    cacheTime: 1000 * 60 * 5, // 5분
+    staleTime: 1000 * 60,
+    cacheTime: 1000 * 60 * 5,
   });
 
-  // 관리자 답변 여부 확인
   const hasAdminReply = repliesData?.item?.some(
     (reply) => reply.user?.email === 'admin@market.com'
   );

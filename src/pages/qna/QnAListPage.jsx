@@ -6,7 +6,6 @@ import useAxiosInstance from '@hooks/useAxiosInstance';
 import QnAListItem from './QnAListItem';
 import { useEffect, useState } from 'react';
 
-// 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
   const response = await axios.get('/users');
   return response.data;
@@ -395,8 +394,7 @@ export default function QnAListPage() {
         </table>
       </div>
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-        {/* 페이지네이션 영역 */}
-        {totalPages > 1 && ( // 전체 페이지가 1보다 클 때만 표시
+        {totalPages > 1 && (
           <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
             {showPrevButton && (
               <Link
@@ -469,7 +467,7 @@ export default function QnAListPage() {
             />
           </div>
         )}
-        
+
         <input
           type='text'
           value={searchText}

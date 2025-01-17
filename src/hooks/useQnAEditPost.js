@@ -17,7 +17,6 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
   const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
 
-  // Quill 인스턴스가 설정되면 내용을 업데이트
   useEffect(() => {
     if (quillInstance && originalData?.content) {
       quillInstance.root.innerHTML = originalData.content;
@@ -35,7 +34,6 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
         setContent(data.content);
         setOriginalData(data);
 
-        // 상품 정보가 있는 경우 상품 데이터 조회
         if (data.product?._id) {
           setIsProductPost(true);
           setSelectedProduct({
@@ -48,13 +46,11 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
           setSelectedProduct(null);
         }
 
-        // Quill 에디터 내용 설정
         if (quillInstance) {
           quillInstance.root.innerHTML = data.content;
         }
       }
     } catch (error) {
-      // ... 에러 처리
       console.error('에러: ', error);
     } finally {
       setIsLoading(false);
@@ -84,18 +80,14 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
     try {
       setIsLoading(true);
 
-      // 업데이트할 데이터 객체 생성
       const updateData = {
         title,
         content: currentContent,
       };
 
-      // selectedProduct가 있을 때만 product_id 추가
       if (selectedProduct) {
         updateData.product_id = selectedProduct._id;
       } else {
-        // selectedProduct가 null일 때 (상품이 제거되었을 때)
-        // product_id를 명시적으로 null로 설정하여 상품 연결 해제
         updateData.product_id = null;
       }
 

@@ -21,7 +21,6 @@ export default function NoticeNewPostPage() {
     formats: QUILL_FORMATS,
   });
 
-  // Quill 에디터 이미지 핸들러 등록
   useEffect(() => {
     if (quill) {
       quill
@@ -30,7 +29,6 @@ export default function NoticeNewPostPage() {
     }
   }, [quill]);
 
-  // 취소 확인 버튼
   const handleCancel = () => {
     const hasContent =
       title.trim() !== '' || (quill && quill.getText().trim() !== '');
@@ -93,7 +91,6 @@ export default function NoticeNewPostPage() {
         const response = await axios.post('/posts', data);
 
         if (response.data.ok === 1) {
-          // Notice 목록 쿼리 무효화
           await queryClient.invalidateQueries({
             queryKey: ['posts', 'notice'],
           });
@@ -129,7 +126,6 @@ export default function NoticeNewPostPage() {
         공지사항
       </h1>
 
-      {/* 제목 입력 */}
       <input
         className='w-full mb-4 box-border border border-black py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
@@ -138,14 +134,12 @@ export default function NoticeNewPostPage() {
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      {/* Quill 에디터 */}
       <div className='w-full'>
         <div className='min-h-[400px] h-[60vh] max-h-[800px]'>
           <div ref={quillRef} className='h-full' />
         </div>
       </div>
 
-      {/* 버튼 그룹 */}
       <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         <button
           onClick={handleSave}

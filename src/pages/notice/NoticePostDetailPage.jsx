@@ -26,14 +26,12 @@ export default function NoticePostDetailPage() {
     select: (res) => res.data,
   });
 
-  // 현재 사용자가 관리자이고 게시글 작성자인지 확인하는 함수
   const isAuthorizedToEdit = () => {
     if (!user || !data?.item) return false;
     return user.type === 'admin' && user.id === data.item.user_id;
   };
 
   useEffect(() => {
-    // 이전글 다음글 찾는 로직
     async function findPreNextPostInfo(id) {
       try {
         const response = await axios.get(`/posts`, {
@@ -48,7 +46,6 @@ export default function NoticePostDetailPage() {
           const itemList = response?.data?.item;
 
           if (nowIndexData.index > 0) {
-            // 이전글 구하기
             setNextNumberLink(
               `/notice/detail/${itemList[Number(nowIndexData.index) - 1]?._id}`
             );
@@ -79,7 +76,6 @@ export default function NoticePostDetailPage() {
     findPreNextPostInfo(id);
   }, [data]);
 
-  // 두 가지 모두 제공하는 유틸리티 함수
   function findItemById(objectList, searchId) {
     const index = objectList.findIndex((item) => {
       return item._id == searchId;
@@ -90,11 +86,9 @@ export default function NoticePostDetailPage() {
     };
   }
 
-  // 게시글 삭제
   const deletePost = useMutation({
     mutationFn: () => axios.delete(`/posts/${id}`),
     onSuccess: () => {
-      // 상세 페이지 쿼리는 삭제하고, 목록 쿼리만 무효화
       queryClient.removeQueries(['noticeDetail', id]);
       queryClient.invalidateQueries(['posts']);
       MySwal.fire({
@@ -158,7 +152,6 @@ export default function NoticePostDetailPage() {
       </h1>
 
       <section className='flex flex-col'>
-        {/* 게시글 헤더 */}
         <div className='border-t border-black'>
           <div className='flex items-center gap-[100px] py-4 border-b border-grey-10'>
             <label
@@ -207,7 +200,6 @@ export default function NoticePostDetailPage() {
           </div>
         </div>
 
-        {/* 하단 네비게이션 */}
         <div className='border-t border-grey-10 pt-4 pb-2'>
           <div className='flex justify-between mb-4'>
             <button

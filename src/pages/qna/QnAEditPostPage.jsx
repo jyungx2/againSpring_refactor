@@ -16,7 +16,6 @@ export default function QnAEditPostPage() {
   const closeModal = () => setIsModalOpen(false);
   const { id } = useParams();
   const MySwal = withReactContent(Swal);
-  const [isProductRemoved, setIsProductRemoved] = useState(false);
 
   const { quill, quillRef } = useQuill({
     modules: QUILL_MODULES,
@@ -26,7 +25,7 @@ export default function QnAEditPostPage() {
   const {
     title,
     setTitle,
-    content,
+    // content,
     isLoading,
     setQuillInstance,
     handleUpdate,
@@ -73,7 +72,6 @@ export default function QnAEditPostPage() {
         Q&A
       </h1>
 
-      {/* 상품 정보 불러오기 - 상품 정보가 있을 때만 렌더링 */}
       {isProductPost &&
         (selectedProduct ? (
           <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
@@ -176,7 +174,6 @@ export default function QnAEditPostPage() {
         </button>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
           <div className='bg-white rounded-lg shadow-lg max-w-3xl w-full mx-4'>
