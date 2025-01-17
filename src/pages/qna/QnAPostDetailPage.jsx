@@ -9,28 +9,41 @@ import { useEffect, useState } from 'react';
 import useUserStore from '@store/userStore';
 
 export default function QnAPostDetailPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { user } = useUserStore();
+
   const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
-  const navigate = useNavigate();
-  const [replies, setReplies] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const { id } = useParams();
-  const queryClient = useQueryClient();
-  const [hasAdminReply, setHasAdminReply] = useState(false);
 
-  const [previousNumberLink, setPreviousNumberLink] = useState();
-  const [previousTitle, setPreviousTitle] = useState();
-  const [nextNumberLink, setNextNumberLink] = useState();
-  const [nextTitle, setNextTitle] = useState();
-
-  const { user } = useUserStore();
-  const isAdmin = user?.type === 'admin';
+  const [navigationLinks, setNavigationLinks] = useState({
+    previous: { link: undefined, title: undefined },
+    next: { link: undefined, title: undefined },
+  });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['qnaDetail', id],
     queryFn: () => axios.get(`/posts/${id}`),
     select: (res) => res.data,
   });
+
+  const [replies, setReplies] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [hasAdminReply, setHasAdminReply] = useState(false);
+
+  const isAdmin = user?.type === 'admin';
+  const canEditDelete = isAdmin || user?._id === data?.item?.user?._id;
+
+  function findItemById(objectList, searchId) {
+    const index = objectList.findIndex((item) => {
+      return item._id == searchId;
+    });
+    return {
+      item: index !== -1 ? objectList[index] : null,
+      index: index,
+    };
+  }
 
   useEffect(() => {
     if (data?.item?.product?.name?.[0] && data?.item?.product?._id?.[0]) {
@@ -66,25 +79,37 @@ export default function QnAPostDetailPage() {
           const itemList = response?.data?.item;
 
           if (nowIndexData.index > 0) {
-            setNextNumberLink(
-              `/qna/detail/${itemList[Number(nowIndexData.index) - 1]?._id}`
-            );
-            setNextTitle(`${itemList[Number(nowIndexData.index) - 1]?.title}`);
+            setNavigationLinks((prev) => ({
+              ...prev,
+              next: {
+                link: `/qna/detail/${
+                  itemList[Number(nowIndexData.index) - 1]?._id
+                }`,
+                title: itemList[Number(nowIndexData.index) - 1]?.title,
+              },
+            }));
           } else {
-            setNextNumberLink(`#`);
-            setNextTitle('');
+            setNavigationLinks((prev) => ({
+              ...prev,
+              next: { link: '#', title: '' },
+            }));
           }
 
           if (nowIndexData.index < itemList.length - 1) {
-            setPreviousNumberLink(
-              `/qna/detail/${itemList[Number(nowIndexData.index) + 1]?._id}`
-            );
-            setPreviousTitle(
-              `${itemList[Number(nowIndexData.index) + 1]?.title}`
-            );
+            setNavigationLinks((prev) => ({
+              ...prev,
+              previous: {
+                link: `/qna/detail/${
+                  itemList[Number(nowIndexData.index) + 1]?._id
+                }`,
+                title: itemList[Number(nowIndexData.index) + 1]?.title,
+              },
+            }));
           } else {
-            setPreviousNumberLink(`#`);
-            setPreviousTitle('');
+            setNavigationLinks((prev) => ({
+              ...prev,
+              previous: { link: '#', title: '' },
+            }));
           }
         }
       } catch (error) {
@@ -95,16 +120,6 @@ export default function QnAPostDetailPage() {
 
     findPreNextPostInfo(id);
   }, [data]);
-
-  function findItemById(objectList, searchId) {
-    const index = objectList.findIndex((item) => {
-      return item._id == searchId;
-    });
-    return {
-      item: index !== -1 ? objectList[index] : null,
-      index: index,
-    };
-  }
 
   const deletePost = useMutation({
     mutationFn: () => axios.delete(`/posts/${id}`),
@@ -124,7 +139,7 @@ export default function QnAPostDetailPage() {
     },
   });
 
-  const deleteCheckBtn = async () => {
+  const handleDelete = async () => {
     const result = await MySwal.fire({
       title: '게시글을 삭제하시겠습니까?',
       text: '삭제된 게시글은 복구할 수 없습니다.',
@@ -164,8 +179,6 @@ export default function QnAPostDetailPage() {
       </div>
     );
   }
-
-  const canEditDelete = isAdmin || user?._id === data?.item?.user?._id;
 
   return (
     <div className='w-[1200px] mx-auto px-6 py-4'>
@@ -283,7 +296,7 @@ export default function QnAPostDetailPage() {
                 <button
                   type='button'
                   className='border border-grey-10 rounded px-9 py-2 text-xl'
-                  onClick={deleteCheckBtn}
+                  onClick={handleDelete}
                 >
                   삭제
                 </button>
@@ -298,10 +311,10 @@ export default function QnAPostDetailPage() {
                   <span className='text-base mr-2'>▲</span>다음글
                 </div>
                 <Link
-                  to={nextNumberLink}
+                  to={navigationLinks.next.link}
                   className='flex-1 px-4 py-4 text-xl text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  {nextTitle || '다음 글이 없습니다'}
+                  {navigationLinks.next.title || '다음 글이 없습니다'}
                 </Link>
               </div>
               <div className='flex items-center min-h-[60px]'>
@@ -309,10 +322,10 @@ export default function QnAPostDetailPage() {
                   <span className='text-base mr-2'>▼</span>이전글
                 </div>
                 <Link
-                  to={previousNumberLink}
+                  to={navigationLinks.previous.link}
                   className='flex-1 px-4 py-4 text-xl text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  {previousTitle || '이전 글이 없습니다'}
+                  {navigationLinks.previous.title || '이전 글이 없습니다'}
                 </Link>
               </div>
             </div>

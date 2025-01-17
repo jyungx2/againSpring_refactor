@@ -12,19 +12,32 @@ import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function QnANewPostPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [previousSelection, setPreviousSelection] = useState(null);
-  const [error, setError] = useState(null);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const axios = useAxiosInstance();
+
   const [title, setTitle] = useState('');
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [previousSelection, setPreviousSelection] = useState(null);
+  const [error, setError] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { quill, quillRef } = useQuill({
     modules: QUILL_MODULES,
     formats: QUILL_FORMATS,
   });
+
+  useEffect(() => {
+    if (quill) {
+      quill
+        .getModule('toolbar')
+        .addHandler('image', () => handleImageUpload(quill));
+    }
+  }, [quill]);
+
+  const MySwal = withReactContent(Swal);
 
   const openModal = () => {
     setPreviousSelection(selectedProduct);
@@ -55,24 +68,6 @@ export default function QnANewPostPage() {
     setIsModalOpen(false);
   };
 
-  const handleProductRemove = () => {
-    MySwal.fire({
-      title: '선택된 상품을 제거하시겠습니까?',
-      text: '제거된 상품 정보는 복구할 수 없습니다.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네',
-      cancelButtonText: '아니오',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setSelectedProduct(null);
-        MySwal.fire('제거 완료', '선택된 상품이 제거되었습니다.', 'success');
-      }
-    });
-  };
-
   const handleProductSelect = (product) => {
     try {
       if (!product || !product._id) {
@@ -96,13 +91,23 @@ export default function QnANewPostPage() {
     }
   };
 
-  useEffect(() => {
-    if (quill) {
-      quill
-        .getModule('toolbar')
-        .addHandler('image', () => handleImageUpload(quill));
-    }
-  }, [quill]);
+  const handleProductRemove = () => {
+    MySwal.fire({
+      title: '선택된 상품을 제거하시겠습니까?',
+      text: '제거된 상품 정보는 복구할 수 없습니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '네',
+      cancelButtonText: '아니오',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setSelectedProduct(null);
+        MySwal.fire('제거 완료', '선택된 상품이 제거되었습니다.', 'success');
+      }
+    });
+  };
 
   const handleCancel = () => {
     const hasContent =
@@ -136,8 +141,6 @@ export default function QnANewPostPage() {
       navigate('/qna');
     }
   };
-
-  const axios = useAxiosInstance();
 
   const handleSave = async () => {
     let productId = selectedProduct?._id;

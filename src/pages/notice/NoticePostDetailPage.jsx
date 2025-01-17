@@ -8,17 +8,18 @@ import useUserStore from '@store/userStore';
 import { useEffect, useState } from 'react';
 
 export default function NoticePostDetailPage() {
-  const axios = useAxiosInstance();
-  const MySwal = withReactContent(Swal);
-  const navigate = useNavigate();
   const { id } = useParams();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user } = useUserStore();
 
-  const [previousNumberLink, setPreviousNumberLink] = useState();
-  const [previousTitle, setPreviousTitle] = useState();
-  const [nextNumberLink, setNextNumberLink] = useState();
-  const [nextTitle, setNextTitle] = useState();
+  const axios = useAxiosInstance();
+  const MySwal = withReactContent(Swal);
+
+  const [navigationLinks, setNavigationLinks] = useState({
+    previous: { link: undefined, title: undefined },
+    next: { link: undefined, title: undefined },
+  });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['noticeDetail', id],
@@ -30,6 +31,16 @@ export default function NoticePostDetailPage() {
     if (!user || !data?.item) return false;
     return user.type === 'admin' && user.id === data.item.user_id;
   };
+
+  function findItemById(objectList, searchId) {
+    const index = objectList.findIndex((item) => {
+      return item._id == searchId;
+    });
+    return {
+      item: index !== -1 ? objectList[index] : null,
+      index: index,
+    };
+  }
 
   useEffect(() => {
     async function findPreNextPostInfo(id) {
@@ -46,25 +57,37 @@ export default function NoticePostDetailPage() {
           const itemList = response?.data?.item;
 
           if (nowIndexData.index > 0) {
-            setNextNumberLink(
-              `/notice/detail/${itemList[Number(nowIndexData.index) - 1]?._id}`
-            );
-            setNextTitle(`${itemList[Number(nowIndexData.index) - 1]?.title}`);
+            setNavigationLinks((prev) => ({
+              ...prev,
+              next: {
+                link: `/notice/detail/${
+                  itemList[Number(nowIndexData.index) - 1]?._id
+                }`,
+                title: itemList[Number(nowIndexData.index) - 1]?.title,
+              },
+            }));
           } else {
-            setNextNumberLink(`#`);
-            setNextTitle('');
+            setNavigationLinks((prev) => ({
+              ...prev,
+              next: { link: '#', title: '' },
+            }));
           }
 
           if (nowIndexData.index < itemList.length - 1) {
-            setPreviousNumberLink(
-              `/notice/detail/${itemList[Number(nowIndexData.index) + 1]?._id}`
-            );
-            setPreviousTitle(
-              `${itemList[Number(nowIndexData.index) + 1]?.title}`
-            );
+            setNavigationLinks((prev) => ({
+              ...prev,
+              previous: {
+                link: `/notice/detail/${
+                  itemList[Number(nowIndexData.index) + 1]?._id
+                }`,
+                title: itemList[Number(nowIndexData.index) + 1]?.title,
+              },
+            }));
           } else {
-            setPreviousNumberLink(`#`);
-            setPreviousTitle('');
+            setNavigationLinks((prev) => ({
+              ...prev,
+              previous: { link: '#', title: '' },
+            }));
           }
         }
       } catch (error) {
@@ -75,16 +98,6 @@ export default function NoticePostDetailPage() {
 
     findPreNextPostInfo(id);
   }, [data]);
-
-  function findItemById(objectList, searchId) {
-    const index = objectList.findIndex((item) => {
-      return item._id == searchId;
-    });
-    return {
-      item: index !== -1 ? objectList[index] : null,
-      index: index,
-    };
-  }
 
   const deletePost = useMutation({
     mutationFn: () => axios.delete(`/posts/${id}`),
@@ -104,7 +117,7 @@ export default function NoticePostDetailPage() {
     },
   });
 
-  const deleteCheckBtn = async () => {
+  const handleDelete = async () => {
     const result = await MySwal.fire({
       title: '게시글을 삭제하시겠습니까?',
       text: '삭제된 게시글은 복구할 수 없습니다.',
@@ -219,7 +232,7 @@ export default function NoticePostDetailPage() {
                 <button
                   type='button'
                   className='border border-grey-10 rounded px-9 py-3 text-lg'
-                  onClick={deleteCheckBtn}
+                  onClick={handleDelete}
                 >
                   삭제
                 </button>
@@ -234,10 +247,10 @@ export default function NoticePostDetailPage() {
                   <span className='text-base mr-2'>▲</span>다음글
                 </div>
                 <Link
-                  to={nextNumberLink}
+                  to={navigationLinks.next.link}
                   className='flex-1 px-4 py-4 text-xl text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  {nextTitle || '다음 글이 없습니다'}
+                  {navigationLinks.next.title || '다음 글이 없습니다'}
                 </Link>
               </div>
               <div className='flex items-center min-h-[60px]'>
@@ -245,10 +258,10 @@ export default function NoticePostDetailPage() {
                   <span className='text-base mr-2'>▼</span>이전글
                 </div>
                 <Link
-                  to={previousNumberLink}
+                  to={navigationLinks.previous.link}
                   className='flex-1 px-4 py-4 text-xl text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  {previousTitle || '이전 글이 없습니다'}
+                  {navigationLinks.previous.title || '이전 글이 없습니다'}
                 </Link>
               </div>
             </div>

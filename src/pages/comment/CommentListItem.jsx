@@ -6,22 +6,12 @@ import withReactContent from 'sweetalert2-react-content';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const CommentListItem = ({ comment, isAdmin, user, post }) => {
+  const axios = useAxiosInstance();
+  const queryClient = useQueryClient();
+  const MySwal = withReactContent(Swal);
+
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
-
-  const axios = useAxiosInstance();
-  const MySwal = withReactContent(Swal);
-  const queryClient = useQueryClient();
-
-  const handleEditStart = () => {
-    setIsEditing(true);
-    setEditContent(comment.content);
-  };
-
-  const handleEditCancel = () => {
-    setIsEditing(false);
-    setEditContent(comment.content);
-  };
 
   const updateComment = useMutation({
     mutationFn: ({ commentId, content }) =>
@@ -51,6 +41,16 @@ const CommentListItem = ({ comment, isAdmin, user, post }) => {
       });
     },
   });
+
+  const handleEditStart = () => {
+    setIsEditing(true);
+    setEditContent(comment.content);
+  };
+
+  const handleEditCancel = () => {
+    setIsEditing(false);
+    setEditContent(comment.content);
+  };
 
   const handleDelete = async (comment) => {
     const result = await MySwal.fire({

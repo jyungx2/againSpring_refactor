@@ -11,10 +11,12 @@ import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function NoticeNewPostPage() {
-  const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
-  const [title, setTitle] = useState('');
   const queryClient = useQueryClient();
+  const [title, setTitle] = useState('');
+
+  const axios = useAxiosInstance();
+  const MySwal = withReactContent(Swal);
 
   const { quill, quillRef } = useQuill({
     modules: QUILL_MODULES,
@@ -61,8 +63,6 @@ export default function NoticeNewPostPage() {
       navigate('/notice');
     }
   };
-
-  const axios = useAxiosInstance();
 
   const handleSave = async () => {
     const data = {

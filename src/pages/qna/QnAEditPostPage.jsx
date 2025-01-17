@@ -11,16 +11,23 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 
 export default function QnAEditPostPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
   const { id } = useParams();
+
   const MySwal = withReactContent(Swal);
 
   const { quill, quillRef } = useQuill({
     modules: QUILL_MODULES,
     formats: QUILL_FORMATS,
   });
+
+  useEffect(() => {
+    if (quill) {
+      setQuillInstance(quill);
+      quill
+        .getModule('toolbar')
+        .addHandler('image', () => handleImageUpload(quill));
+    }
+  }, [quill, setQuillInstance]);
 
   const {
     title,
@@ -34,6 +41,10 @@ export default function QnAEditPostPage() {
     setSelectedProduct,
     isProductPost,
   } = useQnAEditPost({ _id: id }, null, `/qna/detail/${id}`);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const handleProductSelect = (product) => {
     setSelectedProduct(product);
@@ -56,15 +67,6 @@ export default function QnAEditPostPage() {
       }
     });
   };
-
-  useEffect(() => {
-    if (quill) {
-      setQuillInstance(quill);
-      quill
-        .getModule('toolbar')
-        .addHandler('image', () => handleImageUpload(quill));
-    }
-  }, [quill, setQuillInstance]);
 
   return (
     <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-52'>

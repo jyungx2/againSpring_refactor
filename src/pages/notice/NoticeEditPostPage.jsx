@@ -9,20 +9,11 @@ import { handleImageUpload } from '@utils/imageUpload';
 
 export default function NoticeEditPostPage() {
   const { id } = useParams();
+
   const { quill, quillRef } = useQuill({
     modules: QUILL_MODULES,
     formats: QUILL_FORMATS,
   });
-
-  const {
-    title,
-    setTitle,
-    // content,
-    isLoading,
-    setQuillInstance,
-    handleUpdate,
-    handleCancel,
-  } = useNoticeEditPost({ _id: id }, null, `/notice/detail/${id}`);
 
   useEffect(() => {
     if (quill) {
@@ -32,6 +23,16 @@ export default function NoticeEditPostPage() {
         .addHandler('image', () => handleImageUpload(quill));
     }
   }, [quill, setQuillInstance]);
+
+  const {
+    title,
+    setTitle,
+    isLoading,
+    setQuillInstance,
+    handleUpdate,
+    handleCancel,
+  } = useNoticeEditPost({ _id: id }, null, `/notice/detail/${id}`);
+
   return (
     <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-32'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>

@@ -7,12 +7,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 
 const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
-  const { user } = useUserStore();
-  const [content, setContent] = useState('');
-  const MySwal = withReactContent(Swal);
-
   const axios = useAxiosInstance();
   const queryClient = useQueryClient();
+  const MySwal = withReactContent(Swal);
+  const { user } = useUserStore();
+
+  const [content, setContent] = useState('');
 
   const createComment = useMutation({
     mutationFn: (data) => axios.post(`/posts/${post._id}/replies`, data),

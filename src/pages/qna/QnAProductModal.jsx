@@ -10,6 +10,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
 
   const axiosInstance = useAxiosInstance();
   const MySwal = withReactContent(Swal);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const {
     products,
@@ -25,15 +26,13 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
   } = useQnaProductSearchStore();
 
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [sortOption, setSortOption] = useState('default');
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 0,
     pageSize: 5,
   });
-
-  const [sortOption, setSortOption] = useState('default');
 
   const handleApiError = (err) => {
     const errorMessage =
@@ -82,28 +81,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     }
   };
 
-  useEffect(() => {
-    const currentKeyword = searchParams.get('keyword') || '';
-    const currentPage = parseInt(searchParams.get('page')) || 1;
-    const currentLimit =
-      parseInt(searchParams.get('limit')) || pagination.pageSize;
-
-    setSearchKeyword(currentKeyword);
-    setPagination((prev) => ({
-      ...prev,
-      currentPage,
-      pageSize: currentLimit,
-    }));
-
-    const params = {
-      page: currentPage,
-      limit: currentLimit,
-      ...(currentKeyword && { keyword: currentKeyword }),
-    };
-
-    loadProductData(params);
-  }, [searchParams]);
-
   const handleSearch = async (e) => {
     if (e) e.preventDefault();
 
@@ -140,6 +117,19 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     }
   };
 
+  const handleSortChange = (e) => {
+    const newSortOption = e.target.value;
+    setSortOption(newSortOption);
+
+    const params = {
+      page: pagination.currentPage,
+      limit: pagination.pageSize,
+      ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
+      sort: getSortParamsByOption(newSortOption),
+    };
+    loadProductData(params);
+  };
+
   const handleSelect = () => {
     try {
       const selected = products.find((p) => p._id === selectedProduct);
@@ -168,17 +158,28 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     }
   };
 
-  const handleSortChange = (e) => {
-    const newSortOption = e.target.value;
-    setSortOption(newSortOption);
+  const handlePageChange = async (page) => {
+    try {
+      setLoading(true);
+      const params = {
+        page,
+        limit: pagination.pageSize,
+        ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
+        sort: getSortParamsByOption(sortOption),
+      };
 
-    const params = {
-      page: pagination.currentPage,
-      limit: pagination.pageSize,
-      ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
-      sort: getSortParamsByOption(newSortOption),
-    };
-    loadProductData(params);
+      await loadProductData(params);
+      setPagination((prev) => ({ ...prev, currentPage: page }));
+
+      setSearchParams({
+        ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
+        page: page.toString(),
+        limit: pagination.pageSize.toString(),
+        ...(sortOption !== 'default' && { sort: sortOption }),
+      });
+    } catch (err) {
+      handleApiError(err);
+    }
   };
 
   const Pagination = () => {
@@ -233,29 +234,27 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     );
   };
 
-  const handlePageChange = async (page) => {
-    try {
-      setLoading(true);
-      const params = {
-        page,
-        limit: pagination.pageSize,
-        ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
-        sort: getSortParamsByOption(sortOption),
-      };
+  useEffect(() => {
+    const currentKeyword = searchParams.get('keyword') || '';
+    const currentPage = parseInt(searchParams.get('page')) || 1;
+    const currentLimit =
+      parseInt(searchParams.get('limit')) || pagination.pageSize;
 
-      await loadProductData(params);
-      setPagination((prev) => ({ ...prev, currentPage: page }));
+    setSearchKeyword(currentKeyword);
+    setPagination((prev) => ({
+      ...prev,
+      currentPage,
+      pageSize: currentLimit,
+    }));
 
-      setSearchParams({
-        ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
-        page: page.toString(),
-        limit: pagination.pageSize.toString(),
-        ...(sortOption !== 'default' && { sort: sortOption }),
-      });
-    } catch (err) {
-      handleApiError(err);
-    }
-  };
+    const params = {
+      page: currentPage,
+      limit: currentLimit,
+      ...(currentKeyword && { keyword: currentKeyword }),
+    };
+
+    loadProductData(params);
+  }, [searchParams]);
 
   return (
     <div className='max-h-[calc(100vh-4rem)] flex flex-col'>
