@@ -23,7 +23,7 @@ function OrderBundle({ bundle }) {
           </div>
         </div>
 
-        <OrderItem products={bundle.products} />
+        <OrderItem bundle={bundle} products={bundle.products} />
       </div>
     </>
   );
