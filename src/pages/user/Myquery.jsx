@@ -1,6 +1,24 @@
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import Sidebar from "@pages/user/Sidebar";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+
+// URL : {{url}}/posts/users?type=qna
 
 function Myquery() {
+  const axios = useAxiosInstance();
+  const { type } = useParams();
+  console.log(type);
+
+  const { data } = useQuery({
+    queryKey: ["posts", type],
+    queryFn: () => axios.get("/posts/users", { params: { type } }),
+    select: (res) => {
+      console.log(res.data);
+      return res.data;
+    },
+  });
+
   return (
     <>
       <div className="flex box-border max-w-[1200px] mx-auto px-6 pb-0">
@@ -60,42 +78,6 @@ function Myquery() {
                   </td>
                   <td className="border border-grey-30 text-center p-[8px]">
                     2
-                  </td>
-                </tr>
-
-                <tr className="hover:bg-primary-5 hover:cursor-pointer">
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    2
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    교환이나 환불 신청은 며칠 이내로 해야 하나요?
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    2024-12-20
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    국연수
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    8
-                  </td>
-                </tr>
-
-                <tr className="hover:bg-primary-5 hover:cursor-pointer">
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    3
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    유통기한이 언제까지 인가요?
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    2024-12-20
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    국연수
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    8
                   </td>
                 </tr>
               </tbody>

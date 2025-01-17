@@ -40,7 +40,8 @@ const purchaseStore = create((set) => ({
 
       // 상품의 수량 확인
       for (const product of products) {
-        const response = await instance.get(`/products/${product._id}`);
+        console.log(product);
+        const response = await instance.get(`/products/${product.id}`);
         const availableQuantity = response.data.quantity;
 
         if (availableQuantity < product.quantity) {
