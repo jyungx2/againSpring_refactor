@@ -143,9 +143,10 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-40, -60 * 15), // 상품 최신화 등록일 (사용X)
         extra: { 
           isNew: true, // 새로운 상품 (true일 경우 new 아이콘 같은거 표시 가능 / 메인 페이지 노출 가능)
-          isBest: true, // 베스트 상품 (이하 동일)
+          isBest: false, // 베스트 상품 (이하 동일)
           category: ["all-of-list", "bathroom"], // 상품 카테고리 (메뉴 카테고리 별로 상품 분류 작업 가능)
           sort: 5, // 정렬 우선순위 (값이 낮을 수록 목록에서 먼저 표시됨 / 동일한 값일 경우 최신 등록 순으로 표시됨)
+          tanso: 10// 탄소배출량 (상품의 탄소배출량 표시) 재활용 및 재생 가능 소재가 일반적으로 주요 자재보다 탄소 발자국을 적게 발생시킴
         },
       },
       {
@@ -175,7 +176,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-33, -60 * 55),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 4,
         },
@@ -216,8 +217,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-35, -60 * 60 * 6),
         updatedAt: getTime(-10, -60 * 19),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 3,
         },
@@ -258,8 +259,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-33, -60 * 60 * 7),
         updatedAt: getTime(-22, -60 * 60 * 3),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
         },
@@ -290,7 +291,7 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-30, -60 * 60 * 10),
         updatedAt: getTime(-10, -60 * 56),
         extra: {
-          isNew: true,
+          isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "bathroom"],
@@ -330,7 +331,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-20, -60 * 10),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
         },
@@ -361,8 +362,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-25, -60 * 60 * 12),
         updatedAt: getTime(-24, -60 * 23),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 3,
         },
@@ -394,7 +395,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-20, -60 * 33),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 8,
         },
@@ -433,7 +434,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-16, -60 * 15),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
@@ -465,7 +466,7 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-18, -60 * 60 * 7),
         updatedAt: getTime(-12, -60 * 33),
         extra: {
-          isNew: true,
+          isNew: false,
           isBest: true,
           category: ["all-of-list", "kitchen"],
           sort: 4,
@@ -483,22 +484,22 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] long_umbrella.jpg`,
-            name: "[kitchen] long_umbrella.jpg",
-            originalname: "[kitchen] long_umbrella.jpg",
+            path: `/files/${clientId}/[kitchen] dishcloth.jpg`,
+            name: "[kitchen] dishcloth.jpg",
+            originalname: "[kitchen] dishcloth.jpg",
           },
         ],
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] long_umbrella.jpg" alt="[퀸비스토어] 바른행주 1장 (2겹)">
+                <img src="/files/${clientId}/[kitchen] dishcloth_Detail.jpg" alt="[퀸비스토어] 바른행주 1장 (2겹)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 6,
@@ -540,8 +541,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-11, -60 * 60 * 12),
         updatedAt: getTime(-5, -60 * 60 * 6),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 7,
         },
@@ -579,7 +580,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-5, -60 * 60 * 6),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 6,
         },
@@ -621,8 +622,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 5,
         },
@@ -701,8 +702,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
@@ -739,8 +740,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
@@ -772,8 +773,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
@@ -820,8 +821,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
@@ -889,7 +890,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-15, -60 * 45),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
@@ -927,7 +928,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-15, -60 * 45),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
@@ -964,8 +965,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
@@ -997,8 +998,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
@@ -1065,8 +1066,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
@@ -1103,8 +1104,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
@@ -1136,8 +1137,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
@@ -1169,8 +1170,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
@@ -1207,7 +1208,7 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
+          isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "life"],
@@ -1241,7 +1242,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-15, -60 * 45),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
@@ -1273,8 +1274,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
@@ -1306,8 +1307,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
@@ -1339,8 +1340,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
@@ -1374,7 +1375,7 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
+          isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "pet"],
@@ -1410,7 +1411,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-15, -60 * 45),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
@@ -1442,8 +1443,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
@@ -1508,8 +1509,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
@@ -1541,7 +1542,7 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
+          isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "stationery"],
@@ -1574,8 +1575,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
@@ -1608,7 +1609,7 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-15, -60 * 45),
         extra: {
           isNew: true,
-          isBest: true,
+          isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
@@ -1645,8 +1646,8 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
-          isBest: true,
+          isNew: false,
+          isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
@@ -1678,7 +1679,7 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
         extra: {
-          isNew: true,
+          isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "stationery"],
@@ -2427,7 +2428,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: "shippingFees",
         title: "배송비",
-        value: 3500,
+        value: 3000,
       },
       {
         _id: "freeShippingFees",
