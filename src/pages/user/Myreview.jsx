@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ErrorMsg from "@components/ErrorMsg";
+import { useState } from "react";
 
 function Myreview() {
+  const [reviewImage, setReviewImage] = useState();
   const location = useLocation();
   console.log("location: ", location);
   console.log("location.state: ", location.state);
@@ -23,10 +25,27 @@ function Myreview() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm();
 
   const addReview = useMutation({
-    mutationFn: (formData) => {
+    mutationFn: async (formData) => {
+      // 리뷰 이미지 등록 로직 구현
+      if (formData.attach?.length > 0) {
+        const reviewFormData = new FormData();
+        reviewFormData.append("attach", formData.attach[0]); // ∵ files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
+
+        const fileRes = await axios.post("/files", reviewFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        console.log("fileRes: ", fileRes);
+        console.log("fileRes.data: ", fileRes.data);
+
+        formData.image = fileRes.data.item[0];
+        delete formData.attach;
+      }
+
       formData["order_id"] = order_id;
       formData["product_id"] = item._id;
       formData.type = "review";
@@ -42,6 +61,22 @@ function Myreview() {
       console.error(err);
     },
   });
+
+  const handlePictureShow = (e) => {
+    const file = e.target.files[0]; // 사용자가 업로드한 파일
+    console.log("file: ", file);
+    const watchAll = watch();
+    console.log("watchAll: ", watchAll);
+    console.log("watchAll.attach: ", watchAll.attach);
+
+    if (file) {
+      // 새로운 URL 생성
+      const newImageUrl = URL.createObjectURL(file); // 이미지 파일 미리보기 위해 파일 객체를 URL로 변환
+      console.log(newImageUrl);
+      // ** createObjectURL로 생성한 URL은 브라우저에서만 유효하고, 파일을 서버로 전송하려면 FormData 등을 사용해야 함 **
+      setReviewImage(newImageUrl);
+    }
+  };
 
   return (
     <>
@@ -94,25 +129,38 @@ function Myreview() {
               </div>
             </div>
 
-            <div className="flex items-start p-[30px] text-[16px] border-t border-grey-30 gap-[60px] bg-red-100">
+            <div className="flex items-start p-[30px] text-[16px] border-t border-grey-30 gap-[60px]">
               <h2 className="font-gowunBold text-[20px]">사진첨부</h2>
               <label
-                htmlFor="pictures"
+                htmlFor="attach"
                 className="font-gowunBold h-[42px] leading-[42px] text-primary-70 text-[16px] px-[24px] border border-primary-30 rounded-[2px] box-border cursor-pointer"
               >
                 사진 첨부하기
               </label>
               <input
                 type="file"
-                id="pictures"
+                id="attach"
+                accept="image/*"
                 className="hidden"
-                {...register("pictures")}
+                {...register("attach", {
+                  onChange: (e) => {
+                    handlePictureShow(e);
+                  },
+                })}
               />
               <div
                 id="added-pictures"
-                className="border border-grey-30 h-[80px]"
+                className="border-2 border-secondary-10 w-[80px] h-[80px] rounded-lg"
               >
-                PICTURES
+                {reviewImage ? (
+                  <img
+                    src={reviewImage}
+                    alt="리뷰사진 미리보기"
+                    className="w-full h-full object-contain p-2"
+                  />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
 
