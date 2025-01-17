@@ -1,6 +1,6 @@
 import Sidebar from "@pages/user/Sidebar";
 import styles from "./User.module.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,6 +9,7 @@ import { useState } from "react";
 
 function Myreview() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const item = location.state?.item;
   const order_id = location.state?.bundle._id;
@@ -56,14 +57,12 @@ function Myreview() {
       formData["order_id"] = order_id;
       formData["product_id"] = item._id;
       formData.type = "review";
-
+      navigate(-1); // ✅ 내 후기 목록 조회 페이지 만들기 전까지는 주문조회 페이지로 이동하도록
       return axios.post(`/replies`, formData);
     },
     onSuccess: (formData) => {
       alert("리뷰가 등록되었습니다.");
       console.log("전송된 데이터: ", formData);
-
-      // navigate(`/${type}`); // 나의 리뷰 페이지로 이동.(추가작업)
     },
     onError: (err) => {
       console.error(err);
@@ -75,8 +74,8 @@ function Myreview() {
     const file = e.target.files[0]; // 사용자가 업로드한 파일
     console.log("file: ", file);
     if (file) {
-      if (reviewImage.length >= 3) {
-        alert("최대 3개까지만 등록 가능합니다.");
+      if (reviewImage.length >= 5) {
+        alert("사진은 최대 5개까지만 등록 가능합니다.");
         return;
       }
 
@@ -156,7 +155,7 @@ function Myreview() {
                   >
                     사진 첨부하기
                   </label>
-                  <p className="font-gowunBold">{reviewImage.length} / 10</p>
+                  <p className="font-gowunBold">{reviewImage.length} / 5</p>
                   <input
                     type="file"
                     id="attach"
@@ -186,7 +185,10 @@ function Myreview() {
             </div>
 
             <div className="flex justify-center gap-[24px] border-t border-grey-30 p-[34px]">
-              <button className="bg-grey-40 inline-block text-[16px] text-white h-[48px] leading-[48px] font-gowunBold box-border cursor-pointer rounded-[12px] px-[64px]">
+              <button
+                onClick={() => navigate(-1)}
+                className="bg-grey-40 inline-block text-[16px] text-white h-[48px] leading-[48px] font-gowunBold box-border cursor-pointer rounded-[12px] px-[64px]"
+              >
                 취소
               </button>
               <button
