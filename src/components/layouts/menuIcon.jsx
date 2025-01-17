@@ -27,7 +27,7 @@ const MenuIcons = () => {
     <div className="absolute top-4 right-6 flex space-x-6 items-center">
       {user ? (
         <form className="flex gap-[20px] items-center" onSubmit={handleLogout}>
-          <a href="/order" className="text-gray-700 hover:text-primary-30">
+          <a href="/user/order" className="text-gray-700 hover:text-primary-30">
             <i className="fas fa-user"></i>
           </a>
           <a
