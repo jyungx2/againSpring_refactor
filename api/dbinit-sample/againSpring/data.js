@@ -146,6 +146,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false, // 베스트 상품 (이하 동일)
           category: ["all-of-list", "bathroom"], // 상품 카테고리 (메뉴 카테고리 별로 상품 분류 작업 가능)
           sort: 5, // 정렬 우선순위 (값이 낮을 수록 목록에서 먼저 표시됨 / 동일한 값일 경우 최신 등록 순으로 표시됨)
+          tanso: 10// 탄소배출량 (상품의 탄소배출량 표시) 재활용 및 재생 가능 소재가 일반적으로 주요 자재보다 탄소 발자국을 적게 발생시킴
         },
       },
       {
@@ -483,15 +484,15 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] long_umbrella.jpg`,
-            name: "[kitchen] long_umbrella.jpg",
-            originalname: "[kitchen] long_umbrella.jpg",
+            path: `/files/${clientId}/[kitchen] dishcloth.jpg`,
+            name: "[kitchen] dishcloth.jpg",
+            originalname: "[kitchen] dishcloth.jpg",
           },
         ],
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] long_umbrella.jpg" alt="[퀸비스토어] 바른행주 1장 (2겹)">
+                <img src="/files/${clientId}/[kitchen] dishcloth_Detail.jpg" alt="[퀸비스토어] 바른행주 1장 (2겹)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
