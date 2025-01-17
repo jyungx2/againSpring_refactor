@@ -8,7 +8,6 @@ import ErrorMsg from "@components/ErrorMsg";
 import { useState } from "react";
 
 function Myreview() {
-  const [reviewImage, setReviewImage] = useState();
   const location = useLocation();
   console.log("location: ", location);
   console.log("location.state: ", location.state);
@@ -25,7 +24,6 @@ function Myreview() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm();
 
   const addReview = useMutation({
@@ -62,21 +60,24 @@ function Myreview() {
     },
   });
 
+  const [reviewImage, setReviewImage] = useState([]);
   const handlePictureShow = (e) => {
     const file = e.target.files[0]; // 사용자가 업로드한 파일
     console.log("file: ", file);
-    const watchAll = watch();
-    console.log("watchAll: ", watchAll);
-    console.log("watchAll.attach: ", watchAll.attach);
-
     if (file) {
+      if (reviewImage.length >= 3) {
+        alert("최대 3개까지만 등록 가능합니다.");
+        return;
+      }
+
       // 새로운 URL 생성
-      const newImageUrl = URL.createObjectURL(file); // 이미지 파일 미리보기 위해 파일 객체를 URL로 변환
-      console.log(newImageUrl);
-      // ** createObjectURL로 생성한 URL은 브라우저에서만 유효하고, 파일을 서버로 전송하려면 FormData 등을 사용해야 함 **
-      setReviewImage(newImageUrl);
+      const newImageUrl = URL.createObjectURL(file);
+      console.log("추가된 이미지 URL: ", newImageUrl);
+      setReviewImage((prev) => [...prev, newImageUrl]);
+      // 기존 이미지들을 유지하면서 새 이미지 추가
     }
   };
+  console.log(reviewImage);
 
   return (
     <>
@@ -150,17 +151,19 @@ function Myreview() {
               />
               <div
                 id="added-pictures"
-                className="border-2 border-secondary-10 w-[80px] h-[80px] rounded-lg"
+                className="flex gap-2 border border-grey-20 rounded-lg"
               >
-                {reviewImage ? (
-                  <img
-                    src={reviewImage}
-                    alt="리뷰사진 미리보기"
-                    className="w-full h-full object-contain p-2"
-                  />
-                ) : (
-                  ""
-                )}
+                {reviewImage?.map((image, i) => {
+                  return (
+                    <div key={i} className="w-[80px] h-[80px] rounded-lg">
+                      <img
+                        src={image}
+                        alt={`리뷰사진 미리보기 ${i + 1}`}
+                        className="w-full h-full object-cover p-1"
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
