@@ -211,6 +211,31 @@ export const cartStore = create((set, get) => ({
       set({ error: "장바구니 비우기에 실패했습니다." });
     }
   },
+
+  // 장바구니에서 구매한 상품만 제거
+  deleteProductsFromCart: async (productIds) => {
+    const { user } = useUserStore.getState();
+
+    try {
+      const instance = axiosInstance(user);
+
+      await instance.delete("/carts/", {
+        data: { carts: productIds },
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
+
+      set((state) => ({
+        cartItemsList: state.cartItemsList.filter(
+          (item) => !productIds.includes(item._id)
+        ),
+      }));
+    } catch (error) {
+      console.error(error);
+      set({ error: "장바구니 상품 삭제에 실패했습니다." });
+    }
+  },
 }));
 
 export default cartStore;
