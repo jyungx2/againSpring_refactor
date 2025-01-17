@@ -19,7 +19,7 @@ const Wishlist = () => {
   };
 
   const handleCardClick = (item) => {
-    navigate(`/detail/${item._id}`, { state: item });
+    navigate(`/detail/${item.id}`, { state: item });
   };
 
   const handleAddToCart = async (productId) => {
