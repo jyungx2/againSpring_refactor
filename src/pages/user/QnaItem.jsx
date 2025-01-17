@@ -8,13 +8,14 @@ QnaItem.propTypes = {
     user: PropTypes.object.isRequired,
     views: PropTypes.number.isRequired,
   }),
+  count: PropTypes.number.isRequired,
 };
 
-function QnaItem({ item }) {
+function QnaItem({ item, count }) {
   return (
     <>
       <tr className="hover:bg-primary-5 hover:cursor-pointer">
-        <td className="border border-grey-30 text-center p-[8px]">1</td>
+        <td className="border border-grey-30 text-center p-[8px]">{count}</td>
         <td className="border border-grey-30 text-center p-[8px]">
           {item.title}
         </td>

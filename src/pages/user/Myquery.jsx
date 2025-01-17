@@ -2,11 +2,13 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import QnaItem from "@pages/user/QnaItem";
 import Sidebar from "@pages/user/Sidebar";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 // URL : {{url}}/posts/users?type=qna
 
 function Myquery() {
+  const navigate = useNavigate();
   const axios = useAxiosInstance();
   const { type } = useParams();
   console.log(type); // qna
@@ -25,8 +27,8 @@ function Myquery() {
     return <div>로딩중...</div>;
   }
 
-  const list = data.item.map((qna) => (
-    <QnaItem key={qna._id} item={qna}></QnaItem>
+  const list = data.item.map((qna, index) => (
+    <QnaItem key={qna._id} item={qna} count={index + 1}></QnaItem>
   ));
 
   return (
@@ -42,7 +44,10 @@ function Myquery() {
             </div>
 
             <div className="ml-auto">
-              <button className="font-gowunBold inline-block h-[42px] text-primary-70 text-[16px] px-[24px] border border-primary-30 rounded-[2px] box-border cursor-pointer">
+              <button
+                onClick={() => navigate("/qna")}
+                className="font-gowunBold inline-block h-[42px] text-primary-70 text-[16px] px-[24px] border border-primary-30 rounded-[2px] box-border cursor-pointer"
+              >
                 문의하러 가기
               </button>
             </div>
@@ -82,15 +87,6 @@ function Myquery() {
               </div>
               <img src="/icons/arrow-right.svg" />
             </div>
-          </div>
-
-          <div className="flex gap-[12px] justify-center border-t border-grey-30 p-[30px]">
-            <button className="font-gowunBold inline-block text-[16px] text-white h-[48px] leading-[48px] px-[64px] box-border cursor-pointer rounded-[12px] bg-grey-40">
-              취소
-            </button>
-            <button className="font-gowunBold inline-block text-[16px] text-white h-[48px] leading-[48px] px-[64px] box-border cursor-pointer rounded-[12px] bg-primary-40">
-              등록
-            </button>
           </div>
         </div>
       </div>
