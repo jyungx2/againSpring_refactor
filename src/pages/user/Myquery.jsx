@@ -1,4 +1,5 @@
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import QnaItem from "@pages/user/QnaItem";
 import Sidebar from "@pages/user/Sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -8,7 +9,7 @@ import { useParams } from "react-router-dom";
 function Myquery() {
   const axios = useAxiosInstance();
   const { type } = useParams();
-  console.log(type);
+  console.log(type); // qna
 
   const { data } = useQuery({
     queryKey: ["posts", type],
@@ -17,7 +18,16 @@ function Myquery() {
       console.log(res.data);
       return res.data;
     },
+    // staleTime: 1000 * 10,
   });
+
+  if (!data) {
+    return <div>로딩중...</div>;
+  }
+
+  const list = data.item.map((qna) => (
+    <QnaItem key={qna._id} item={qna}></QnaItem>
+  ));
 
   return (
     <>
@@ -62,25 +72,7 @@ function Myquery() {
                 </tr>
               </thead>
 
-              <tbody>
-                <tr className="hover:bg-primary-5 hover:cursor-pointer">
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    1
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    배송은 보통 며칠 걸리나요?
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    2024-12-02
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    국연수
-                  </td>
-                  <td className="border border-grey-30 text-center p-[8px]">
-                    2
-                  </td>
-                </tr>
-              </tbody>
+              <tbody>{list}</tbody>
             </table>
 
             <div className="flex gap-[48px] items-center justify-center mt-[40px]">
