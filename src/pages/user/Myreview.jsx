@@ -9,39 +9,50 @@ import { useState } from "react";
 
 function Myreview() {
   const location = useLocation();
-  console.log("location: ", location);
-  console.log("location.state: ", location.state);
 
   const item = location.state?.item;
   const order_id = location.state?.bundle._id;
-  console.log(item, order_id);
 
   const axios = useAxiosInstance();
   const queryClient = useQueryClient();
   // const { type } = useParams();
 
+  const [collection, setCollection] = useState([]); // 이미지 파일을 FormData로 변환하여 api 서버로 보내기 위한 상태관리
+  const [reviewImage, setReviewImage] = useState([]); // "이미지 미리보기"를 위한 이미지 파일들의 'URL' 상태관리
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
+
+  console.log(watch().attach); // 가장 마지막에 업로드된 이미지파일만 저장
 
   const addReview = useMutation({
     mutationFn: async (formData) => {
       // 리뷰 이미지 등록 로직 구현
-      if (formData.attach?.length > 0) {
+      if (collection?.length > 0) {
         const reviewFormData = new FormData();
-        reviewFormData.append("attach", formData.attach[0]); // ∵ files API: 첨부 파일 필드명은 attach로 지정해야 한다고 나와있음.
 
-        const fileRes = await axios.post("/files", reviewFormData, {
-          headers: { "Content-Type": "multipart/form-data" },
+        // 1. collection 배열에 담긴 모든 파일 추가
+        collection.forEach((file, index) => {
+          reviewFormData.append(`attach[${index}]`, file); // 배열 형태로 추가
         });
 
-        console.log("fileRes: ", fileRes);
-        console.log("fileRes.data: ", fileRes.data);
+        try {
+          const fileRes = await axios.post("/files", reviewFormData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
 
-        formData.image = fileRes.data.item[0];
-        delete formData.attach;
+          console.log("fileRes: ", fileRes);
+          console.log("fileRes.data: ", fileRes.data);
+
+          formData.image = fileRes.data.item;
+          delete formData.attach;
+        } catch (err) {
+          console.error("파일 업로드 실패: ", err);
+        }
       }
 
       formData["order_id"] = order_id;
@@ -62,13 +73,13 @@ function Myreview() {
     },
   });
 
-  const [reviewImage, setReviewImage] = useState([]);
   const handlePictureShow = (e) => {
+    console.log("files: ", e.target.files);
     const file = e.target.files[0]; // 사용자가 업로드한 파일
     console.log("file: ", file);
     if (file) {
-      if (reviewImage.length >= 10) {
-        alert("최대 10개까지만 등록 가능합니다.");
+      if (reviewImage.length >= 3) {
+        alert("최대 3개까지만 등록 가능합니다.");
         return;
       }
 
@@ -76,10 +87,13 @@ function Myreview() {
       const newImageUrl = URL.createObjectURL(file);
       console.log("추가된 이미지 URL: ", newImageUrl);
       setReviewImage((prev) => [...prev, newImageUrl]);
-      // 기존 이미지들을 유지하면서 새 이미지 추가
+
+      // watch().attach() 호출 결과를 상태에 추가
+      const newAttach = watch().attach; // 호출 결과 가져오기
+      setCollection((prev) => [...prev, newAttach]);
+      console.log("collection: ", [...collection, newAttach]);
     }
   };
-  console.log(reviewImage);
 
   return (
     <>
