@@ -4,13 +4,28 @@ import useUserStore from '@store/userStore';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import NoticeListItem from './NoticeListItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
   const response = await axios.get('/users');
   return response.data;
 };
+
+// TODO 1: 검색 결과 상태 관리 추가 (부분완료)
+// 1. 현재 페이지 번호 리셋 (완료)
+// 2. URL 파라미터 업데이트 (검색어, 검색 타입 포함) (미완료)
+// 3. 페이지네이션 정보 업데이트 (완료)
+
+// TODO 2: 에러 처리 (부분완료)
+// 1. 검색 실패 시 에러 메시지 표시 (부분완료)
+// 2. 검색 결과가 없을 때의 UI 처리 (미완료)
+// 3. 로딩 상태 처리 (완료)
+
+// TODO 3: URL 파라미터와 상태 동기화 (부분완료)
+// 1. URL에서 검색 관련 파라미터 읽기 (완료)
+// 2. 컴포넌트 마운트 시 URL 파라미터 기반으로 초기 검색 수행 (미완료)
+// 3. 검색 조건 변경 시 URL 업데이트 (수정필요)
 
 export default function NoticeListPage() {
   const PAGES_PER_GROUP = 5;
@@ -20,27 +35,14 @@ export default function NoticeListPage() {
   const [searchParams] = useSearchParams();
   const axios = useAxiosInstance();
   const { user } = useUserStore();
-
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
-
-  const getSortParamsByOption = (sortOption) => {
-    const sortParams = {
-      default: undefined,
-      'title-asc': JSON.stringify({ title: 1 }), // 오름차순
-      'title-desc': JSON.stringify({ title: -1 }), // 내림차순
-      'date-asc': JSON.stringify({ createdAt: 1 }),
-      'date-desc': JSON.stringify({ createdAt: -1 }),
-      'view-asc': JSON.stringify({ views: 1 }),
-      'view-desc': JSON.stringify({ views: -1 }),
-    };
-
-    return sortParams[sortOption];
-  };
 
   const [periodType, setPeriodType] = useState('all-day');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [searchType, setSearchType] = useState('title');
   const [sortOption, setSortOption] = useState(() => {
     const sortParam = searchParams.get('sort');
     if (!sortParam) return 'default';
@@ -55,15 +57,6 @@ export default function NoticeListPage() {
     };
     return options[sortParam] || 'default';
   });
-
-  const getPageLink = (pageNum) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('page', pageNum.toString());
-    if (sortOption !== 'default') {
-      params.set('sort', getSortParamsByOption(sortOption));
-    }
-    return `?${params.toString()}`;
-  };
 
   const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ['userInfo'],
@@ -100,14 +93,11 @@ export default function NoticeListPage() {
     staleTime: 1000 * 10,
   });
 
-  if (isUserLoading || isNoticeLoading) {
-    return <div>로딩중...</div>;
-  }
-
-  // 에러 상태 처리
-  if (!userData?.item || !noticeData?.item) {
-    return <div>데이터를 불러오는데 실패했습니다.</div>;
-  }
+  useEffect(() => {
+    if (noticeData?.item) {
+      setFilteredData(noticeData.item);
+    }
+  }, [noticeData?.item]);
 
   const handleSortChange = (e) => {
     const newSortOption = e.target.value;
@@ -151,13 +141,85 @@ export default function NoticeListPage() {
     navigate(`?${newSearchParams.toString()}`);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleSearchTypeChange = (e) => {
+    setSearchType(e.target.value);
+  };
+
+  const handleSearch = () => {
+    if (!searchText.trim()) {
+      setFilteredData(noticeData.item);
+      return;
+    }
+
+    let searchParams = {
+      type: 'notice',
+      page: currentPage,
+      limit,
+      keyword: searchText,
+    };
+
+    axios
+      .get('/posts', {
+        params: searchParams,
+      })
+      .then((response) => {
+        let results = response.data.item;
+
+        results = results.filter((item) => {
+          const searchLower = searchText.toLocaleLowerCase();
+
+          if (searchType === 'title') {
+            return item.title.toLowerCase().includes(searchLower);
+          } else if (searchType === 'content') {
+            return item.content.toLowerCase().includes(searchLower);
+          } else {
+            return (
+              item.title.toLowerCase().includes(searchLower) ||
+              item.content.toLowerCase().includes(searchLower)
+            );
+          }
+        });
+        setFilteredData(results);
+      })
+      .catch((error) => {
+        console.error('검색 중 오류 발생', error);
+      });
+  };
+
+  const getSortParamsByOption = (sortOption) => {
+    const sortParams = {
+      default: undefined,
+      'title-asc': JSON.stringify({ title: 1 }), // 오름차순
+      'title-desc': JSON.stringify({ title: -1 }), // 내림차순
+      'date-asc': JSON.stringify({ createdAt: 1 }),
+      'date-desc': JSON.stringify({ createdAt: -1 }),
+      'view-asc': JSON.stringify({ views: 1 }),
+      'view-desc': JSON.stringify({ views: -1 }),
+    };
+
+    return sortParams[sortOption];
+  };
+
+  const getPageLink = (pageNum) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNum.toString());
+    if (sortOption !== 'default') {
+      params.set('sort', getSortParamsByOption(sortOption));
+    }
+    return `?${params.toString()}`;
+  };
+
   const userType = user
     ? userData.item.find((item) => item._id === user._id)?.type
     : null;
   const isAdmin = userType === 'admin';
 
-  const totalData = noticeData.pagination?.total || 0;
-  const totalPages = Math.ceil(totalData / limit);
+  const totalData = noticeData?.pagination?.total || 0;
+  const totalPages = Math.max(1, Math.ceil(totalData / limit));
   const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
   const startPage = (currentGroup - 1) * PAGES_PER_GROUP + 1;
   const endPage = Math.min(currentGroup * PAGES_PER_GROUP, totalPages);
@@ -166,7 +228,17 @@ export default function NoticeListPage() {
   const showPrevButton = currentGroup > 1;
   const showNextButton = endPage < totalPages;
 
-  const noticePostList = noticeData.item.map((item, index) => (
+  if (isUserLoading || isNoticeLoading) {
+    return <div>로딩중...</div>;
+  }
+
+  if (!userData?.item || !noticeData?.item) {
+    return <div>데이터를 불러오는데 실패했습니다.</div>;
+  }
+
+  const noticePostList = (
+    searchText.trim() ? filteredData : noticeData.item
+  ).map((item, index) => (
     <NoticeListItem
       key={item._id}
       item={item}
@@ -180,38 +252,6 @@ export default function NoticeListPage() {
         공지사항
       </h1>
       <div className='flex justify-between items-center mb-4'>
-        <select
-          value={periodType}
-          onChange={(e) => handlePeriodChange(e.target.value)}
-          className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'
-        >
-          <option value='all-day'>전체기간</option>
-          <option value='one-day'>1일</option>
-          <option value='one-week'>1주</option>
-          <option value='one-month'>1개월</option>
-          <option value='six-month'>6개월</option>
-          <option value='one-year'>1년</option>
-          <option value='custom'>기간 입력</option>
-        </select>
-
-        {periodType === 'custom' && (
-          <div className='flex gap-2'>
-            <input
-              type='date'
-              value={startDate}
-              onChange={(e) => handleDateChange('start', e.target.value)}
-              className='h-[37px] px-2 border border-gray-300 rounded'
-            />
-            <span className='flex items-center'>~</span>
-            <input
-              type='date'
-              value={endDate}
-              onChange={(e) => handleDateChange('end', e.target.value)}
-              className='h-[37px] px-2 border border-gray-300 rounded'
-            />
-          </div>
-        )}
-
         <select
           value={sortOption}
           onChange={(e) => handleSortChange(e)}
@@ -284,7 +324,44 @@ export default function NoticeListPage() {
 
       <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
         <div className='relative w-[120px]'>
-          <select className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'>
+          <select
+            value={periodType}
+            onChange={(e) => handlePeriodChange(e.target.value)}
+            className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'
+          >
+            <option value='all-day'>전체기간</option>
+            <option value='one-day'>1일</option>
+            <option value='one-week'>1주</option>
+            <option value='one-month'>1개월</option>
+            <option value='six-month'>6개월</option>
+            <option value='one-year'>1년</option>
+            <option value='custom'>기간 입력</option>
+          </select>
+        </div>
+
+        {periodType === 'custom' && (
+          <div className='flex gap-2'>
+            <input
+              type='date'
+              value={startDate}
+              onChange={(e) => handleDateChange('start', e.target.value)}
+              className='h-[37px] px-2 border border-gray-300 rounded'
+            />
+            <span className='flex items-center'>~</span>
+            <input
+              type='date'
+              value={endDate}
+              onChange={(e) => handleDateChange('end', e.target.value)}
+              className='h-[37px] px-2 border border-gray-300 rounded'
+            />
+          </div>
+        )}
+        <div className='relative w-[120px]'>
+          <select
+            value={searchType}
+            onChange={handleSearchTypeChange}
+            className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'
+          >
             <option value='title'>제목</option>
             <option value='content'>내용</option>
             <option value='all'>제목+내용</option>
@@ -292,10 +369,14 @@ export default function NoticeListPage() {
         </div>
         <input
           type='text'
+          value={searchText}
+          onChange={handleSearchChange}
           className='h-[37px] py-0 px-3 border border-grey-10 rounded w-[200px]'
+          placeholder='검색어를 입력하세요'
         />
         <button
           type='submit'
+          onClick={handleSearch}
           className='bg-secondary-20 hover:bg-secondary-40 transition-colors text-white h-[37px] py-0 px-[25px] border-none rounded cursor-pointer leading-[37px]'
         >
           찾기

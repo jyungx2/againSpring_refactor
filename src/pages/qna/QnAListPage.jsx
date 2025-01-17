@@ -4,7 +4,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import QnAListItem from './QnAListItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // 사용자 정보 조회 API 함수
 const fetchUserInfo = async (axios) => {
@@ -20,27 +20,14 @@ export default function QnAListPage() {
   const [searchParams] = useSearchParams();
   const axios = useAxiosInstance();
   const { user } = useUserStore();
-
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
-
-  const getSortParamsByOption = (sortOption) => {
-    const sortParams = {
-      default: undefined,
-      'title-asc': JSON.stringify({ title: 1 }), // 오름차순
-      'title-desc': JSON.stringify({ title: -1 }), // 내림차순
-      'date-asc': JSON.stringify({ createdAt: 1 }),
-      'date-desc': JSON.stringify({ createdAt: -1 }),
-      'view-asc': JSON.stringify({ views: 1 }),
-      'view-desc': JSON.stringify({ views: -1 }),
-    };
-
-    return sortParams[sortOption];
-  };
 
   const [periodType, setPeriodType] = useState('all-day');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [searchType, setSearchType] = useState('title');
   const [sortOption, setSortOption] = useState(() => {
     const sortParam = searchParams.get('sort');
     if (!sortParam) return 'default';
@@ -55,15 +42,6 @@ export default function QnAListPage() {
     };
     return options[sortParam] || 'default';
   });
-
-  const getPageLink = (pageNum) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('page', pageNum.toString());
-    if (sortOption !== 'default') {
-      params.set('sort', getSortParamsByOption(sortOption));
-    }
-    return `?${params.toString()}`;
-  };
 
   const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ['userInfo'],
@@ -100,14 +78,11 @@ export default function QnAListPage() {
     staleTime: 1000 * 10,
   });
 
-  if (isUserLoading || isQnaLoading) {
-    return <div>로딩중...</div>;
-  }
-
-  // 에러 상태 처리
-  if (!userData?.item || !qnaData?.item) {
-    return <div>데이터를 불러오는데 실패했습니다.</div>;
-  }
+  useEffect(() => {
+    if (qnaData?.item) {
+      setFilteredData(qnaData.item);
+    }
+  }, [qnaData?.item]);
 
   const handleSortChange = (e) => {
     const newSortOption = e.target.value;
@@ -151,11 +126,80 @@ export default function QnAListPage() {
     navigate(`?${newSearchParams.toString()}`);
   };
 
-  // 현재 로그인한 사용자
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleSearchTypeChange = (e) => {
+    setSearchType(e.target.value);
+  };
+
+  const handleSearch = () => {
+    if (!searchText.trim()) {
+      setFilteredData(qnaData.item);
+      return;
+    }
+
+    let searchParams = {
+      type: 'qna',
+      page: currentPage,
+      limit,
+      keyword: searchText,
+    };
+
+    axios
+      .get('/posts', {
+        params: searchParams,
+      })
+      .then((response) => {
+        let results = response.data.item;
+
+        results = results.filter((item) => {
+          const searchLower = searchText.toLocaleLowerCase();
+
+          if (searchType === 'title') {
+            return item.title.toLowerCase().includes(searchLower);
+          } else if (searchType === 'content') {
+            return item.content.toLowerCase().includes(searchLower);
+          } else {
+            return (
+              item.title.toLowerCase().includes(searchLower) ||
+              item.content.toLowerCase().includes(searchLower)
+            );
+          }
+        });
+        setFilteredData(results);
+      })
+      .catch((error) => {
+        console.error('검색 중 오류 발생', error);
+      });
+  };
+
+  const getSortParamsByOption = (sortOption) => {
+    const sortParams = {
+      default: undefined,
+      'title-asc': JSON.stringify({ title: 1 }), // 오름차순
+      'title-desc': JSON.stringify({ title: -1 }), // 내림차순
+      'date-asc': JSON.stringify({ createdAt: 1 }),
+      'date-desc': JSON.stringify({ createdAt: -1 }),
+      'view-asc': JSON.stringify({ views: 1 }),
+      'view-desc': JSON.stringify({ views: -1 }),
+    };
+
+    return sortParams[sortOption];
+  };
+
+  const getPageLink = (pageNum) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNum.toString());
+    if (sortOption !== 'default') {
+      params.set('sort', getSortParamsByOption(sortOption));
+    }
+    return `?${params.toString()}`;
+  };
+
   const userType =
     user && userData.item?.find((item) => item._id === user._id)?.type;
-
-  // type이 admin 이거나 user인지 확인
   const isAdminOrUser = userType === 'admin' || userType === 'user';
 
   const totalData = qnaData.pagination?.total || 0;
@@ -168,13 +212,23 @@ export default function QnAListPage() {
   const showPrevButton = currentGroup > 1;
   const showNextButton = endPage < totalPages;
 
-  const qnaPostList = qnaData.item.map((item, index) => (
-    <QnAListItem
-      key={item._id}
-      item={item}
-      number={totalData - ((currentPage - 1) * limit + index)}
-    />
-  ));
+  if (isUserLoading || isQnaLoading) {
+    return <div>로딩중...</div>;
+  }
+
+  if (!userData?.item || !qnaData?.item) {
+    return <div>데이터를 불러오는데 실패했습니다.</div>;
+  }
+
+  const qnaPostList = (searchText.trim() ? filteredData : qnaData.item).map(
+    (item, index) => (
+      <QnAListItem
+        key={item._id}
+        item={item}
+        number={totalData - ((currentPage - 1) * limit + index)}
+      />
+    )
+  );
 
   return (
     <div className='w-[1200px] mx-auto px-6 mb-20'>
@@ -297,7 +351,11 @@ export default function QnAListPage() {
           </div>
         )}
         <div className='relative w-[120px]'>
-          <select className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'>
+          <select
+            value={searchType}
+            onChange={handleSearchTypeChange}
+            className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'
+          >
             <option value='title'>제목</option>
             <option value='content'>내용</option>
             <option value='all'>제목+내용</option>
@@ -305,10 +363,14 @@ export default function QnAListPage() {
         </div>
         <input
           type='text'
+          value={searchText}
+          onChange={handleSearchChange}
           className='h-[37px] py-0 px-3 border border-grey-10 rounded w-[200px]'
+          placeholder='검색어를 입력하세요'
         />
         <button
           type='submit'
+          onClick={handleSearch}
           className='bg-secondary-20 hover:bg-secondary-40 transition-colors text-white h-[37px] py-0 px-[25px] border-none rounded cursor-pointer leading-[37px]'
         >
           찾기
