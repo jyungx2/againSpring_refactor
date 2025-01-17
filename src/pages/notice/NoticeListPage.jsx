@@ -236,15 +236,51 @@ export default function NoticeListPage() {
     return <div>데이터를 불러오는데 실패했습니다.</div>;
   }
 
-  const noticePostList = (
-    searchText.trim() ? filteredData : noticeData.item
-  ).map((item, index) => (
-    <NoticeListItem
-      key={item._id}
-      item={item}
-      number={totalData - ((currentPage - 1) * limit + index)}
-    />
-  ));
+  const noticePostList = searchText.trim() ? (
+    filteredData.length > 0 ? (
+      // 검색 결과가 있을 때
+      filteredData.map((item, index) => (
+        <NoticeListItem
+          key={item._id}
+          item={item}
+          number={totalData - ((currentPage - 1) * limit + index)}
+        />
+      ))
+    ) : (
+      // 검색 결과가 없을 때
+      <div className='col-span-4 py-16'>
+        <div className='flex flex-col items-center gap-2'>
+          <span className='text-4xl' role='img' aria-label='검색'>
+            🔍
+          </span>
+          <p className='text-grey-60'>검색 결과가 없습니다.</p>
+          <p className='text-sm text-grey-40'>다른 검색어로 시도해보세요.</p>
+          <button
+            onClick={() => {
+              setSearchText('');
+              setFilteredData(noticeData.item);
+              const newSearchParams = new URLSearchParams(searchParams);
+              newSearchParams.delete('keyword');
+              newSearchParams.set('page', '1');
+              navigate(`?${newSearchParams.toString()}`);
+            }}
+            className='mt-2 px-4 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
+          >
+            전체 공지사항 보기
+          </button>
+        </div>
+      </div>
+    )
+  ) : (
+    // 검색어가 없을 때
+    noticeData.item.map((item, index) => (
+      <NoticeListItem
+        key={item._id}
+        item={item}
+        number={totalData - ((currentPage - 1) * limit + index)}
+      />
+    ))
+  );
 
   return (
     <div className='w-[1200px] mx-auto px-6 mb-20'>

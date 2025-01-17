@@ -202,8 +202,8 @@ export default function QnAListPage() {
     user && userData.item?.find((item) => item._id === user._id)?.type;
   const isAdminOrUser = userType === 'admin' || userType === 'user';
 
-  const totalData = qnaData.pagination?.total || 0;
-  const totalPages = Math.ceil(totalData / limit);
+  const totalData = qnaData?.pagination?.total || 0;
+  const totalPages = Math.max(1, Math.ceil(totalData / limit));
   const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
   const startPage = (currentGroup - 1) * PAGES_PER_GROUP + 1;
   const endPage = Math.min(currentGroup * PAGES_PER_GROUP, totalPages);
@@ -220,14 +220,52 @@ export default function QnAListPage() {
     return <div>데이터를 불러오는데 실패했습니다.</div>;
   }
 
-  const qnaPostList = (searchText.trim() ? filteredData : qnaData.item).map(
-    (item, index) => (
+  const qnaPostList = searchText.trim() ? (
+    filteredData.length > 0 ? (
+      // 검색 결과가 있을 때
+      filteredData.map((item, index) => (
+        <QnAListItem
+          key={item._id}
+          item={item}
+          number={totalData - ((currentPage - 1) * limit + index)}
+        />
+      ))
+    ) : (
+      // 검색 결과가 없을 때
+      <tr>
+        <td colSpan='4' className='text-center py-16'>
+          <div className='flex flex-col items-center gap-2'>
+            <span className='text-4xl' role='img' aria-label='검색'>
+              🔍
+            </span>
+            <p className='text-grey-60'>검색 결과가 없습니다.</p>
+            <p className='text-sm text-grey-40'>다른 검색어로 시도해보세요.</p>
+            <button
+              onClick={() => {
+                setSearchText('');
+                setFilteredData(qnaData.item);
+                const newSearchParams = new URLSearchParams(searchParams);
+                newSearchParams.delete('keyword');
+                newSearchParams.set('page', '1');
+                navigate(`?${newSearchParams.toString()}`);
+              }}
+              className='mt-2 px-4 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
+            >
+              전체 QnA 보기
+            </button>
+          </div>
+        </td>
+      </tr>
+    )
+  ) : (
+    // 검색어가 없을 때
+    qnaData.item.map((item, index) => (
       <QnAListItem
         key={item._id}
         item={item}
         number={totalData - ((currentPage - 1) * limit + index)}
       />
-    )
+    ))
   );
 
   return (
