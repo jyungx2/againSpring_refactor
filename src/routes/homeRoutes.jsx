@@ -22,7 +22,8 @@ import InfoSection from "@pages/InfoSection";
 import Cart from "@pages/Cart";
 import EventMainPage from "@pages/eventPage/EventMainPage";
 import EventDetailPage from "@pages/eventPage/EventDetailPage";
-import TansoPage from "@pages/tanso/tanso-main";
+import TansoCalc from "@pages/tanso/tanso-calc";
+import TansoMain from "@pages/tanso/tanso-main";
 import SearchPage from "@pages/searchPage";
 import UncompletedPage from "@pages/user/UncompletedPage";
 
@@ -60,7 +61,8 @@ const homeRoutes = [
       { path: "qna/detail/:id", element: <QnAPostDetailPage /> },
       { path: "event", element: <EventMainPage /> },
       { path: "event/detail/:id", element: <EventDetailPage /> },
-      { path: "tanso", element: <TansoPage /> },
+      { path: "tansocalc", element: <TansoCalc /> },
+      { path: "tansomain", element: <TansoMain /> },
       { path: "cart/:userId", element: <Cart /> },
       { path: "/search", element: <SearchPage /> },
       { path: "/uncompleted", element: <UncompletedPage /> },
