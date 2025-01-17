@@ -19,7 +19,7 @@ const fetchUserInfo = async (axios) => {
 
 // TODO 2: 에러 처리 (부분완료)
 // 1. 검색 실패 시 에러 메시지 표시 (부분완료)
-// 2. 검색 결과가 없을 때의 UI 처리 (미완료)
+// 2. 검색 결과가 없을 때의 UI 처리 (완료)
 // 3. 로딩 상태 처리 (완료)
 
 // TODO 3: URL 파라미터와 상태 동기화 (부분완료)
@@ -150,39 +150,39 @@ export default function NoticeListPage() {
   };
 
   const handleSearch = () => {
-    if (!searchText.trim()) {
+    const newSearchParams = new URLSearchParams(searchParams);
+
+    if (searchText.trim()) {
+      // 검색어가 있을 때
+      newSearchParams.set('keyword', searchText);
+      newSearchParams.set('searchType', searchType);
+    } else {
+      // 검색어가 없을 때
+      newSearchParams.delete('keyword');
+      newSearchParams.delete('searchType');
       setFilteredData(noticeData.item);
+      navigate(`?${newSearchParams.toString()}`);
       return;
     }
 
-    let searchParams = {
+    newSearchParams.set('page', '1');
+
+    navigate(`?${newSearchParams.toString()}`);
+
+    let apiSearchParams = {
       type: 'notice',
-      page: currentPage,
+      page: 1,
       limit,
       keyword: searchText,
+      searchType: searchType,
     };
 
     axios
       .get('/posts', {
-        params: searchParams,
+        params: apiSearchParams,
       })
       .then((response) => {
         let results = response.data.item;
-
-        results = results.filter((item) => {
-          const searchLower = searchText.toLocaleLowerCase();
-
-          if (searchType === 'title') {
-            return item.title.toLowerCase().includes(searchLower);
-          } else if (searchType === 'content') {
-            return item.content.toLowerCase().includes(searchLower);
-          } else {
-            return (
-              item.title.toLowerCase().includes(searchLower) ||
-              item.content.toLowerCase().includes(searchLower)
-            );
-          }
-        });
         setFilteredData(results);
       })
       .catch((error) => {

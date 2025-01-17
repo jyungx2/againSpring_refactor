@@ -135,39 +135,39 @@ export default function QnAListPage() {
   };
 
   const handleSearch = () => {
-    if (!searchText.trim()) {
+    const newSearchParams = new URLSearchParams(searchParams);
+
+    if (searchText.trim()) {
+      // 검색어가 있을 때
+      newSearchParams.set('keyword', searchText);
+      newSearchParams.set('searchType', searchType);
+    } else {
+      // 검색어가 없을 때
+      newSearchParams.delete('keyword');
+      newSearchParams.delete('searchType');
       setFilteredData(qnaData.item);
+      navigate(`?${newSearchParams.toString()}`);
       return;
     }
 
-    let searchParams = {
+    newSearchParams.set('page', '1');
+
+    navigate(`?${newSearchParams.toString()}`);
+
+    let apiSearchParams = {
       type: 'qna',
-      page: currentPage,
+      page: 1,
       limit,
       keyword: searchText,
+      searchType: searchType,
     };
 
     axios
       .get('/posts', {
-        params: searchParams,
+        params: apiSearchParams,
       })
       .then((response) => {
         let results = response.data.item;
-
-        results = results.filter((item) => {
-          const searchLower = searchText.toLocaleLowerCase();
-
-          if (searchType === 'title') {
-            return item.title.toLowerCase().includes(searchLower);
-          } else if (searchType === 'content') {
-            return item.content.toLowerCase().includes(searchLower);
-          } else {
-            return (
-              item.title.toLowerCase().includes(searchLower) ||
-              item.content.toLowerCase().includes(searchLower)
-            );
-          }
-        });
         setFilteredData(results);
       })
       .catch((error) => {
