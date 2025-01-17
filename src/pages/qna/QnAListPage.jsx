@@ -290,8 +290,9 @@ export default function QnAListPage() {
     return `?${params.toString()}`;
   };
 
-  const userType =
-    user && userData.item?.find((item) => item._id === user._id)?.type;
+  const userType = user
+    ? userData?.item?.find((item) => item._id === user._id)?.type
+    : null;
   const isAdminOrUser = userType === 'admin' || userType === 'user';
 
   const totalData = qnaData?.pagination?.total || 0;

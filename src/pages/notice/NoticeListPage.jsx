@@ -290,7 +290,7 @@ export default function NoticeListPage() {
   };
 
   const userType = user
-    ? userData.item.find((item) => item._id === user._id)?.type
+    ? userData?.item?.find((item) => item._id === user._id)?.type
     : null;
   const isAdmin = userType === 'admin';
 
