@@ -27,7 +27,6 @@ export default function QnAListPage() {
   const [endDate, setEndDate] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [searchType, setSearchType] = useState('title');
   const [sortOption, setSortOption] = useState(() => {
     const sortParam = searchParams.get('sort');
     if (!sortParam) return 'default';
@@ -172,10 +171,6 @@ export default function QnAListPage() {
     setSearchText(e.target.value);
   };
 
-  const handleSearchTypeChange = (e) => {
-    setSearchType(e.target.value);
-  };
-
   const handleSearch = () => {
     console.log('=== 검색 시작 ===');
     const newSearchParams = new URLSearchParams();
@@ -187,13 +182,10 @@ export default function QnAListPage() {
     };
 
     console.log('검색어:', searchText.trim() ? searchText : '없음');
-    console.log('검색 타입:', searchType);
 
     if (searchText.trim()) {
       newSearchParams.set('keyword', searchText);
-      newSearchParams.set('searchType', searchType);
       defaultSearchParams.keyword = searchText;
-      defaultSearchParams.searchType = searchType;
     }
 
     console.log('기간 타입:', periodType);
@@ -273,7 +265,6 @@ export default function QnAListPage() {
 
     if (searchText.trim()) {
       params.set('keyword', searchText);
-      params.set('searchType', searchType);
     }
 
     if (periodType !== 'all-day') {
@@ -478,17 +469,7 @@ export default function QnAListPage() {
             />
           </div>
         )}
-        <div className='relative w-[120px]'>
-          <select
-            value={searchType}
-            onChange={handleSearchTypeChange}
-            className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'
-          >
-            <option value='title'>제목</option>
-            <option value='content'>내용</option>
-            <option value='all'>제목+내용</option>
-          </select>
-        </div>
+        
         <input
           type='text'
           value={searchText}
