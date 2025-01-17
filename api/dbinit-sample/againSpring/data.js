@@ -24,7 +24,8 @@ export const initData = async (clientId, nextSeq) => {
         image: `/files/${clientId}/user-muzi.webp`,
         createdAt: getTime(-100, -60 * 60 * 3),
         updatedAt: getTime(-100, -60 * 60 * 3),
-        extra: {
+        extra: { 
+          tanso: 0, 
           birthday: "03-23",
           membershipClass: "MC03",
           addressBook: [
@@ -174,11 +175,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-38, -60 * 60 * 6),
         updatedAt: getTime(-33, -60 * 55),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 4,
+          tanso: 20,
         },
       },
       {
@@ -216,11 +218,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-35, -60 * 60 * 6),
         updatedAt: getTime(-10, -60 * 19),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 3,
+          tanso: 30,
         },
       },
       {
@@ -258,11 +261,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-33, -60 * 60 * 7),
         updatedAt: getTime(-22, -60 * 60 * 3),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
+          tanso: 4,
         },
       },
       {
@@ -290,12 +294,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-30, -60 * 60 * 10),
         updatedAt: getTime(-10, -60 * 56),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "bathroom"],
           sort: 2,
+          tanso: 5,
         },
       },
       {
@@ -329,11 +334,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-30, -60 * 60 * 21),
         updatedAt: getTime(-20, -60 * 10),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
+          tanso: 6,
         },
       },
       {
@@ -361,11 +367,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-25, -60 * 60 * 12),
         updatedAt: getTime(-24, -60 * 23),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 3,
+          tanso: 8,
         },
       },
       {
@@ -393,7 +400,7 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-22, -60 * 60 * 22),
         updatedAt: getTime(-20, -60 * 33),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           category: ["all-of-list", "bathroom"],
@@ -432,12 +439,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-21, -60 * 60 * 4),
         updatedAt: getTime(-16, -60 * 15),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 2,
         },
       },
       {
@@ -465,11 +473,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-18, -60 * 60 * 7),
         updatedAt: getTime(-12, -60 * 33),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: true,
           category: ["all-of-list", "kitchen"],
           sort: 4,
+          tanso: 7,
         },
       },
       {
@@ -497,12 +506,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 6,
+          tanso: 8,
         },
       },
       {
@@ -540,11 +550,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-11, -60 * 60 * 12),
         updatedAt: getTime(-5, -60 * 60 * 6),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 7,
+          tanso: 8,
         },
       },
       // 13번 상품
@@ -578,11 +589,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-10, -60 * 60 * 12),
         updatedAt: getTime(-5, -60 * 60 * 6),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 6,
+          tanso: 9,
         },
       },
       // 14번 상품. 
@@ -621,7 +633,7 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           category: ["all-of-list", "kitchen"],
@@ -663,12 +675,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: true,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 2,
         },
       },
       {
@@ -701,12 +714,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 11,
         },
       },
       {
@@ -739,12 +753,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 28,
         },
       },
       {
@@ -772,12 +787,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 58,
         },
       },
       {
@@ -820,12 +836,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 68,
         },
       },
       {
@@ -853,12 +870,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: true,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 18,
         },
       },
 
@@ -888,12 +906,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
+          tanso: 41,
         },
       },
       {
@@ -926,12 +945,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
+          tanso: 22,
         },
       },
       {
@@ -964,12 +984,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
+          tanso: 21,
         },
       },
       {
@@ -997,12 +1018,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
+          tanso: 8,
         },
       },
 
@@ -1032,12 +1054,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: true,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 8,
         },
       },
       {
@@ -1065,12 +1088,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 23,
         },
       },
       {
@@ -1103,12 +1127,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 18,
         },
       },
       {
@@ -1136,12 +1161,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 32,
         },
       },
       {
@@ -1169,12 +1195,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 51,
         },
       },
       {
@@ -1207,12 +1234,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 18,
         },
       },
       {
@@ -1240,12 +1268,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 48,
         },
       },
       {
@@ -1273,12 +1302,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 56,
         },
       },
       {
@@ -1306,12 +1336,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 58,
         },
       },
       {
@@ -1339,12 +1370,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 14,
         },
       },
 
@@ -1374,12 +1406,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "pet"],
           sort: 2,
+          tanso: 18,
         },
       },
 
@@ -1409,12 +1442,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 5,
         },
       },
       {
@@ -1442,12 +1476,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 1,
         },
       },
       {
@@ -1475,12 +1510,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: true,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 25,
         },
       },
       {
@@ -1508,12 +1544,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 12,
         },
       },
       {
@@ -1541,12 +1578,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 10,
         },
       },
       {
@@ -1574,12 +1612,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 2,
         },
       },
       {
@@ -1607,12 +1646,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 1,
         },
       },
       {
@@ -1645,12 +1685,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 22,
         },
       },
       {
@@ -1678,12 +1719,13 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: {
+        extra: { tanso: 0, 
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 18,
         },
       },
 
@@ -1708,7 +1750,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `샤넬 향수`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
-        extra: {
+        extra: {  
           depth: 1,
         },
       },
@@ -1733,7 +1775,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `3달 쓴 향수입니다.`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
-        extra: {
+        extra: { 
           depth: 2,
           parent: 15,
           size: "200mm",
@@ -1979,7 +2021,7 @@ export const initData = async (clientId, nextSeq) => {
         product_id: 3,
         rating: 1,
         content: "하루만에 고장났어요.",
-        extra: {
+        extra: { tanso: 0, 
           title: "추천하지 않습니다.",
         },
         createdAt: getTime(-2, -60 * 60 * 10),
