@@ -1,5 +1,3 @@
-// src/components/PostEditor.jsx
-
 import { useEffect } from 'react';
 import { useQuill } from 'react-quilljs';
 import { useParams } from 'react-router-dom';
