@@ -25,6 +25,8 @@ import EventDetailPage from "@pages/eventPage/EventDetailPage";
 import TansoPage from "@pages/tanso/tanso-main";
 import SearchPage from "@pages/searchPage";
 import UncompletedPage from "@pages/user/UncompletedPage";
+import { element } from "prop-types";
+import QnaPagination from "@pages/user/QnaPagination";
 
 const homeRoutes = [
   {
@@ -47,7 +49,11 @@ const homeRoutes = [
       { path: "tos", element: <TermsOfService /> },
       { path: "user/order", element: <Myorder /> },
       { path: "user/order/review", element: <Myreview /> },
-      { path: "user/:type", element: <Myquery /> },
+      {
+        path: "user/:type",
+        element: <Myquery />,
+        children: [{ path: "?page=:page", element: <QnaPagination /> }],
+      },
       { path: "shop", element: <Shop /> },
       { path: "detail/:id", element: <Detail /> },
       { path: "notice", element: <NoticeListPage /> },

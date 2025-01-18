@@ -1,34 +1,47 @@
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import QnaItem from "@pages/user/QnaItem";
 import Sidebar from "@pages/user/Sidebar";
+import QnaPagination from "@pages/user/QnaPagination";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-
-// URL : {{url}}/posts/users?type=qna
 
 function Myquery() {
   const navigate = useNavigate();
   const axios = useAxiosInstance();
   const { type } = useParams();
-  console.log(type); // qna
+  console.log(type);
+  const [searchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const params = {
+    page: searchParams.get("page") || 1, // 페이지
+    limit: 4, // 설정 안하면 10이 디폴트값
+  };
 
   const { data } = useQuery({
-    queryKey: ["posts", type],
-    queryFn: () => axios.get("/posts/users", { params: { type } }),
+    queryKey: ["posts", params],
+    queryFn: () => axios.get(`/posts/users?type=${type}`, { params }),
     select: (res) => {
       console.log(res.data);
       return res.data;
     },
-    // staleTime: 1000 * 10,
   });
 
   if (!data) {
     return <div>로딩중...</div>;
   }
+  console.log(data);
 
-  const list = data.item.map((qna, index) => (
-    <QnaItem key={qna._id} item={qna} count={index + 1}></QnaItem>
+  const totalPages = data?.pagination.totalPages;
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  const list = data?.item.map((qna, index) => (
+    <QnaItem key={qna._id} item={qna} count={index + 1} />
   ));
 
   return (
@@ -56,22 +69,22 @@ function Myquery() {
           <div className="flex flex-col gap-[10px] justify-center border-t border-grey-30 p-[30px] pb-0">
             <h2 className="font-gowunBold text-[22px]">문의내역</h2>
 
-            <table className="w-full border-collapse my-[20px]">
+            <table className="w-full border-collapse my-[20px] table-fixed">
               <thead className="bg-grey-5 font-gowunBold">
                 <tr>
-                  <th className="border border-grey-30 text-center p-[8px]">
+                  <th className="border border-grey-30 text-center p-[8px] w-[10%]">
                     번호
                   </th>
-                  <th className="border border-grey-30 text-center p-[8px]">
+                  <th className="border border-grey-30 text-center p-[8px] w-[50%]">
                     제목
                   </th>
-                  <th className="border border-grey-30 text-center p-[8px]">
+                  <th className="border border-grey-30 text-center p-[8px] w-[15%]">
                     작성일
                   </th>
-                  <th className="border border-grey-30 text-center p-[8px]">
+                  <th className="border border-grey-30 text-center p-[8px] w-[12.5%]">
                     작성자
                   </th>
-                  <th className="border border-grey-30 text-center p-[8px]">
+                  <th className="border border-grey-30 text-center p-[8px] w-[8%]">
                     조회수
                   </th>
                 </tr>
@@ -80,13 +93,13 @@ function Myquery() {
               <tbody>{list}</tbody>
             </table>
 
-            <div className="flex gap-[48px] items-center justify-center mt-[40px]">
-              <img src="/icons/arrow-left-active.svg" />
-              <div className="flex gap-[6px]">
-                <span>1</span>/<span>1</span>
-              </div>
-              <img src="/icons/arrow-right.svg" />
-            </div>
+            {data && (
+              <QnaPagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
+            )}
           </div>
         </div>
       </div>
