@@ -4,12 +4,11 @@ import '../../assets/styles/fonts.css';
 import { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';
 import QnAProductModal from '@pages/qna/QnAProductModal';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
 import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
 import { handleImageUpload } from '@utils/imageUpload';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQueryClient } from '@tanstack/react-query';
+import QnAAlerts from '@utils/qnaAlerts';
 
 export default function QnANewPostPage() {
   const navigate = useNavigate();
@@ -17,11 +16,9 @@ export default function QnANewPostPage() {
   const axios = useAxiosInstance();
 
   const [title, setTitle] = useState('');
-
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [previousSelection, setPreviousSelection] = useState(null);
   const [error, setError] = useState(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { quill, quillRef } = useQuill({
@@ -37,28 +34,17 @@ export default function QnANewPostPage() {
     }
   }, [quill]);
 
-  const MySwal = withReactContent(Swal);
-
   const openModal = () => {
     setPreviousSelection(selectedProduct);
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = async () => {
     if (selectedProduct !== previousSelection) {
-      MySwal.fire({
-        title: '선택을 취소하시겠습니까?',
-        text: '변경사항이 저장되지 않습니다.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '네',
-        cancelButtonText: '아니오',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          setSelectedProduct(previousSelection);
-          resetModalState();
-        }
-      });
+      if (await QnAAlerts.confirmModalClose()) {
+        setSelectedProduct(previousSelection);
+        resetModalState();
+      }
     } else {
       resetModalState();
     }
@@ -68,7 +54,7 @@ export default function QnANewPostPage() {
     setIsModalOpen(false);
   };
 
-  const handleProductSelect = (product) => {
+  const handleProductSelect = async (product) => {
     try {
       if (!product || !product._id) {
         throw new Error('올바르지 않은 상품 정보입니다.');
@@ -77,13 +63,10 @@ export default function QnANewPostPage() {
       if (selectedProduct?._id !== product._id) {
         setError(null);
         setSelectedProduct(product);
+        await QnAAlerts.confirmProductSelect(product.name);
+        closeModal();
       } else {
-        MySwal.fire({
-          title: '알림',
-          text: '이미 선택된 상품입니다.',
-          icon: 'info',
-          confirmButtonText: '확인',
-        });
+        await QnAAlerts.showDuplicateProductWarning();
       }
     } catch (err) {
       console.error('상품 선택 중 오류 발생: ', err);
@@ -91,113 +74,46 @@ export default function QnANewPostPage() {
     }
   };
 
-  const handleProductRemove = () => {
-    MySwal.fire({
-      title: '선택된 상품을 제거하시겠습니까?',
-      text: '제거된 상품 정보는 복구할 수 없습니다.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네',
-      cancelButtonText: '아니오',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setSelectedProduct(null);
-        MySwal.fire('제거 완료', '선택된 상품이 제거되었습니다.', 'success');
-      }
-    });
+  const handleProductRemove = async () => {
+    if (await QnAAlerts.confirmProductRemove()) {
+      setSelectedProduct(null);
+    }
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     const hasContent =
       title.trim() !== '' || (quill && quill.getText().trim() !== '');
 
     if (hasContent) {
-      MySwal.fire({
-        title: '작성 중인 게시물이 있습니다. 취소하시겠습니까?',
-        text: '게시글은 복구할 수 없습니다.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '네',
-        cancelButtonText: '아니요',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          MySwal.fire({
-            title: '취소 완료',
-            text: '게시글 작성이 취소되었습니다.',
-            confirmButtonText: '확인',
-            icon: 'success',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              navigate('/qna');
-            }
-          });
-        }
-      });
+      if (await QnAAlerts.confirmCancel()) {
+        navigate('/qna');
+      }
     } else {
       navigate('/qna');
     }
   };
 
   const handleSave = async () => {
-    let productId = selectedProduct?._id;
-
     const data = {
       type: 'qna',
       title: title,
       content: quill.root.innerHTML,
+      ...(selectedProduct?._id && { product_id: selectedProduct._id }),
     };
 
-    if (productId) data.product_id = productId;
-
-    MySwal.fire({
-      title: '게시물을 등록하시겠습니까?',
-      text: '잘못 등록한 경우 상세페이지에서 수정 및 삭제가 가능합니다.',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네',
-      cancelButtonText: '아니요',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        saveData();
-      }
-    });
-
-    const saveData = async () => {
+    if (await QnAAlerts.confirmSave()) {
       try {
         const response = await axios.post('/posts', data);
-
         if (response.data.ok === 1) {
           await queryClient.invalidateQueries({ queryKey: ['posts', 'qna'] });
-
-          MySwal.fire({
-            title: '등록 완료',
-            text: '게시글 등록이 완료되었습니다.',
-            confirmButtonText: '확인',
-            icon: 'success',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              navigate('/qna');
-            }
-          });
+          if (await QnAAlerts.showSaveSuccess()) {
+            navigate('/qna');
+          }
         }
       } catch (error) {
-        console.error('게시글 저장 중 오류 발생:', error);
-        MySwal.fire({
-          title: '등록 실패',
-          text:
-            error.response?.data?.message ||
-            '게시글 등록에 실패했습니다. 다시 시도해주세요.',
-          icon: 'error',
-          confirmButtonText: '확인',
-        });
+        await QnAAlerts.showSaveError(error);
       }
-    };
+    }
   };
 
   return (

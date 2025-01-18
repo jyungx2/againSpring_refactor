@@ -6,14 +6,11 @@ import { useQuill } from 'react-quilljs';
 import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
 import { handleImageUpload } from '@utils/imageUpload';
 import QnAProductModal from '@pages/qna/QnAProductModal';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
 import { useEditPost } from '@hooks/useEditPost';
+import QnAAlerts from '@utils/qnaAlerts';
 
 export default function QnAEditPostPage() {
   const { id } = useParams();
-
-  const MySwal = withReactContent(Swal);
 
   const { quill, quillRef } = useQuill({
     modules: QUILL_MODULES,
@@ -46,29 +43,56 @@ export default function QnAEditPostPage() {
   }, [quill, setQuillInstance]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const openModal = () => setIsModalOpen(true);
+
   const closeModal = () => setIsModalOpen(false);
 
-  const handleProductSelect = (product) => {
-    setSelectedProduct(product);
+  const handleProductSelect = async (product) => {
+    try {
+      if (!product || !product._id) {
+        throw new Error('올바르지 않은 상품 정보입니다.');
+      }
+
+      if (selectedProduct?._id !== product._id) {
+        setSelectedProduct(product);
+        await QnAAlerts.confirmProductSelect(product.name);
+        closeModal();
+      } else {
+        await QnAAlerts.showDuplicateProductWarning();
+      }
+    } catch (err) {
+      console.error('상품 선택 중 오류 발생: ', err);
+      await QnAAlerts.showError(err.message);
+    }
   };
 
-  const handleProductRemove = () => {
-    MySwal.fire({
-      title: '선택된 상품을 제거하시겠습니까?',
-      text: '제거된 상품 정보는 복구할 수 없습니다.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네',
-      cancelButtonText: '아니오',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setSelectedProduct(null);
-        MySwal.fire('제거 완료', '선택된 상품이 제거되었습니다.', 'success');
+  const handleProductRemove = async () => {
+    if (await QnAAlerts.confirmProductRemove()) {
+      setSelectedProduct(null);
+    }
+  };
+
+  const handleEditCancel = async () => {
+    const hasContent =
+      title.trim() !== '' || (quill && quill.getText().trim() !== '');
+    if (hasContent) {
+      if (await QnAAlerts.confirmCancel(true)) {
+        handleCancel();
       }
-    });
+    } else {
+      handleCancel();
+    }
+  };
+
+  const handleEditUpdate = async () => {
+    if (await QnAAlerts.confirmSave(true)) {
+      try {
+        await handleUpdate();
+      } catch (error) {
+        await QnAAlerts.showSaveError(error, true);
+      }
+    }
   };
 
   return (
@@ -165,14 +189,14 @@ export default function QnAEditPostPage() {
       <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         <button
           className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-secondary-20 text-white'
-          onClick={handleUpdate}
+          onClick={handleEditUpdate}
           disabled={isLoading}
         >
           수정하기
         </button>
         <button
           className='rounded-[10px] border-none py-[15px] px-[10px] w-[100px] cursor-pointer bg-grey-20'
-          onClick={handleCancel}
+          onClick={handleEditCancel}
           disabled={isLoading}
         >
           취소하기
