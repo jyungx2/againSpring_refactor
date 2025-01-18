@@ -4,8 +4,8 @@ import '../../assets/styles/fonts.css';
 import { useEffect } from 'react';
 import { useQuill } from 'react-quilljs';
 import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
-import { useNoticeEditPost } from '@hooks/useNoticeEditPost';
 import { handleImageUpload } from '@utils/imageUpload';
+import { useEditPost } from '@hooks/useEditPost';
 
 export default function NoticeEditPostPage() {
   const { id } = useParams();
@@ -13,6 +13,19 @@ export default function NoticeEditPostPage() {
   const { quill, quillRef } = useQuill({
     modules: QUILL_MODULES,
     formats: QUILL_FORMATS,
+  });
+
+  const {
+    title,
+    setTitle,
+    isLoading,
+    setQuillInstance,
+    handleUpdate,
+    handleCancel,
+  } = useEditPost({
+    post: { _id: id },
+    returnPath: `/notice/detail/${id}`,
+    postType: 'notice',
   });
 
   useEffect(() => {
@@ -23,15 +36,6 @@ export default function NoticeEditPostPage() {
         .addHandler('image', () => handleImageUpload(quill));
     }
   }, [quill, setQuillInstance]);
-
-  const {
-    title,
-    setTitle,
-    isLoading,
-    setQuillInstance,
-    handleUpdate,
-    handleCancel,
-  } = useNoticeEditPost({ _id: id }, null, `/notice/detail/${id}`);
 
   return (
     <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-32'>

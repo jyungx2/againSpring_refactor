@@ -4,11 +4,11 @@ import '../../assets/styles/fonts.css';
 import { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';
 import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
-import { useQnAEditPost } from '@hooks/useQnAEditPost';
 import { handleImageUpload } from '@utils/imageUpload';
 import QnAProductModal from '@pages/qna/QnAProductModal';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import { useEditPost } from '@hooks/useEditPost';
 
 export default function QnAEditPostPage() {
   const { id } = useParams();
@@ -20,6 +20,22 @@ export default function QnAEditPostPage() {
     formats: QUILL_FORMATS,
   });
 
+  const {
+    title,
+    setTitle,
+    isLoading,
+    setQuillInstance,
+    handleUpdate,
+    handleCancel,
+    selectedProduct,
+    setSelectedProduct,
+    isProductPost,
+  } = useEditPost({
+    post: { _id: id },
+    returnPath: `/qna/detail/${id}`,
+    postType: 'qna',
+  });
+
   useEffect(() => {
     if (quill) {
       setQuillInstance(quill);
@@ -28,19 +44,6 @@ export default function QnAEditPostPage() {
         .addHandler('image', () => handleImageUpload(quill));
     }
   }, [quill, setQuillInstance]);
-
-  const {
-    title,
-    setTitle,
-    // content,
-    isLoading,
-    setQuillInstance,
-    handleUpdate,
-    handleCancel,
-    selectedProduct,
-    setSelectedProduct,
-    isProductPost,
-  } = useQnAEditPost({ _id: id }, null, `/qna/detail/${id}`);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
