@@ -2,29 +2,44 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import QnAProductModal from '@pages/qna/QnAProductModal';
 
-export default function QnAPostForm({
+export default function PostForm({
+  type = 'notice', // 'notice' | 'qna'
   isEdit = false,
   title,
   setTitle,
   quillRef,
+
   selectedProduct,
-  isProductPost = true,
-  isModalOpen,
-  isLoading = false,
+  isProductPost = false,
+  isModalOpen = false,
   openModal,
   closeModal,
   handleProductSelect,
   handleProductRemove,
+
+  isLoading = false,
   handleSave,
   handleCancel,
 }) {
+  const getPageTitle = () => {
+    switch (type) {
+      case 'qna':
+        return 'Q&A';
+      case 'notice':
+        return '공지사항';
+      default:
+        return '';
+    }
+  };
+
   return (
     <div className='w-[1200px] mx-auto px-6 relative min-h-screen pb-52'>
       <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        Q&A
+        {getPageTitle()}
       </h1>
 
-      {isProductPost && (
+      {/* QnA 상품 선택 영역 */}
+      {type === 'qna' && isProductPost && (
         <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
           <div className='mr-6 relative'>
             {selectedProduct?.mainImages?.length > 0 ? (
@@ -82,6 +97,7 @@ export default function QnAPostForm({
         </div>
       )}
 
+      {/* 공통 입력 영역 */}
       <input
         className='w-full mb-4 box-border border py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
@@ -96,6 +112,7 @@ export default function QnAPostForm({
         </div>
       </div>
 
+      {/* 공통 버튼 영역 */}
       <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         <button
           onClick={handleSave}
@@ -113,7 +130,8 @@ export default function QnAPostForm({
         </button>
       </div>
 
-      {isModalOpen && (
+      {/* QnA 상품 선택 모달 */}
+      {type === 'qna' && isModalOpen && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
           <div className='bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[calc(100vh-2rem)] overflow-hidden'>
             <QnAProductModal
@@ -127,19 +145,20 @@ export default function QnAPostForm({
   );
 }
 
-QnAPostForm.propTypes = {
+PostForm.propTypes = {
+  type: PropTypes.oneOf(['notice', 'qna']),
   isEdit: PropTypes.bool,
   title: PropTypes.string.isRequired,
   setTitle: PropTypes.func.isRequired,
   quillRef: PropTypes.object.isRequired,
   selectedProduct: PropTypes.object,
   isProductPost: PropTypes.bool,
-  isModalOpen: PropTypes.bool.isRequired,
+  isModalOpen: PropTypes.bool,
+  openModal: PropTypes.func,
+  closeModal: PropTypes.func,
+  handleProductSelect: PropTypes.func,
+  handleProductRemove: PropTypes.func,
   isLoading: PropTypes.bool,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  handleProductSelect: PropTypes.func.isRequired,
-  handleProductRemove: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   handleCancel: PropTypes.func.isRequired,
 };
