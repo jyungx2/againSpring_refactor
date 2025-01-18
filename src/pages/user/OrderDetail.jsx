@@ -1,4 +1,6 @@
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import Sidebar from "@pages/user/Sidebar";
+import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function OrderDetail() {
@@ -6,6 +8,23 @@ function OrderDetail() {
   const location = useLocation();
   const bundle = location.state.bundle;
   const products = location.state.products;
+  const axios = useAxiosInstance();
+
+  const { data } = useQuery({
+    queryKey: [],
+    queryFn: () => axios.get(`/orders/${bundle._id}`),
+    select: (res) => {
+      console.log(res.data);
+      return res.data;
+    },
+  });
+
+  function createRandomNumber() {
+    const number = Math.floor(Math.random() * Math.pow(10, 15));
+    return String(number).padStart(15, "0"); // 10자리가 안되면 앞에 0을 추가
+  }
+
+  const randomNum = createRandomNumber();
 
   const renderedItem = products.map((item) => {
     return (
@@ -76,10 +95,12 @@ function OrderDetail() {
           <div id="1" className="flex flex-col pt-10">
             <div>
               <h1 className="mb-4 font-gowunBold text-[22px]">주문상세</h1>
-              <p className="text-[16px]">
-                <span className="font-gowunBold">2025.1.14 주문</span> 주문번호
-                xxxxxxxx
-              </p>
+              <div className="text-[16px] flex items-center">
+                <span className="font-gowunBold pr-6">
+                  {data?.item.createdAt.slice(0, 10)}
+                </span>
+                <span className="text-[14px]">주문번호 {randomNum}</span>
+              </div>
             </div>
             <div>{renderedItem}</div>
           </div>
@@ -99,9 +120,7 @@ function OrderDetail() {
                   </tr>
                   <tr>
                     <td className="p-[8px] w-[12.5%]">받는주소</td>
-                    <td className="p-[8px]">
-                      (25102) 멋사광역시 프론트구 개발자동 xx아파트 xx동 xx호
-                    </td>
+                    <td className="p-[8px]">{data?.item.address.value}</td>
                   </tr>
                   <tr>
                     <td className="p-[8px] w-[12.5%]">배송요청사항</td>
@@ -126,18 +145,22 @@ function OrderDetail() {
                   <tbody>
                     <tr className="flex justify-between">
                       <td className="p-[8px] w-[12.5%]">총 상품가격</td>
-                      <td className="p-[8px] font-gowunBold">xxxx원</td>
+                      <td className="p-[8px] font-gowunBold">
+                        {data?.item.cost.products.toLocaleString()}원
+                      </td>
                     </tr>
                     <tr className="flex justify-between">
                       <td className="p-[8px] w-[12.5%]">배송비</td>
-                      <td className="p-[8px] font-gowunBold">0</td>
+                      <td className="p-[8px] font-gowunBold">
+                        {data?.item.cost.shippingFees.toLocaleString()}원
+                      </td>
                     </tr>
                     <tr className="flex justify-between">
                       <td className="p-[8px] w-[12.5%] text-[20px]">
                         총 결제금액
                       </td>
                       <td className="p-[8px] font-gowunBold text-[20px]">
-                        xxxx원
+                        {data?.item.cost.total.toLocaleString()}원
                       </td>
                     </tr>
                   </tbody>

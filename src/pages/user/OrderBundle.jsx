@@ -22,7 +22,7 @@ function OrderBundle({ bundle }) {
           <div
             className="flex items-center gap-[10px] cursor-pointer"
             onClick={() =>
-              navigate("/orders/detail", {
+              navigate(`detail/${bundle._id}`, {
                 state: { bundle: bundle, products: bundle.products },
               })
             }
