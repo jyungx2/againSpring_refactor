@@ -4,12 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-export const useNoticeEditPost = (post, initialData = null, returnPath) => {
+export const useEditPost = ({
+  post,
+  initialData = null,
+  returnPath,
+  postType = 'notice',
+}) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [originalData, setOriginalData] = useState(null);
   const [quillInstance, setQuillInstance] = useState(null);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isProductPost, setIsProductPost] = useState(false);
 
   const navigate = useNavigate();
   const axios = useAxiosInstance();
@@ -31,6 +39,15 @@ export const useNoticeEditPost = (post, initialData = null, returnPath) => {
         setTitle(data.title);
         setContent(data.content);
         setOriginalData(data);
+
+        if (postType === 'qna' && data.product?._id) {
+          setIsProductPost(true);
+          setSelectedProduct({
+            _id: data.product._id[0],
+            name: data.product.name[0],
+            mainImages: data.product.mainImages?.[0] || [],
+          });
+        }
 
         if (quillInstance) {
           quillInstance.root.innerHTML = data.content;
@@ -71,10 +88,16 @@ export const useNoticeEditPost = (post, initialData = null, returnPath) => {
 
     try {
       setIsLoading(true);
-      const response = await axios.patch(`/posts/${post._id}`, {
+      const updateData = {
         title,
         content: currentContent,
-      });
+      };
+
+      if (postType === 'qna') {
+        updateData.product_id = selectedProduct?._id || null;
+      }
+
+      const response = await axios.patch(`/posts/${post._id}`, updateData);
 
       if (response.data.ok) {
         await MySwal.fire({
@@ -99,8 +122,12 @@ export const useNoticeEditPost = (post, initialData = null, returnPath) => {
 
   const handleCancel = () => {
     const hasChanges =
-      title !== originalData?.title ||
-      quillInstance?.root.innerHTML !== originalData?.content;
+      postType === 'qna'
+        ? title !== originalData?.title ||
+          quillInstance?.root.innerHTML !== originalData?.content ||
+          selectedProduct?._id !== originalData?.product?._id
+        : title !== originalData?.title ||
+          quillInstance?.root.innerHTML !== originalData?.content;
 
     if (hasChanges) {
       MySwal.fire({
@@ -128,5 +155,9 @@ export const useNoticeEditPost = (post, initialData = null, returnPath) => {
     setQuillInstance,
     handleUpdate,
     handleCancel,
+
+    selectedProduct: postType === 'qna' ? selectedProduct : undefined,
+    setSelectedProduct: postType === 'qna' ? setSelectedProduct : undefined,
+    isProductPost: postType === 'qna' ? isProductPost : undefined,
   };
 };
