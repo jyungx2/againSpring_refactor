@@ -7,9 +7,9 @@ import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
 import { handleImageUpload } from '@utils/imageUpload';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQueryClient } from '@tanstack/react-query';
-import QnAAlerts from '@utils/qnaAlerts';
 import useProductModal from '@hooks/useProductModal';
 import PostForm from '@components/PostForm';
+import postAlerts from '@utils/postAlerts';
 
 export default function QnANewPostPage() {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ export default function QnANewPostPage() {
       title.trim() !== '' || (quill && quill.getText().trim() !== '');
 
     if (hasContent) {
-      if (await QnAAlerts.confirmCancel()) {
+      if (await postAlerts.confirmCancel()) {
         navigate('/qna');
       }
     } else {
@@ -64,17 +64,17 @@ export default function QnANewPostPage() {
       ...(selectedProduct?._id && { product_id: selectedProduct._id }),
     };
 
-    if (await QnAAlerts.confirmSave()) {
+    if (await postAlerts.confirmSave()) {
       try {
         const response = await axios.post('/posts', data);
         if (response.data.ok === 1) {
           await queryClient.invalidateQueries({ queryKey: ['posts', 'qna'] });
-          if (await QnAAlerts.showSaveSuccess()) {
+          if (await postAlerts.showSaveSuccess()) {
             navigate('/qna');
           }
         }
       } catch (error) {
-        await QnAAlerts.showSaveError(error);
+        await postAlerts.showSaveError(error);
       }
     }
   };

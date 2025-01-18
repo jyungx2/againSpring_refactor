@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import useQnaProductSearchStore from '@store/qnaProductSearchStore';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useSearchParams } from 'react-router-dom';
-import QnAAlerts from '@utils/qnaAlerts';
 import usePagination from '@hooks/usePagination';
+import postAlerts from '@utils/postAlerts';
 
 export default function QnAProductModal({ onClose, onProductSelect }) {
   const PAGES_PER_GROUP = 5;
@@ -72,7 +72,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
           ? '상품을 찾을 수 없습니다'
           : '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
       setError(errorMessage);
-      await QnAAlerts.showError(errorMessage);
+      await postAlerts.showError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -82,7 +82,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     if (e) e.preventDefault();
 
     if (searchKeyword.trim().length === 0) {
-      await QnAAlerts.showInfo('검색어를 입력하세요');
+      await postAlerts.showInfo('검색어를 입력하세요');
       return;
     }
 
@@ -128,10 +128,10 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
         throw new Error('선택된 상품을 찾을 수 없습니다.');
       }
 
-      await QnAAlerts.confirmProductSelect(selected.name);
+      await postAlerts.confirmProductSelect(selected.name);
       onProductSelect(selected);
     } catch (err) {
-      await QnAAlerts.showError(err.message);
+      await postAlerts.showError(err.message);
     }
   };
 

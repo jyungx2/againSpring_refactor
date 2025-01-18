@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import QnAAlerts from '@utils/qnaAlerts';
+import postAlerts from '@utils/postAlerts';
 
 export function useProductModal({ selectedProduct, setSelectedProduct }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +19,7 @@ export function useProductModal({ selectedProduct, setSelectedProduct }) {
 
   const closeModal = async () => {
     if (selectedProduct !== previousSelection) {
-      if (await QnAAlerts.confirmModalClose()) {
+      if (await postAlerts.confirmModalClose()) {
         setSelectedProduct(previousSelection);
         resetModalState();
       }
@@ -48,7 +48,7 @@ export function useProductModal({ selectedProduct, setSelectedProduct }) {
   };
 
   const handleProductRemove = async () => {
-    if (await QnAAlerts.confirmProductRemove()) {
+    if (await postAlerts.confirmProductRemove()) {
       setSelectedProduct(null);
     }
   };
