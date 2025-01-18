@@ -26,6 +26,7 @@ import TansoPage from "@pages/tanso/tanso-main";
 import SearchPage from "@pages/searchPage";
 import UncompletedPage from "@pages/user/UncompletedPage";
 import OrderDetail from "@pages/user/OrderDetail";
+import ReviewList from "@pages/user/ReviewList";
 
 const homeRoutes = [
   {
