@@ -48,7 +48,7 @@ const homeRoutes = [
       { path: "signup", element: <Signup /> },
       { path: "tos", element: <TermsOfService /> },
       { path: "user/order", element: <Myorder /> },
-      { path: "user/order/review", element: <Myreview /> },
+      { path: "user/order/:orderId/review/:productId", element: <Myreview /> },
       { path: "user/:type", element: <Myquery /> },
       { path: "shop", element: <Shop /> },
       { path: "detail/:id", element: <Detail /> },
