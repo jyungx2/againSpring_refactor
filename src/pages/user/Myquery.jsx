@@ -51,7 +51,13 @@ function Myquery() {
               <h1 className="font-gowunBold text-[26px]">문의 내역 확인</h1>
             </div>
 
-            <div className="ml-auto">
+            <div className="ml-auto flex gap-[20px]">
+              <button
+                disabled
+                className="font-gowunBold inline-block h-[42px] text-secondary-60 text-[16px] px-[24px] border border-secondary-30 rounded-[2px] box-border cursor-pointer"
+              >
+                1:1 챗봇 상담
+              </button>
               <button
                 onClick={() => navigate("/qna")}
                 className="font-gowunBold inline-block h-[42px] text-primary-70 text-[16px] px-[24px] border border-primary-30 rounded-[2px] box-border cursor-pointer"
