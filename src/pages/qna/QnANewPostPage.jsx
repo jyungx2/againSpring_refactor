@@ -9,7 +9,7 @@ import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQueryClient } from '@tanstack/react-query';
 import QnAAlerts from '@utils/qnaAlerts';
 import useProductModal from '@hooks/useProductModal';
-import QnAPostForm from '@components/QnAPostForm';
+import PostForm from '@components/PostForm';
 
 export default function QnANewPostPage() {
   const navigate = useNavigate();
@@ -80,11 +80,13 @@ export default function QnANewPostPage() {
   };
 
   return (
-    <QnAPostForm
+    <PostForm
+      type='qna'
       title={title}
       setTitle={setTitle}
       quillRef={quillRef}
       selectedProduct={selectedProduct}
+      isProductPost={true}
       isModalOpen={isModalOpen}
       openModal={openModal}
       closeModal={closeModal}

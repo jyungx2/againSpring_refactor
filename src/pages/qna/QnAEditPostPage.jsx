@@ -6,9 +6,8 @@ import { useQuill } from 'react-quilljs';
 import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
 import { handleImageUpload } from '@utils/imageUpload';
 import { useEditPost } from '@hooks/useEditPost';
-import QnAAlerts from '@utils/qnaAlerts';
 import { useProductModal } from '@hooks/useProductModal';
-import QnAPostForm from '@components/QnAPostForm';
+import PostForm from '@components/PostForm';
 
 export default function QnAEditPostPage() {
   const { id } = useParams();
@@ -54,30 +53,9 @@ export default function QnAEditPostPage() {
     }
   }, [quill, setQuillInstance]);
 
-  const handleEditCancel = async () => {
-    const hasContent =
-      title.trim() !== '' || (quill && quill.getText().trim() !== '');
-    if (hasContent) {
-      if (await QnAAlerts.confirmCancel(true)) {
-        handleCancel();
-      }
-    } else {
-      handleCancel();
-    }
-  };
-
-  const handleEditUpdate = async () => {
-    if (await QnAAlerts.confirmSave(true)) {
-      try {
-        await handleUpdate();
-      } catch (error) {
-        await QnAAlerts.showSaveError(error, true);
-      }
-    }
-  };
-
   return (
-    <QnAPostForm
+    <PostForm
+      type='qna'
       isEdit={true}
       title={title}
       setTitle={setTitle}
@@ -90,8 +68,8 @@ export default function QnAEditPostPage() {
       closeModal={closeModal}
       handleProductSelect={handleProductSelect}
       handleProductRemove={handleProductRemove}
-      handleSave={handleEditUpdate}
-      handleCancel={handleEditCancel}
+      handleSave={handleUpdate}
+      handleCancel={handleCancel}
     />
   );
 }
