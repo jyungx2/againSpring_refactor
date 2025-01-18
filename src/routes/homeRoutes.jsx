@@ -25,6 +25,7 @@ import EventDetailPage from "@pages/eventPage/EventDetailPage";
 import TansoPage from "@pages/tanso/tanso-main";
 import SearchPage from "@pages/searchPage";
 import UncompletedPage from "@pages/user/UncompletedPage";
+import OrderDetail from "@pages/user/OrderDetail";
 
 const homeRoutes = [
   {
@@ -64,6 +65,7 @@ const homeRoutes = [
       { path: "cart/:userId", element: <Cart /> },
       { path: "/search", element: <SearchPage /> },
       { path: "/uncompleted", element: <UncompletedPage /> },
+      { path: "/orders/detail", element: <OrderDetail /> },
     ],
   },
 ];
