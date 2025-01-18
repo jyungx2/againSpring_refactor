@@ -39,10 +39,6 @@ export default function usePostEditor({
             mainImages: data.product.mainImages?.[0] || [],
           });
         }
-
-        if (quillInstance) {
-          quillInstance.root.innerHTML = data.content;
-        }
       }
     } catch (error) {
       await postAlerts.showError(
@@ -54,9 +50,21 @@ export default function usePostEditor({
   };
 
   useEffect(() => {
+    if (quillInstance && content) {
+      quillInstance.root.innerHTML = content;
+    }
+    console.log('무한무한무한 ');
+    console.log(quillInstance);
+    console.log(content);
+  }, [quillInstance, content]);
+
+  useEffect(() => {
     if (isEdit && post?._id) {
       fetchPostData(post._id);
     }
+    console.log('무한무한무한222');
+    console.log(isEdit);
+    console.log(post?._id);
   }, [isEdit, post?._id]);
 
   const handleSave = async (e) => {
