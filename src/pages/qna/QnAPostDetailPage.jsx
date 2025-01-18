@@ -1,21 +1,22 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import '../../assets/styles/fonts.css';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import CommentList from '@pages/comment/CommentList';
 import { useEffect, useState } from 'react';
 import useUserStore from '@store/userStore';
+import { useDeletePost } from '@hooks/useDeletePost';
 
 export default function QnAPostDetailPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const { handleDelete } = useDeletePost({
+    id,
+    queryKey: 'qnaDetail',
+    redirectPath: '/qna',
+  });
   const { user } = useUserStore();
 
   const axios = useAxiosInstance();
-  const MySwal = withReactContent(Swal);
 
   const [navigationLinks, setNavigationLinks] = useState({
     previous: { link: undefined, title: undefined },
@@ -120,41 +121,6 @@ export default function QnAPostDetailPage() {
 
     findPreNextPostInfo(id);
   }, [data]);
-
-  const deletePost = useMutation({
-    mutationFn: () => axios.delete(`/posts/${id}`),
-    onSuccess: () => {
-      queryClient.removeQueries(['qnaDetail', id]);
-      queryClient.invalidateQueries(['posts']);
-      MySwal.fire({
-        title: '삭제 완료',
-        text: '게시글이 삭제되었습니다.',
-        icon: 'success',
-        confirmButtonText: '확인',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate('/qna');
-        }
-      });
-    },
-  });
-
-  const handleDelete = async () => {
-    const result = await MySwal.fire({
-      title: '게시글을 삭제하시겠습니까?',
-      text: '삭제된 게시글은 복구할 수 없습니다.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네',
-      cancelButtonText: '아니요',
-    });
-
-    if (result.isConfirmed) {
-      deletePost.mutate();
-    }
-  };
 
   if (isLoading) {
     return (
