@@ -3,19 +3,17 @@ import { useEffect, useState } from 'react';
 import useQnaProductSearchStore from '@store/qnaProductSearchStore';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useSearchParams } from 'react-router-dom';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
+import QnAAlerts from '@utils/qnaAlerts';
+import usePagination from '@hooks/usePagination';
+
 export default function QnAProductModal({ onClose, onProductSelect }) {
   const PAGES_PER_GROUP = 5;
-
   const axiosInstance = useAxiosInstance();
-  const MySwal = withReactContent(Swal);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const {
     products,
     loading,
-    // error,
     searchCount,
     selectedProduct,
     setProducts,
@@ -27,27 +25,23 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
 
   const [searchKeyword, setSearchKeyword] = useState('');
   const [sortOption, setSortOption] = useState('default');
-
   const [pagination, setPagination] = useState({
-    currentPage: 1,
     totalPages: 0,
     pageSize: 5,
   });
 
-  const handleApiError = (err) => {
-    const errorMessage =
-      err.response?.status === 404
-        ? '상품을 찾을 수 없습니다'
-        : '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
-
-    setError(errorMessage);
-    MySwal.fire({
-      title: '오류',
-      text: errorMessage,
-      icon: 'error',
-      confirmButtonText: '확인',
-    });
-  };
+  const {
+    currentPage,
+    showPrevButton,
+    showNextButton,
+    prevGroupLastPage,
+    nextGroupFirstPage,
+    getPageRange,
+  } = usePagination({
+    total: searchCount,
+    limit: pagination.pageSize,
+    pagesPerGroup: PAGES_PER_GROUP,
+  });
 
   const getSortParamsByOption = (sortOption) => {
     const sortParams = {
@@ -56,7 +50,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
       'price-desc': JSON.stringify({ price: -1 }),
       review: JSON.stringify({ replies: -1 }),
     };
-
     return sortParams[sortOption];
   };
 
@@ -64,7 +57,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     setLoading(true);
     try {
       const response = await axiosInstance.get('/products', { params });
-
       setProducts(response.data.item);
       setSearchCount(response.data.pagination.total);
       setPagination((prev) => ({
@@ -75,7 +67,12 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
       }));
       return response;
     } catch (err) {
-      handleApiError(err);
+      const errorMessage =
+        err.response?.status === 404
+          ? '상품을 찾을 수 없습니다'
+          : '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+      setError(errorMessage);
+      await QnAAlerts.showError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -85,12 +82,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     if (e) e.preventDefault();
 
     if (searchKeyword.trim().length === 0) {
-      MySwal.fire({
-        title: '알림',
-        text: '검색어를 입력하세요',
-        icon: 'info',
-        confirmButtonText: '확인',
-      });
+      await QnAAlerts.showInfo('검색어를 입력하세요');
       return;
     }
 
@@ -103,17 +95,16 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
 
     try {
       const response = await loadProductData(requestParams);
-
       if (response) {
         setSearchParams({
           ...(trimmedKeyWord && { keyword: trimmedKeyWord }),
           page: '1',
           limit: pagination.pageSize.toString(),
-          sort: getSortParamsByOption,
+          sort: getSortParamsByOption(sortOption),
         });
       }
     } catch (error) {
-      handleApiError(error);
+      console.error('검색 중 오류 발생:', error);
     }
   };
 
@@ -122,7 +113,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     setSortOption(newSortOption);
 
     const params = {
-      page: pagination.currentPage,
+      page: currentPage,
       limit: pagination.pageSize,
       ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
       sort: getSortParamsByOption(newSortOption),
@@ -130,37 +121,22 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     loadProductData(params);
   };
 
-  const handleSelect = () => {
+  const handleSelect = async () => {
     try {
       const selected = products.find((p) => p._id === selectedProduct);
       if (!selected) {
         throw new Error('선택된 상품을 찾을 수 없습니다.');
       }
 
-      MySwal.fire({
-        title: '상품 선택 완료',
-        text: `${selected.name} 상품이 선택되었습니다.`,
-        icon: 'success',
-        confirmButtonText: '확인',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          onProductSelect(selected);
-          onClose();
-        }
-      });
+      await QnAAlerts.confirmProductSelect(selected.name);
+      onProductSelect(selected);
     } catch (err) {
-      MySwal.fire({
-        title: '오류',
-        text: err.message,
-        icon: 'error',
-        confirmButtonText: '확인',
-      });
+      await QnAAlerts.showError(err.message);
     }
   };
 
   const handlePageChange = async (page) => {
     try {
-      setLoading(true);
       const params = {
         page,
         limit: pagination.pageSize,
@@ -169,7 +145,6 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
       };
 
       await loadProductData(params);
-      setPagination((prev) => ({ ...prev, currentPage: page }));
 
       setSearchParams({
         ...(searchKeyword.trim() && { keyword: searchKeyword.trim() }),
@@ -178,72 +153,18 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
         ...(sortOption !== 'default' && { sort: sortOption }),
       });
     } catch (err) {
-      handleApiError(err);
+      console.error('페이지 변경 중 오류 발생:', err);
     }
-  };
-
-  const Pagination = () => {
-    const currentGroup = Math.ceil(pagination.currentPage / PAGES_PER_GROUP);
-    const startPage = (currentGroup - 1) * PAGES_PER_GROUP + 1;
-    const endPage = Math.min(
-      currentGroup * PAGES_PER_GROUP,
-      pagination.totalPages
-    );
-    const prevGroupLastPage = startPage - 1;
-    const nextGroupFirstPage = endPage + 1;
-    const showPrevButton = currentGroup > 1;
-    const showNextButton = endPage < pagination.totalPages;
-
-    return (
-      <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-        {showPrevButton && (
-          <button
-            onClick={() => handlePageChange(prevGroupLastPage)}
-            className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
-          >
-            Prev
-          </button>
-        )}
-
-        {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
-          const pageNum = startPage + i;
-          return (
-            <button
-              key={pageNum}
-              onClick={() => handlePageChange(pageNum)}
-              className={`${
-                pagination.currentPage === pageNum
-                  ? 'bg-secondary-20 text-white'
-                  : 'bg-grey-20 text-black'
-              } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
-            >
-              {pageNum}
-            </button>
-          );
-        })}
-
-        {showNextButton && (
-          <button
-            onClick={() => handlePageChange(nextGroupFirstPage)}
-            className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
-          >
-            Next
-          </button>
-        )}
-      </div>
-    );
   };
 
   useEffect(() => {
     const currentKeyword = searchParams.get('keyword') || '';
-    const currentPage = parseInt(searchParams.get('page')) || 1;
     const currentLimit =
       parseInt(searchParams.get('limit')) || pagination.pageSize;
 
     setSearchKeyword(currentKeyword);
     setPagination((prev) => ({
       ...prev,
-      currentPage,
       pageSize: currentLimit,
     }));
 
@@ -407,8 +328,38 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
         </div>
 
         {!loading && products.length > 0 && (
-          <div className='mt-6'>
-            <Pagination />
+          <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
+            {showPrevButton && (
+              <button
+                onClick={() => handlePageChange(prevGroupLastPage)}
+                className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+              >
+                Prev
+              </button>
+            )}
+
+            {getPageRange().map((pageNum) => (
+              <button
+                key={pageNum}
+                onClick={() => handlePageChange(pageNum)}
+                className={`${
+                  currentPage === pageNum
+                    ? 'bg-secondary-20 text-white'
+                    : 'bg-grey-20 text-black'
+                } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
+              >
+                {pageNum}
+              </button>
+            ))}
+
+            {showNextButton && (
+              <button
+                onClick={() => handlePageChange(nextGroupFirstPage)}
+                className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+              >
+                Next
+              </button>
+            )}
           </div>
         )}
 
