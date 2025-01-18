@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { calculateDateRange, formatDateForSearch } from 'utils/dateUtils';
-import { getSortParamsByOption } from 'utils/sortUtils';
+import { calculateDateRange, formatDateForSearch } from '@utils/dateUtils';
+import { getSortParamsByOption } from '@utils/sortUtils';
 
 /**
  * URL 검색 파라미터 관리를 위한 커스텀 훅

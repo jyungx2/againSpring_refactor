@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from './useAxiosInstance';
 import useCustomSearchParams from './useSearchParams';
 import usePagination from './usePagination';
-import { calculateDateRange, formatDateForSearch } from 'utils/dateUtils';
+import { calculateDateRange, formatDateForSearch } from '@utils/dateUtils';
 
 /**
  * 게시판 공통 로직을 위한 메인 커스텀 훅
