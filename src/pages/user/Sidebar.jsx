@@ -7,6 +7,7 @@ function Sidebar() {
   const links = [
     { label: "주문조회", path: "/user/order" },
     { label: "1:1 문의", path: "/user/qna" },
+    { label: "후기조회", path: "/user/order/review" },
     { label: "위시리스트", path: "/uncompleted" },
     { label: "쿠폰", path: "/uncompleted" },
     { label: "포인트", path: "/uncompleted" },

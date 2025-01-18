@@ -42,7 +42,12 @@ function Myorder() {
                   src="/icons/profile.svg"
                 />
               )}
-              <p>{user.name}님, 안녕하세요.</p>
+              <div className="flex flex-col">
+                <p className="mb-10">{user.name}님, 안녕하세요.</p>
+                <button className="font-gowunBold text-white bg-pink p-2 rounded-lg cursor-pointer w-[120px]">
+                  나의 후기조회
+                </button>
+              </div>
             </div>
 
             <div className="flex gap-[20px]">
