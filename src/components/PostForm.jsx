@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import QnAProductModal from '@pages/qna/QnAProductModal';
 
 export default function PostForm({
-  type = 'notice', // 'notice' | 'qna'
+  type = 'notice',
   isEdit = false,
   title,
   setTitle,
@@ -38,7 +38,6 @@ export default function PostForm({
         {getPageTitle()}
       </h1>
 
-      {/* QnA 상품 선택 영역 */}
       {type === 'qna' && isProductPost && (
         <div className='flex items-center mb-4 p-6 border rounded-md w-full'>
           <div className='mr-6 relative'>
@@ -97,7 +96,6 @@ export default function PostForm({
         </div>
       )}
 
-      {/* 공통 입력 영역 */}
       <input
         className='w-full mb-4 box-border border py-2 px-4 rounded-md text-xl h-[50px]'
         type='text'
@@ -112,7 +110,6 @@ export default function PostForm({
         </div>
       </div>
 
-      {/* 공통 버튼 영역 */}
       <div className='absolute bottom-0 left-0 right-0 flex justify-center gap-[38px] py-10'>
         <button
           onClick={handleSave}
@@ -130,7 +127,6 @@ export default function PostForm({
         </button>
       </div>
 
-      {/* QnA 상품 선택 모달 */}
       {type === 'qna' && isModalOpen && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
           <div className='bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[calc(100vh-2rem)] overflow-hidden'>

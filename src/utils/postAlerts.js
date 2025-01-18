@@ -4,7 +4,6 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 
 export const postAlerts = {
-  // 공통 Alert
   confirmCancel: async (isEdit = false, postType = '') => {
     const result = await MySwal.fire({
       title: `${
@@ -93,7 +92,6 @@ export const postAlerts = {
     });
   },
 
-  // QnA 전용 Alert
   confirmProductSelect: async (productName) => {
     const result = await MySwal.fire({
       title: '상품 선택 완료',
