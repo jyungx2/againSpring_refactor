@@ -136,6 +136,30 @@ export const postAlerts = {
     });
     return result.isConfirmed;
   },
+
+  confirmDelete: async (postType = '') => {
+    const result = await MySwal.fire({
+      title: `${postType} 게시글을 삭제하시겠습니까?`,
+      text: '삭제된 게시글은 복구할 수 없습니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '네',
+      cancelButtonText: '아니요',
+    });
+    return result.isConfirmed;
+  },
+
+  showDeleteSuccess: async (postType = '') => {
+    const result = await MySwal.fire({
+      title: '삭제 완료',
+      text: `${postType} 게시글이 삭제되었습니다.`,
+      icon: 'success',
+      confirmButtonText: '확인',
+    });
+    return result.isConfirmed;
+  },
 };
 
 export default postAlerts;
