@@ -24,7 +24,7 @@ const purchaseStore = create((set) => ({
   successMessage: null,
 
   // 주문하기
-  placeOrder: async (products) => {
+  placeOrder: async (cartItems) => {
     const { user } = useUserStore.getState();
     const deleteProductsFromCart = cartStore.getState().deleteProductsFromCart;
 
@@ -38,10 +38,15 @@ const purchaseStore = create((set) => ({
     try {
       const instance = axiosInstance(user);
 
+      // 상품 구매 데이터 생성
+      const orderProducts = cartItems.map((item) => ({
+        _id: item.id,
+        quantity: item.quantity,
+      }));
+
       // 상품의 수량 확인
-      for (const product of products) {
-        console.log(product);
-        const response = await instance.get(`/products/${product.id}`);
+      for (const product of orderProducts) {
+        const response = await instance.get(`/products/${product._id}`);
         const availableQuantity = response.data.quantity;
 
         if (availableQuantity < product.quantity) {
@@ -53,15 +58,21 @@ const purchaseStore = create((set) => ({
         }
       }
 
-      const response = await instance.post("/orders/", { products });
+      const response = await instance.post("/orders/", {
+        products: orderProducts,
+      });
 
       if (response.status === 201) {
         set({ successMessage: "주문이 완료되었습니다." });
 
         setTimeout(async () => {
-          const productIdsToRemove = products.map((product) => product._id);
+          const productIdsToRemove = cartItems.map((item) => item._id);
 
-          await deleteProductsFromCart(productIdsToRemove);
+          if (typeof deleteProductsFromCart === "function") {
+            await deleteProductsFromCart(productIdsToRemove);
+          } else {
+            console.error();
+          }
 
           set({ successMessage: null });
         }, 1500);

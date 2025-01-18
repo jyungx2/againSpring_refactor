@@ -25,7 +25,6 @@ import EventDetailPage from "@pages/eventPage/EventDetailPage";
 import TansoPage from "@pages/tanso/tanso-main";
 import SearchPage from "@pages/searchPage";
 import UncompletedPage from "@pages/user/UncompletedPage";
-import { element } from "prop-types";
 import QnaPagination from "@pages/user/QnaPagination";
 
 const homeRoutes = [
