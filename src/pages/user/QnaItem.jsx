@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 QnaItem.propTypes = {
   item: PropTypes.shape({
@@ -12,9 +13,13 @@ QnaItem.propTypes = {
 };
 
 function QnaItem({ item, count }) {
+  const navigate = useNavigate();
   return (
     <>
-      <tr className="hover:bg-primary-5 hover:cursor-pointer">
+      <tr
+        className="hover:bg-primary-5 hover:cursor-pointer"
+        onClick={() => navigate(`/qna/detail/${item._id}`)}
+      >
         <td className="border border-grey-30 text-center p-[8px]">{count}</td>
         <td className="border border-grey-30 text-center p-[8px]">
           {item.title}

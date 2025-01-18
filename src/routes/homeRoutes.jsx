@@ -48,11 +48,7 @@ const homeRoutes = [
       { path: "tos", element: <TermsOfService /> },
       { path: "user/order", element: <Myorder /> },
       { path: "user/order/review", element: <Myreview /> },
-      {
-        path: "user/:type",
-        element: <Myquery />,
-        children: [{ path: "?page=:page", element: <QnaPagination /> }],
-      },
+      { path: "user/:type", element: <Myquery /> },
       { path: "shop", element: <Shop /> },
       { path: "detail/:id", element: <Detail /> },
       { path: "notice", element: <NoticeListPage /> },

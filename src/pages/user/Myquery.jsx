@@ -28,11 +28,6 @@ function Myquery() {
     },
   });
 
-  if (!data) {
-    return <div>로딩중...</div>;
-  }
-  console.log(data);
-
   const totalPages = data?.pagination.totalPages;
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -40,7 +35,7 @@ function Myquery() {
     }
   };
 
-  const list = data?.item.map((qna, index) => (
+  const QnaList = data?.item.map((qna, index) => (
     <QnaItem key={qna._id} item={qna} count={index + 1} />
   ));
 
@@ -67,38 +62,46 @@ function Myquery() {
           </div>
 
           <div className="flex flex-col gap-[10px] justify-center border-t border-grey-30 p-[30px] pb-0">
-            <h2 className="font-gowunBold text-[22px]">문의내역</h2>
+            {data?.item.length > 0 ? (
+              <>
+                <h2 className="font-gowunBold text-[22px]">문의내역</h2>
 
-            <table className="w-full border-collapse my-[20px] table-fixed">
-              <thead className="bg-grey-5 font-gowunBold">
-                <tr>
-                  <th className="border border-grey-30 text-center p-[8px] w-[10%]">
-                    번호
-                  </th>
-                  <th className="border border-grey-30 text-center p-[8px] w-[50%]">
-                    제목
-                  </th>
-                  <th className="border border-grey-30 text-center p-[8px] w-[15%]">
-                    작성일
-                  </th>
-                  <th className="border border-grey-30 text-center p-[8px] w-[12.5%]">
-                    작성자
-                  </th>
-                  <th className="border border-grey-30 text-center p-[8px] w-[8%]">
-                    조회수
-                  </th>
-                </tr>
-              </thead>
+                <table className="w-full border-collapse my-[20px] table-fixed">
+                  <thead className="bg-grey-5 font-gowunBold">
+                    <tr>
+                      <th className="border border-grey-30 text-center p-[8px] w-[10%]">
+                        번호
+                      </th>
+                      <th className="border border-grey-30 text-center p-[8px] w-[50%]">
+                        제목
+                      </th>
+                      <th className="border border-grey-30 text-center p-[8px] w-[15%]">
+                        작성일
+                      </th>
+                      <th className="border border-grey-30 text-center p-[8px] w-[12.5%]">
+                        작성자
+                      </th>
+                      <th className="border border-grey-30 text-center p-[8px] w-[8%]">
+                        조회수
+                      </th>
+                    </tr>
+                  </thead>
 
-              <tbody>{list}</tbody>
-            </table>
+                  <tbody>{QnaList}</tbody>
+                </table>
 
-            {data && (
-              <QnaPagination
-                totalPages={totalPages}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
+                {data && (
+                  <QnaPagination
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                  />
+                )}
+              </>
+            ) : (
+              <div className="flex justify-center items-center p-[60px]">
+                <div>문의 내역이 없습니다.</div>
+              </div>
             )}
           </div>
         </div>

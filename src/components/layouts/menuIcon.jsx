@@ -34,6 +34,7 @@ const MenuIcons = () => {
             <i className="fas fa-user"></i>
           </Link>
           <Link
+            to={`/cart/${user._id}`}
             className="text-gray-700 hover:text-primary-30 cursor-pointer"
             onClick={handleCartClick}
           >
