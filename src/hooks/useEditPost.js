@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import postAlerts from '@utils/postAlerts';
 
 export const useEditPost = ({
   post,
@@ -78,11 +79,7 @@ export const useEditPost = ({
     const currentContent = quillInstance?.root.innerHTML || '';
 
     if (!title.trim() || !currentContent.trim()) {
-      MySwal.fire({
-        title: '입력 확인',
-        text: '제목과 내용을 모두 입력해주세요.',
-        icon: 'warning',
-      });
+      await postAlerts.showInfo('제목과 내용을 모두 입력해주세요.');
       return;
     }
 
@@ -100,27 +97,27 @@ export const useEditPost = ({
       const response = await axios.patch(`/posts/${post._id}`, updateData);
 
       if (response.data.ok) {
-        await MySwal.fire({
-          title: '수정 완료',
-          text: '게시글이 성공적으로 수정되었습니다.',
-          icon: 'success',
-        });
-        navigate(returnPath);
+        if (
+          await postAlerts.showSaveSuccess(
+            true,
+            postType === 'qna' ? 'Q&A' : '공지사항'
+          )
+        ) {
+          navigate(returnPath);
+        }
       }
     } catch (error) {
-      MySwal.fire({
-        title: '오류 발생',
-        text:
-          error.response?.data?.message ||
-          '게시글 수정 중 오류가 발생했습니다.',
-        icon: 'error',
-      });
+      await postAlerts.showSaveError(
+        error,
+        true,
+        postType === 'qna' ? 'Q&A' : '공지사항'
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     const hasChanges =
       postType === 'qna'
         ? title !== originalData?.title ||
@@ -130,18 +127,14 @@ export const useEditPost = ({
           quillInstance?.root.innerHTML !== originalData?.content;
 
     if (hasChanges) {
-      MySwal.fire({
-        title: '수정 취소',
-        text: '변경사항이 저장되지 않습니다. 취소하시겠습니까?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '예',
-        cancelButtonText: '아니오',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate(returnPath);
-        }
-      });
+      if (
+        await postAlerts.confirmCancel(
+          true,
+          postType === 'qna' ? 'Q&A' : '공지사항'
+        )
+      ) {
+        navigate(returnPath);
+      }
     } else {
       navigate(returnPath);
     }
@@ -155,7 +148,6 @@ export const useEditPost = ({
     setQuillInstance,
     handleUpdate,
     handleCancel,
-
     selectedProduct: postType === 'qna' ? selectedProduct : undefined,
     setSelectedProduct: postType === 'qna' ? setSelectedProduct : undefined,
     isProductPost: postType === 'qna' ? isProductPost : undefined,
