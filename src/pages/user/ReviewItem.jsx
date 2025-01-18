@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import styles from "./User.module.css";
 
 ReviewItem.propTypes = {
   item: PropTypes.shape({
@@ -12,26 +12,31 @@ ReviewItem.propTypes = {
   count: PropTypes.number.isRequired,
 };
 
-function ReviewItem({ item, count }) {
-  const navigate = useNavigate();
+function ReviewItem({ item }) {
   return (
     <>
-      <tr
-        className="hover:bg-primary-5 hover:cursor-pointer"
-        onClick={() => navigate(`/qna/detail/${item._id}`)}
-      >
-        <td className="border border-grey-30 text-center p-[8px]">{count}</td>
-        <td className="border border-grey-30 text-center p-[8px]">
-          <div className="flex items-start">
-            <img
-              src={`https://11.fesp.shop${item.product.image.path}`}
-              className="w-[80px] h-[80px]"
-            />
-            {item.content}
+      <tr>
+        <td className="border-y border-grey-10 text-center p-[8px]">
+          <div className="flex gap-[10px] items-start">
+            <div className="shrink-0">
+              <img
+                src={`https://11.fesp.shop${item.product.image.path}`}
+                className="w-[80px] h-[80px]"
+              />
+            </div>
+
+            <div className="flex flex-col h-[80px] items-start overflow-hidden gap-2">
+              <div className="font-gowunBold text-[16px] ">
+                {item.product.name}
+              </div>
+              <div className={`text-[14px] ${styles["clamp-text"]}`}>
+                {item.content}
+              </div>
+              <div className="mt-auto font-gowunBold text-[14px]">
+                {item.createdAt.slice(0, 10)}
+              </div>
+            </div>
           </div>
-        </td>
-        <td className="border border-grey-30 text-center p-[8px]">
-          {item.createdAt.slice(0, 10)}
         </td>
       </tr>
     </>

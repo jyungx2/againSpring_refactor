@@ -68,3 +68,11 @@ img {
 .active {
   @apply border-l-8 border-primary-40 pl-4 font-gowunBold;
 }
+
+.clamp-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-clamp: 2; /* 2줄까지만 표시 */
+}

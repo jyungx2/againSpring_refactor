@@ -3,10 +3,12 @@ import OrderBundle from "@pages/user/OrderBundle";
 import Sidebar from "@pages/user/Sidebar";
 import useUserStore from "@store/userStore";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 function Myorder() {
   const axios = useAxiosInstance();
   const { user } = useUserStore();
+  const navigate = useNavigate();
   console.log(user._id);
 
   const { data } = useQuery({
@@ -28,7 +30,7 @@ function Myorder() {
         <Sidebar />
 
         <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[40px]">
-          <div className="flex items-center justify-center gap-[30px] box-border p-[30px] overflow-hidden">
+          <div className="flex items-center justify-center gap-[30px] box-border p-[30px] overflow-hidden  shadow-md">
             <div className="w-[700px] flex items-start gap-[20px]">
               {user.profile ? (
                 <img
@@ -44,8 +46,11 @@ function Myorder() {
               )}
               <div className="flex flex-col">
                 <p className="mb-10">{user.name}님, 안녕하세요.</p>
-                <button className="font-gowunBold text-white bg-pink p-2 rounded-lg cursor-pointer w-[120px]">
-                  나의 후기조회
+                <button
+                  className="font-gowunBold text-white bg-pink p-2 rounded-lg cursor-pointer w-[80px]"
+                  onClick={() => navigate("/user/review")}
+                >
+                  후기조회
                 </button>
               </div>
             </div>

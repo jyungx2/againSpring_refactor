@@ -2,11 +2,9 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import ReviewItem from "@pages/user/ReviewItem";
 import Sidebar from "@pages/user/Sidebar";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 
 function ReviewList() {
   const axios = useAxiosInstance();
-  const navigate = useNavigate();
 
   const { data } = useQuery({
     queryKey: ["replies"],
@@ -17,8 +15,8 @@ function ReviewList() {
     },
   });
 
-  const list = data?.item.map((review, index) => (
-    <ReviewItem key={review._id} item={review} count={index + 1} />
+  const list = data?.item.map((review) => (
+    <ReviewItem key={review._id} item={review} />
   ));
 
   return (
@@ -40,20 +38,6 @@ function ReviewList() {
                 <h2 className="font-gowunBold text-[22px]">후기내역</h2>
 
                 <table className="w-full border-collapse my-[20px] table-fixed">
-                  <thead className="bg-grey-5 font-gowunBold">
-                    <tr>
-                      <th className="border border-grey-30 text-center p-[8px] w-[10%]">
-                        번호
-                      </th>
-                      <th className="border border-grey-30 text-center p-[8px] w-[50%]">
-                        제목
-                      </th>
-                      <th className="border border-grey-30 text-center p-[8px] w-[15%]">
-                        작성일
-                      </th>
-                    </tr>
-                  </thead>
-
                   <tbody>{list}</tbody>
                 </table>
               </>

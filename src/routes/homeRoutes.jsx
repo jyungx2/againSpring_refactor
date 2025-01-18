@@ -67,7 +67,7 @@ const homeRoutes = [
       { path: "/search", element: <SearchPage /> },
       { path: "/uncompleted", element: <UncompletedPage /> },
       { path: "/user/order/detail/:orderId", element: <OrderDetail /> },
-      { path: "/user/order/review", element: <ReviewList /> },
+      { path: "/user/review", element: <ReviewList /> },
     ],
   },
 ];
