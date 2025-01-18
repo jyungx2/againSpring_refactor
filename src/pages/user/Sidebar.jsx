@@ -5,8 +5,8 @@ function Sidebar() {
   const currentPath = window.location.pathname;
 
   const links = [
-    { label: "주문조회", path: "/order" },
-    { label: "1:1 문의", path: "/query" },
+    { label: "주문조회", path: "/user/order" },
+    { label: "1:1 문의", path: "/user/qna" },
     { label: "위시리스트", path: "/uncompleted" },
     { label: "쿠폰", path: "/uncompleted" },
     { label: "포인트", path: "/uncompleted" },
