@@ -6,6 +6,11 @@ import { useQuery } from '@tanstack/react-query';
 import NoticeListItem from './NoticeListItem';
 import useBoard from '@hooks/useBoard';
 
+/**
+ * 사용자 정보 조회 함수
+ * @param {AxiosInstance} axios - Axios 인스턴스
+ * @returns {Promise<Object>} 사용자 정보 응답 데이터
+ */
 const fetchUserInfo = async (axios) => {
   const response = await axios.get('/users');
   return response.data;
@@ -64,6 +69,11 @@ export default function NoticeListPage() {
     return <div>데이터를 불러오는데 실패했습니다.</div>;
   }
 
+  /**
+   * 검색 결과에 따른 공지사항 목록 렌더링
+   * - 검색어가 있는 경우: 검색 결과 또는 "검색 결과 없음" 메시지 표시
+   * - 검색어가 없는 경우: 전체 공지사항 목록 표시
+   */
   const noticePostList = searchText.trim() ? (
     data.length > 0 ? (
       data.map((item, index) => (
@@ -74,6 +84,7 @@ export default function NoticeListPage() {
         />
       ))
     ) : (
+      // 검색 결과가 없는 경우의 UI
       <div className='col-span-4 py-16'>
         <div className='flex flex-col items-center gap-2'>
           <span className='text-4xl' role='img' aria-label='검색'>
@@ -94,6 +105,7 @@ export default function NoticeListPage() {
       </div>
     )
   ) : (
+    // 전체 공지사항 목록 표시
     data.map((item, index) => (
       <NoticeListItem
         key={item._id}
