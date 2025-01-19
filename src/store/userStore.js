@@ -11,16 +11,19 @@ const UserStore = (set) => ({
     // setOptions()를 사용하여 user의 autoLogin 값에 따라 저장소를 동적으로 설정가능
     // persist를 쓰면서 동시에 조건문을 활용해 동적으로 스토리지 종류를 컨트롤 가능!
 
-    const selectedStorage = !user.loginType
-      ? JSON.parse(user.autoLogin)
-        ? localStorage
-        : sessionStorage
-      : localStorage;
+    let selectedStorage;
 
-    console.log(
-      "Selected Storage:",
-      selectedStorage === localStorage ? "localStorage" : "sessionStorage"
-    );
+    if (user.loginType) {
+      // loginType이 truthy 값인 경우 무조건 localStorage 사용
+      selectedStorage = localStorage;
+    } else {
+      // loginType이 falsy 값인 경우 autoLogin 값에 따라 저장소 선택
+      if (JSON.parse(user.autoLogin)) {
+        selectedStorage = localStorage;
+      } else {
+        selectedStorage = sessionStorage;
+      }
+    }
 
     useUserStore.persist.setOptions({
       storage: createJSONStorage(() => selectedStorage),
