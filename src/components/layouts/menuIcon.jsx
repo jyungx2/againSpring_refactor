@@ -3,8 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 const MenuIcons = () => {
   const { user, resetUser } = useUserStore();
-  console.log("user", user);
-
   const navigate = useNavigate();
 
   const handleLogout = (e) => {
