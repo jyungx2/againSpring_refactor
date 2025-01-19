@@ -48,10 +48,6 @@ function Signup() {
 
   const handleFileShow = (e) => {
     const file = e.target.files[0]; // 사용자가 업로드한 파일
-    console.log("file: ", file);
-    const watchAll = watch();
-    console.log("watchAll: ", watchAll);
-    console.log("watchAll.attach: ", watchAll.attach);
 
     if (file) {
       // 이전 URL 정리
@@ -61,7 +57,7 @@ function Signup() {
 
       // 새로운 URL 생성
       const newImageUrl = URL.createObjectURL(file); // 이미지 파일 미리보기 위해 파일 객체를 URL로 변환
-      console.log(newImageUrl);
+
       // ** createObjectURL로 생성한 URL은 브라우저에서만 유효하고, 파일을 서버로 전송하려면 FormData 등을 사용해야 함 **
       setProfileImage(newImageUrl);
     }

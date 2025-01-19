@@ -31,7 +31,7 @@ function Login() {
       setUser({
         _id: user._id,
         name: user.name,
-        type: user.type, // 코드 추가(ohDASEUL) : qna 게시판에서 사용함
+        type: user.type,
         profile: user.image?.path,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,

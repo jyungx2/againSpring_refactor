@@ -70,7 +70,7 @@ const MenuIcons = () => {
             로그인
           </Link>
           <Link
-            to="/signup"
+            to="/tos"
             className="bg-secondary-20 px-4 py-2 rounded text-white hover:bg-secondary-10 font-gowunBold"
           >
             회원가입

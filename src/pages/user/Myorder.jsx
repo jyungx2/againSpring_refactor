@@ -7,8 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 function Myorder() {
   const axios = useAxiosInstance();
   const { user } = useUserStore();
-  console.log(user._id);
-
   const { data } = useQuery({
     queryKey: ["orders"],
     queryFn: () => axios.get(`/orders`),
@@ -17,6 +15,7 @@ function Myorder() {
       return res.data;
     },
   });
+  console.log(user);
 
   const renderedOrderBundle = data?.item.map((bundle) => {
     return <OrderBundle key={bundle._id} bundle={bundle} />;
