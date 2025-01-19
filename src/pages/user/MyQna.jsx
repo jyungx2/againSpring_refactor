@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 
-function Myquery() {
+function MyQna() {
   const navigate = useNavigate();
   const axios = useAxiosInstance();
   const { type } = useParams();
@@ -116,4 +116,4 @@ function Myquery() {
   );
 }
 
-export default Myquery;
+export default MyQna;

@@ -5,7 +5,7 @@ import Signup from "@pages/user/Signup";
 import TermsOfService from "@pages/user/TermsOfService";
 import Myorder from "@pages/user/Myorder";
 import Myreview from "@pages/user/Myreview";
-import Myquery from "@pages/user/Myquery";
+import MyQna from "@pages/user/MyQna";
 import Shop from "@pages/Shop";
 import Detail from "@pages/Detail";
 import MainProducts from "@pages/MainProducts";
@@ -25,7 +25,6 @@ import EventDetailPage from "@pages/eventPage/EventDetailPage";
 import TansoPage from "@pages/tanso/tanso-main";
 import SearchPage from "@pages/searchPage";
 import UncompletedPage from "@pages/user/UncompletedPage";
-import QnaPagination from "@pages/user/QnaPagination";
 
 const homeRoutes = [
   {
@@ -48,7 +47,7 @@ const homeRoutes = [
       { path: "tos", element: <TermsOfService /> },
       { path: "user/order", element: <Myorder /> },
       { path: "user/order/review", element: <Myreview /> },
-      { path: "user/:type", element: <Myquery /> },
+      { path: "user/:type", element: <MyQna /> },
       { path: "shop", element: <Shop /> },
       { path: "detail/:id", element: <Detail /> },
       { path: "notice", element: <NoticeListPage /> },
