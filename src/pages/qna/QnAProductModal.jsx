@@ -43,6 +43,11 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     pagesPerGroup: PAGES_PER_GROUP,
   });
 
+  /**
+   * 정렬 옵션에 따른 API 요청 파라미터 생성
+   * @param {string} sortOption - 정렬 옵션
+   * @returns {string|undefined} MongoDB 쿼리 문자열
+   */
   const getSortParamsByOption = (sortOption) => {
     const sortParams = {
       default: undefined,
@@ -53,6 +58,10 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     return sortParams[sortOption];
   };
 
+  /**
+   * 상품 데이터 로드 함수
+   * @param {Object} params - API 요청 파라미터
+   */
   const loadProductData = async (params) => {
     setLoading(true);
     try {
@@ -78,6 +87,10 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     }
   };
 
+  /**
+   * 검색 처리 함수
+   * 검색어 유효성 검사 후 상품 검색 실행
+   */
   const handleSearch = async (e) => {
     if (e) e.preventDefault();
 
@@ -121,6 +134,10 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
     loadProductData(params);
   };
 
+  /**
+   * 상품 선택 처리 함수
+   * 선택된 상품 확인 후 콜백 실행
+   */
   const handleSelect = async () => {
     try {
       const selected = products.find((p) => p._id === selectedProduct);
