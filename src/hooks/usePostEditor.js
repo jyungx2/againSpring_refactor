@@ -4,6 +4,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import postAlerts from '@utils/postAlerts';
 
+/**
+ * 게시글 데이터 조회 함수
+ * @param {string} postId 게시글 ID
+ */
 export default function usePostEditor({
   type,
   isEdit,
@@ -32,6 +36,7 @@ export default function usePostEditor({
         setContent(data.content);
         setOriginalData(data);
 
+        // Q&A 게시글의 경우 상품 정보 설정
         if (type === 'qna' && data.product?._id) {
           setSelectedProduct({
             _id: data.product._id[0],
@@ -49,6 +54,9 @@ export default function usePostEditor({
     }
   };
 
+  /**
+   * Quill 에디터 내용 설정 효과
+   */
   useEffect(() => {
     if (quillInstance && content) {
       quillInstance.root.innerHTML = content;
@@ -67,11 +75,16 @@ export default function usePostEditor({
     console.log(post?._id);
   }, [isEdit, post?._id]);
 
+  /**
+   * 게시글 저장 처리 함수
+   * @param {Event} e 이벤트 객체
+   */
   const handleSave = async (e) => {
     e?.preventDefault();
 
     const currentContent = quillInstance?.root.innerHTML || '';
 
+    // 입력값 검증
     if (!title.trim() || !currentContent.trim()) {
       await postAlerts.showInfo('제목과 내용을 모두 입력해주세요.');
       return;
@@ -92,6 +105,7 @@ export default function usePostEditor({
           }),
       };
 
+      // 저장 확인 후 처리
       if (await postAlerts.confirmSave(isEdit, postType)) {
         const response = isEdit
           ? await axios.patch(`/posts/${post._id}`, postData)

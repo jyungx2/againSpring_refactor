@@ -24,12 +24,20 @@ export const useEditPost = ({
   const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
 
+  /**
+   * 에디터 내용 초기화 효과
+   * quillInstance가 준비되면 기존 게시글 내용을 에디터에 설정
+   */
   useEffect(() => {
     if (quillInstance && originalData?.content) {
       quillInstance.root.innerHTML = originalData.content;
     }
   }, [quillInstance, originalData]);
 
+  /**
+   * 게시글 데이터 조회 함수
+   * @param {string} postId 게시글 ID
+   */
   const fetchPostData = async (postId) => {
     try {
       setIsLoading(true);
@@ -41,6 +49,7 @@ export const useEditPost = ({
         setContent(data.content);
         setOriginalData(data);
 
+        // Q&A 게시글의 경우 상품 정보 설정
         if (postType === 'qna' && data.product?._id) {
           setIsProductPost(true);
           setSelectedProduct({
@@ -73,11 +82,16 @@ export const useEditPost = ({
     }
   }, [post._id]);
 
+  /**
+   * 게시글 수정 처리 함수
+   * @param {Event} e 이벤트 객체
+   */
   const handleUpdate = async (e) => {
     e?.preventDefault();
 
     const currentContent = quillInstance?.root.innerHTML || '';
 
+    // 입력값 검증
     if (!title.trim() || !currentContent.trim()) {
       await postAlerts.showInfo('제목과 내용을 모두 입력해주세요.');
       return;
@@ -90,6 +104,7 @@ export const useEditPost = ({
         content: currentContent,
       };
 
+      // Q&A 게시글일 경우 상품 정보 추가
       if (postType === 'qna') {
         updateData.product_id = selectedProduct?._id || null;
       }
@@ -117,6 +132,10 @@ export const useEditPost = ({
     }
   };
 
+  /**
+   * 수정 취소 처리 함수
+   * 변경사항이 있는 경우 사용자 확인 후 취소
+   */
   const handleCancel = async () => {
     const hasChanges =
       postType === 'qna'

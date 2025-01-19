@@ -22,6 +22,10 @@ function useBoard({ type, limit = 12 }) {
     apiSearchParams,
   } = useCustomSearchParams({ type, limit });
 
+  /**
+   * 게시판 데이터 조회 및 검색 쿼리
+   * 기간 검색 조건이 있을 경우 custom 파라미터를 통해 MongoDB 쿼리 생성
+   */
   const {
     data: boardData,
     isLoading,
@@ -34,12 +38,14 @@ function useBoard({ type, limit = 12 }) {
         ...apiSearchParams,
       };
 
+      // 기간 검색 조건 처리
       if (searchConditions.period.type !== 'all-day') {
         if (
           searchConditions.period.type === 'custom' &&
           searchConditions.period.startDate &&
           searchConditions.period.endDate
         ) {
+          // 사용자 지정 기간 검색
           params.custom = JSON.stringify({
             createdAt: {
               $gte: formatDateForSearch(searchConditions.period.startDate),
@@ -47,6 +53,7 @@ function useBoard({ type, limit = 12 }) {
             },
           });
         } else if (searchConditions.period.type !== 'custom') {
+          // 미리 정의된 기간 검색 (예: 1주일, 1개월 등)
           const { start, end } = calculateDateRange(
             searchConditions.period.type
           );
@@ -74,6 +81,12 @@ function useBoard({ type, limit = 12 }) {
     limit,
   });
 
+  /**
+   * 게시판 검색 실행 함수
+   * 검색 파라미터를 URL에 반영하고 데이터를 새로 조회
+   * @returns {Promise<Object>} 검색에 사용된 파라미터
+   * @throws {Error} 검색 중 발생한 에러
+   */
   const handleBoardSearch = async () => {
     try {
       const searchParams = handleSearch();

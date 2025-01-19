@@ -51,6 +51,9 @@ function useCustomSearchParams({ type, limit }) {
     },
   });
 
+  /**
+   * URL 검색 파라미터 상태 관리를 위한 API 검색 파라미터 생성
+   */
   const apiSearchParams = useMemo(
     () => ({
       type,
@@ -85,6 +88,10 @@ function useCustomSearchParams({ type, limit }) {
     return params;
   }, [apiSearchParams]);
 
+  /**
+   * 검색어 변경 핸들러
+   * @param {Event} e - 입력 이벤트
+   */
   const handleSearchTextChange = (e) => {
     setSearchConditions((prev) => ({
       ...prev,
@@ -92,6 +99,10 @@ function useCustomSearchParams({ type, limit }) {
     }));
   };
 
+  /**
+   * 정렬 옵션 변경 핸들러
+   * @param {Event} e - 선택 이벤트
+   */
   const handleSortChange = (e) => {
     const newSortOption = e.target.value;
     setSearchConditions((prev) => ({
@@ -99,6 +110,7 @@ function useCustomSearchParams({ type, limit }) {
       sort: newSortOption,
     }));
 
+    // URL 파라미터 업데이트
     const newSearchParams = new URLSearchParams(searchParams);
     if (newSortOption !== 'default') {
       newSearchParams.set('sort', getSortParamsByOption(newSortOption));
@@ -108,8 +120,13 @@ function useCustomSearchParams({ type, limit }) {
     navigate(`?${newSearchParams.toString()}`);
   };
 
+  /**
+   * 기간 타입 변경 핸들러
+   * @param {string} newPeriodType - 새로운 기간 타입
+   */
   const handlePeriodChange = (newPeriodType) => {
     if (newPeriodType === 'all-day') {
+      // 전체 기간으로 초기화
       setSearchConditions((prev) => ({
         ...prev,
         period: {
@@ -119,6 +136,7 @@ function useCustomSearchParams({ type, limit }) {
         },
       }));
     } else if (newPeriodType === 'custom') {
+      // 사용자 지정 기간 모드로 변경
       setSearchConditions((prev) => ({
         ...prev,
         period: {
@@ -127,6 +145,7 @@ function useCustomSearchParams({ type, limit }) {
         },
       }));
     } else {
+      // 미리 정의된 기간으로 설정
       const { start, end } = calculateDateRange(newPeriodType);
       setSearchConditions((prev) => ({
         ...prev,
