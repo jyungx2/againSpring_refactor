@@ -48,6 +48,11 @@ function Signup() {
     }
 
     event.target.value = value;
+
+    // 유효한 값이 입력되면 오류를 지운다
+    if (value.match(phoneNumExp)) {
+      clearErrors("phoneNumber");
+    }
   };
 
   const {
@@ -57,18 +62,11 @@ function Signup() {
     formState: { errors },
     watch,
     setValue,
+    clearErrors,
   } = useForm({
     mode: "onSubmit",
     reValidateMode: "onChange",
     criteriaMode: "all",
-    defaultValues: {
-      name: "김로밋",
-      email: "kimromit@market.com",
-      password: 11111111,
-      "password-confirm": 11111111,
-      phoneNumber: "01023939492",
-      address: "사랑시 고백구 행복동",
-    },
   });
 
   const axios = useAxiosInstance();
@@ -336,7 +334,7 @@ function Signup() {
                 <div>
                   <div
                     className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
-                      errors["password-confirm"] ? `${styles.error}` : ""
+                      errors.phoneNumber ? `${styles.error}` : ""
                     }`}
                   >
                     <img src="/icons/phone.svg" className="p-[6px]" />
@@ -346,13 +344,13 @@ function Signup() {
                       placeholder="휴대전화번호"
                       className={`${styles.inputUnset} ${styles.inputCustom}`}
                       {...register("phoneNumber", {
+                        onChange: addHyphen,
                         required: "휴대전화번호 입력은 필수입니다.",
                         pattern: {
                           value: phoneNumExp,
                           message: "전화번호 양식에 맞지 않습니다.",
                         },
                       })}
-                      onChange={addHyphen}
                     />
                   </div>
                   <ErrorMsg target={errors.phoneNumber} />
@@ -372,7 +370,6 @@ function Signup() {
                       {...register("address")}
                     />
                   </div>
-                  <ErrorMsg target={errors.address} />
                 </div>
               </div>
 
