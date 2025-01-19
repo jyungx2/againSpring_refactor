@@ -11,14 +11,14 @@ function Auth() {
   const authCode = new URL(window.location.href).searchParams.get("code");
   const autoLogin = new URL(window.location.href).searchParams.get("state");
 
-  const REDIRECT_URI = "http://localhost:5173/users/login/kakao";
+  const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
   const kakaoUserData = {
     code: authCode,
     redirect_uri: REDIRECT_URI,
     user: {},
   };
-  // console.log(kakaoUserData);
+
   const getKakaoUser = async (loginData) => {
     try {
       const res = await axios.post(`/users/login/kakao`, loginData);
@@ -34,6 +34,7 @@ function Auth() {
           accessToken: kakaoUser.token.accessToken,
           refreshToken: kakaoUser.token.refreshToken,
           autoLogin,
+          loginType: kakaoUser.loginType,
         });
       }
       navigate("/");

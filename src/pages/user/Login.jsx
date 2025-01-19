@@ -14,12 +14,12 @@ function Login() {
   const location = useLocation();
   const [autoLogin, setAutoLogin] = useState(false);
 
-  const KAKAO_url = "https://kauth.kakao.com/oauth/authorize";
-  const API_KEY = "7b635f7b3d4379252462f78787fc908b";
-  const REDIRECT_URI = "http://localhost:5173/users/login/kakao";
+  const KAKAO_URL = import.meta.env.VITE_KAKAO_AUTH_URL;
+  const API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
+  const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
   const handleKakaoLogin = () => {
-    window.location.href = `${KAKAO_url}?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${autoLogin}`;
+    window.location.href = `${KAKAO_URL}?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${autoLogin}`;
   };
 
   const {
