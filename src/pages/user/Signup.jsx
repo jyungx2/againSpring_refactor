@@ -9,6 +9,8 @@ import { useState } from "react";
 
 const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+const phoneNumExp = /^01[0-9]-?\d{3,4}-?\d{4}$/;
+
 function Signup() {
   // Dropdown
   const [isOpen, setIsOpen] = useState(false);
@@ -38,6 +40,7 @@ function Signup() {
       email: "kimejoa@market.com",
       password: 11111111,
       "password-confirm": 11111111,
+      phoneNumber: "01022783222",
     },
   });
 
@@ -298,7 +301,32 @@ function Signup() {
                   </div>
                   <ErrorMsg target={errors["password-confirm"]} />
                 </div>
+
+                <div>
+                  <div
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
+                      errors["password-confirm"] ? `${styles.error}` : ""
+                    }`}
+                  >
+                    <img src="/icons/phone.svg" className="p-[6px]" />
+                    <input
+                      id="phoneNumber"
+                      type="string"
+                      placeholder="핸드폰 번호"
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
+                      {...register("phoneNumber", {
+                        required: "핸드폰 번호 입력은 필수입니다.",
+                        pattern: {
+                          value: phoneNumExp,
+                          message: "핸드폰번호 양식에 맞지 않습니다.",
+                        },
+                      })}
+                    />
+                  </div>
+                  <ErrorMsg target={errors.phoneNumber} />
+                </div>
               </div>
+
               <button className="font-gowunBold w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
                 가입하기
               </button>
