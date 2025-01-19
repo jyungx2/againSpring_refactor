@@ -24,6 +24,32 @@ function Signup() {
     handleOpen();
   };
 
+  const addHyphen = (event) => {
+    let value = event.target.value.replace(/[^0-9]/g, ""); // 숫자만 남기기
+
+    // 첫 번째 묶음: 3자리
+    if (value.length > 3 && value.length <= 6) {
+      value = value.slice(0, 3) + "-" + value.slice(3);
+    }
+
+    // 두 번째 묶음: 4자리
+    if (value.length > 7 && value.length <= 10) {
+      value = value.slice(0, 7) + "-" + value.slice(7, 11);
+    }
+
+    // 세 번째 묶음: 4자리
+    if (value.length > 11) {
+      value = value.slice(0, 11) + "-" + value.slice(11, 15);
+    }
+
+    // 최대 11자리까지 입력되도록 처리 (하이픈 포함x)
+    if (value.length > 11) {
+      value = value.slice(0, 11);
+    }
+
+    event.target.value = value;
+  };
+
   const {
     register,
     handleSubmit,
@@ -326,6 +352,7 @@ function Signup() {
                           message: "전화번호 양식에 맞지 않습니다.",
                         },
                       })}
+                      onChange={addHyphen}
                     />
                   </div>
                   <ErrorMsg target={errors.phoneNumber} />
