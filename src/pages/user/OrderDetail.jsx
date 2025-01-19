@@ -2,8 +2,10 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import Sidebar from "@pages/user/Sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
+import useUserStore from "@store/userStore";
 
 function OrderDetail() {
+  const { user } = useUserStore();
   const navigate = useNavigate();
   const location = useLocation();
   const bundle = location.state.bundle;
@@ -25,6 +27,19 @@ function OrderDetail() {
   }
 
   const randomNum = createRandomNumber();
+
+  function formatPhoneNumber(phoneNumber) {
+    // 11자리 번호 처리 (010으로 시작하는 번호)
+    if (phoneNumber.length === 11 && phoneNumber.startsWith("010")) {
+      return phoneNumber.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3");
+    }
+    // 10자리 번호 처리 (02로 시작하는 번호)
+    else if (phoneNumber.length === 10 && phoneNumber.startsWith("02")) {
+      return phoneNumber.replace(/^(\d{2})(\d{4})(\d{4})$/, "$1-$2-$3");
+    } else {
+      throw new Error("유효한 전화번호가 아닙니다.");
+    }
+  }
 
   const renderedItem = products.map((item) => {
     return (
@@ -112,15 +127,19 @@ function OrderDetail() {
                 <tbody>
                   <tr>
                     <td className="p-[8px] w-[12.5%]">받는사람</td>
-                    <td className="p-[8px]">이지영</td>
+                    <td className="p-[8px]">{user.name}</td>
                   </tr>
                   <tr>
                     <td className="p-[8px] w-[12.5%]">연락처</td>
-                    <td className="p-[8px]">010-xxxx-xxxx</td>
+                    <td className="p-[8px]">
+                      {formatPhoneNumber(user.phoneNumber)}
+                    </td>
                   </tr>
                   <tr>
                     <td className="p-[8px] w-[12.5%]">받는주소</td>
-                    <td className="p-[8px]">{data?.item.address.value}</td>
+                    <td className="p-[8px]">
+                      {user.address || data?.item.address.value}
+                    </td>
                   </tr>
                   <tr>
                     <td className="p-[8px] w-[12.5%]">배송요청사항</td>

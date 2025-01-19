@@ -36,10 +36,12 @@ function Signup() {
     reValidateMode: "onChange",
     criteriaMode: "all",
     defaultValues: {
-      // name: "김이조",
-      // email: "kimejoa@market.com",
-      // password: 11111111,
-      // "password-confirm": 11111111,
+      name: "김로밋",
+      email: "kimromit@market.com",
+      password: 11111111,
+      "password-confirm": 11111111,
+      phoneNumber: "01023939492",
+      address: "사랑시 고백구 행복동",
     },
   });
 
@@ -106,6 +108,8 @@ function Signup() {
         profile: userLogin.image?.path,
         accessToken: userLogin.token.accessToken,
         refreshToken: userLogin.token.refreshToken,
+        phoneNumber: userLogin.phoneNumber,
+        address: userLogin.address,
       });
 
       alert("회원가입이 완료되었습니다.");
