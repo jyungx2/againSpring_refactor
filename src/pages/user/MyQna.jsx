@@ -35,9 +35,16 @@ function MyQna() {
     }
   };
 
-  const QnaList = data?.item.map((qna, index) => (
-    <QnaItem key={qna._id} item={qna} count={index + 1} />
-  ));
+  const QnaList = data?.item
+    .slice()
+    .reverse()
+    .map((qna, index) => (
+      <QnaItem
+        key={qna._id}
+        item={qna}
+        count={(currentPage - 1) * params.limit + index + 1}
+      />
+    ));
 
   return (
     <>
