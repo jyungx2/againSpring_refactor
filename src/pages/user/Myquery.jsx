@@ -1,20 +1,10 @@
-import { Link } from "react-router-dom";
-import useUserStore from "@store/userStore";
+import Sidebar from "@pages/user/Sidebar";
 
 function Myquery() {
-  const { user } = useUserStore();
   return (
     <>
       <div className="flex box-border max-w-[1200px] mx-auto px-6 pb-0">
-        <div className="flex flex-col gap-[24px] pt-[24px] min-w-[180px]">
-          <Link to={`/order/${user._id}`}>주문조회</Link>
-          <Link to={`/query/${user._id}`}>1:1 문의</Link>
-          <a>위시리스트</a>
-          <a>쿠폰</a>
-          <a>포인트</a>
-          <a>정보 수정</a>
-          <a>회원탈퇴</a>
-        </div>
+        <Sidebar />
 
         <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[20px]">
           <div className="flex flex-col border-t-2 border-black p-[30px] pb-[40px] items-start justify-center">

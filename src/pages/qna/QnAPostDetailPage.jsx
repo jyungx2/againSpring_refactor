@@ -18,6 +18,11 @@ export default function QnAPostDetailPage() {
   const queryClient = useQueryClient();
   const [hasAdminReply, setHasAdminReply] = useState(false);
 
+  const [previousNumberLink, setPreviousNumberLink] = useState();
+  const [previousTitle, setPreviousTitle] = useState();
+  const [nextNumberLink, setNextNumberLink] = useState();
+  const [nextTitle, setNextTitle] = useState();
+
   const { user } = useUserStore();
   const isAdmin = user?.type === 'admin';
 
@@ -48,7 +53,63 @@ export default function QnAPostDetailPage() {
       );
       setHasAdminReply(adminReplyExists);
     }
+
+    // 이전글 다음글 찾는 로직
+    async function findPreNextPostInfo(id) {
+      try {
+        const response = await axios.get(`/posts`, {
+          params: {
+            page: 1,
+            limit: 100,
+            type: 'qna',
+          },
+        });
+        if (response?.data && response?.data?.item) {
+          const nowIndexData = findItemById(response.data.item, id);
+          const itemList = response?.data?.item;
+
+          if (nowIndexData.index > 0) {
+            // 이전글 구하기
+            setNextNumberLink(
+              `/qna/detail/${itemList[Number(nowIndexData.index) - 1]?._id}`
+            );
+            setNextTitle(`${itemList[Number(nowIndexData.index) - 1]?.title}`);
+          } else {
+            setNextNumberLink(`#`);
+            setNextTitle('');
+          }
+
+          if (nowIndexData.index < itemList.length - 1) {
+            setPreviousNumberLink(
+              `/qna/detail/${itemList[Number(nowIndexData.index) + 1]?._id}`
+            );
+            setPreviousTitle(
+              `${itemList[Number(nowIndexData.index) + 1]?.title}`
+            );
+          } else {
+            setPreviousNumberLink(`#`);
+            setPreviousTitle('');
+          }
+        }
+      } catch (error) {
+        console.log(`qna 게시판 에러발생`, error);
+      }
+      return null;
+    }
+
+    findPreNextPostInfo(id);
   }, [data]);
+
+  // 두 가지 모두 제공하는 유틸리티 함수
+  function findItemById(objectList, searchId) {
+    const index = objectList.findIndex((item) => {
+      return item._id == searchId;
+    });
+    return {
+      item: index !== -1 ? objectList[index] : null,
+      index: index,
+    };
+  }
 
   // 게시글 삭제
   const deletePost = useMutation({
@@ -244,24 +305,24 @@ export default function QnAPostDetailPage() {
             <div className='border-t border-b border-grey-5'>
               <div className='flex items-center border-b border-grey-5 min-h-[60px]'>
                 <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-xl font-medium shrink-0'>
-                  <span className='text-base mr-2'>▲</span>이전글
+                  <span className='text-base mr-2'>▲</span>다음글
                 </div>
                 <Link
-                  to='#'
+                  to={nextNumberLink}
                   className='flex-1 px-4 py-4 text-xl text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  이전 공지글
+                  {nextTitle || '다음 글이 없습니다'}
                 </Link>
               </div>
               <div className='flex items-center min-h-[60px]'>
                 <div className='w-[100px] sm:w-[120px] px-4 py-4 text-grey-50 text-xl font-medium shrink-0'>
-                  <span className='text-base mr-2'>▼</span>다음글
+                  <span className='text-base mr-2'>▼</span>이전글
                 </div>
                 <Link
-                  to='#'
+                  to={previousNumberLink}
                   className='flex-1 px-4 py-4 text-xl text-grey-80 hover:text-secondary-20 truncate'
                 >
-                  다음 공지글
+                  {previousTitle || '이전 글이 없습니다'}
                 </Link>
               </div>
             </div>
