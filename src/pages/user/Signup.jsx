@@ -36,11 +36,10 @@ function Signup() {
     reValidateMode: "onChange",
     criteriaMode: "all",
     defaultValues: {
-      name: "김이조",
-      email: "kimejoa@market.com",
-      password: 11111111,
-      "password-confirm": 11111111,
-      phoneNumber: "01022783222",
+      // name: "김이조",
+      // email: "kimejoa@market.com",
+      // password: 11111111,
+      // "password-confirm": 11111111,
     },
   });
 
@@ -301,7 +300,9 @@ function Signup() {
                   </div>
                   <ErrorMsg target={errors["password-confirm"]} />
                 </div>
+              </div>
 
+              <div>
                 <div>
                   <div
                     className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
@@ -312,22 +313,39 @@ function Signup() {
                     <input
                       id="phoneNumber"
                       type="string"
-                      placeholder="핸드폰 번호"
+                      placeholder="휴대전화번호"
                       className={`${styles.inputUnset} ${styles.inputCustom}`}
                       {...register("phoneNumber", {
-                        required: "핸드폰 번호 입력은 필수입니다.",
+                        required: "휴대전화번호 입력은 필수입니다.",
                         pattern: {
                           value: phoneNumExp,
-                          message: "핸드폰번호 양식에 맞지 않습니다.",
+                          message: "전화번호 양식에 맞지 않습니다.",
                         },
                       })}
                     />
                   </div>
                   <ErrorMsg target={errors.phoneNumber} />
                 </div>
+                <div>
+                  <div
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
+                      errors["password-confirm"] ? `${styles.error}` : ""
+                    }`}
+                  >
+                    <img src="/icons/address.svg" className="p-[6px]" />
+                    <input
+                      id="address"
+                      type="string"
+                      placeholder="[선택] 도로명주소"
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
+                      {...register("address")}
+                    />
+                  </div>
+                  <ErrorMsg target={errors.address} />
+                </div>
               </div>
 
-              <button className="font-gowunBold w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
+              <button className="font-gowunBold mt-4 w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
                 가입하기
               </button>
             </form>
