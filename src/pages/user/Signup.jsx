@@ -234,7 +234,7 @@ function Signup() {
                       errors.email ? `${styles.error}` : ""
                     }`}
                   >
-                    <img src="/icons/user.svg" />
+                    <img className="px-[6px]" src="/icons/mail.svg" />
                     <input
                       id="email"
                       type="email"

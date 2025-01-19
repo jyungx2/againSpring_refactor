@@ -134,11 +134,11 @@ function Login() {
                 </li>
                 <li className={styles.li}>
                   <div className="inline-block">
-                    <a href="/" className={`cursor-pointer underline`}>
+                    <a href="#" className={`cursor-pointer underline`}>
                       아이디
                     </a>
                     ·
-                    <a href="/" className={`cursor-pointer underline`}>
+                    <a href="#" className={`cursor-pointer underline`}>
                       비밀번호
                     </a>{" "}
                     찾기
