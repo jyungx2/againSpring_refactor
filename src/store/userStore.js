@@ -7,24 +7,23 @@ const UserStore = (set) => ({
   setUser: (user) => {
     // autoLogin: true냐, false냐에 따라 나중에 다른 브라우저를 열었을 때도 자동로그인이 될지 말지 판별해야 하기 때문에 무조건 localStorage에 저장.
     localStorage.setItem("autoLogin", JSON.stringify(user.autoLogin));
-    console.log("JUST value: ", user.autoLogin, typeof user.autoLogin);
-    console.log(
-      "AFTER stringify: ",
-      JSON.stringify(user.autoLogin),
-      typeof JSON.stringify(user.autoLogin)
-    );
-    console.log(
-      "AFTER parse: ",
-      JSON.parse(user.autoLogin),
-      typeof JSON.parse(user.autoLogin)
-    );
 
     // setOptions()를 사용하여 user의 autoLogin 값에 따라 저장소를 동적으로 설정가능
     // persist를 쓰면서 동시에 조건문을 활용해 동적으로 스토리지 종류를 컨트롤 가능!
+
+    const selectedStorage = !user.loginType
+      ? JSON.parse(user.autoLogin)
+        ? localStorage
+        : sessionStorage
+      : localStorage;
+
+    console.log(
+      "Selected Storage:",
+      selectedStorage === localStorage ? "localStorage" : "sessionStorage"
+    );
+
     useUserStore.persist.setOptions({
-      storage: createJSONStorage(() =>
-        JSON.parse(user.autoLogin) ? localStorage : sessionStorage
-      ),
+      storage: createJSONStorage(() => selectedStorage),
     });
     // 사용자 정보 저장 (어느 스토리지에 저장할지는 위의 setOptions에서 동적으로 처리)
     set({ user });
@@ -44,6 +43,16 @@ const useUserStore = create(
     name: "user",
     // 앱이 처음 로드되었을 때(초기화 시) 저장소를 결정하기 위해 create() 내부에서도 storage 속성 설정
     storage: createJSONStorage(() => {
+      // localStorage에서 현재 저장된 user 정보를 확인
+      const savedUser = localStorage.getItem("user");
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+        // loginType이 있으면 무조건 localStorage 사용
+        if (parsedUser.state?.user?.loginType) {
+          return localStorage;
+        }
+      }
+
       // 위의 UserStore의 setUser 함수에서 autoLogin이라는 속성은 무조건 localStorage에 저장해줬었음. (이 값에 의해 자동로그인 여부가 결정되므로 항상 로컬에 킵하고 있어야 나중에 바로 로그인시킬지 말지 결정 가능하기 때문)
       const autoLogin = localStorage.getItem("autoLogin") === "true";
 
