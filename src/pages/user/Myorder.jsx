@@ -3,12 +3,10 @@ import OrderBundle from "@pages/user/OrderBundle";
 import Sidebar from "@pages/user/Sidebar";
 import useUserStore from "@store/userStore";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 
 function Myorder() {
   const axios = useAxiosInstance();
   const { user } = useUserStore();
-  const navigate = useNavigate();
   console.log(user._id);
 
   const { data } = useQuery({
@@ -46,12 +44,6 @@ function Myorder() {
               )}
               <div className="flex flex-col">
                 <p className="mb-10">{user.name}님, 안녕하세요.</p>
-                <button
-                  className="font-gowunBold text-white bg-pink p-2 rounded-lg cursor-pointer w-[80px]"
-                  onClick={() => navigate("/user/review")}
-                >
-                  후기조회
-                </button>
               </div>
             </div>
 
