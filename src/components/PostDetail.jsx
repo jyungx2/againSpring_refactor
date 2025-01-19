@@ -7,11 +7,19 @@ import { useDeletePost } from '@hooks/useDeletePost';
 import CommentList from '@pages/comment/CommentList';
 import PropTypes from 'prop-types';
 
+/**
+ * 게시글 상세 조회 및 관련 데이터 처리 컴포넌트
+ * @param {string} type - 게시글 타입 (notice 또는 qna)
+ */
 export default function PostDetail({ type = 'notice' }) {
   const { id } = useParams();
   const { user } = useUserStore();
   const axios = useAxiosInstance();
 
+  /**
+   * 게시글 삭제 커스텀 훅
+   * 삭제 후 목록으로 리다이렉트
+   */
   const { handleDelete } = useDeletePost({
     id,
     queryKey: `${type}Detail`,
@@ -27,12 +35,22 @@ export default function PostDetail({ type = 'notice' }) {
   const [replies, setReplies] = useState([]);
   const [hasAdminReply, setHasAdminReply] = useState(false);
 
+  /**
+   * 게시글 데이터 조회 쿼리
+   * @returns {object} 게시글 상세 정보
+   */
   const { data, isLoading, error } = useQuery({
     queryKey: [`${type}Detail`, id],
     queryFn: () => axios.get(`/posts/${id}`),
     select: (res) => res.data,
   });
 
+  /**
+   * 게시글 수정 권한 체크 함수
+   * 공지사항: 작성자인 관리자만 수정 가능
+   * Q&A: 작성자 또는 관리자가 수정 가능
+   * @returns {boolean} 수정 권한 여부
+   */
   const checkEditPermission = () => {
     if (type === 'notice') {
       return user?.type === 'admin' && user.id === data?.item?.user_id;
@@ -40,12 +58,24 @@ export default function PostDetail({ type = 'notice' }) {
     return user?.type === 'admin' || user?._id === data?.item?.user?._id;
   };
 
+  /**
+   * 객체 배열에서 특정 ID를 가진 항목을 찾는 유틸리티 함수
+   * @param {Array} objectList - 검색할 객체 배열
+   * @param {string} searchId - 찾고자 하는 ID
+   * @returns {object} 찾은 항목과 인덱스
+   */
   const findItemById = (objectList, searchId) => {
     const index = objectList.findIndex((item) => item._id == searchId);
     return { item: index !== -1 ? objectList[index] : null, index };
   };
 
+  /**
+   * 게시글 데이터 처리 및 이전/다음글 네비게이션 설정
+   * 1. Q&A일 경우 제품 정보와 답변 상태 설정
+   * 2. 이전/다음 게시글 정보 조회 및 설정
+   */
   useEffect(() => {
+    // 제품 정보 설정
     if (type === 'qna' && data?.item) {
       if (data.item?.product?.name?.[0] && data.item?.product?._id?.[0]) {
         setSelectedProduct({
@@ -55,7 +85,7 @@ export default function PostDetail({ type = 'notice' }) {
           mainImages: data.item.product.mainImages[0],
         });
       }
-
+      // 답변 상태 설정
       if (data.item?.replies) {
         setReplies(data.item.replies);
         const adminReplyExists = data.item.replies.some(
@@ -65,6 +95,10 @@ export default function PostDetail({ type = 'notice' }) {
       }
     }
 
+    /**
+     * 이전/다음 게시글 정보를 조회하는 함수
+     * @param {string} id - 현재 게시글 ID
+     */
     const findPreNextPostInfo = async (id) => {
       try {
         const response = await axios.get(`/posts`, {
@@ -79,6 +113,7 @@ export default function PostDetail({ type = 'notice' }) {
           const nowIndexData = findItemById(response.data.item, id);
           const itemList = response.data.item;
 
+          // 이전/다음글 네비게이션 링크 설정
           setNavigationLinks({
             next:
               nowIndexData.index > 0

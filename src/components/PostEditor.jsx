@@ -136,6 +136,10 @@ export default function PostEditor({ type, isEdit }) {
     returnPath,
   });
 
+  /**
+   * Quill 에디터 초기화 및 이미지 핸들러 설정
+   * 에디터가 마운트되면 이미지 업로드 핸들러를 추가
+   */
   useEffect(() => {
     if (quill) {
       setQuillInstance(quill);
@@ -145,6 +149,11 @@ export default function PostEditor({ type, isEdit }) {
     }
   }, [quill, setQuillInstance]);
 
+  /**
+   * 게시글 타입에 따른 에디터 컴포넌트를 렌더링하는 함수
+   * @returns {JSX.Element} 타입별 에디터 컴포넌트
+   * @throws {Error} 지원하지 않는 게시글 타입일 경우
+   */
   const renderEditor = () => {
     const commonProps = {
       quillRef,

@@ -2,6 +2,25 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import QnAProductModal from '@pages/qna/QnAProductModal';
 
+/**
+ * 게시글 폼 컴포넌트
+ * 공지사항과 Q&A 게시글 작성/수정 시 공통으로 사용되는 폼
+ * @param {string} type - 게시글 타입 (notice 또는 qna)
+ * @param {boolean} isEdit - 수정 모드 여부
+ * @param {string} title - 게시글 제목
+ * @param {Function} setTitle - 제목 업데이트 함수
+ * @param {object} quillRef - Quill 에디터 참조 객체
+ * @param {object} selectedProduct - 선택된 상품 정보 (Q&A에서만 사용)
+ * @param {boolean} isProductPost - 상품 관련 게시글 여부
+ * @param {boolean} isModalOpen - 상품 선택 모달 표시 여부
+ * @param {Function} openModal - 모달 열기 함수
+ * @param {Function} closeModal - 모달 닫기 함수
+ * @param {Function} handleProductSelect - 상품 선택 처리 함수
+ * @param {Function} handleProductRemove - 선택된 상품 제거 함수
+ * @param {boolean} isLoading - 로딩 상태
+ * @param {Function} handleSave - 저장 처리 함수
+ * @param {Function} handleCancel - 취소 처리 함수
+ */
 export default function PostForm({
   type = 'notice',
   isEdit = false,
@@ -21,6 +40,10 @@ export default function PostForm({
   handleSave,
   handleCancel,
 }) {
+  /**
+   * 게시글 타입에 따른 페이지 제목을 반환하는 함수
+   * @returns {string} 페이지 제목
+   */
   const getPageTitle = () => {
     switch (type) {
       case 'qna':
