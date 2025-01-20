@@ -86,6 +86,69 @@ export const initData = async (clientId, nextSeq) => {
         createdAt: getTime(-20, -60 * 30),
         updatedAt: getTime(-10, -60 * 60 * 12),
         extra: {
+          confirm: true,
+          birthday: "11-30",
+          membershipClass: "MC02",
+          address: [
+            {
+              id: 1,
+              name: "회사",
+              value: "서울시 강동구 천호동 123",
+            },
+            {
+              id: 2,
+              name: "집",
+              value: "서울시 강동구 성내동 234",
+            },
+          ],
+        },
+      },
+      {
+        _id: await nextSeq("user"),
+        email: "seop96@naver.com",
+        password:
+          "$2b$10$1O4U0/.br2omQ78TcHns.OR13O3f9/JplktHbqTGJIPxrlzht7.f2",
+        name: "윤형섭",
+        phone: "01044445555",
+        address: "서울시 강남구 논현동 222",
+        type: "admin",
+        loginType: "email",
+        image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        createdAt: getTime(-20, -60 * 30),
+        updatedAt: getTime(-10, -60 * 60 * 12),
+        extra: {
+          confirm: true,
+          birthday: "11-30",
+          membershipClass: "MC02",
+          address: [
+            {
+              id: 1,
+              name: "회사",
+              value: "서울시 강동구 천호동 123",
+            },
+            {
+              id: 2,
+              name: "집",
+              value: "서울시 강동구 성내동 234",
+            },
+          ],
+        },
+      },
+      {
+        _id: await nextSeq("user"),
+        email: "test@naver.com",
+        password:
+          "$2b$10$MXZNCPM9ixo4zZ1XOIJjfu57JL8h2TM5vrzqiUGfIKe/tIc8amZrq",
+        name: "당근구십구도",
+        phone: "01044445555",
+        address: "서울시 강남구 논현동 222",
+        type: "user",
+        loginType: "email",
+        image: `/files/${clientId}/rD3kfWjH8.png`,
+        createdAt: getTime(-20, -60 * 30),
+        updatedAt: getTime(-10, -60 * 60 * 12),
+        extra: {
+          confirm: true,
           birthday: "11-30",
           membershipClass: "MC02",
           address: [
@@ -115,7 +178,8 @@ export const initData = async (clientId, nextSeq) => {
         name: "[그리네라] 대나무화장지30M 30롤",
         quantity: 100, //총 재고 수량 (디폴트 100개)
         buyQuantity: 0, // 판매된 수량 (디폴트 0개)
-        mainImages: [ // 대표 이미지 
+        mainImages: [
+          // 대표 이미지
           {
             path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(1).jpg`, // 이미지 저장 경로
             name: "[bamboo] toilet_paper(1).jpg", // 이미지 이름
@@ -141,12 +205,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-41, -60 * 60 * 2), // 상품 등록일 (사용X)
         updatedAt: getTime(-40, -60 * 15), // 상품 최신화 등록일 (사용X)
-        extra: { 
+        extra: {
           isNew: true, // 새로운 상품 (true일 경우 new 아이콘 같은거 표시 가능 / 메인 페이지 노출 가능)
           isBest: false, // 베스트 상품 (이하 동일)
           category: ["all-of-list", "bathroom"], // 상품 카테고리 (메뉴 카테고리 별로 상품 분류 작업 가능)
           sort: 5, // 정렬 우선순위 (값이 낮을 수록 목록에서 먼저 표시됨 / 동일한 값일 경우 최신 등록 순으로 표시됨)
-          tanso: 10// 탄소배출량 (상품의 탄소배출량 표시) 재활용 및 재생 가능 소재가 일반적으로 주요 자재보다 탄소 발자국을 적게 발생시킴
+          tanso: 10, // 탄소배출량 (상품의 탄소배출량 표시) 재활용 및 재생 가능 소재가 일반적으로 주요 자재보다 탄소 발자국을 적게 발생시킴
         },
       },
       {
@@ -319,7 +383,6 @@ export const initData = async (clientId, nextSeq) => {
             name: "[bathroom] soap_dish(2).jpg",
             originalname: "[bathroom] soap_dish(2).jpg",
           },
-          
         ],
         content: `
           <div class="product-detail">
@@ -585,7 +648,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 6,
         },
       },
-      // 14번 상품. 
+      // 14번 상품.
       {
         _id: await nextSeq("product"),
         seller_id: 2,
@@ -1742,200 +1805,7 @@ export const initData = async (clientId, nextSeq) => {
     ],
     // 주문
     order: [
-      {
-        _id: await nextSeq("order"),
-        user_id: 4,
-        state: "OS020",
-        products: [
-          {
-            _id: 2,
-            seller_id: 2,
-            state: "OS020",
-            name: "헬로카봇 스톰다이버",
-            image: {
-              path: `/files/${clientId}/sample-diver.jpg`,
-              name: "sample-diver.jpg",
-              originalname: "헬로카봇.jpg",
-            },
-            quantity: 2,
-            price: 34520,
-            review_id: 3,
-          },
-        ],
-        cost: {
-          products: 34520,
-          shippingFees: 2500,
-          discount: {
-            products: 0,
-            shippingFees: 0,
-          },
-          total: 37020,
-        },
-        address: {
-          name: "회사",
-          value: "서울시 강남구 신사동 234",
-        },
-        createdAt: getTime(-6, -60 * 60 * 3),
-        updatedAt: getTime(-6, -60 * 60 * 3),
-      },
-      {
-        _id: await nextSeq("order"),
-        user_id: 4,
-        state: "OS010",
-        products: [
-          {
-            _id: 3,
-            seller_id: 2,
-            state: "OS010",
-            name: "레고 클래식 라지 조립 박스 10698",
-            image: {
-              path: `/files/${clientId}/sample-classic.jpg`,
-              name: "sample-classic.jpg",
-              originalname: "레고 클래식.jpg",
-            },
-            quantity: 100,
-            price: 48870,
-          },
-          {
-            _id: 4,
-            seller_id: 3,
-            state: "OS010",
-            name: "레고 테크닉 42151 부가티 볼리드",
-            image: {
-              path: `/files/${clientId}/sample-bugatti.png`,
-              name: "sample-bugatti.png",
-              originalname: "부가티.png",
-            },
-            quantity: 2,
-            price: 90000,
-            review_id: 2,
-          },
-        ],
-        cost: {
-          products: 138840,
-          shippingFees: 3500,
-          discount: {
-            products: 13880,
-            shippingFees: 3500,
-          },
-          total: 124960,
-        },
-        address: {
-          name: "집",
-          value: "서울시 강남구 역삼동 123",
-        },
-        createdAt: getTime(-4, -60 * 60 * 22),
-        updatedAt: getTime(-2, -60 * 60 * 12),
-      },
-      {
-        _id: await nextSeq("order"),
-        user_id: 4,
-        state: "OS040",
-        products: [
-          {
-            _id: 4,
-            seller_id: 3,
-            state: "OS110",
-            name: "레고 테크닉 42151 부가티 볼리드",
-            image: {
-              path: `/files/${clientId}/sample-bugatti.png`,
-              name: "sample-bugatti.png",
-              originalname: "부가티.png",
-            },
-            quantity: 100,
-            price: 45000,
-            review_id: 1,
-          },
-        ],
-        cost: {
-          products: 45000,
-          shippingFees: 3500,
-          discount: {
-            products: 4500,
-            shippingFees: 0,
-          },
-          total: 44000,
-        },
-        address: {
-          name: "학교",
-          value: "서울시 강남구 역삼동 234",
-        },
-        payment: {
-          success: true,
-          imp_uid: "imp_138601212227",
-          pay_method: "card",
-          merchant_uid: "mid_1702540599641",
-          name: "레고 테크닉 42151 부가티 볼리드",
-          paid_amount: 45000,
-          currency: "KRW",
-          pg_provider: "html5_inicis",
-          pg_type: "payment",
-          pg_tid: "StdpayCARDINIpayTest20231214165706277441",
-          apply_num: "30123157",
-          buyer_name: "제이지",
-          buyer_email: "aceppin@daum.net",
-          buyer_tel: "01044445555",
-          buyer_addr: "",
-          buyer_postcode: "",
-          custom_data: null,
-          status: "paid",
-          paid_at: 1702540626,
-          receipt_url:
-            "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
-          card_name: "국민KB카드",
-          bank_name: null,
-          card_quota: 0,
-          card_number: "457973*********5",
-        },
-        delivery: {
-          company: "한진 택배",
-          trackingNumber: "364495958003",
-          url: "https://trace.cjlogistics.com/next/tracking.html?wblNo=364495958003",
-        },
-        createdAt: getTime(-3, -60 * 60 * 18),
-        updatedAt: getTime(-1, -60 * 60 * 1),
-      },
-      {
-        _id: await nextSeq("order"),
-        user_id: 2,
-        state: "OS040",
-        products: [
-          {
-            _id: 2,
-            seller_id: 2,
-            state: "OS310",
-            name: "헬로카봇 스톰다이버",
-            image: {
-              path: `/files/${clientId}/sample-diver.jpg`,
-              name: "sample-diver.jpg",
-              originalname: "헬로카봇.jpg",
-            },
-            quantity: 100,
-            price: 17260,
-            review_id: 2,
-          },
-        ],
-        cost: {
-          products: 17260,
-          shippingFees: 2500,
-          discount: {
-            products: 0,
-            shippingFees: 0,
-          },
-          total: 19760,
-        },
-        address: {
-          name: "학교",
-          value: "서울시 강남구 역삼동 234",
-        },
-        delivery: {
-          company: "한진 택배",
-          trackingNumber: "364495958003",
-          url: "https://trace.cjlogistics.com/next/tracking.html?wblNo=364495958003",
-        },
-        createdAt: getTime(-3, -60 * 60 * 18),
-        updatedAt: getTime(-1, -60 * 60 * 1),
-      },
+      // 빈배열
     ],
     // 후기
     review: [
@@ -1943,12 +1813,12 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("review"),
         user_id: 4,
         user: {
-          _id: 4,
-          name: "제이지",
-          image: "user-jayg.webp",
+          _id: 2,
+          name: "배고파앙",
+          image: `/files/${clientId}/rD3kfWjH8.png`,
         },
         order_id: 1,
-        product_id: 2,
+        product_id: 19,
         rating: 5,
         content: "아이가 좋아해요.",
         createdAt: getTime(-4, -60 * 60 * 12),
@@ -1958,11 +1828,11 @@ export const initData = async (clientId, nextSeq) => {
         user_id: 2,
         user: {
           _id: 2,
-          name: "네오",
-          image: "user-neo.webp",
+          name: "행슥",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
         },
         order_id: 4,
-        product_id: 2,
+        product_id: 19,
         rating: 4,
         content: "배송이 좀 느려요.",
         createdAt: getTime(-3, -60 * 60 * 1),
@@ -1972,15 +1842,100 @@ export const initData = async (clientId, nextSeq) => {
         user_id: 4,
         user: {
           _id: 4,
-          name: "제이지",
-          image: "user-jayg.webp",
+          name: "일찐",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
         },
         order_id: 2,
-        product_id: 3,
+        product_id: 20,
         rating: 1,
-        content: "하루만에 고장났어요.",
+        content: "품질이 좋아요",
+        extra: {
+          title: "또살게요",
+        },
+        createdAt: getTime(-2, -60 * 60 * 10),
+      },
+      {
+        _id: await nextSeq("review"),
+        user_id: 4,
+        user: {
+          _id: 4,
+          name: "비실이",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        order_id: 2,
+        product_id: 20,
+        rating: 1,
+        content: "하루만에 다썻어요",
         extra: {
           title: "추천하지 않습니다.",
+        },
+        createdAt: getTime(-2, -60 * 60 * 10),
+      },
+      {
+        _id: await nextSeq("review"),
+        user_id: 4,
+        user: {
+          _id: 4,
+          name: "머머리",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        order_id: 2,
+        product_id: 23,
+        rating: 1,
+        content: "잘쓰고있어요",
+        extra: {
+          title: "감사합니다",
+        },
+        createdAt: getTime(-2, -60 * 60 * 10),
+      },
+      {
+        _id: await nextSeq("review"),
+        user_id: 4,
+        user: {
+          _id: 4,
+          name: "랑글롱이",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        order_id: 2,
+        product_id: 23,
+        rating: 1,
+        content: "우와 너무 좋아요",
+        extra: {
+          title: "감사합니다 잘쓰고있어요",
+        },
+        createdAt: getTime(-2, -60 * 60 * 10),
+      },
+      {
+        _id: await nextSeq("review"),
+        user_id: 4,
+        user: {
+          _id: 4,
+          name: "가면라읻",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        order_id: 2,
+        product_id: 24,
+        rating: 1,
+        content: "우와 너무 좋아요",
+        extra: {
+          title: "감사합니다 잘쓰고있어요",
+        },
+        createdAt: getTime(-2, -60 * 60 * 10),
+      },
+      {
+        _id: await nextSeq("review"),
+        user_id: 4,
+        user: {
+          _id: 4,
+          name: "네버랜드",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        order_id: 2,
+        product_id: 24,
+        rating: 1,
+        content: "그냥그래요",
+        extra: {
+          title: "좋지도 나쁘지도않아요",
         },
         createdAt: getTime(-2, -60 * 60 * 10),
       },
@@ -2089,6 +2044,8 @@ export const initData = async (clientId, nextSeq) => {
       },
     ],
     // QnA, 공지사항 등의 게시판
+
+    // QnA 게시판
     post: [
       {
         _id: await nextSeq("post"),
@@ -2166,19 +2123,134 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("post"),
         type: "qna",
-        product_id: 4,
-        seller_id: 3,
+        product_id: 19,
+        seller_id: 2,
         views: 0,
         user: {
-          _id: 2,
-          name: "네오",
-          image: "user-neo.webp",
+          _id: 4,
+          name: "루비루비",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
         },
-        title: "배송 빨리 보내주세요.",
-        content: "양품으로 보내주세요.",
-        createdAt: getTime(-1, -60 * 60 * 14),
-        updatedAt: getTime(-1, -60 * 60 * 2),
+        title: "상품 문의드립니다!",
+        content: "안녕하세요!!!!",
+        createdAt: getTime(-2, -60 * 60 * 1),
+        updatedAt: getTime(-1, -60 * 60 * 20),
       },
+      {
+        _id: await nextSeq("post"),
+        type: "qna",
+        product_id: 19,
+        seller_id: 2,
+        views: 0,
+        user: {
+          _id: 4,
+          name: "차파차파",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        title: "상품이 친절하고 사장이 맛있어요",
+        content: "안녕하세요!!!!",
+        createdAt: getTime(-2, -60 * 60 * 1),
+        updatedAt: getTime(-1, -60 * 60 * 20),
+      },
+      {
+        _id: await nextSeq("post"),
+        type: "qna",
+        product_id: 20,
+        seller_id: 2,
+        views: 0,
+        user: {
+          _id: 4,
+          name: "치피치피",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        title: "배송이 안와여",
+        content: "안녕하세요!!!!",
+        createdAt: getTime(-2, -60 * 60 * 1),
+        updatedAt: getTime(-1, -60 * 60 * 20),
+      },
+      {
+        _id: await nextSeq("post"),
+        type: "qna",
+        product_id: 20,
+        seller_id: 2,
+        views: 0,
+        user: {
+          _id: 4,
+          name: "춘식이",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        title: "배송이 늦게오는데 언제와요",
+        content: "안녕하세요!!!!",
+        createdAt: getTime(-2, -60 * 60 * 1),
+        updatedAt: getTime(-1, -60 * 60 * 20),
+      },
+
+      {
+        _id: await nextSeq("post"),
+        type: "qna",
+        product_id: 23,
+        seller_id: 2,
+        views: 0,
+        user: {
+          _id: 4,
+          name: "땅캐슬",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        title: "상품 문의드립니다 ",
+        content: "안녕하세요!!!!",
+        createdAt: getTime(-2, -60 * 60 * 1),
+        updatedAt: getTime(-1, -60 * 60 * 20),
+      },
+      {
+        _id: await nextSeq("post"),
+        type: "qna",
+        product_id: 23,
+        seller_id: 2,
+        views: 0,
+        user: {
+          _id: 4,
+          name: "zl존전사",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        title: "상품이 깨져서왔어요",
+        content: "안녕하세요!!!!",
+        createdAt: getTime(-2, -60 * 60 * 1),
+        updatedAt: getTime(-1, -60 * 60 * 20),
+      },
+      {
+        _id: await nextSeq("post"),
+        type: "qna",
+        product_id: 24,
+        seller_id: 2,
+        views: 0,
+        user: {
+          _id: 4,
+          name: "타노스",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        title: "생각보다 크기가 작아요",
+        content: "안녕하세요!!!!",
+        createdAt: getTime(-2, -60 * 60 * 1),
+        updatedAt: getTime(-1, -60 * 60 * 20),
+      },
+      {
+        _id: await nextSeq("post"),
+        type: "qna",
+        product_id: 24,
+        seller_id: 2,
+        views: 0,
+        user: {
+          _id: 4,
+          name: "얼음!!!!!!!",
+          image: `/files/${clientId}/U2Fj_NuP4.jpg`,
+        },
+        title: "배송이 늦어요",
+        content: "안녕하세요!!!!",
+        createdAt: getTime(-2, -60 * 60 * 1),
+        updatedAt: getTime(-1, -60 * 60 * 20),
+      },
+
+      // 공지사항 게시판
       {
         _id: await nextSeq("post"),
         type: "notice",

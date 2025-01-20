@@ -4,6 +4,8 @@ import { initData } from "../../api/dbinit-sample/againSpring/data"; // initData
 import { useParams } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 function Cart() {
   //더미 상품 데이터
@@ -11,40 +13,121 @@ function Cart() {
   // const { state } = useLocation(); // navigate로 전달된 데이터 <- 코드 삭제 요청드립니다.
   const { id } = useParams(); // URL의 파라미터 값
   const axiosInstance = useAxiosInstance();
+  const [products, setProducts] = useState([]);
 
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop";
     return `${baseURL}${path}`;
   };
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axiosInstance.get(`/products/${id}`);
+        // 상품 데이터에서 quantity 값을 1로 고정하여 업데이트
+        const product = response?.data?.item;
+        product.quantity = 1; // quantity를 1로 설정
+        setCartItemsList([product]);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      }
+    };
+    fetchProducts();
+  }, [id]);
+
+  //❗qna데이터를 불러옴
+  const {
+    data: qnas,
+    isLoading: qnasLoading,
+    error: qnasError,
+  } = useQuery({
+    queryKey: ["posts", "qna", "main"],
+    queryFn: () =>
+      axiosInstance.get("/posts", {
+        params: {
+          type: "qna",
+          page: 1,
+          limit: 5,
+        },
+      }),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 60 * 5, // 데이터가 5분 동안 신선한 상태로 유지
+    cacheTime: 1000 * 60 * 30, // 캐시를 30분 동안 유지
+  });
+
+  //❗review 데이터를 불러옴
+  const {
+    data: reviews,
+    isLoading: reviewsLoading,
+    error: reviewsError,
+  } = useQuery({
+    queryKey: ["reviews", "main"], // 캐시 키
+    queryFn: () =>
+      axiosInstance.get("/reviews", {
+        // 리뷰 데이터를 가져오는 API 호출
+        params: {
+          page: 1,
+          limit: 5,
+        },
+      }),
+    select: (res) => res.data.item, // 필요한 데이터를 선택
+    staleTime: 1000 * 60 * 5, // 데이터가 5분 동안 신선한 상태로 유지
+    cacheTime: 1000 * 60 * 30, // 캐시를 30분 동안 유지
+  });
+
+  // const [reviews, setReviews] = useState([
+  //   {
+  //     _id: 1,
+  //     user: {
+  //       _id: 4,
+  //       name: "제이지",
+  //       image: "user-jayg.webp",
+  //     },
+  //     order_id: 1,
+  //     rating: 5,
+  //     content: "아이가 좋아해요.",
+  //     createdAt: "2025-01-15",
+  //     product_id: parseInt(id),
+  //   },
+  //   {
+  //     _id: 2,
+  //     user: {
+  //       _id: 2,
+  //       name: "네오",
+  //       image: "user-neo.webp",
+  //     },
+  //     order_id: 4,
+  //     rating: 4,
+  //     content: "배송이 좀 느려요.",
+  //     createdAt: "2025-01-16",
+  //     product_id: parseInt(id),
+  //   },
+  //   {
+  //     _id: 3,
+  //     user: {
+  //       _id: 4,
+  //       name: "제이지",
+  //       image: "user-jayg.webp",
+  //     },
+  //     order_id: 2,
+  //     rating: 1,
+  //     content: "하루만에 고장났어요.",
+  //     createdAt: "2025-01-17",
+  //     product_id: parseInt(id),
+  //   },
+  // ]);
+
   const [quantity, setQuantity] = useState(1); // 초기값 1로 설정
+  const [productDetails, setProductDetails] = useState(null);
 
-  const tabContent = {
+  const [tabContent, setTabContent] = useState({
     상세정보: (
-      <div>
-        <p className="pl-[100px] pr-[100px] text-[18px]">
-          이 유기농 핸드타올은 100% 순수 유기농 면으로 제작되어 민감한 피부에도
-          안심하고 사용할 수 있습니다. 화학 처리와 인공 염색을 최소화해
-          자연스러운 색감과 부드러운 촉감을 유지하며, 뛰어난 흡수력으로 손과
-          얼굴의 물기를 빠르게 닦아줍니다. <br /> <br /> <br />
-          환경을 생각한 지속 가능한 생산 과정으로 만들어져 자연친화적이며, 세탁
-          후에도 형태가 쉽게 변형되지 않아 오랫동안 사용할 수 있습니다. 건강과
-          환경을 모두 고려한 최고의 선택으로, 일상에서 프리미엄 감성을 경험해
-          보세요.
-        </p>
-
-        <div className="flex justify-center items-center gap-[30px] mt-[60px]">
-          <img
-            src="https://via.placeholder.com/300"
-            alt="유기농 핸드타올 이미지"
-            className="mb-4 w-[300px] h-auto"
-          />
-          <img
-            src="https://via.placeholder.com/300"
-            alt="유기농 핸드타올 이미지"
-            className="mb-4 w-[300px] h-auto"
-          />
-        </div>
+      <div style={{ textAlign: "center" }}>
+        <img
+          src="/images/pencildetail.jpg"
+          alt="상세정보 이미지"
+          style={{ maxWidth: "100%", height: "auto" }}
+        />
       </div>
     ),
     구매안내: (
@@ -61,9 +144,71 @@ function Cart() {
         </p>
       </div>
     ),
-    상품후기: "상품후기 탭의 내용",
-    QnA: "QnA 탭의 내용",
-  };
+    상품후기: (
+      <div className="review-section px-[20px]">
+        <h3 className="text-3xl font-bold mt-[10px] mb-[20px]">
+          상품 구매평 ( reviews )
+        </h3>
+        <hr className="mt-[12px] mb-[10px]  " />
+
+        {reviews?.length > 0 ? (
+          reviews.map((review) => (
+            <div
+              key={review._id}
+              className="review-item mb-[20px] mt-[20px] border-b pb-[10px] flex justify-between items-center"
+            >
+              <div>
+                <p className="font-bold">{review.user.name}</p>
+                <p className="text-gray-500">
+                  {new Date(review.createdAt).toLocaleDateString()}
+                </p>
+                <p className="text-[16px] mt-[10px]">{review.content}</p>
+                <p className="text-yellow-500 mt-[10px]">
+                  ⭐ {review.rating}점
+                </p>
+              </div>
+              <img
+                src={`/images/${review.user.image}`}
+                alt={review.user.name}
+                className="w-[80px] h-[80px] rounded-lg border border-grey-20"
+              />
+            </div>
+          ))
+        ) : (
+          <p>아직 작성된 후기가 없습니다.</p>
+        )}
+      </div>
+    ),
+    QnA: (
+      <div className=" rounded-md overflow-hidden">
+        <div className="flex justify-between items-center py-4 px-6 border-b border-gray-300">
+          <h3 className="text-3xl font-bold ">Q&A </h3>
+
+          <Link to="/qna"></Link>
+        </div>
+        <ul className="space-y-9 px-6 py-9 ">
+          {qnas?.map((qna) => (
+            <li
+              key={qna._id}
+              className=" border-b border-gray-300 flex justify-between items-center text-lg py-7"
+            >
+              <Link
+                to={`/qna/detail/${qna._id}`}
+                className=" text-[15px] text-gray-800 hover:underline"
+              >
+                {qna.image}
+                {qna.title}
+              </Link>
+              <span className="text-gray-500">
+                {qna.createdAt.split("T")[0]}
+              </span>
+            </li>
+          ))}
+          {qnas?.length === 0 && <p>Q&A가 없습니다.</p>}
+        </ul>
+      </div>
+    ),
+  });
 
   const dummyItems = [
     {
@@ -105,28 +250,7 @@ function Cart() {
   const { activeMenu, setActiveMenu } = useMenuStore();
   const [hovered, setHovered] = useState(false);
 
-  const menuItems = [
-    { name: "주방용품", links: ["/spring"] },
-    { name: "세탁용품", links: ["/community"] },
-    { name: "문구용품", links: ["/shop"] },
-    { name: "식품", links: ["/inquiry"] },
-  ];
-
   // 코드 추가(ohDASEUL) : 제품 id로 API(url만 있어도 제품이 나오도록 값을 수정)
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axiosInstance.get(`/products/${id}`);
-        // 상품 데이터에서 quantity 값을 1로 고정하여 업데이트
-        const product = response?.data?.item;
-        product.quantity = 1; // quantity를 1로 설정
-        setCartItemsList([product]);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      }
-    };
-    fetchProducts();
-  }, [id]);
 
   return (
     <div className="flex justify-center px-[16px]">
@@ -136,54 +260,6 @@ function Cart() {
         style={{ maxWidth: "1200px" }}
       >
         {" "}
-        {/* 장바구니 제목과 아이템 개수를 표시하는 상단 헤더 */}
-        <div className="flex items-center mb-[16px]">
-          <nav className="w-full">
-            <div className="flex justify-center space-x-8">
-              {menuItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="relative group hover:bg-secondary-10 hover:text-white"
-                  onMouseEnter={() => {
-                    setActiveMenu(item.name);
-                    setHovered(true);
-                  }}
-                  onMouseLeave={() => setHovered(false)}
-                >
-                  <a
-                    href="#"
-                    className="text-gray-700 hover:text-secondary font-semibold"
-                  >
-                    {" "}
-                    {item.name}{" "}
-                  </a>
-                  {item.subMenu && activeMenu === item.name && (
-                    <div className="absolute top-full mt-2 bg-white shadow-lg rounded-md p-6 min-w-[200px]">
-                      <ul className="space-y-3">
-                        {item.subMenu.map((subItem, subIndex) => (
-                          <li key={subIndex}>
-                            <a
-                              href={item.links[subIndex]}
-                              className="hover:text-secondary cursor-pointer block"
-                            >
-                              {" "}
-                              {subItem}{" "}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </nav>
-
-          {/* 장바구니 제목 */}
-        </div>
-        {/* 상단 헤더와 본문을 구분하는 수평선 */}
-        <hr className="mb-0 border-t border-grey-20" />
-        {/* 장바구니에 아이템이 없을 경우 */}
         <div>
           {/*🦋🍓 장바구니에 아이템이 있을 때 */}
           {/* 코드 수정(ohDASEUL) : state -> item (링크를 통해 state 값을 전달하지 않아도 되기 때문에 state는 필요없습니다.)  */}
@@ -295,13 +371,22 @@ function Cart() {
                       </dd>
                     </div>
                     <div className="flex mb-[16px] mt-[70px] ">
-                      <button className="bg-white border-2 border-gray-300  w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center">
+                      <button
+                        className="bg-white border-2 border-gray-300  w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                        onClick={() => alert("위시리스트에 추가하였습니다!")}
+                      >
                         찜하기
                       </button>
-                      <button className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center">
+                      <button
+                        className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                        onClick={() => alert("장바구니에 추가하였습니다!")}
+                      >
                         장바구니
                       </button>
-                      <button className="bg-secondary-10 border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center">
+                      <button
+                        className="bg-secondary-10 border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                        onClick={() => alert("구매가 완료되었습니다!")}
+                      >
                         구매하기
                       </button>
                     </div>
