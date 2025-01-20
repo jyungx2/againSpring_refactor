@@ -15,8 +15,8 @@ function MyQna() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const params = {
-    page: searchParams.get("page") || 1, // 페이지
-    limit: 4, // 설정 안하면 10이 디폴트값
+    page: searchParams.get("page") || 1,
+    limit: 5,
   };
 
   const { data } = useQuery({
