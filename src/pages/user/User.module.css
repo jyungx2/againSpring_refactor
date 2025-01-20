@@ -66,5 +66,16 @@ img {
 }
 
 .active {
-  @apply border-l-8 border-primary-40 pl-4 font-gowunBold;
+  @apply font-gowunBold text-secondary-50 text-[18px];
+}
+
+.active::before {
+  content: ""; /* 이미지를 가상 요소로 표시 */
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  background-image: url("/favicon.png");
+  display: inline-block;
+  margin-right: 6px; /* 이미지와 텍스트 간격 조정 */
+  vertical-align: bottom;
 }
