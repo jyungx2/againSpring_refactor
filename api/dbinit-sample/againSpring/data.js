@@ -24,8 +24,7 @@ export const initData = async (clientId, nextSeq) => {
         image: `/files/${clientId}/user-muzi.webp`,
         createdAt: getTime(-100, -60 * 60 * 3),
         updatedAt: getTime(-100, -60 * 60 * 3),
-        extra: { 
-          tanso: 0, 
+        extra: {
           birthday: "03-23",
           membershipClass: "MC03",
           addressBook: [
@@ -175,12 +174,11 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-38, -60 * 60 * 6),
         updatedAt: getTime(-33, -60 * 55),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 4,
-          tanso: 20,
         },
       },
       {
@@ -218,12 +216,11 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-35, -60 * 60 * 6),
         updatedAt: getTime(-10, -60 * 19),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 3,
-          tanso: 30,
         },
       },
       {
@@ -261,12 +258,11 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-33, -60 * 60 * 7),
         updatedAt: getTime(-22, -60 * 60 * 3),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
-          tanso: 4,
         },
       },
       {
@@ -294,13 +290,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-30, -60 * 60 * 10),
         updatedAt: getTime(-10, -60 * 56),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "bathroom"],
           sort: 2,
-          tanso: 5,
         },
       },
       {
@@ -334,12 +329,11 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-30, -60 * 60 * 21),
         updatedAt: getTime(-20, -60 * 10),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
-          tanso: 6,
         },
       },
       {
@@ -367,12 +361,11 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-25, -60 * 60 * 12),
         updatedAt: getTime(-24, -60 * 23),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 3,
-          tanso: 8,
         },
       },
       {
@@ -400,7 +393,7 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-22, -60 * 60 * 22),
         updatedAt: getTime(-20, -60 * 33),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           category: ["all-of-list", "bathroom"],
@@ -439,13 +432,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-21, -60 * 60 * 4),
         updatedAt: getTime(-16, -60 * 15),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
-          tanso: 2,
         },
       },
       {
@@ -473,12 +465,11 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-18, -60 * 60 * 7),
         updatedAt: getTime(-12, -60 * 33),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: true,
           category: ["all-of-list", "kitchen"],
           sort: 4,
-          tanso: 7,
         },
       },
       {
@@ -506,13 +497,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 6,
-          tanso: 8,
         },
       },
       {
@@ -550,12 +540,11 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-11, -60 * 60 * 12),
         updatedAt: getTime(-5, -60 * 60 * 6),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 7,
-          tanso: 8,
         },
       },
       // 13번 상품
@@ -589,12 +578,11 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-10, -60 * 60 * 12),
         updatedAt: getTime(-5, -60 * 60 * 6),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 6,
-          tanso: 9,
         },
       },
       // 14번 상품. 
@@ -633,7 +621,7 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           category: ["all-of-list", "kitchen"],
@@ -675,13 +663,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: true,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
-          tanso: 2,
         },
       },
       {
@@ -714,13 +701,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
-          tanso: 11,
         },
       },
       {
@@ -753,13 +739,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
-          tanso: 28,
         },
       },
       {
@@ -787,13 +772,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
-          tanso: 58,
         },
       },
       {
@@ -836,13 +820,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
-          tanso: 68,
         },
       },
       {
@@ -870,13 +853,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: true,
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
-          tanso: 18,
         },
       },
 
@@ -906,13 +888,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
-          tanso: 41,
         },
       },
       {
@@ -945,13 +926,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
-          tanso: 22,
         },
       },
       {
@@ -984,13 +964,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
-          tanso: 21,
         },
       },
       {
@@ -1018,13 +997,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
-          tanso: 8,
         },
       },
 
@@ -1054,13 +1032,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: true,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 8,
         },
       },
       {
@@ -1088,13 +1065,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 23,
         },
       },
       {
@@ -1127,13 +1103,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 18,
         },
       },
       {
@@ -1161,13 +1136,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 32,
         },
       },
       {
@@ -1195,13 +1169,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 51,
         },
       },
       {
@@ -1234,13 +1207,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 18,
         },
       },
       {
@@ -1268,13 +1240,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 48,
         },
       },
       {
@@ -1302,13 +1273,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 56,
         },
       },
       {
@@ -1336,13 +1306,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 58,
         },
       },
       {
@@ -1370,13 +1339,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
-          tanso: 14,
         },
       },
 
@@ -1406,13 +1374,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "pet"],
           sort: 2,
-          tanso: 18,
         },
       },
 
@@ -1442,13 +1409,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
-          tanso: 5,
         },
       },
       {
@@ -1476,13 +1442,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
-          tanso: 1,
         },
       },
       {
@@ -1510,13 +1475,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: true,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
-          tanso: 25,
         },
       },
       {
@@ -1544,13 +1508,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
-          tanso: 12,
         },
       },
       {
@@ -1578,13 +1541,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
-          tanso: 10,
         },
       },
       {
@@ -1612,13 +1574,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
-          tanso: 2,
         },
       },
       {
@@ -1646,13 +1607,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: true,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
-          tanso: 1,
         },
       },
       {
@@ -1685,13 +1645,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: false,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
-          tanso: 22,
         },
       },
       {
@@ -1719,13 +1678,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
         updatedAt: getTime(-15, -60 * 45),
-        extra: { tanso: 0, 
+        extra: {
           isNew: false,
           isBest: true,
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
-          tanso: 18,
         },
       },
 
@@ -1750,7 +1708,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `샤넬 향수`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
-        extra: {  
+        extra: {
           depth: 1,
         },
       },
@@ -1775,7 +1733,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `3달 쓴 향수입니다.`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
-        extra: { 
+        extra: {
           depth: 2,
           parent: 15,
           size: "200mm",
@@ -1783,7 +1741,202 @@ export const initData = async (clientId, nextSeq) => {
       },
     ],
     // 주문
-
+    order: [
+      {
+        _id: await nextSeq("order"),
+        user_id: 4,
+        state: "OS020",
+        products: [
+          {
+            _id: 2,
+            seller_id: 2,
+            state: "OS020",
+            name: "헬로카봇 스톰다이버",
+            image: {
+              path: `/files/${clientId}/sample-diver.jpg`,
+              name: "sample-diver.jpg",
+              originalname: "헬로카봇.jpg",
+            },
+            quantity: 2,
+            price: 34520,
+            review_id: 3,
+          },
+        ],
+        cost: {
+          products: 34520,
+          shippingFees: 2500,
+          discount: {
+            products: 0,
+            shippingFees: 0,
+          },
+          total: 37020,
+        },
+        address: {
+          name: "회사",
+          value: "서울시 강남구 신사동 234",
+        },
+        createdAt: getTime(-6, -60 * 60 * 3),
+        updatedAt: getTime(-6, -60 * 60 * 3),
+      },
+      {
+        _id: await nextSeq("order"),
+        user_id: 4,
+        state: "OS010",
+        products: [
+          {
+            _id: 3,
+            seller_id: 2,
+            state: "OS010",
+            name: "레고 클래식 라지 조립 박스 10698",
+            image: {
+              path: `/files/${clientId}/sample-classic.jpg`,
+              name: "sample-classic.jpg",
+              originalname: "레고 클래식.jpg",
+            },
+            quantity: 100,
+            price: 48870,
+          },
+          {
+            _id: 4,
+            seller_id: 3,
+            state: "OS010",
+            name: "레고 테크닉 42151 부가티 볼리드",
+            image: {
+              path: `/files/${clientId}/sample-bugatti.png`,
+              name: "sample-bugatti.png",
+              originalname: "부가티.png",
+            },
+            quantity: 2,
+            price: 90000,
+            review_id: 2,
+          },
+        ],
+        cost: {
+          products: 138840,
+          shippingFees: 3500,
+          discount: {
+            products: 13880,
+            shippingFees: 3500,
+          },
+          total: 124960,
+        },
+        address: {
+          name: "집",
+          value: "서울시 강남구 역삼동 123",
+        },
+        createdAt: getTime(-4, -60 * 60 * 22),
+        updatedAt: getTime(-2, -60 * 60 * 12),
+      },
+      {
+        _id: await nextSeq("order"),
+        user_id: 4,
+        state: "OS040",
+        products: [
+          {
+            _id: 4,
+            seller_id: 3,
+            state: "OS110",
+            name: "레고 테크닉 42151 부가티 볼리드",
+            image: {
+              path: `/files/${clientId}/sample-bugatti.png`,
+              name: "sample-bugatti.png",
+              originalname: "부가티.png",
+            },
+            quantity: 100,
+            price: 45000,
+            review_id: 1,
+          },
+        ],
+        cost: {
+          products: 45000,
+          shippingFees: 3500,
+          discount: {
+            products: 4500,
+            shippingFees: 0,
+          },
+          total: 44000,
+        },
+        address: {
+          name: "학교",
+          value: "서울시 강남구 역삼동 234",
+        },
+        payment: {
+          success: true,
+          imp_uid: "imp_138601212227",
+          pay_method: "card",
+          merchant_uid: "mid_1702540599641",
+          name: "레고 테크닉 42151 부가티 볼리드",
+          paid_amount: 45000,
+          currency: "KRW",
+          pg_provider: "html5_inicis",
+          pg_type: "payment",
+          pg_tid: "StdpayCARDINIpayTest20231214165706277441",
+          apply_num: "30123157",
+          buyer_name: "제이지",
+          buyer_email: "aceppin@daum.net",
+          buyer_tel: "01044445555",
+          buyer_addr: "",
+          buyer_postcode: "",
+          custom_data: null,
+          status: "paid",
+          paid_at: 1702540626,
+          receipt_url:
+            "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
+          card_name: "국민KB카드",
+          bank_name: null,
+          card_quota: 0,
+          card_number: "457973*********5",
+        },
+        delivery: {
+          company: "한진 택배",
+          trackingNumber: "364495958003",
+          url: "https://trace.cjlogistics.com/next/tracking.html?wblNo=364495958003",
+        },
+        createdAt: getTime(-3, -60 * 60 * 18),
+        updatedAt: getTime(-1, -60 * 60 * 1),
+      },
+      {
+        _id: await nextSeq("order"),
+        user_id: 2,
+        state: "OS040",
+        products: [
+          {
+            _id: 2,
+            seller_id: 2,
+            state: "OS310",
+            name: "헬로카봇 스톰다이버",
+            image: {
+              path: `/files/${clientId}/sample-diver.jpg`,
+              name: "sample-diver.jpg",
+              originalname: "헬로카봇.jpg",
+            },
+            quantity: 100,
+            price: 17260,
+            review_id: 2,
+          },
+        ],
+        cost: {
+          products: 17260,
+          shippingFees: 2500,
+          discount: {
+            products: 0,
+            shippingFees: 0,
+          },
+          total: 19760,
+        },
+        address: {
+          name: "학교",
+          value: "서울시 강남구 역삼동 234",
+        },
+        delivery: {
+          company: "한진 택배",
+          trackingNumber: "364495958003",
+          url: "https://trace.cjlogistics.com/next/tracking.html?wblNo=364495958003",
+        },
+        createdAt: getTime(-3, -60 * 60 * 18),
+        updatedAt: getTime(-1, -60 * 60 * 1),
+      },
+    ],
     // 후기
     review: [
       {
@@ -1826,7 +1979,7 @@ export const initData = async (clientId, nextSeq) => {
         product_id: 3,
         rating: 1,
         content: "하루만에 고장났어요.",
-        extra: { tanso: 0, 
+        extra: {
           title: "추천하지 않습니다.",
         },
         createdAt: getTime(-2, -60 * 60 * 10),
