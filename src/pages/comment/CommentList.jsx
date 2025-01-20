@@ -5,7 +5,7 @@ import useUserStore from '@store/userStore';
 
 const CommentList = ({ comments = [], post, setReplies }) => {
   const { user } = useUserStore();
-  const isAdmin = user?.type === 'admin'; // admin 체크
+  const isAdmin = user?.type === 'admin';
 
   return (
     <section className='mb-8'>
