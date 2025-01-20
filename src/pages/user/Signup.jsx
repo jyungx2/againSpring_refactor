@@ -358,7 +358,7 @@ function Signup() {
                 <div>
                   <div
                     className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
-                      errors["password-confirm"] ? `${styles.error}` : ""
+                      errors.address ? `${styles.error}` : ""
                     }`}
                   >
                     <img src="/icons/address.svg" className="p-[6px]" />
