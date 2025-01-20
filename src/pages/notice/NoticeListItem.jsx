@@ -2,17 +2,22 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 
+/**
+ * 공지사항 목록의 각 아이템을 표시하는 컴포넌트
+ * @param {Object} props.item - 공지사항 아이템 데이터
+ */
 export default function NoticeListItem({ item }) {
-  // content에서 첫 번째 이미지 URL 추출
+  /**
+   * 공지사항 내용에서 첫 번째 이미지 URL을 추출
+   * @returns {string|null} 추출된 이미지 URL 또는 null
+   */
   const firstImageUrl = useMemo(() => {
     if (!item.content) return null;
 
     try {
-      // Quill content에서 첫 번째 img 태그의 src 추출을 위한 정규식
       const imgRegex = /<img[^>]+src="([^">]+)"/;
       const match = item.content.match(imgRegex);
 
-      // 매칭된 이미지 URL이 없으면 반환
       return match ? match[1] : null;
     } catch (error) {
       console.error('에러: ', error);
