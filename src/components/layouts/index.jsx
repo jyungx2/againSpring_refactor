@@ -27,7 +27,7 @@ const MainLayout = ({ title, description }) => {
 
 // title, description 문자열 타입 설정
 MainLayout.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   description: PropTypes.string,
 };
 
