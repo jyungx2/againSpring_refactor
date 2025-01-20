@@ -43,6 +43,7 @@ export default {
 
         kakao: "#FFE501",
         "kakao-hover": "#FFED65",
+        pink: "#ffb5b5",
 
         error: "#E73434",
       },
