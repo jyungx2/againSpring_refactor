@@ -29,15 +29,17 @@ function OrderDetail() {
   const randomNum = createRandomNumber();
 
   function formatPhoneNumber(phoneNumber) {
-    // 11자리 번호 처리 (010으로 시작하는 번호)
-    if (phoneNumber.length === 11 && phoneNumber.startsWith("010")) {
-      return phoneNumber.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3");
-    }
-    // 10자리 번호 처리 (02로 시작하는 번호)
-    else if (phoneNumber.length === 10 && phoneNumber.startsWith("02")) {
-      return phoneNumber.replace(/^(\d{2})(\d{4})(\d{4})$/, "$1-$2-$3");
-    } else {
-      throw new Error("유효한 전화번호가 아닙니다.");
+    if (phoneNumber) {
+      // 11자리 번호 처리 (010으로 시작하는 번호)
+      if (phoneNumber?.length === 11 && phoneNumber?.startsWith("010")) {
+        return phoneNumber.replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3");
+      }
+      // 10자리 번호 처리 (02로 시작하는 번호)
+      else if (phoneNumber?.length === 10 && phoneNumber?.startsWith("02")) {
+        return phoneNumber.replace(/^(\d{2})(\d{4})(\d{4})$/, "$1-$2-$3");
+      } else {
+        throw new Error("유효한 전화번호가 아닙니다.");
+      }
     }
   }
 

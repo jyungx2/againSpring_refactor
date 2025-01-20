@@ -11,7 +11,7 @@ const UserStore = (set) => ({
     if (user.loginType) {
       selectedStorage = localStorage;
     } else {
-      if (JSON.parse(user.autoLogin)) {
+      if (user.autoLogin) {
         selectedStorage = localStorage;
       } else {
         selectedStorage = sessionStorage;
