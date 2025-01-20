@@ -1,28 +1,38 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { initData } from "../../api/dbinit-sample/againSpring/data"; // initData 함수 import
 import useMenuStore from "../store/menuStore";
-import useAxiosInstance from "../hooks/useAxiosInstance";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import { Link } from "react-router-dom";
 
 function Shop() {
-  const [cartItemsList, setCartItemsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [selectedCategory, setSelectedCategory] = useState("all-of-list"); // 기본 카테고리 값 설정
-  const itemsPerPage = 8; // 페이지당 보여줄 아이템 수
+  const productsPerPage = 8; // 페이지당 보여줄 아이템 수
   const navigate = useNavigate();
   const { activeMenu, setActiveMenu } = useMenuStore();
   const [hovered, setHovered] = useState(false);
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
+  //✅
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const axiosInstance = useAxiosInstance();
+
+  const startIndex = (currentPage - 1) * productsPerPage;
+
+  const getImage = (path) => {
+    const baseURL = "https://11.fesp.shop"; // 이미지의 기본 URL을 설정합니다.
+    return `${baseURL}${path}`; // 전체 이미지 URL을 반환합니다.
+  };
 
   // 카테고리 필터링: "all-of-list"일 경우 필터링 없이 모든 항목을 표시
-  const currentItems = cartItemsList
+  const currentproducts = products
     .filter(
-      (item) =>
+      (product) =>
         selectedCategory === "all-of-list" ||
-        item.extra?.category?.includes(selectedCategory)
+        product.extra?.category?.includes(selectedCategory)
     )
-    .slice(startIndex, startIndex + itemsPerPage);
+    .slice(startIndex, startIndex + productsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -42,11 +52,18 @@ function Shop() {
   // 데이터 가져오기
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const data = await initData("client123", async (key) => key); // 예시로 clientId와 nextSeq 사용
-        setCartItemsList(data.product || []);
+        const response = await axiosInstance.get("/products");
+        if (response.data.item) {
+          setProducts(response.data.item);
+        }
       } catch (error) {
-        console.error("Failed to fetch product data:", error);
+        console.error("error:", error);
+        setError("상품을 불러오는데 실패했습니다.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -58,10 +75,8 @@ function Shop() {
     setCurrentPage(1);
   }, [selectedCategory]);
 
-  const getImage = (path) => {
-    const baseURL = "https://11.fesp.shop";
-    return `${baseURL}${path}`;
-  };
+  if (loading) return <p className="text-center mt-8">Loading...</p>;
+  if (error) return <p className="text-center mt-8 text-red-500">{error}</p>;
 
   return (
     <div className="flex justify-center px-[16px]">
@@ -69,16 +84,16 @@ function Shop() {
         className="container mx-auto px-[24px] my-[40px]"
         style={{ maxWidth: "1200px" }}
       >
-        <div className="flex items-center mb-[16px]">
+        <div className="flex products-center mb-[16px]">
           <nav className="w-full">
             <div className="flex justify-center space-x-8">
-              {menuItems.map((item, index) => (
+              {menuItems.map((product, index) => (
                 <div
                   key={index}
                   className="relative group hover:bg-secondary-10 hover:text-white"
-                  onClick={() => setSelectedCategory(item.category)} // 카테고리 선택 시 해당 카테고리로 필터링
+                  onClick={() => setSelectedCategory(product.category)} // 카테고리 선택 시 해당 카테고리로 필터링
                   onMouseEnter={() => {
-                    setActiveMenu(item.name);
+                    setActiveMenu(product.name);
                     setHovered(true);
                   }}
                   onMouseLeave={() => setHovered(false)}
@@ -87,29 +102,29 @@ function Shop() {
                     href="#"
                     className="text-gray-700 hover:text-secondary font-semibold"
                   >
-                    {item.name}
+                    {product.name}
                   </a>
                 </div>
               ))}
             </div>
           </nav>
         </div>
-        <div className="flex items-center mb-[16px]">
-          <p className="flex items-center justify-center mt-4">
+        <div className="flex products-center mb-[16px]">
+          <p className="flex products-center justify-center mt-4">
             총{" "}
             {
-              cartItemsList.filter(
-                (item) =>
+              products.filter(
+                (product) =>
                   selectedCategory === "all-of-list" ||
-                  item.extra?.category?.includes(selectedCategory)
+                  product.extra?.category?.includes(selectedCategory)
               ).length
             }{" "}
             개의 상품이 있습니다
           </p>
         </div>
         <hr className="mb-0 border-t border-grey-20" />
-        {currentItems.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-[256px]">
+        {currentproducts.length === 0 ? (
+          <div className="flex flex-col products-center justify-center h-[256px]">
             <p className="text-[18px] font-gowun text-grey-40">
               상품목록이 비어있습니다.
             </p>
@@ -118,38 +133,41 @@ function Shop() {
           <div>
             <table className="w-full table-auto">
               <tbody className="flex flex-wrap">
-                {currentItems.map((item) => (
+                {currentproducts.map((product) => (
                   <tr
-                    key={item._id}
+                    key={product._id}
                     className="w-1/4 sm:w-1/2 lg:w-1/4 xl:w-1/4 p-2 cursor-pointer"
                     onClick={() =>
-                      navigate(`/detail/${item._id}`, { state: item })
+                      navigate(`/detail/${product._id}`, { state: product })
                     }
                   >
-                    <td className="flex flex-col items-start py-[20px]">
-                      <img
-                        src={
-                          getImage(item.mainImages?.[0]?.path) ||
-                          "https://via.placeholder.com/80"
-                        }
-                        alt={item.name}
-                        style={{
-                          width: "100%",
-                          maxWidth: "363px",
-                          height: "auto",
-                          aspectRatio: "363 / 484",
-                          minWidth: "100px",
-                        }}
-                      />
-                      <div>
-                        <h2 className="text-[16px] font-semibold text-grey-80 mt-[20px]">
-                          {item.name}
-                        </h2>
-                      </div>
-                      <td className="text-center text-grey-80 font-gowunBold py-[20px] text-[16px]">
-                        {item.price?.toLocaleString()}원
+                    <Link to={`/detail/${product._id}`}>
+                      <td className="flex flex-col products-start py-[20px]">
+                        <img
+                          src={getImage(product.mainImages[0]?.path)}
+                          alt={product.name}
+                          style={{
+                            width: "100%",
+                            maxWidth: "363px",
+                            height: "auto",
+                            aspectRatio: "363 / 484",
+                            minWidth: "100px",
+                          }}
+                        />
+                        <div>
+                          <h2 className="text-[16px] font-semibold text-grey-80 mt-[20px]">
+                            {product.name}
+                          </h2>
+                        </div>
+
+                        <p className="text-lg text-gray-500 line-through text-[16px] py-[10px]">
+                          {product.originalPrice || ""}
+                        </p>
+                        <p className="text-xl font-bold text-[16px] py-[10px]">
+                          {product.price}원
+                        </p>
                       </td>
-                    </td>
+                    </Link>
                   </tr>
                 ))}
               </tbody>
@@ -157,11 +175,11 @@ function Shop() {
             <div className="justify-center mb-[16px] flex gap-[16px] mt-10">
               {Array.from({
                 length: Math.ceil(
-                  cartItemsList.filter(
-                    (item) =>
+                  products.filter(
+                    (product) =>
                       selectedCategory === "all-of-list" ||
-                      item.extra?.category?.includes(selectedCategory)
-                  ).length / itemsPerPage
+                      product.extra?.category?.includes(selectedCategory)
+                  ).length / productsPerPage
                 ),
               }).map((_, index) => (
                 <button
