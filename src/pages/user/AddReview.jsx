@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import ErrorMsg from "@components/ErrorMsg";
 import { useState } from "react";
 
-function Myreview() {
+function AddReview() {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -205,4 +205,4 @@ function Myreview() {
   );
 }
 
-export default Myreview;
+export default AddReview;

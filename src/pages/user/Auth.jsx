@@ -9,14 +9,12 @@ function Auth() {
   const { setUser } = useUserStore();
 
   const authCode = new URL(window.location.href).searchParams.get("code");
-  const autoLogin = new URL(window.location.href).searchParams.get("state");
 
   const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
   const kakaoUserData = {
     code: authCode,
     redirect_uri: REDIRECT_URI,
-    user: {},
   };
 
   const getKakaoUser = async (loginData) => {
@@ -30,10 +28,9 @@ function Auth() {
           _id: kakaoUser._id,
           name: kakaoUser.name,
           type: kakaoUser.type,
-          profile: kakaoUser.image,
+          profile: null,
           accessToken: kakaoUser.token.accessToken,
           refreshToken: kakaoUser.token.refreshToken,
-          autoLogin,
           loginType: kakaoUser.loginType,
         });
       }

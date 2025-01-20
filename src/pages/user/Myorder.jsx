@@ -7,8 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 function Myorder() {
   const axios = useAxiosInstance();
   const { user } = useUserStore();
-  console.log(user._id);
-
   const { data } = useQuery({
     queryKey: ["orders"],
     queryFn: () => axios.get(`/orders`),
@@ -17,6 +15,7 @@ function Myorder() {
       return res.data;
     },
   });
+  console.log(user);
 
   const renderedOrderBundle = data?.item.map((bundle) => {
     return <OrderBundle key={bundle._id} bundle={bundle} />;
@@ -28,7 +27,7 @@ function Myorder() {
         <Sidebar />
 
         <div className="flex-grow min-w-0 basis-0 flex flex-col gap-[40px]">
-          <div className="flex items-center justify-center gap-[30px] box-border p-[30px] overflow-hidden">
+          <div className="flex items-center justify-center gap-[30px] box-border p-[30px] overflow-hidden  shadow-md">
             <div className="w-[700px] flex items-start gap-[20px]">
               {user.profile ? (
                 <img
@@ -42,7 +41,9 @@ function Myorder() {
                   src="/icons/profile.svg"
                 />
               )}
-              <p>{user.name}님, 안녕하세요.</p>
+              <div className="flex flex-col">
+                <p className="mb-10">{user.name}님, 안녕하세요.</p>
+              </div>
             </div>
 
             <div className="flex gap-[20px]">

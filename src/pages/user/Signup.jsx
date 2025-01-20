@@ -9,6 +9,8 @@ import { useState } from "react";
 
 const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+const phoneExp = /^01[0-9]-?\d{3,4}-?\d{4}$/;
+
 function Signup() {
   // Dropdown
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +24,37 @@ function Signup() {
     handleOpen();
   };
 
+  const addHyphen = (event) => {
+    let value = event.target.value.replace(/[^0-9]/g, ""); // 숫자만 남기기
+
+    // 첫 번째 묶음: 3자리
+    if (value.length > 3 && value.length <= 6) {
+      value = value.slice(0, 3) + "-" + value.slice(3);
+    }
+
+    // 두 번째 묶음: 4자리
+    if (value.length > 7 && value.length <= 10) {
+      value = value.slice(0, 7) + "-" + value.slice(7, 11);
+    }
+
+    // 세 번째 묶음: 4자리
+    if (value.length > 11) {
+      value = value.slice(0, 11) + "-" + value.slice(11, 15);
+    }
+
+    // 최대 11자리까지 입력되도록 처리 (하이픈 포함x)
+    if (value.length > 11) {
+      value = value.slice(0, 11);
+    }
+
+    event.target.value = value;
+
+    // 유효한 값이 입력되면 오류를 지운다
+    if (value.match(phoneExp)) {
+      clearErrors("phone");
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -29,16 +62,11 @@ function Signup() {
     formState: { errors },
     watch,
     setValue,
+    clearErrors,
   } = useForm({
     mode: "onSubmit",
     reValidateMode: "onChange",
     criteriaMode: "all",
-    defaultValues: {
-      name: "김이조",
-      email: "kimejoa@market.com",
-      password: 11111111,
-      "password-confirm": 11111111,
-    },
   });
 
   const axios = useAxiosInstance();
@@ -48,10 +76,6 @@ function Signup() {
 
   const handleFileShow = (e) => {
     const file = e.target.files[0]; // 사용자가 업로드한 파일
-    console.log("file: ", file);
-    const watchAll = watch();
-    console.log("watchAll: ", watchAll);
-    console.log("watchAll.attach: ", watchAll.attach);
 
     if (file) {
       // 이전 URL 정리
@@ -61,7 +85,7 @@ function Signup() {
 
       // 새로운 URL 생성
       const newImageUrl = URL.createObjectURL(file); // 이미지 파일 미리보기 위해 파일 객체를 URL로 변환
-      console.log(newImageUrl);
+
       // ** createObjectURL로 생성한 URL은 브라우저에서만 유효하고, 파일을 서버로 전송하려면 FormData 등을 사용해야 함 **
       setProfileImage(newImageUrl);
     }
@@ -108,6 +132,8 @@ function Signup() {
         profile: userLogin.image?.path,
         accessToken: userLogin.token.accessToken,
         refreshToken: userLogin.token.refreshToken,
+        phone: userLogin.phone,
+        address: userLogin.address,
       });
 
       alert("회원가입이 완료되었습니다.");
@@ -238,7 +264,7 @@ function Signup() {
                       errors.email ? `${styles.error}` : ""
                     }`}
                   >
-                    <img src="/icons/user.svg" />
+                    <img className="px-[6px]" src="/icons/mail.svg" />
                     <input
                       id="email"
                       type="email"
@@ -303,7 +329,51 @@ function Signup() {
                   <ErrorMsg target={errors["password-confirm"]} />
                 </div>
               </div>
-              <button className="font-gowunBold w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
+
+              <div>
+                <div>
+                  <div
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
+                      errors.phone ? `${styles.error}` : ""
+                    }`}
+                  >
+                    <img src="/icons/phone.svg" className="p-[6px]" />
+                    <input
+                      id="phone"
+                      type="string"
+                      placeholder="휴대전화번호"
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
+                      {...register("phone", {
+                        onChange: addHyphen,
+                        required: "휴대전화번호 입력은 필수입니다.",
+                        pattern: {
+                          value: phoneExp,
+                          message: "전화번호 양식에 맞지 않습니다.",
+                        },
+                      })}
+                    />
+                  </div>
+                  <ErrorMsg target={errors.phone} />
+                </div>
+                <div>
+                  <div
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
+                      errors["password-confirm"] ? `${styles.error}` : ""
+                    }`}
+                  >
+                    <img src="/icons/address.svg" className="p-[6px]" />
+                    <input
+                      id="address"
+                      type="string"
+                      placeholder="[선택] 도로명주소"
+                      className={`${styles.inputUnset} ${styles.inputCustom}`}
+                      {...register("address")}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <button className="font-gowunBold mt-4 w-full h-[48px] rounded-2xl text-center cursor-pointer box-border text-[18px] text-white bg-primary-40 focus:bg-primary-30">
                 가입하기
               </button>
             </form>
