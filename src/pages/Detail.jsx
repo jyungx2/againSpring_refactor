@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import ReviewList from "@pages/ReviewList";
 
 import useCartStore from "../store/cartStore"; // Store import
+import useWishlistStore from "../store/wishlistStore"; // 위시리스트 저장소 import
 import useUserStore from "@store/userStore"; // 사용자 저장소 import
 
 function Detail() {
@@ -17,6 +18,7 @@ function Detail() {
   const navigate = useNavigate();
   const { user } = useUserStore(); // 사용자 정보 가져오기
   const { addToCart, fetchCartItems } = useCartStore();
+  const { addToWishlist } = useWishlistStore(); // 위시리스트 추가 함수
 
   const handleAddToCart = async (product) => {
     console.log("Adding to cart:", product); // 추가되는 상품 확인
@@ -26,7 +28,18 @@ function Detail() {
       await fetchCartItems(); // 장바구니 새로고침
       navigate(`/cart/${user.id}`); // userId를 포함한 경로로 변경
     } else {
-      alert("장바구니에 아이템 추가 실패");
+      alert("로그인해주세요");
+    }
+  };
+
+  const handleAddToWishlist = async (product) => {
+    console.log("Adding to wishlist:", product); // 추가되는 상품 확인
+    const success = await addToWishlist(product);
+    if (success) {
+      alert("위시리스트에 추가되었습니다!");
+      navigate(`/cart/${user.id}`); // userId를 포함한 경로로 변경
+    } else {
+      alert("위시리스트에 아이템 추가 실패");
     }
   };
 
@@ -68,26 +81,6 @@ function Detail() {
     staleTime: 1000 * 60 * 5, // 데이터가 5분 동안 신선한 상태로 유지
     cacheTime: 1000 * 60 * 30, // 캐시를 30분 동안 유지
   });
-
-  // //❗review 데이터를 불러옴
-  // const {
-  //   data: reviews,
-  //   isLoading: reviewsLoading,
-  //   error: reviewsError,
-  // } = useQuery({
-  //   queryKey: ["reviews", "main"], // 캐시 키
-  //   queryFn: () =>
-  //     axiosInstance.get(`/reviews`, {
-  //       // 리뷰 데이터를 가져오는 API 호출
-  //       params: {
-  //         page: 1,
-  //         limit: 5,
-  //       },
-  //     }),
-  //   select: (res) => res.data.item, // 필요한 데이터를 선택
-  //   staleTime: 1000 * 60 * 5, // 데이터가 5분 동안 신선한 상태로 유지
-  //   cacheTime: 1000 * 60 * 30, // 캐시를 30분 동안 유지
-  // });
 
   const [quantity, setQuantity] = useState(1); // 초기값 1로 설정
   const [productDetails, setProductDetails] = useState(null);
@@ -296,7 +289,7 @@ function Detail() {
                     <div className="flex mb-[16px] mt-[70px] ">
                       <button
                         className="bg-white border-2 border-gray-300  w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={() => alert("위시리스트에 추가하였습니다!")}
+                        onClick={() => handleAddToWishlist(item)}
                       >
                         찜하기
                       </button>

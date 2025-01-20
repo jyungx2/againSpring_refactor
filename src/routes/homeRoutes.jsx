@@ -9,6 +9,7 @@ import qnaRoutes from "./qnaRoutes";
 import eventRoutes from "./eventRoutes";
 import tansoRoutes from "./tansoRoutes";
 import shopRoutes from "./shopRoutes";
+import Wishlist from "@pages/Wishlist"; // Wishlist 페이지 import
 
 const homeRoutes = [
   {
@@ -24,6 +25,10 @@ const homeRoutes = [
             <InfoSection />
           </>
         ),
+      },
+      {
+        path: "wishlist", // Wishlist 경로 추가
+        element: <Wishlist />,
       },
       ...userRoutes,
       ...noticeRoutes,
