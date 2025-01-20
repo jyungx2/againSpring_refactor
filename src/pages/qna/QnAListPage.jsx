@@ -1,10 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
-import '../../assets/styles/fonts.css';
 import useUserStore from '@store/userStore';
-import useAxiosInstance from '@hooks/useAxiosInstance';
+import '../../assets/styles/fonts.css';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import useAxiosInstance from '@hooks/useAxiosInstance';
 import QnAListItem from './QnAListItem';
-import useBoard from '@hooks/useBoard';
+import { useEffect, useState } from 'react';
 
 const fetchUserInfo = async (axios) => {
   const response = await axios.get('/users');
@@ -12,65 +12,304 @@ const fetchUserInfo = async (axios) => {
 };
 
 export default function QnAListPage() {
+  const PAGES_PER_GROUP = 5;
+  const limit = 12;
+
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const axios = useAxiosInstance();
   const { user } = useUserStore();
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
-  const {
-    searchConditions,
-    handleSearchTextChange,
-    handleSortChange,
-    handlePeriodChange,
-    handleDateChange,
-    handleSearch,
-    data,
-    isLoading,
-    error,
-    currentPage,
-    totalPages,
-    total,
-    getPageLink,
-    getPageRange,
-    showPrevButton,
-    showNextButton,
-    prevGroupLastPage,
-    nextGroupFirstPage,
-    startPage,
-    endPage,
-    limit,
-  } = useBoard({ type: 'qna', limit: 12 });
+  const [periodType, setPeriodType] = useState('all-day');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [sortOption, setSortOption] = useState(() => {
+    const sortParam = searchParams.get('sort');
+    if (!sortParam) return 'default';
+    const options = {
+      '{"title":1}': 'title-asc',
+      '{"title":-1}': 'title-desc',
+      '{"createdAt":1}': 'date-asc',
+      '{"createdAt":-1}': 'date-desc',
+      '{"views":1}': 'view-asc',
+      '{"views":-1}': 'view-desc',
+    };
+    return options[sortParam] || 'default';
+  });
 
-  const {
-    text: searchText,
-    sort: sortOption,
-    period: { type: periodType, startDate, endDate },
-  } = searchConditions;
+  const calculateDateRange = (periodType) => {
+    const currentDate = new Date();
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    switch (periodType) {
+      case 'one-day':
+        return {
+          start: formatDate(new Date(currentDate.getTime() - oneDay)),
+          end: formatDate(currentDate),
+        };
+      case 'one-week':
+        return {
+          start: formatDate(new Date(currentDate.getTime() - oneDay * 7)),
+          end: formatDate(currentDate),
+        };
+      case 'one-month': {
+        const lastMonth = new Date(currentDate);
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+        return {
+          start: formatDate(lastMonth),
+          end: formatDate(currentDate),
+        };
+      }
+      case 'six-month': {
+        const sixMonthsAgo = new Date(currentDate);
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        return {
+          start: formatDate(sixMonthsAgo),
+          end: formatDate(currentDate),
+        };
+      }
+      case 'one-year': {
+        const oneYearAgo = new Date(currentDate);
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+        return {
+          start: formatDate(oneYearAgo),
+          end: formatDate(currentDate),
+        };
+      }
+      default:
+        return {
+          start: '',
+          end: '',
+        };
+    }
+  };
 
   const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ['userInfo'],
     queryFn: () => fetchUserInfo(axios),
   });
 
+  const { data: qnaData, isLoading: isQnaLoading } = useQuery({
+    queryKey: ['posts', 'qna', currentPage, sortOption],
+    queryFn: () =>
+      axios.get('/posts', {
+        params: {
+          type: 'qna',
+          page: currentPage,
+          limit,
+          ...(sortOption !== 'default' && {
+            sort: getSortParamsByOption(sortOption),
+          }),
+        },
+      }),
+    select: (res) => res.data,
+    staleTime: 1000 * 10,
+  });
+
+  useEffect(() => {
+    if (qnaData?.item) {
+      setFilteredData(qnaData.item);
+    }
+  }, [qnaData?.item]);
+
+  const formatDateForSearch = (dateString, isEndDate = false) => {
+    const formattedDate = dateString.replace(/-/g, '.');
+    return isEndDate
+      ? `${formattedDate} 23:59:59`
+      : `${formattedDate} 00:00:00`;
+  };
+
+  const handleSortChange = (e) => {
+    const newSortOption = e.target.value;
+    setSortOption(newSortOption);
+
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (newSortOption !== 'default') {
+      newSearchParams.set('sort', getSortParamsByOption(newSortOption));
+    } else {
+      newSearchParams.delete('sort');
+    }
+    navigate(`?${newSearchParams.toString()}`);
+  };
+
+  const handlePeriodChange = (newPeriodType) => {
+    setPeriodType(newPeriodType);
+
+    if (newPeriodType === 'custom') {
+      setStartDate(startDate);
+      setEndDate(endDate);
+    } else if (newPeriodType === 'all-day') {
+      setStartDate('');
+      setEndDate('');
+    } else {
+      const { start, end } = calculateDateRange(newPeriodType);
+      setStartDate(start);
+      setEndDate(end);
+    }
+  };
+
+  const handleDateChange = (type, value) => {
+    if (type === 'start') {
+      setStartDate(value);
+    } else {
+      setEndDate(value);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleSearch = () => {
+    console.log('=== 검색 시작 ===');
+    const newSearchParams = new URLSearchParams();
+
+    let defaultSearchParams = {
+      type: 'qna',
+      page: 1,
+      limit,
+    };
+
+    console.log('검색어:', searchText.trim() ? searchText : '없음');
+
+    if (searchText.trim()) {
+      newSearchParams.set('keyword', searchText);
+      defaultSearchParams.keyword = searchText;
+    }
+
+    console.log('기간 타입:', periodType);
+    console.log('시작일:', startDate || '없음');
+    console.log('종료일:', endDate || '없음');
+
+    if (periodType !== 'all-day') {
+      if (periodType === 'custom' && startDate && endDate) {
+        defaultSearchParams.custom = JSON.stringify({
+          createdAt: {
+            $gte: formatDateForSearch(startDate),
+            $lt: formatDateForSearch(endDate, true),
+          },
+        });
+        newSearchParams.set('startDate', startDate);
+        newSearchParams.set('endDate', endDate);
+      } else if (periodType !== 'custom') {
+        const { start, end } = calculateDateRange(periodType);
+        defaultSearchParams.custom = JSON.stringify({
+          createdAt: {
+            $gte: formatDateForSearch(start),
+            $lt: formatDateForSearch(end, true),
+          },
+        });
+        newSearchParams.set('startDate', start);
+        newSearchParams.set('endDate', end);
+      }
+    }
+
+    if (sortOption !== 'default') {
+      const sortParam = getSortParamsByOption(sortOption);
+      newSearchParams.set('sort', sortParam);
+      defaultSearchParams.sort = sortParam;
+      console.log('정렬 옵션:', sortOption);
+    }
+
+    newSearchParams.set('page', '1');
+    console.log('최종 URL 파라미터:', newSearchParams.toString());
+    console.log('최종 API 파라미터:', defaultSearchParams);
+
+    navigate(`?${newSearchParams.toString()}`);
+
+    axios
+      .get('/posts', {
+        params: defaultSearchParams,
+      })
+      .then((response) => {
+        console.log('검색 결과:', response.data);
+        setFilteredData(response.data.item || []);
+      })
+      .catch((error) => {
+        console.error('검색 중 오류 발생', error);
+        setFilteredData([]);
+      })
+      .finally(() => {
+        console.log('=== 검색 종료 ===');
+      });
+  };
+
+  const getSortParamsByOption = (sortOption) => {
+    const sortParams = {
+      default: undefined,
+      'title-asc': JSON.stringify({ title: 1 }),
+      'title-desc': JSON.stringify({ title: -1 }),
+      'date-asc': JSON.stringify({ createdAt: 1 }),
+      'date-desc': JSON.stringify({ createdAt: -1 }),
+      'view-asc': JSON.stringify({ views: 1 }),
+      'view-desc': JSON.stringify({ views: -1 }),
+    };
+
+    return sortParams[sortOption];
+  };
+
+  const getPageLink = (pageNum) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNum.toString());
+
+    if (searchText.trim()) {
+      params.set('keyword', searchText);
+    }
+
+    if (periodType !== 'all-day') {
+      params.set('periodType', periodType);
+      if (periodType === 'custom') {
+        if (startDate) params.set('startDate', startDate);
+        if (endDate) params.set('endDate', endDate);
+      }
+    }
+
+    if (sortOption !== 'default') {
+      params.set('sort', getSortParamsByOption(sortOption));
+    }
+    return `?${params.toString()}`;
+  };
+
   const userType = user
     ? userData?.item?.find((item) => item._id === user._id)?.type
     : null;
   const isAdminOrUser = userType === 'admin' || userType === 'user';
 
-  if (isUserLoading || isLoading) {
+  const totalData = qnaData?.pagination?.total || 0;
+  const totalPages = Math.max(1, Math.ceil(totalData / limit));
+  const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
+  const startPage = (currentGroup - 1) * PAGES_PER_GROUP + 1;
+  const endPage = Math.min(currentGroup * PAGES_PER_GROUP, totalPages);
+  const prevGroupLastPage = startPage - 1;
+  const nextGroupFirstPage = endPage + 1;
+  const showPrevButton = currentGroup > 1;
+  const showNextButton = endPage < totalPages;
+
+  if (isUserLoading || isQnaLoading) {
     return <div>로딩중...</div>;
   }
 
-  if (!userData?.item || !data) {
+  if (!userData?.item || !qnaData?.item) {
     return <div>데이터를 불러오는데 실패했습니다.</div>;
   }
 
   const qnaPostList = searchText.trim() ? (
-    data.length > 0 ? (
-      data.map((item, index) => (
+    filteredData.length > 0 ? (
+      filteredData.map((item, index) => (
         <QnAListItem
           key={item._id}
           item={item}
-          number={total - ((currentPage - 1) * limit + index)}
+          number={totalData - ((currentPage - 1) * limit + index)}
         />
       ))
     ) : (
@@ -84,8 +323,12 @@ export default function QnAListPage() {
             <p className='text-sm text-grey-40'>다른 검색어로 시도해보세요.</p>
             <button
               onClick={() => {
-                handleSearch();
-                navigate('?page=1');
+                setSearchText('');
+                setFilteredData(qnaData.item);
+                const newSearchParams = new URLSearchParams(searchParams);
+                newSearchParams.delete('keyword');
+                newSearchParams.set('page', '1');
+                navigate(`?${newSearchParams.toString()}`);
               }}
               className='mt-2 px-4 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
             >
@@ -96,11 +339,11 @@ export default function QnAListPage() {
       </tr>
     )
   ) : (
-    data.map((item, index) => (
+    qnaData.item.map((item, index) => (
       <QnAListItem
         key={item._id}
         item={item}
-        number={total - ((currentPage - 1) * limit + index)}
+        number={totalData - ((currentPage - 1) * limit + index)}
       />
     ))
   );
@@ -113,7 +356,7 @@ export default function QnAListPage() {
       <div className='flex justify-between items-center mb-4'>
         <select
           value={sortOption}
-          onChange={handleSortChange}
+          onChange={(e) => handleSortChange(e)}
           className='border border-grey-20 rounded p-1 text-lg focus:border-secondary-30 focus:ring-1 focus:ring-secondary-30 text-grey-60'
           aria-label='정렬 기준'
         >
@@ -135,7 +378,6 @@ export default function QnAListPage() {
           </button>
         )}
       </div>
-
       <div className='w-full mx-auto my-0 max-h-[906.11px] overflow-y-auto'>
         <table className='w-full border-collapse table-fixed'>
           <thead>
@@ -151,7 +393,6 @@ export default function QnAListPage() {
           <tbody>{qnaPostList}</tbody>
         </table>
       </div>
-
       <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
         {totalPages > 1 && (
           <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
@@ -164,19 +405,22 @@ export default function QnAListPage() {
               </Link>
             )}
 
-            {getPageRange().map((pageNum) => (
-              <Link
-                key={pageNum}
-                to={getPageLink(pageNum)}
-                className={`${
-                  currentPage === pageNum
-                    ? 'bg-secondary-20 text-white'
-                    : 'bg-grey-20 text-black'
-                } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
-              >
-                {pageNum}
-              </Link>
-            ))}
+            {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+              const pageNum = startPage + i;
+              return (
+                <Link
+                  key={pageNum}
+                  to={getPageLink(pageNum)}
+                  className={`${
+                    currentPage === pageNum
+                      ? 'bg-secondary-20 text-white'
+                      : 'bg-grey-20 text-black'
+                  } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
+                >
+                  {pageNum}
+                </Link>
+              );
+            })}
 
             {showNextButton && (
               <Link
@@ -189,7 +433,6 @@ export default function QnAListPage() {
           </div>
         )}
       </div>
-
       <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
         <div className='relative w-[120px]'>
           <select
@@ -228,7 +471,7 @@ export default function QnAListPage() {
         <input
           type='text'
           value={searchText}
-          onChange={handleSearchTextChange}
+          onChange={handleSearchChange}
           className='h-[37px] py-0 px-3 border border-grey-10 rounded w-[200px]'
           placeholder='검색어를 입력하세요'
         />
