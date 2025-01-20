@@ -7,12 +7,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 
 const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
-  const { user } = useUserStore();
-  const [content, setContent] = useState('');
-  const MySwal = withReactContent(Swal);
-
   const axios = useAxiosInstance();
   const queryClient = useQueryClient();
+  const MySwal = withReactContent(Swal);
+  const { user } = useUserStore();
+
+  const [content, setContent] = useState('');
 
   const createComment = useMutation({
     mutationFn: (data) => axios.post(`/posts/${post._id}/replies`, data),
@@ -21,9 +21,8 @@ const CommentNew = ({ isAdmin, post, comments, setReplies }) => {
       setReplies([...comments, newComment]);
       setContent('');
 
-      // 게시글 상세 정보 쿼리 무효화
       queryClient.invalidateQueries(['qnaDetail', post._id.toString()]);
-      // 게시글 목록 쿼리 무효화
+
       queryClient.invalidateQueries(['posts']);
 
       MySwal.fire({

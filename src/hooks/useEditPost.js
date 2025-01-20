@@ -3,13 +3,20 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import postAlerts from '@utils/postAlerts';
 
-export const useQnAEditPost = (post, initialData = null, returnPath) => {
+export const useEditPost = ({
+  post,
+  initialData = null,
+  returnPath,
+  postType = 'notice',
+}) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [originalData, setOriginalData] = useState(null);
   const [quillInstance, setQuillInstance] = useState(null);
+
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isProductPost, setIsProductPost] = useState(false);
 
@@ -17,13 +24,20 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
   const axios = useAxiosInstance();
   const MySwal = withReactContent(Swal);
 
-  // Quill 인스턴스가 설정되면 내용을 업데이트
+  /**
+   * 에디터 내용 초기화 효과
+   * quillInstance가 준비되면 기존 게시글 내용을 에디터에 설정
+   */
   useEffect(() => {
     if (quillInstance && originalData?.content) {
       quillInstance.root.innerHTML = originalData.content;
     }
   }, [quillInstance, originalData]);
 
+  /**
+   * 게시글 데이터 조회 함수
+   * @param {string} postId 게시글 ID
+   */
   const fetchPostData = async (postId) => {
     try {
       setIsLoading(true);
@@ -35,27 +49,28 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
         setContent(data.content);
         setOriginalData(data);
 
-        // 상품 정보가 있는 경우 상품 데이터 조회
-        if (data.product?._id) {
+        // Q&A 게시글의 경우 상품 정보 설정
+        if (postType === 'qna' && data.product?._id) {
           setIsProductPost(true);
           setSelectedProduct({
             _id: data.product._id[0],
             name: data.product.name[0],
             mainImages: data.product.mainImages?.[0] || [],
           });
-        } else {
-          setIsProductPost(false);
-          setSelectedProduct(null);
         }
 
-        // Quill 에디터 내용 설정
         if (quillInstance) {
           quillInstance.root.innerHTML = data.content;
         }
       }
     } catch (error) {
-      // ... 에러 처리
-      console.error('에러: ', error);
+      MySwal.fire({
+        title: '오류 발생',
+        text:
+          error.response?.data?.message ||
+          '게시글 로딩 중 오류가 발생했습니다.',
+        icon: 'error',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -67,80 +82,78 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
     }
   }, [post._id]);
 
+  /**
+   * 게시글 수정 처리 함수
+   * @param {Event} e 이벤트 객체
+   */
   const handleUpdate = async (e) => {
     e?.preventDefault();
 
     const currentContent = quillInstance?.root.innerHTML || '';
 
+    // 입력값 검증
     if (!title.trim() || !currentContent.trim()) {
-      MySwal.fire({
-        title: '입력 확인',
-        text: '제목과 내용을 모두 입력해주세요.',
-        icon: 'warning',
-      });
+      await postAlerts.showInfo('제목과 내용을 모두 입력해주세요.');
       return;
     }
 
     try {
       setIsLoading(true);
-
-      // 업데이트할 데이터 객체 생성
       const updateData = {
         title,
         content: currentContent,
       };
 
-      // selectedProduct가 있을 때만 product_id 추가
-      if (selectedProduct) {
-        updateData.product_id = selectedProduct._id;
-      } else {
-        // selectedProduct가 null일 때 (상품이 제거되었을 때)
-        // product_id를 명시적으로 null로 설정하여 상품 연결 해제
-        updateData.product_id = null;
+      // Q&A 게시글일 경우 상품 정보 추가
+      if (postType === 'qna') {
+        updateData.product_id = selectedProduct?._id || null;
       }
 
       const response = await axios.patch(`/posts/${post._id}`, updateData);
 
       if (response.data.ok) {
-        await MySwal.fire({
-          title: '수정 완료',
-          text: '게시글이 성공적으로 수정되었습니다.',
-          icon: 'success',
-        });
-        navigate(returnPath);
+        if (
+          await postAlerts.showSaveSuccess(
+            true,
+            postType === 'qna' ? 'Q&A' : '공지사항'
+          )
+        ) {
+          navigate(returnPath);
+        }
       }
     } catch (error) {
-      MySwal.fire({
-        title: '오류 발생',
-        text:
-          error.response?.data?.message ||
-          '게시글 수정 중 오류가 발생했습니다.',
-        icon: 'error',
-      });
+      await postAlerts.showSaveError(
+        error,
+        true,
+        postType === 'qna' ? 'Q&A' : '공지사항'
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleCancel = () => {
+  /**
+   * 수정 취소 처리 함수
+   * 변경사항이 있는 경우 사용자 확인 후 취소
+   */
+  const handleCancel = async () => {
     const hasChanges =
-      title !== originalData?.title ||
-      quillInstance?.root.innerHTML !== originalData?.content ||
-      selectedProduct?._id !== originalData?.product?._id;
+      postType === 'qna'
+        ? title !== originalData?.title ||
+          quillInstance?.root.innerHTML !== originalData?.content ||
+          selectedProduct?._id !== originalData?.product?._id
+        : title !== originalData?.title ||
+          quillInstance?.root.innerHTML !== originalData?.content;
 
     if (hasChanges) {
-      MySwal.fire({
-        title: '수정 취소',
-        text: '변경사항이 저장되지 않습니다. 취소하시겠습니까?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '예',
-        cancelButtonText: '아니오',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate(returnPath);
-        }
-      });
+      if (
+        await postAlerts.confirmCancel(
+          true,
+          postType === 'qna' ? 'Q&A' : '공지사항'
+        )
+      ) {
+        navigate(returnPath);
+      }
     } else {
       navigate(returnPath);
     }
@@ -154,8 +167,8 @@ export const useQnAEditPost = (post, initialData = null, returnPath) => {
     setQuillInstance,
     handleUpdate,
     handleCancel,
-    selectedProduct,
-    setSelectedProduct,
-    isProductPost,
+    selectedProduct: postType === 'qna' ? selectedProduct : undefined,
+    setSelectedProduct: postType === 'qna' ? setSelectedProduct : undefined,
+    isProductPost: postType === 'qna' ? isProductPost : undefined,
   };
 };
