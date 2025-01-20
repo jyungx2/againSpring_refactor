@@ -26,6 +26,7 @@ import TansoCalc from "@pages/tanso/tanso-calc";
 import TansoMain from "@pages/tanso/tanso-main";
 import SearchPage from "@pages/searchPage";
 import UncompletedPage from "@pages/user/UncompletedPage";
+import TansoIntro from "@pages/tanso/tanso-intro";
 
 const homeRoutes = [
   {
@@ -61,6 +62,7 @@ const homeRoutes = [
       { path: "qna/detail/:id", element: <QnAPostDetailPage /> },
       { path: "event", element: <EventMainPage /> },
       { path: "event/detail/:id", element: <EventDetailPage /> },
+      { path: "tansointro", element: <TansoIntro /> },
       { path: "tansocalc", element: <TansoCalc /> },
       { path: "tansomain", element: <TansoMain /> },
       { path: "cart/:userId", element: <Cart /> },
