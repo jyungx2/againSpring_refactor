@@ -27,7 +27,7 @@ const MenuIcons = () => {
       {user ? (
         <form className="flex gap-[20px] items-center" onSubmit={handleLogout}>
           <Link
-            to={`/order/${user._id}`}
+            to="/user/order"
             className="text-gray-700 hover:text-primary-30"
           >
             <i className="fas fa-user"></i>
