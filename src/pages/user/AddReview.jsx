@@ -74,8 +74,8 @@ function AddReview() {
     const file = e.target.files[0]; // 사용자가 업로드한 파일
     console.log("file: ", file);
     if (file) {
-      if (reviewImage.length >= 5) {
-        alert("사진은 최대 5개까지만 등록 가능합니다.");
+      if (reviewImage.length >= 3) {
+        alert("사진은 최대 3개까지만 등록 가능합니다.");
         return;
       }
 
@@ -153,7 +153,7 @@ function AddReview() {
                   >
                     사진 첨부하기
                   </label>
-                  <p className="font-gowunBold">{reviewImage.length} / 5</p>
+                  <p className="font-gowunBold">{reviewImage.length} / 3</p>
                   <input
                     type="file"
                     id="attach"
