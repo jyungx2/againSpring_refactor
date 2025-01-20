@@ -48,7 +48,7 @@ function Auth() {
     }
   }, []);
 
-  return <>🔥Auth Page🔥</>;
+  return <></>;
 }
 
 export default Auth;

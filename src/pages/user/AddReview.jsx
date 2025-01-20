@@ -84,6 +84,7 @@ function AddReview() {
       console.log("추가된 이미지 URL: ", newImageUrl);
       setReviewImage((prev) => [...prev, newImageUrl]);
 
+      // 🖍️ 수정사항 2) watch('attach') = 하나의 배열, 기존 코드로는 setCollection 함수로 이중 배열을 만든 셈!
       const newAttach = watch("attach")[0];
       setCollection((prev) => [...prev, newAttach]);
       console.log("collection: ", [...collection, newAttach]);
