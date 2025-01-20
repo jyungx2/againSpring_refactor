@@ -1,6 +1,7 @@
 import Layout from "@components/layouts";
 import Slider from "@pages/Slider";
 import Login from "@pages/user/Login";
+import Auth from "@pages/user/Auth";
 import Signup from "@pages/user/Signup";
 import TermsOfService from "@pages/user/TermsOfService";
 import Myorder from "@pages/user/Myorder";
@@ -43,6 +44,7 @@ const homeRoutes = [
         ),
       },
       { path: "login", element: <Login /> },
+      { path: "users/login/kakao", element: <Auth /> },
       { path: "signup", element: <Signup /> },
       { path: "tos", element: <TermsOfService /> },
       { path: "user/order", element: <Myorder /> },
