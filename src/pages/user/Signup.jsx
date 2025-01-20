@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-const phoneNumExp = /^01[0-9]-?\d{3,4}-?\d{4}$/;
+const phoneExp = /^01[0-9]-?\d{3,4}-?\d{4}$/;
 
 function Signup() {
   // Dropdown
@@ -50,8 +50,8 @@ function Signup() {
     event.target.value = value;
 
     // 유효한 값이 입력되면 오류를 지운다
-    if (value.match(phoneNumExp)) {
-      clearErrors("phoneNumber");
+    if (value.match(phoneExp)) {
+      clearErrors("phone");
     }
   };
 
@@ -132,7 +132,7 @@ function Signup() {
         profile: userLogin.image?.path,
         accessToken: userLogin.token.accessToken,
         refreshToken: userLogin.token.refreshToken,
-        phoneNumber: userLogin.phoneNumber,
+        phone: userLogin.phone,
         address: userLogin.address,
       });
 
@@ -334,26 +334,26 @@ function Signup() {
                 <div>
                   <div
                     className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
-                      errors.phoneNumber ? `${styles.error}` : ""
+                      errors.phone ? `${styles.error}` : ""
                     }`}
                   >
                     <img src="/icons/phone.svg" className="p-[6px]" />
                     <input
-                      id="phoneNumber"
+                      id="phone"
                       type="string"
                       placeholder="휴대전화번호"
                       className={`${styles.inputUnset} ${styles.inputCustom}`}
-                      {...register("phoneNumber", {
+                      {...register("phone", {
                         onChange: addHyphen,
                         required: "휴대전화번호 입력은 필수입니다.",
                         pattern: {
-                          value: phoneNumExp,
+                          value: phoneExp,
                           message: "전화번호 양식에 맞지 않습니다.",
                         },
                       })}
                     />
                   </div>
-                  <ErrorMsg target={errors.phoneNumber} />
+                  <ErrorMsg target={errors.phone} />
                 </div>
                 <div>
                   <div

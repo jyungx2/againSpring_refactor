@@ -41,6 +41,8 @@ function Login() {
         name: user.name,
         type: user.type,
         profile: user.image?.path,
+        phone: user.phone,
+        address: user.address,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
         autoLogin,

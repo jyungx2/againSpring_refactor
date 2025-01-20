@@ -137,9 +137,7 @@ function OrderDetail() {
                   </tr>
                   <tr>
                     <td className="p-[8px] w-[12.5%]">연락처</td>
-                    <td className="p-[8px]">
-                      {formatPhoneNumber(user.phoneNumber)}
-                    </td>
+                    <td className="p-[8px]">{formatPhoneNumber(user.phone)}</td>
                   </tr>
                   <tr>
                     <td className="p-[8px] w-[12.5%]">받는주소</td>
