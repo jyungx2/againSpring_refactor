@@ -6,14 +6,17 @@ import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import ReviewItem from "@pages/ReviewItem";
+import ReviewList from "@pages/ReviewList";
 
 function Cart() {
   //더미 상품 데이터
   const [activeTab, setActiveTab] = useState("가"); // 기본 활성 탭은 '가'
   // const { state } = useLocation(); // navigate로 전달된 데이터 <- 코드 삭제 요청드립니다.
-  const { id } = useParams(); // URL의 파라미터 값
+  const { id } = useParams(); // Get product ID from URL
   const axiosInstance = useAxiosInstance();
   const [products, setProducts] = useState([]);
+  const [cartItemsList, setCartItemsList] = useState([]);
 
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop";
@@ -21,18 +24,17 @@ function Cart() {
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProduct = async () => {
       try {
         const response = await axiosInstance.get(`/products/${id}`);
-        // 상품 데이터에서 quantity 값을 1로 고정하여 업데이트
         const product = response?.data?.item;
-        product.quantity = 1; // quantity를 1로 설정
+        product.quantity = 1; // Set quantity to 1
         setCartItemsList([product]);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        console.error("Failed to fetch product:", error);
       }
     };
-    fetchProducts();
+    fetchProduct();
   }, [id]);
 
   //❗qna데이터를 불러옴
@@ -75,48 +77,6 @@ function Cart() {
     cacheTime: 1000 * 60 * 30, // 캐시를 30분 동안 유지
   });
 
-  // const [reviews, setReviews] = useState([
-  //   {
-  //     _id: 1,
-  //     user: {
-  //       _id: 4,
-  //       name: "제이지",
-  //       image: "user-jayg.webp",
-  //     },
-  //     order_id: 1,
-  //     rating: 5,
-  //     content: "아이가 좋아해요.",
-  //     createdAt: "2025-01-15",
-  //     product_id: parseInt(id),
-  //   },
-  //   {
-  //     _id: 2,
-  //     user: {
-  //       _id: 2,
-  //       name: "네오",
-  //       image: "user-neo.webp",
-  //     },
-  //     order_id: 4,
-  //     rating: 4,
-  //     content: "배송이 좀 느려요.",
-  //     createdAt: "2025-01-16",
-  //     product_id: parseInt(id),
-  //   },
-  //   {
-  //     _id: 3,
-  //     user: {
-  //       _id: 4,
-  //       name: "제이지",
-  //       image: "user-jayg.webp",
-  //     },
-  //     order_id: 2,
-  //     rating: 1,
-  //     content: "하루만에 고장났어요.",
-  //     createdAt: "2025-01-17",
-  //     product_id: parseInt(id),
-  //   },
-  // ]);
-
   const [quantity, setQuantity] = useState(1); // 초기값 1로 설정
   const [productDetails, setProductDetails] = useState(null);
 
@@ -144,41 +104,7 @@ function Cart() {
         </p>
       </div>
     ),
-    상품후기: (
-      <div className="review-section px-[20px]">
-        <h3 className="text-3xl font-bold mt-[10px] mb-[20px]">
-          상품 구매평 ( reviews )
-        </h3>
-        <hr className="mt-[12px] mb-[10px]  " />
-
-        {reviews?.length > 0 ? (
-          reviews.map((review) => (
-            <div
-              key={review._id}
-              className="review-item mb-[20px] mt-[20px] border-b pb-[10px] flex justify-between items-center"
-            >
-              <div>
-                <p className="font-bold">{review.user.name}</p>
-                <p className="text-gray-500">
-                  {new Date(review.createdAt).toLocaleDateString()}
-                </p>
-                <p className="text-[16px] mt-[10px]">{review.content}</p>
-                <p className="text-yellow-500 mt-[10px]">
-                  ⭐ {review.rating}점
-                </p>
-              </div>
-              <img
-                src={`/images/${review.user.image}`}
-                alt={review.user.name}
-                className="w-[80px] h-[80px] rounded-lg border border-grey-20"
-              />
-            </div>
-          ))
-        ) : (
-          <p>아직 작성된 후기가 없습니다.</p>
-        )}
-      </div>
-    ),
+    상품후기: <ReviewList id={id} />,
     QnA: (
       <div className=" rounded-md overflow-hidden">
         <div className="flex justify-between items-center py-4 px-6 border-b border-gray-300">
@@ -220,16 +146,7 @@ function Cart() {
     },
   ];
 
-  const [cartItemsList, setCartItemsList] = useState(dummyItems);
-
-  const shippingCost = 3000; //배송비
-  // 코드 수정(ohDASEUL) : totalPrice 개발 부탁드립니다. (일단은 주석 처리 했습니다.)
-  // const totalPrice = cartItemsList.reduce(
-  //   //가격계산
-  //   (total, item) => total + item.price * item.quantity,
-  //   0
-  // );
-  //✨
+  const shippingCost = 3000;
   const updateQuantity = (id, newQuantity) => {
     setCartItemsList((prevItems) =>
       prevItems.map((item) =>
@@ -250,8 +167,6 @@ function Cart() {
   const { activeMenu, setActiveMenu } = useMenuStore();
   const [hovered, setHovered] = useState(false);
 
-  // 코드 추가(ohDASEUL) : 제품 id로 API(url만 있어도 제품이 나오도록 값을 수정)
-
   return (
     <div className="flex justify-center px-[16px]">
       {/* 화면 가운데 정렬 및 좌우 패딩을 추가한 외부 컨테이너 */}
@@ -261,8 +176,6 @@ function Cart() {
       >
         {" "}
         <div>
-          {/*🦋🍓 장바구니에 아이템이 있을 때 */}
-          {/* 코드 수정(ohDASEUL) : state -> item (링크를 통해 state 값을 전달하지 않아도 되기 때문에 state는 필요없습니다.)  */}
           {cartItemsList.map((item) => (
             <div className="flex ml-[80px] mt-[50px]">
               <div className="flex flex-col mr-[30px]">

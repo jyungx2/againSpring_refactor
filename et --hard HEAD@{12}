@@ -1,0 +1,16 @@
+[33m595cc3a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/124-shop-categry-connection/elfking91[m[33m)[m HEAD@{0}: commit (merge): 탭 연결 초안
+[33md372af6[m HEAD@{1}: commit: 탭 연결 초안
+[33m266471e[m HEAD@{2}: pull origin dev: updating HEAD
+[33m266471e[m HEAD@{3}: pull origin dev: updating HEAD
+[33m266471e[m HEAD@{4}: pull origin dev: updating HEAD
+[33m266471e[m HEAD@{5}: pull origin dev: updating HEAD
+[33m266471e[m HEAD@{6}: pull origin dev: updating HEAD
+[33m266471e[m HEAD@{7}: pull origin dev: updating HEAD
+[33m266471e[m HEAD@{8}: pull origin dev: Merge made by the 'ort' strategy.
+[33mdbd9606[m HEAD@{9}: pull origin dev: Merge made by the 'ort' strategy.
+[33m6b36b8b[m HEAD@{10}: pull origin dev: Merge made by the 'ort' strategy.
+[33m3cedd55[m HEAD@{11}: pull origin dev: Merge made by the 'ort' strategy.
+[33m8bb6bb9[m[33m ([m[1;31morigin/feature/124-shop-categry-connection/elfking91[m[33m)[m HEAD@{12}: commit: 상품관리페이지와 상세페이지 연결 기능 구현/ 이미지 출력 오류 해결
+[33mba30fcd[m[33m ([m[1;32mdev[m[33m)[m HEAD@{13}: checkout: moving from dev to feature/124-shop-categry-connection/elfking91
+[33mba30fcd[m[33m ([m[1;32mdev[m[33m)[m HEAD@{14}: pull origin dev: Fast-forward
+[33m50b28f6[m[33m ([m[1;31morigin/feature/111-oneToOne-query/jyungx2[m[33m)[m HEAD@{15}: clone: from https://github.com/FRONTENDBOOTCAMP-11th/againSpring_shop.git
