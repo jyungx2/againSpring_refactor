@@ -14,6 +14,14 @@ function Login() {
   const location = useLocation();
   const [autoLogin, setAutoLogin] = useState(false);
 
+  const KAKAO_URL = import.meta.env.VITE_KAKAO_AUTH_URL;
+  const API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
+  const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+
+  const handleKakaoLogin = () => {
+    window.location.href = `${KAKAO_URL}?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&state=${autoLogin}`;
+  };
+
   const {
     register,
     handleSubmit,
@@ -56,6 +64,14 @@ function Login() {
       }
     },
   });
+
+  // const KAKAO_url = "https://kauth.kakao.com/oauth/authorize";
+  // const API_KEY = "7b635f7b3d4379252462f78787fc908b";
+  // const REDIRECT_URI = "http://localhost:5173/users/login/kakao";
+
+  // const handleKakaoLogin = () => {
+  //   window.location.href = `${KAKAO_url}?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  // };
 
   return (
     <>
@@ -107,7 +123,11 @@ function Login() {
                 <button className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-primary-40 text-white mb-[10px] focus-within:bg-primary-30">
                   로그인
                 </button>
-                <button className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-kakao text-black focus-within:bg-kakao-hover">
+                <button
+                  type="button"
+                  className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-kakao text-black focus-within:bg-kakao-hover"
+                  onClick={handleKakaoLogin}
+                >
                   카카오톡으로 시작하기
                 </button>
               </div>

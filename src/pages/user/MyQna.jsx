@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 
-function Myquery() {
+function MyQna() {
   const navigate = useNavigate();
   const axios = useAxiosInstance();
   const { type } = useParams();
@@ -35,9 +35,16 @@ function Myquery() {
     }
   };
 
-  const QnaList = data?.item.map((qna, index) => (
-    <QnaItem key={qna._id} item={qna} count={index + 1} />
-  ));
+  const QnaList = data?.item
+    .slice()
+    .reverse()
+    .map((qna, index) => (
+      <QnaItem
+        key={qna._id}
+        item={qna}
+        count={(currentPage - 1) * params.limit + index + 1}
+      />
+    ));
 
   return (
     <>
@@ -116,4 +123,4 @@ function Myquery() {
   );
 }
 
-export default Myquery;
+export default MyQna;
