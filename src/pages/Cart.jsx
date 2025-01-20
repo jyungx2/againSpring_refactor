@@ -1,84 +1,38 @@
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { cartStore } from "../store/cartStore";
-import useUserStore from "@store/userStore";
-import { Helmet } from "react-helmet-async";
-import Wishlist from "@pages/WishList";
-import PurchaseButton from "@components/PurchaseButton";
+import { useEffect } from "react"; // React의 useEffect 훅을 임포트합니다.
+import { useNavigate, useParams } from "react-router-dom"; // React Router의 useNavigate와 useParams 훅을 임포트합니다.
+import { cartStore } from "../store/cartStore"; // 상태 관리를 위한 cartStore를 임포트합니다.
+import useUserStore from "@store/userStore"; // 사용자 정보를 관리하는 userStore를 임포트합니다.
+import { Helmet } from "react-helmet-async"; // Helmet을 사용하여 페이지의 head를 관리합니다.
+import PurchaseButton from "@components/PurchaseButton"; // 구매 버튼 컴포넌트를 임포트합니다.
 
 function Cart() {
-  const { userId } = useParams();
+  const { userId } = useParams(); // URL에서 userId를 가져옵니다.
   const {
-    cartItemsList,
-    shippingCost,
-    fetchCartItems,
-    loading,
-    error,
-    updateItemQuantity,
-    selectedItems,
-    selectItem,
-    deselectItem,
-    deleteSelectedItems,
-    clearCart,
-  } = cartStore();
-  const { user } = useUserStore();
-  const navigate = useNavigate();
+    cartItemsList, // 장바구니에 담긴 아이템 목록
+    shippingCost, // 배송비
+    fetchCartItems, // 장바구니 아이템을 불러오는 함수
+    loading, // 로딩 상태
+    error, // 에러 상태
+    updateItemQuantity, // 아이템 수량 업데이트 함수
+    selectedItems, // 선택된 아이템 목록
+    selectItem, // 아이템 선택 함수
+    deselectItem, // 아이템 선택 해제 함수
+    deleteSelectedItems, // 선택된 아이템 삭제 함수
+    clearCart, // 장바구니 비우기 함수
+  } = cartStore(); // cartStore에서 필요한 데이터와 함수를 가져옵니다.
+  const { user } = useUserStore(); // 현재 로그인된 사용자 정보
+  const navigate = useNavigate(); // 페이지 네비게이션 함수
 
   useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    } else {
-      fetchCartItems(userId);
-    }
-  }, [user, fetchCartItems, navigate, userId]);
+    fetchCartItems(); // 장바구니 아이템 불러오기
+  }, []);
 
-  const totalPrice = cartItemsList.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-
-  const totalOrderAmount = totalPrice + shippingCost;
-
-  const handleQuantityChange = (item, change) => {
-    const newQuantity = Math.max(0, item.quantity + change);
-    updateItemQuantity(item.id, newQuantity);
-  };
-
-  const handleCheckboxChange = (itemId) => {
-    if (selectedItems.includes(itemId)) {
-      deselectItem(itemId);
-    } else {
-      selectItem(itemId);
-    }
-  };
-
-  const handleDeleteSelected = () => {
-    deleteSelectedItems();
-  };
-
-  const handleClearCart = async () => {
-    await clearCart();
-    alert("장바구니가 비워졌습니다.");
-  };
-
-  const handleOrderAgain = () => {
-    navigate("/");
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div className="text-red-500">{error}</div>;
+  if (loading) return <div>Loading...</div>; // 로딩 중일 때 화면에 "Loading..." 표시
+  if (error) return <div className="text-red-500">{error}</div>; // 에러가 발생하면 에러 메시지 표시
 
   return (
     <div className="flex justify-center">
       <div className="container w-[1200px] px-[16px] my-[40px]">
-        <Helmet>
-          <title>다시, 봄 장바구니</title>
-          <meta
-            name="description"
-            content="장바구니에 담긴 상품을 확인하세요."
-          />
-        </Helmet>
-
         <div className="flex items-center mb-[16px]">
           <h1 className="text-[24px] font-gowun text-grey-80 mr-[8px]">
             장바구니
@@ -120,7 +74,6 @@ function Cart() {
                   </th>
                 </tr>
               </thead>
-
               <tbody>
                 {cartItemsList.map((item) => (
                   <tr key={item.id} className="border-b">
@@ -129,7 +82,7 @@ function Cart() {
                         type="checkbox"
                         className="w-[16px] h-[16px] cursor-pointer"
                         checked={selectedItems.includes(item.id)}
-                        onChange={() => handleCheckboxChange(item.id)}
+                        onChange={() => handleCheckboxChange(item.id)} // 체크박스를 클릭하면 해당 아이템 선택/해제
                       />
                     </td>
                     <td className="flex items-start py-[20px]">
@@ -139,144 +92,30 @@ function Cart() {
                         className="w-[80px] h-[80px] object-cover mr-[8px]"
                       />
                       <div>
-                        <h2 className="text-[15px] font-semibold text-grey-80">
-                          {item.name}
-                        </h2>
+                        <p>{item.name}</p>
+                        <p>{item.price}</p>
                       </div>
                     </td>
-                    <td className="text-center py-[20px] border-l border-grey-20">
-                      <div className="flex justify-center h-full">
-                        <div className="flex items-center h-[32px] border border-grey-20">
-                          <button
-                            className={`w-[24px] h-full border-r border-grey-20 ${
-                              item.quantity <= 1
-                                ? "opacity-50"
-                                : "hover:bg-grey-10"
-                            }`}
-                            onClick={() =>
-                              item.quantity > 1 &&
-                              handleQuantityChange(item, -1)
-                            }
-                            disabled={item.quantity <= 1}
-                          >
-                            -
-                          </button>
-                          <span className="w-[50px] h-full flex items-center justify-center border-grey-200 text-black text-[12px]">
-                            {item.quantity}
-                          </span>
-                          <button
-                            className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
-                            onClick={() => handleQuantityChange(item, 1)}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
+                    <td className="text-center">
+                      <input
+                        type="number"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          updateItemQuantity(item.id, e.target.value)
+                        }
+                        className="w-[50px] text-center"
+                      />
                     </td>
-                    <td className="text-center text-grey-80 font-gowunBold py-[20px] border-l border-grey-20 text-[20px]">
-                      {(item.price * item.quantity).toLocaleString()}원
+                    <td className="text-center">
+                      {item.price * item.quantity}
                     </td>
-                    <td className="text-center text-grey-80 font-gowunBold py-[20px] border-l border-grey-20">
-                      <div className="text-[16px]">
-                        {shippingCost.toLocaleString()}원
-                      </div>
-                      <div className="text-[13px] font-gowun text-grey-40">
-                        택배
-                      </div>
-                    </td>
+                    <td className="text-center">{shippingCost}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-
-            <hr className="mb-[12px]" />
-
-            <div className="flex justify-start mb-[40px]">
-              <button
-                className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]"
-                onClick={handleClearCart}
-              >
-                장바구니 비우기
-              </button>
-              <button
-                className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]"
-                onClick={handleDeleteSelected}
-              >
-                선택 상품 삭제
-              </button>
-            </div>
-
-            <hr className="mb-[12px] border-grey-50" />
-
-            <div className="flex justify-between">
-              <p className="text-[14px] font-gowun">
-                총 주문 상품{" "}
-                <span className="text-secondary-40 font-gowunBold">
-                  {cartItemsList.length}
-                </span>
-                개
-              </p>
-            </div>
-
-            <hr className="mt-[12px] mb-[16px]" />
-
-            <div className="grid grid-cols-[repeat(5,auto)] justify-center gap-[4px] mb-[16px]">
-              <div className="flex flex-col items-center">
-                <div className="text-[18px] font-gowunBold">
-                  {totalPrice.toLocaleString()}원
-                </div>
-                <div className="text-[12px] font-gowun text-grey-50">
-                  상품 금액
-                </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="text-[18px] font-bold px-[20px]">+</div>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="text-[18px] font-gowunBold">
-                  {shippingCost.toLocaleString()}원
-                </div>
-                <div className="text-[12px] font-gowun text-grey-50">
-                  배송비
-                </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="text-[18px] font-bold px-[20px]">=</div>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="text-[18px] font-bold">
-                  {totalOrderAmount.toLocaleString()}원
-                </div>
-                <div className="text-[12px] font-gowun text-grey-50">
-                  총 주문 금액
-                </div>
-              </div>
-            </div>
-
-            <hr className="my-[16px] border-grey-50" />
-
-            <div className="flex justify-center mb-[16px]">
-              <div className="flex justify-center mb-[16px]">
-                <PurchaseButton
-                  products={cartItemsList}
-                  className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[15px] text-center hover:bg-primary-50"
-                />
-              </div>
-            </div>
-
-            <div className="mt-[8px] flex justify-center">
-              <button
-                className="text-black text-[15px] border-b border-grey-40"
-                onClick={handleOrderAgain}
-              >
-                다음에 다시 주문하기
-              </button>
-            </div>
           </div>
         )}
-        <hr className="mt-[12px] mb-[16px]" />
-
-        <Wishlist />
       </div>
     </div>
   );
