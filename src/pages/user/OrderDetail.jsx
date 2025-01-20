@@ -29,6 +29,10 @@ function OrderDetail() {
   const randomNum = createRandomNumber();
 
   function formatPhoneNumber(phoneNumber) {
+    if (!phoneNumber) {
+      return ""; // phoneNumber가 없으면 빈 문자열 반환
+    }
+
     if (phoneNumber) {
       // 11자리 번호 처리 (010으로 시작하는 번호)
       if (phoneNumber?.length === 11 && phoneNumber?.startsWith("010")) {
@@ -140,7 +144,7 @@ function OrderDetail() {
                   <tr>
                     <td className="p-[8px] w-[12.5%]">받는주소</td>
                     <td className="p-[8px]">
-                      {user.address || data?.item.address.value}
+                      {user.address || data?.item.address.value || ""}
                     </td>
                   </tr>
                   <tr>
