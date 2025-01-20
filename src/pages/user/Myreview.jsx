@@ -3,7 +3,7 @@ import styles from "./User.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAxiosInstance from "@hooks/useAxiosInstance";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import ErrorMsg from "@components/ErrorMsg";
 import { useState } from "react";
 
