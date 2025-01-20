@@ -30,7 +30,7 @@ function OrderDetail() {
 
   function formatPhoneNumber(phoneNumber) {
     if (!phoneNumber) {
-      return ""; // phoneNumber가 없으면 빈 문자열 반환
+      return "";
     }
 
     if (phoneNumber) {

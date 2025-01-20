@@ -85,8 +85,6 @@ function Signup() {
 
       // 새로운 URL 생성
       const newImageUrl = URL.createObjectURL(file); // 이미지 파일 미리보기 위해 파일 객체를 URL로 변환
-
-      // ** createObjectURL로 생성한 URL은 브라우저에서만 유효하고, 파일을 서버로 전송하려면 FormData 등을 사용해야 함 **
       setProfileImage(newImageUrl);
     }
     setIsOpen(false);
@@ -94,8 +92,6 @@ function Signup() {
 
   const registerUser = useMutation({
     mutationFn: async (userInfo) => {
-      console.log("Initial userInfo: ", userInfo); // name, email, password, password-confirm, attach 정보가 담긴 객체
-
       // 프로필 이미지 등록 로직 구현
       if (userInfo.attach?.length > 0) {
         const profileFormData = new FormData();
@@ -115,15 +111,12 @@ function Signup() {
     },
     onSuccess: async (res, userInfo) => {
       const user = res.data.item;
-      console.log(user); // password 속성 존재 (undefined X)
       user.password = userInfo.password; // 굳이 해줄 필요? (안 쓰면 422 에러)
-      console.log(user); // password 속성 당연히 존재
 
       // 로그인 요청
       const resLogin = await axios.post(`/users/login`, user);
       const userLogin = resLogin.data.item;
       delete userLogin["password-confirm"]; // 보안상 비밀번호 확인을 지움.
-      console.log(userLogin);
 
       setUser({
         _id: userLogin._id,
@@ -146,10 +139,6 @@ function Signup() {
       if (err.response?.data.errors) {
         err.reponse.data.errors.forEach(
           (error) => setError(error.path, { message: error.msg })
-          // errors 객체를 생성하는 함수 - 객체이기 때문에 키값과 밸류값, 두가지 매개변수를 필요로 함
-          // error.path === register로 설정한 field 이름
-          // error.msg === 최초 검증 시점(useForm의 mode 속성값)에 따라 클라이언트 측에서 유효성 검사를 통해 발생한 메시지일 수도 있고, 클라이언트 측에서는 서버로부터 받은 오류 메시지를 setError 함수에 전달하여 폼 필드에 오류를 표시하는 역할도 하기 때문에 서버에서 설정한 오류 메시지(서버에서 정의한 유효성 검사 규칙에 따라 자동으로 생성된 메시지)일 수도 있다.
-          // => 에러의 상태를 추적하고 싶다, 에러에 따라 상태값을 변경하고 싶다! 하면, 무조건 errors 객체로부터 해당되는 필드네임(ex. errors.name)을 확인하면 된다.
         );
       }
       // 서버에서 발생한 오류 메시지를 처리
