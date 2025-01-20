@@ -39,8 +39,10 @@ function Login() {
       setUser({
         _id: user._id,
         name: user.name,
-        type: user.type, // 코드 추가(ohDASEUL) : qna 게시판에서 사용함
+        type: user.type,
         profile: user.image?.path,
+        phone: user.phone,
+        address: user.address,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
         autoLogin,
@@ -154,11 +156,11 @@ function Login() {
                 </li>
                 <li className={styles.li}>
                   <div className="inline-block">
-                    <a href="/" className={`cursor-pointer underline`}>
+                    <a href="#" className={`cursor-pointer underline`}>
                       아이디
                     </a>
                     ·
-                    <a href="/" className={`cursor-pointer underline`}>
+                    <a href="#" className={`cursor-pointer underline`}>
                       비밀번호
                     </a>{" "}
                     찾기
