@@ -1756,8 +1756,8 @@ export const initData = async (clientId, nextSeq) => {
         seller_id: 3,
         price: 12900,
         shippingFees: 3500,
-        show: true,
-        active: true,
+        show: false,
+        active: false,
         name: "테스트용 (메인상품정보1)",
         quantity: 999999,
         buyQuantity: 0,
@@ -1784,8 +1784,8 @@ export const initData = async (clientId, nextSeq) => {
         name: "테스트용 (메인상품정보2)",
         quantity: 100,
         buyQuantity: 0,
-        show: true,
-        active: true,
+        show: false,
+        active: false,
         mainImages: [
           {
             path: `/files/${clientId}/sample-pushpop03.jpg`,

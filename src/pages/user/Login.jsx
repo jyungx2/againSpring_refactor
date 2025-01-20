@@ -67,14 +67,6 @@ function Login() {
     },
   });
 
-  // const KAKAO_url = "https://kauth.kakao.com/oauth/authorize";
-  // const API_KEY = "7b635f7b3d4379252462f78787fc908b";
-  // const REDIRECT_URI = "http://localhost:5173/users/login/kakao";
-
-  // const handleKakaoLogin = () => {
-  //   window.location.href = `${KAKAO_url}?client_id=${API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-  // };
-
   return (
     <>
       <div className="py-32 mx-auto max-w-[1200px]">

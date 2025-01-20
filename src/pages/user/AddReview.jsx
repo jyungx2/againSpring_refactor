@@ -57,7 +57,7 @@ function AddReview() {
       formData["order_id"] = order_id;
       formData["product_id"] = item._id;
       formData.type = "review";
-      navigate(-1); // ✅ 내 후기 목록 조회 페이지 만들기 전까지는 주문조회 페이지로 이동하도록
+      navigate(-1);
       return axios.post(`/replies`, formData);
     },
     onSuccess: (formData) => {
@@ -74,8 +74,8 @@ function AddReview() {
     const file = e.target.files[0]; // 사용자가 업로드한 파일
     console.log("file: ", file);
     if (file) {
-      if (reviewImage.length >= 5) {
-        alert("사진은 최대 5개까지만 등록 가능합니다.");
+      if (reviewImage.length >= 3) {
+        alert("사진은 최대 3개까지만 등록 가능합니다.");
         return;
       }
 
@@ -85,9 +85,7 @@ function AddReview() {
       setReviewImage((prev) => [...prev, newImageUrl]);
 
       // 🖍️ 수정사항 2) watch('attach') = 하나의 배열, 기존 코드로는 setCollection 함수로 이중 배열을 만든 셈!
-      // collection도 배열인데, 그 안에 newAttach(배열)을 또 넣었으니...
-      // ✅ 기존 코드 : newAttach = watch().attach
-      const newAttach = watch("attach")[0]; // 호출 결과(새로 등록된 이미지파일 ✨하나✨만) 가져오기
+      const newAttach = watch("attach")[0];
       setCollection((prev) => [...prev, newAttach]);
       console.log("collection: ", [...collection, newAttach]);
     }
@@ -155,7 +153,7 @@ function AddReview() {
                   >
                     사진 첨부하기
                   </label>
-                  <p className="font-gowunBold">{reviewImage.length} / 5</p>
+                  <p className="font-gowunBold">{reviewImage.length} / 3</p>
                   <input
                     type="file"
                     id="attach"

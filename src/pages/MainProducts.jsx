@@ -73,9 +73,9 @@ const MainProducts = () => {
               </div>
               <p className="mt-4 text-2xl">{product.name}</p>
               <p className="text-lg text-gray-500 line-through">
-                {product.originalPrice || ""}
+                {product.originalPrice?.toLocaleString() || ""}
               </p>
-              <p className="text-xl font-bold">{product.price}원</p>
+              <p className="text-xl font-bold">{product.price.toLocaleString()}원</p>
             </Link>
           </SwiperSlide>
         ))}
