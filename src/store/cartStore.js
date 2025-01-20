@@ -1,50 +1,58 @@
-import { create } from "zustand"; // Zustand 상태 관리 라이브러리 import
-import axios from "axios"; // axios HTTP 클라이언트 라이브러리 import
-import useUserStore from "@store/userStore"; // 사용자 정보를 관리하는 store import
+import { create } from "zustand";
+import axios from "axios";
+import useUserStore from "@store/userStore";
 
-// Axios 인스턴스를 생성하는 함수
 const axiosInstance = (user) => {
   return axios.create({
-    baseURL: "https://11.fesp.shop", // API 기본 URL
-    timeout: 1000 * 15, // 요청 타임아웃 설정 (15초)
+    baseURL: "https://11.fesp.shop",
+    timeout: 1000 * 15,
     headers: {
-      "Content-Type": "application/json", // JSON 형식으로 요청
-      accept: "application/json", // 응답 형식도 JSON으로 요청
-      "client-id": "final02", // 클라이언트 아이디 설정
-      Authorization: user?.accessToken // 액세스 토큰이 있으면 Authorization 헤더에 포함
+      "Content-Type": "application/json",
+      accept: "application/json",
+      "client-id": "final02",
+      Authorization: user?.accessToken
         ? `Bearer ${user.accessToken}`
         : undefined,
     },
   });
 };
 
-// 장바구니 관련 상태 관리 store 정의
 export const cartStore = create((set, get) => ({
-  cartItemsList: [], // 장바구니 아이템 목록
-  shippingCost: 0, // 배송비
-  totalOrderAmount: 0, // 총 주문 금액
-  loading: false, // 로딩 상태
-  error: null, // 에러 메시지
-  selectedItems: [], // 선택된 아이템 목록
+  cartItemsList: [],
+  shippingCost: 0,
+  totalOrderAmount: 0,
+  loading: false,
+  error: null,
+  selectedItems: [],
 
-  // 장바구니 목록을 가져오는 함수
+  // 총 주문 금액 계산
+  computeTotalOrderAmount: () => {
+    const { cartItemsList, shippingCost } = get();
+    const totalPrice = cartItemsList.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+    return totalPrice + shippingCost;
+  },
+
+  // 장바구니 목록 표시
   fetchCartItems: async () => {
-    set({ loading: true, error: null }); // 로딩 시작, 에러 초기화
+    set({ loading: true, error: null });
 
-    const { user } = useUserStore.getState(); // 사용자 정보 가져오기
+    const { user } = useUserStore.getState();
 
     if (!user || !user.accessToken) {
       console.error("Access Token이 존재하지 않습니다.");
       set({
         loading: false,
-        error: "로그인이 필요합니다.", // 로그인 필요 메시지
+        error: "로그인이 필요합니다.",
       });
       return;
     }
 
     try {
-      const instance = axiosInstance(user); // 사용자 토큰으로 axios 인스턴스 생성
-      const response = await instance.get("/carts/"); // 장바구니 아이템 가져오기
+      const instance = axiosInstance(user);
+      const response = await instance.get("/carts/");
 
       const products = response.data.item.map((item) => ({
         id: item.product._id,
@@ -57,24 +65,24 @@ export const cartStore = create((set, get) => ({
       }));
 
       set({
-        cartItemsList: products, // 장바구니 아이템 리스트 갱신
-        shippingCost: response.data.cost.shippingFees, // 배송비 갱신
-        totalOrderAmount: get().computeTotalOrderAmount(), // 총 주문 금액 갱신
-        loading: false, // 로딩 끝
+        cartItemsList: products,
+        shippingCost: response.data.cost.shippingFees,
+        totalOrderAmount: get().computeTotalOrderAmount(),
+        loading: false,
       });
     } catch (error) {
-      console.error(error.response?.data || error.message); // 에러 로그 출력
+      console.error(error.response?.data || error.message);
       set({
         loading: false,
-        error: "장바구니 아이템을 가져오는 데 실패했습니다.", // 에러 메시지
+        error: "장바구니 아이템을 가져오는 데 실패했습니다.",
       });
     }
   },
 
   // 장바구니에 아이템 추가
-  addToCart: async (product) => {
-    const { user } = useUserStore.getState(); // 사용자 정보 가져오기
-    const instance = axiosInstance(user); // 사용자 토큰으로 axios 인스턴스 생성
+  addToCart: async (product, quantity) => {
+    const { user } = useUserStore.getState();
+    const instance = axiosInstance(user);
 
     try {
       const requestBody = {
@@ -82,18 +90,20 @@ export const cartStore = create((set, get) => ({
         quantity: product.quantity, // 수량
       };
 
-      console.log("Request Body:", requestBody); // 요청 데이터 로그 출력
+      console.log("Request Body:", requestBody); // 요청 본문 확인
 
-      const response = await instance.post("/carts/", requestBody); // 장바구니에 상품 추가 요청
+      const response = await instance.post("/carts/", requestBody);
+
+      console.log("Response:", response); // 응답 확인
 
       if (response.status === 201) {
-        await get().fetchCartItems(); // 장바구니 목록 새로 고침
-        set({ totalOrderAmount: get().computeTotalOrderAmount() }); // 총 금액 갱신
+        await get().fetchCartItems();
+        set({ totalOrderAmount: get().computeTotalOrderAmount() });
         return true; // 추가 성공
       }
     } catch (error) {
       console.error("Error Response:", error.response?.data || error.message); // 에러 로그 출력
-      set({ error: "장바구니에 아이템 추가 실패." }); // 에러 메시지
+      set({ error: "장바구니에 아이템 추가 실패." });
     }
     return false; // 추가 실패
   },
@@ -101,7 +111,7 @@ export const cartStore = create((set, get) => ({
   // 수량 변경
   updateItemQuantity: async (productId, newQuantity) => {
     const { cartItemsList } = get();
-    const cartItem = cartItemsList.find((item) => item.id === productId); // 상품 ID로 장바구니 아이템 찾기
+    const cartItem = cartItemsList.find((item) => item.id === productId);
 
     if (cartItem) {
       const { user } = useUserStore.getState();
@@ -118,31 +128,119 @@ export const cartStore = create((set, get) => ({
           );
 
           set({
-            cartItemsList: updatedCartItemsList, // 장바구니 아이템 리스트 갱신
-            totalOrderAmount: get().computeTotalOrderAmount(), // 총 금액 갱신
+            cartItemsList: updatedCartItemsList,
+            totalOrderAmount: get().computeTotalOrderAmount(),
           });
         } else {
-          set({ error: "장바구니 상품 수량 변경 실패." }); // 에러 메시지
+          set({ error: "장바구니 상품 수량 변경 실패." });
         }
       } catch (error) {
-        console.error(error.response?.data || error.message); // 에러 로그 출력
+        console.error(error.response?.data || error.message);
         set({
-          error: "장바구니 상품 수량 변경 실패.", // 에러 메시지
+          error: "장바구니 상품 수량 변경 실패.",
         });
       }
     } else {
-      console.error("해당 상품 ID에 대한 장바구니 상품이 없음", productId); // 해당 상품이 장바구니에 없음
+      console.error("해당 상품 ID에 대한 장바구니 상품이 없음", productId);
     }
   },
 
-  // 총 주문 금액 계산 함수
-  computeTotalOrderAmount: () => {
-    const { cartItemsList, shippingCost } = get();
-    const totalAmount = cartItemsList.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-    return totalAmount + shippingCost; // 상품 총액 + 배송비
+  // 체크박스 선택한 상품 추가
+  selectItem: (id) => {
+    set((state) => ({
+      selectedItems: [...state.selectedItems, id],
+    }));
+  },
+
+  // 체크박스 선택 해제
+  deselectItem: (id) => {
+    set((state) => ({
+      selectedItems: state.selectedItems.filter((itemId) => itemId !== id),
+    }));
+  },
+
+  // 선택한 상품 삭제
+  deleteSelectedItems: async () => {
+    const { selectedItems, cartItemsList } = get();
+    const { user } = useUserStore.getState();
+
+    if (selectedItems.length === 0) {
+      set({ error: "선택한 상품이 없습니다." });
+      return;
+    }
+
+    const selectedCartItemIds = cartItemsList
+      .filter((item) => selectedItems.includes(item.id))
+      .map((item) => item._id);
+
+    try {
+      const instance = axiosInstance(user);
+      await instance.delete(`/carts/`, {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        data: { carts: selectedCartItemIds },
+      });
+
+      set((state) => ({
+        cartItemsList: state.cartItemsList.filter(
+          (item) => !selectedItems.includes(item.id)
+        ),
+        selectedItems: [],
+        error: null,
+      }));
+
+      alert("선택한 상품이 삭제되었습니다.");
+    } catch {
+      set({ error: "상품 삭제에 실패했습니다." });
+    }
+  },
+
+  // 장바구니 비우기
+  clearCart: async () => {
+    const { user } = useUserStore.getState();
+
+    try {
+      const instance = axiosInstance(user);
+      await instance.delete("/carts/cleanup", {
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
+
+      set({
+        cartItemsList: [],
+        selectedItems: [],
+        error: null,
+      });
+    } catch {
+      set({ error: "장바구니 비우기에 실패했습니다." });
+    }
+  },
+
+  // 장바구니에서 구매한 상품만 제거
+  deleteProductsFromCart: async (productIds) => {
+    const { user } = useUserStore.getState();
+
+    try {
+      const instance = axiosInstance(user);
+
+      await instance.delete("/carts/", {
+        data: { carts: productIds },
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
+
+      set((state) => ({
+        cartItemsList: state.cartItemsList.filter(
+          (item) => !productIds.includes(item._id)
+        ),
+      }));
+    } catch (error) {
+      console.error(error);
+      set({ error: "장바구니 상품 삭제에 실패했습니다." });
+    }
   },
 }));
 
