@@ -142,7 +142,7 @@ function OrderDetail() {
                   <tr>
                     <td className="p-[8px] w-[12.5%]">받는주소</td>
                     <td className="p-[8px]">
-                      {user.address || data?.item.address.value || ""}
+                      {user.address || "사랑시 고백구 행복동"}
                     </td>
                   </tr>
                   <tr>
