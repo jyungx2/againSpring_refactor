@@ -30,7 +30,7 @@ function Auth() {
           _id: kakaoUser._id,
           name: kakaoUser.name,
           type: kakaoUser.type,
-          profile: kakaoUser.image,
+          profile: null,
           accessToken: kakaoUser.token.accessToken,
           refreshToken: kakaoUser.token.refreshToken,
           autoLogin,
