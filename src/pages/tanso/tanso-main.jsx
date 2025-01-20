@@ -1,4 +1,41 @@
+import { useState, useEffect } from "react";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import useUserStore from "@store/userStore";
+
 const TansoMain = () => {
+  const user = useUserStore((store) => store.user); // user 객체를 직접 가져옴
+  const [totalTanso, setTotalTanso] = useState(0); // 총 탄소 배출량 상태
+  const axiosInstance = useAxiosInstance(); // Axios 인스턴스
+
+  useEffect(() => {
+    // 디버깅
+    // console.log("이름 호출:", user?.name);
+    // console.log("이미지 호출:", user?.profile);
+    // console.log(useUserStore.getState());
+
+    // 주문 데이터 호출: 탄소 배출량 계산
+    axiosInstance
+      .get("/orders")
+      .then((response) => {
+        const orders = response.data?.item || [];
+        let tansoSum = 0;
+
+        // 주문 데이터에서 tanso 값 합산
+        orders.forEach((order) => {
+          if (order.products) {
+            order.products.forEach((product) => {
+              tansoSum += product.extra?.tanso || 0;
+            });
+          }
+        });
+
+        setTotalTanso(tansoSum.toFixed(2));
+      })
+      .catch((error) => {
+        console.error("주문 데이터를 가져오는 데 실패했습니다:", error);
+      });
+  }, []);
+
   const categories = [
     "주방용품",
     "세탁용품",
@@ -26,13 +63,13 @@ const TansoMain = () => {
         <div className="bg-green-200 p-10 rounded-lg shadow-lg flex items-center justify-between">
           <div className="flex items-center">
             <img
-              src="/icons/profile.svg"
+              src={user?.profile || "/icons/profile.svg"}
               alt="User profile"
               className="w-20 h-20 rounded-full mr-8"
             />
             <div>
-              <h1 className="text-2xl font-bold">섭이님이 구매한 상품의 탄소배출량</h1>
-              <p className="text-6xl font-extrabold text-green-800 mt-6">0 kg CO2e</p>
+              <h1 className="text-2xl font-bold">{user?.name || "사용자"}님이 구매한 상품의 탄소배출량</h1>
+              <p className="text-6xl font-extrabold text-green-800 mt-6">{totalTanso} kg CO2e</p>
             </div>
           </div>
           <div className="bg-white text-green-800 font-medium px-6 py-3 rounded-full shadow-md text-lg">
