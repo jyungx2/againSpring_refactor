@@ -7,7 +7,7 @@ const TansoIntro = () => {
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   const [loadingText, setLoadingText] = useState("loading.."); // 로딩 텍스트 처음 상태
   const [transitionComplete, setTransitionComplete] = useState(false); // 첫 화면 전환 상태
-  const [buttonTransition, setButtonTransition] = useState(false); // * 버튼 클릭 후 전환 상태
+  const [buttonTransition, setButtonTransition] = useState(false); // 버튼 클릭 후 전환 상태
   const [totalTanso, setTotalTanso] = useState(0); // 총 탄소 배출량
   const [productNames, setProductNames] = useState([]); // 구매한 상품명 배열
   const navigate = useNavigate(); // 페이지 이동
@@ -32,7 +32,7 @@ const TansoIntro = () => {
         let tansoSum = 0;
         let names = [];
 
-        // * 주문 데이터에서 상품명과 tanso 값 추출
+        // 주문 데이터에서 상품명과 tanso 값 추출
         orders.forEach((order) => {
           if (order.products) {
             order.products.forEach((product) => {
@@ -57,6 +57,15 @@ const TansoIntro = () => {
 
   const handleStart = () => {
     setButtonTransition(true); // tansomain페이지 이동 전 버튼 전환 애니메이션 시작
+  };
+  // 상품명 줄이기
+  const getShortenedProductNames = () => {
+    if (productNames.length <= 2) return productNames.join(", ");
+    const otherCount = productNames.length - 2;
+    return `${productNames.slice(0, 2).join(", ")} 외 ${otherCount}개`;
+    // 조건 간소화
+    // ? `${productNames.slice(0, 2).join(", ")} 외 ${productNames.length - 2}개`
+    // : productNames.join(", "); 
   };
 
   return (
@@ -140,7 +149,7 @@ const TansoIntro = () => {
               initial={{ x: "200%" }}
               animate={{ x: "-100%" }}
               transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
-              onAnimationComplete={() => navigate("/tansomain")} // * 애니메이션 완료 후 페이지 이동
+              onAnimationComplete={() => navigate("/tansomain")} // 애니메이션 완료 후 페이지 이동
             />
           </>
         )}
@@ -149,7 +158,7 @@ const TansoIntro = () => {
       {/* 메인 화면 */}
       {!isLoading && transitionComplete && !buttonTransition && (
         <motion.div
-          className="absolute inset-0 flex flex-col items-start justify-center bg-gradient-to-b from-primary-90 to-primary-90 text-white px-8" // * 왼쪽 정렬
+          className="absolute inset-0 flex flex-col items-start justify-center bg-gradient-to-b from-primary-90 to-primary-90 text-white px-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
@@ -157,7 +166,8 @@ const TansoIntro = () => {
           <h1 className="text-6xl font-bold mb-6">다시,봄에서 친환경 상품을 구매하셨나요?</h1>
           <p className="mb-4 text-3xl">
             구매하신 상품{" "}
-            <strong>{productNames.join(", ") || "없음"}</strong>의 탄소 발생량은{" "}
+            {/* <strong>{productNames.join(", ") || "없음"}</strong>의 탄소 발생량은{" "} */}
+            <strong>{getShortenedProductNames() || "없음"}</strong>의 탄소 발생량은{" "}
             <strong>{totalTanso} kg CO₂</strong> 입니다!
           </p>
           <motion.button
