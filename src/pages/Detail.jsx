@@ -6,34 +6,34 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import ReviewList from "@pages/ReviewList";
 
-import useCartStore from "../store/cartStore"; // Store import
-import useWishlistStore from "../store/wishlistStore"; // 위시리스트 저장소 import
-import useUserStore from "@store/userStore"; // 사용자 저장소 import
+import useCartStore from "../store/cartStore";
+import useWishlistStore from "../store/wishlistStore";
+import useUserStore from "@store/userStore";
 
 function Detail() {
-  const [activeTab, setActiveTab] = useState("가"); // 기본 활성 탭은 '가'
-  const { id } = useParams(); // Get product ID from URL
+  const [activeTab, setActiveTab] = useState("상세정보");
+  const { id } = useParams();
   const axiosInstance = useAxiosInstance();
   const [cartItemsList, setCartItemsList] = useState([]);
   const navigate = useNavigate();
-  const { user } = useUserStore(); // 사용자 정보 가져오기
+  const { user } = useUserStore();
   const { addToCart, fetchCartItems } = useCartStore();
-  const { addToWishlist } = useWishlistStore(); // 위시리스트 추가 함수
+  const { addToWishlist } = useWishlistStore();
 
   const handleAddToCart = async (product) => {
-    console.log("Adding to cart:", product); // 추가되는 상품 확인
-    const success = await addToCart(product, 1); // 수량을 명시적으로 1로 설정
+    console.log("Adding to cart:", product);
+    const success = await addToCart(product, 1);
     if (success) {
       alert("장바구니에 추가되었습니다!");
-      await fetchCartItems(); // 장바구니 새로고침
-      navigate(`/cart/${user.id}`); // userId를 포함한 경로로 변경
+      await fetchCartItems();
+      navigate(`/cart/${user.id}`);
     } else {
       alert("아이템 추가 실패");
     }
   };
 
   const handleAddToWishlist = async (product) => {
-    console.log("Adding to wishlist:", product); // 추가되는 상품 확인
+    console.log("Adding to wishlist:", product);
     const success = await addToWishlist(product);
     if (success) {
       alert("위시리스트에 추가되었습니다!");
@@ -53,7 +53,7 @@ function Detail() {
       try {
         const response = await axiosInstance.get(`/products/${id}`);
         const product = response?.data?.item;
-        product.quantity = 1; // Set quantity to 1
+        product.quantity = 1;
         setCartItemsList([product]);
       } catch (error) {
         console.error("Failed to fetch product:", error);
@@ -62,27 +62,42 @@ function Detail() {
     fetchProduct();
   }, [id]);
 
-  //❗qna 데이터를 불러옴
+  const currentProductName = cartItemsList[0]?.name || "";
+
   const {
     data: qnas,
     isLoading: qnasLoading,
     error: qnasError,
   } = useQuery({
-    queryKey: ["posts", "qna", "main"],
+    queryKey: ["posts", "qna", id],
     queryFn: () =>
       axiosInstance.get("/posts", {
         params: {
           type: "qna",
+          // Here, we fetch all QnA posts
           page: 1,
-          limit: 5,
+          limit: 1000, // Set a high limit to fetch all QnA posts
         },
       }),
     select: (res) => res.data.item,
-    staleTime: 1000 * 60 * 5, // 데이터가 5분 동안 신선한 상태로 유지
-    cacheTime: 1000 * 60 * 30, // 캐시를 30분 동안 유지
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 30,
   });
 
-  const [quantity, setQuantity] = useState(1); // 초기값 1로 설정
+  // 콘솔에 QnA 포스트들의 상품 ID 출력
+  useEffect(() => {
+    if (qnas) {
+      console.log(
+        "QnA 포스트들의 상품 ID:",
+        qnas.map((qna) => qna.product_id)
+      );
+    }
+  }, [qnas]);
+
+  // 상품 ID가 20인 QnA만 필터링
+  const filteredQnas = qnas?.filter((qna) => qna.product_id === parseInt(id));
+
+  const [quantity, setQuantity] = useState(1);
   const [productDetails, setProductDetails] = useState(null);
 
   const [tabContent, setTabContent] = useState({
@@ -109,23 +124,22 @@ function Detail() {
         </p>
       </div>
     ),
-    상품후기: <ReviewList productId={id} />, // productId를 전달
+    상품후기: <ReviewList productId={id} />,
     QnA: (
-      <div className=" rounded-md overflow-hidden">
+      <div className="rounded-md overflow-hidden">
         <div className="flex justify-between items-center py-4 px-6 border-b border-gray-300">
-          <h3 className="text-3xl font-bold ">Q&A </h3>
-
+          <h3 className="text-3xl font-bold">Q&A</h3>
           <Link to="/qna"></Link>
         </div>
-        <ul className="space-y-9 px-6 py-9 ">
-          {qnas?.map((qna) => (
+        <ul className="space-y-9 px-6 py-9">
+          {filteredQnas?.map((qna) => (
             <li
               key={qna._id}
-              className=" border-b border-gray-300 flex justify-between items-center text-lg py-7"
+              className="border-b border-gray-300 flex justify-between items-center text-lg py-7"
             >
               <Link
                 to={`/qna/detail/${qna._id}`}
-                className=" text-[15px] text-gray-800 hover:underline"
+                className="text-[15px] text-gray-800 hover:underline"
               >
                 {qna.image}
                 {qna.title}
@@ -135,7 +149,7 @@ function Detail() {
               </span>
             </li>
           ))}
-          {qnas?.length === 0 && <p>Q&A가 없습니다.</p>}
+          {filteredQnas?.length === 0 && <p>Q&A가 없습니다.</p>}
         </ul>
       </div>
     ),
@@ -165,27 +179,25 @@ function Detail() {
     0
   );
 
-  const totalOrderAmount = totalPrice + shippingCost; // 가격계산결과
+  const totalOrderAmount = totalPrice + shippingCost;
 
   const { activeMenu, setActiveMenu } = useMenuStore();
   const [hovered, setHovered] = useState(false);
 
   return (
     <div className="flex justify-center px-[16px]">
-      {/* 화면 가운데 정렬 및 좌우 패딩을 추가한 외부 컨테이너 */}
       <div
         className="container mx-auto px-[24px] my-[40px]"
         style={{ maxWidth: "1200px" }}
       >
-        {" "}
         <div>
           {cartItemsList.map((item) => (
             <div className="flex ml-[80px] mt-[50px]" key={item._id}>
               <div className="flex flex-col mr-[30px]">
                 {item?.mainImages?.map((image, index) => (
                   <img
-                    key={index} // map() 사용 시 고유 key 필요
-                    src={getImage(image.path)} // 경로 변환 함수 사용
+                    key={index}
+                    src={getImage(image.path)}
                     alt={`상품 이미지 ${index + 1}`}
                     className="w-[80px] h-[90px] mb-[10px] object-cover mr-[32px]"
                   />
@@ -199,47 +211,43 @@ function Detail() {
 
               <hr className="mt-[12px] mb-[16px]" />
 
-              {/*🍓표 시작 */}
               <dl className="w-full">
                 <p className="text-[18px] font-semibold mb-[20px] mt-[30px]">
                   {item.name}
                 </p>
-                <p className="text-[13px]  text-grey-80">상품설명</p>
+                <p className="text-[13px] text-grey-80">상품설명</p>
                 <hr className="mt-[12px] mb-[16px]" />
 
                 <dl className="flex">
-                  <dt className=" mr-[90px] mb-[16px]">판매가</dt>
+                  <dt className="mr-[90px] mb-[16px]">판매가</dt>
                   <dd>{item?.price?.toLocaleString()}</dd>
                 </dl>
 
                 <dl className="flex">
-                  <dt className=" mr-[30px] mb-[16px]">국내·해외배송 </dt>
-                  <dd> 국내배송</dd>
+                  <dt className="mr-[30px] mb-[16px]">국내·해외배송</dt>
+                  <dd>국내배송</dd>
                 </dl>
 
                 <dl className="flex">
-                  <dt className=" mr-[90px] mb-[16px]">배송비 </dt>
-                  <dd> 3,000원 (50,000원 이상 구매 시 무료)</dd>
+                  <dt className="mr-[90px] mb-[16px]">배송비</dt>
+                  <dd>3,000원 (50,000원 이상 구매 시 무료)</dd>
                 </dl>
 
                 <dl className="flex">
-                  <dt className=" mr-[90px] mb-[16px]">원산지</dt>
-                  <dd> 국내</dd>
+                  <dt className="mr-[90px] mb-[16px]">원산지</dt>
+                  <dd>국내</dd>
                 </dl>
 
-                <hr className="mt-[12px] mb-[16px]  " />
+                <hr className="mt-[12px] mb-[16px]" />
 
-                {/* 장바구니 아이템들 */}
                 {cartItemsList.map((item) => (
                   <div key={item.id} className="border-b py-[20px]">
                     <dd className="flex items-start py-[10px]">
-                      {/* 상품 이름 */}
                       <div className="flex">
                         <h2 className="text-[15px] font-semibold text-grey-80 mr-[180px]">
                           {item.name}
                         </h2>
 
-                        {/* 개수 증감 */}
                         <dd className="text-center py-[10px] mr-[60px]">
                           <div className="flex justify-center">
                             <div className="flex items-center h-[32px] border border-grey-20">
@@ -273,7 +281,6 @@ function Detail() {
                     </dd>
                     <hr className="mt-[12px] mb-[1px]" />
 
-                    {/* 주문 금액 */}
                     <div className="flex">
                       <dt className="py-[10px] text-[12px] mt-[1px] mr-[10px]">
                         총 상품 금액(수량):
@@ -310,16 +317,13 @@ function Detail() {
               </dl>
             </div>
           ))}
-          {/*🦋🍓*/}
 
-          {/*👽제품상세 탭 */}
           <div>
-            {/* 탭 네비게이션 */}
             <div className="flex mt-[80px]">
               {["상세정보", "구매안내", "상품후기", "QnA"].map((tab) => (
                 <div
                   key={tab}
-                  onClick={() => setActiveTab(tab)} // 탭 클릭 시 활성화된 탭을 변경
+                  onClick={() => setActiveTab(tab)}
                   className={`w-[430px] pt-[20px] pb-[20px] cursor-pointer px-4 py-2 text-center text-[15px]
                     ${
                       activeTab === tab
@@ -332,7 +336,6 @@ function Detail() {
               ))}
             </div>
 
-            {/* 탭 콘텐츠 */}
             <div className="p-4 ml-[auto] mr-[auto] w-[1026px] mt-[100px] mb-[100px]">
               <p>{tabContent[activeTab]}</p>
             </div>
