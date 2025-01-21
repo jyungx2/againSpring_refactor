@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import useUserStore from "@store/userStore";
 
@@ -69,11 +70,22 @@ const TansoMain = () => {
       .catch((error) => console.error("주문 데이터를 가져오는 데 실패했습니다:", error));
   }, []);
 
+  // 렌더링될 때 서서히 나타나는 효괴ㅏ 적용
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
   return (
     <div className="bg-gray-50 w-[1200px] mx-auto px-6 py-8 border border-gray-200 rounded-lg shadow-lg">
       <div className="max-w-6xl mx-auto px-8">
         {/* 정보 섹션 */}
-        <div className="bg-primary-20 p-16 rounded-lg shadow-lg my-16 border border-primary-30">
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="bg-primary-20 p-16 rounded-lg shadow-lg my-16 border border-primary-30"
+        >
           <h2 className="text-4xl font-extrabold mb-10 text-center text-primary-90">
             탄소 발자국이란?
           </h2>
@@ -98,11 +110,15 @@ const TansoMain = () => {
             <span className="bg-primary-40 px-2 rounded text-white">탄소발자국</span>
             은 그 2배가 넘는 <span className="text-primary-80 font-bold">11g</span>이나 된답니다! 🌱
           </p>
-        </div>
-
+        </motion.div>
 
         {/* 상단 카드 */}
-        <div className="bg-primary-40 p-12 rounded-lg shadow-lg flex items-center justify-between border border-primary-50">
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="bg-primary-40 p-12 rounded-lg shadow-lg flex items-center justify-between border border-primary-50"
+        >
           <div className="flex items-center">
             <img
               src={user?.profile || "/icons/profile.svg"}
@@ -116,10 +132,15 @@ const TansoMain = () => {
               <p className="text-6xl font-extrabold text-primary-10 mt-6">{totalTanso} kg CO2e</p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* 차트 - 카테고리별 탄소 배출량 표시 */}
-        <div className="bg-secondary-10 p-10 rounded-lg shadow-lg mt-12 border border-secondary-20">
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="bg-secondary-10 p-10 rounded-lg shadow-lg mt-12 border border-secondary-20"
+        >
           <h2 className="text-3xl font-bold mb-6 text-center text-secondary-80">어디서 많이 배출할까요?</h2>
           <div className="space-y-6">
             {Object.entries(categoryTanso).map(([key, value]) => (
@@ -135,10 +156,15 @@ const TansoMain = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* 주문한 제품 목록 표시 */}
-        <div className="bg-grey-5 p-10 rounded-lg shadow-lg mt-12 border border-grey-30">
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          animate="visible"
+          className="bg-grey-5 p-10 rounded-lg shadow-lg mt-12 border border-grey-30"
+        >
           <h2 className="text-3xl font-bold mb-6 text-center text-grey-70">주문한 제품 목록</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product) => (
@@ -161,7 +187,7 @@ const TansoMain = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
