@@ -3,6 +3,7 @@ import OrderBundle from "@pages/user/OrderBundle";
 import Sidebar from "@pages/user/Sidebar";
 import useUserStore from "@store/userStore";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 
 function Myorder() {
   const axios = useAxiosInstance();
@@ -23,6 +24,15 @@ function Myorder() {
 
   return (
     <>
+      <Helmet>
+        <title>다시, 봄 - 주문조회</title>
+        <meta property="og:title" content="다시봄 주문조회" />
+        <meta
+          property="og:description"
+          content="내 주문 내역을 확인하고, 배송 상태를 실시간으로 추적하세요."
+        />
+      </Helmet>
+
       <div className="flex box-border max-w-[1200px] mx-auto px-6">
         <Sidebar />
 

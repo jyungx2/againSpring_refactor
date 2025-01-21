@@ -3,6 +3,7 @@ import Sidebar from "@pages/user/Sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "@store/userStore";
+import { Helmet } from "react-helmet-async";
 
 function OrderDetail() {
   const { user } = useUserStore();
@@ -109,6 +110,15 @@ function OrderDetail() {
 
   return (
     <>
+      <Helmet>
+        <title>다시, 봄 - 주문 상세조회</title>
+        <meta property="og:title" content="다시봄 주문 상세조회" />
+        <meta
+          property="og:description"
+          content="주문한 상품의 상세 정보를 확인하고, 배송 및 결제 상태를 확인하세요."
+        />
+      </Helmet>
+
       <div className="flex box-border max-w-[1200px] mx-auto px-6">
         <Sidebar />
 
