@@ -75,6 +75,57 @@ export const wishlistStore = create((set) => ({
     }
   },
 
+  // 위시리스트에 아이템 추가
+  addToWishlist: async (product) => {
+    const { user } = useUserStore.getState();
+    const instance = axiosInstance(user);
+
+    try {
+      // product._id가 정수인지 확인
+      const targetId = parseInt(product._id, 10);
+
+      if (isNaN(targetId)) {
+        throw new Error("Product ID is not a valid integer");
+      }
+
+      const requestBody = {
+        target_id: targetId,
+      };
+
+      console.log("Request URL: /bookmarks/product");
+      console.log("Request Body:", requestBody); // 요청 본문 확인
+
+      const response = await instance.post("/bookmarks/product", requestBody);
+
+      console.log("Response:", response); // 응답 확인
+
+      if (response.status === 201) {
+        await set((state) => ({
+          wishlistItems: [
+            ...state.wishlistItems,
+            {
+              id: product._id,
+              name: product.name,
+              price: product.price,
+              image: product.mainImages[0]?.path
+                ? `https://11.fesp.shop${product.mainImages[0].path}`
+                : "/path/to/default/image.png",
+              _id: product._id,
+            },
+          ],
+        }));
+        return true; // 추가 성공
+      }
+    } catch (error) {
+      console.error("Error Response:", error.response?.data || error.message); // 에러 로그 출력
+      if (error.response?.data?.errors) {
+        console.error("Validation errors:", error.response.data.errors);
+      }
+      set({ error: "위시리스트에 아이템 추가 실패." });
+    }
+    return false; // 추가 실패
+  },
+
   // 위시리스트 삭제
   deleteItem: async (itemId) => {
     const { user } = useUserStore.getState();
