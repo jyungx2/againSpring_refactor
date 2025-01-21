@@ -68,7 +68,7 @@ const SearchPage = () => {
               }`}
             disabled={loading} // 로딩상태일경우 버튼 비활성화
           >
-            ; // 검색 돋보기 아이콘 추가
+            {/* 검색 돋보기 아이콘 추가 */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 text-white"
