@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { wishlistStore } from "../store/wishlistStore";
 import useCartStore from "../store/cartStore";

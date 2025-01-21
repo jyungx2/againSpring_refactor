@@ -9,7 +9,7 @@ import qnaRoutes from "./qnaRoutes";
 import eventRoutes from "./eventRoutes";
 import tansoRoutes from "./tansoRoutes";
 import shopRoutes from "./shopRoutes";
-import Wishlist from "@pages/Wishlist"; // Wishlist 페이지 import
+import Wishlist from "@pages/WishList";
 
 const homeRoutes = [
   {
@@ -27,7 +27,7 @@ const homeRoutes = [
         ),
       },
       {
-        path: "wishlist", // Wishlist 경로 추가
+        path: "wishlist",
         element: <Wishlist />,
       },
       ...userRoutes,
