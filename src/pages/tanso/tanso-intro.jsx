@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import { Helmet } from "react-helmet-async";
 
 const TansoIntro = () => {
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
@@ -69,118 +70,129 @@ const TansoIntro = () => {
   };
 
   return (
-    <div className="relative h-screen overflow-hidden">
-      <AnimatePresence>
-        {/* 로딩 화면 */}
-        {isLoading && (
-          <motion.div
-            key="loading"
-            className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-primary-20 to-primary-20 text-white"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-          >
-            {/* 로딩 아이콘, 텍스트 */}
-            <motion.img
-              src="/favicon.png"
-              alt=""
-              className="w-24 h-24"
-              animate={{ rotate: 360 }}
-              transition={{
-                repeat: Infinity,
-                duration: 2,
-                ease: "linear",
-              }}
-            />
-            <motion.p
-              className="mt-4 text-2xl font-semibold"
+    <>
+      <Helmet>
+        <title>다시, 봄 - 탄소 발자국</title>
+        <meta property="og:title" content="다시봄 탄소발자국" />
+        <meta
+          property="og:description"
+          content="제품을 구매하셨다면 탄소 발자국을 확인해보세요."
+        />
+      </Helmet>
+
+      <div className="relative h-screen overflow-hidden">
+        <AnimatePresence>
+          {/* 로딩 화면 */}
+          {isLoading && (
+            <motion.div
+              key="loading"
+              className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-primary-20 to-primary-20 text-white"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
             >
-              {loadingText}
-            </motion.p>
+              {/* 로딩 아이콘, 텍스트 */}
+              <motion.img
+                src="/favicon.png"
+                alt=""
+                className="w-24 h-24"
+                animate={{ rotate: 360 }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 2,
+                  ease: "linear",
+                }}
+              />
+              <motion.p
+                className="mt-4 text-2xl font-semibold"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                {loadingText}
+              </motion.p>
+            </motion.div>
+          )}
+
+          {/* 화면 전환 애니메이션 */}
+          {!isLoading && !transitionComplete && !buttonTransition && (
+            <>
+              <motion.div
+                className="absolute inset-0 bg-primary-20"
+                initial={{ y: 0 }}
+                animate={{ y: "-100%" }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+              />
+              <motion.div
+                className="absolute inset-0 bg-primary-50"
+                initial={{ y: "100%" }}
+                animate={{ y: "-100%" }}
+                transition={{ duration: 1.5, ease: "easeInOut", delay: 0.1 }}
+              />
+              <motion.div
+                className="absolute inset-0 bg-primary-70"
+                initial={{ y: "200%" }}
+                animate={{ y: "-100%" }}
+                transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
+                onAnimationComplete={() => setTransitionComplete(true)}
+              />
+            </>
+          )}
+
+          {/* 버튼 클릭 후 화면 전환 애니메이션 */}
+          {buttonTransition && (
+            <>
+              <motion.div
+                className="absolute inset-0 bg-primary-20"
+                initial={{ x: 0 }}
+                animate={{ x: "-100%" }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+              />
+              <motion.div
+                className="absolute inset-0 bg-primary-50"
+                initial={{ x: "100%" }}
+                animate={{ x: "-100%" }}
+                transition={{ duration: 1.5, ease: "easeInOut", delay: 0.1 }}
+              />
+              <motion.div
+                className="absolute inset-0 bg-primary-70"
+                initial={{ x: "200%" }}
+                animate={{ x: "-100%" }}
+                transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
+                onAnimationComplete={() => navigate("/tansomain")} // 애니메이션 완료 후 페이지 이동
+              />
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* 메인 화면 */}
+        {!isLoading && transitionComplete && !buttonTransition && (
+          <motion.div
+            className="absolute inset-0 flex flex-col items-start justify-center bg-gradient-to-b from-primary-90 to-primary-90 text-white px-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <h1 className="text-6xl font-bold mb-6">다시,봄에서 친환경 상품을 구매하셨나요?</h1>
+            <p className="mb-4 text-3xl">
+              구매하신 상품{" "}
+              {/* <strong>{productNames.join(", ") || "없음"}</strong>의 탄소 발생량은{" "} */}
+              <strong>{getShortenedProductNames() || "없음"}</strong>의 탄소 발생량은{" "}
+              <strong>{totalTanso} kg CO₂</strong> 입니다!
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleStart}
+              className="px-6 py-3 bg-primary-50 hover:bg-primary-70 rounded-lg text-xl"
+            >
+              자세히 보기
+            </motion.button>
           </motion.div>
         )}
-
-        {/* 화면 전환 애니메이션 */}
-        {!isLoading && !transitionComplete && !buttonTransition && (
-          <>
-            <motion.div
-              className="absolute inset-0 bg-primary-20"
-              initial={{ y: 0 }}
-              animate={{ y: "-100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-            />
-            <motion.div
-              className="absolute inset-0 bg-primary-50"
-              initial={{ y: "100%" }}
-              animate={{ y: "-100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut", delay: 0.1 }}
-            />
-            <motion.div
-              className="absolute inset-0 bg-primary-70"
-              initial={{ y: "200%" }}
-              animate={{ y: "-100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
-              onAnimationComplete={() => setTransitionComplete(true)}
-            />
-          </>
-        )}
-
-        {/* 버튼 클릭 후 화면 전환 애니메이션 */}
-        {buttonTransition && (
-          <>
-            <motion.div
-              className="absolute inset-0 bg-primary-20"
-              initial={{ x: 0 }}
-              animate={{ x: "-100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-            />
-            <motion.div
-              className="absolute inset-0 bg-primary-50"
-              initial={{ x: "100%" }}
-              animate={{ x: "-100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut", delay: 0.1 }}
-            />
-            <motion.div
-              className="absolute inset-0 bg-primary-70"
-              initial={{ x: "200%" }}
-              animate={{ x: "-100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
-              onAnimationComplete={() => navigate("/tansomain")} // 애니메이션 완료 후 페이지 이동
-            />
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* 메인 화면 */}
-      {!isLoading && transitionComplete && !buttonTransition && (
-        <motion.div
-          className="absolute inset-0 flex flex-col items-start justify-center bg-gradient-to-b from-primary-90 to-primary-90 text-white px-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <h1 className="text-6xl font-bold mb-6">다시,봄에서 친환경 상품을 구매하셨나요?</h1>
-          <p className="mb-4 text-3xl">
-            구매하신 상품{" "}
-            {/* <strong>{productNames.join(", ") || "없음"}</strong>의 탄소 발생량은{" "} */}
-            <strong>{getShortenedProductNames() || "없음"}</strong>의 탄소 발생량은{" "}
-            <strong>{totalTanso} kg CO₂</strong> 입니다!
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handleStart}
-            className="px-6 py-3 bg-primary-50 hover:bg-primary-70 rounded-lg text-xl"
-          >
-            자세히 보기
-          </motion.button>
-        </motion.div>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 
