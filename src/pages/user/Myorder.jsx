@@ -5,7 +5,7 @@ import useUserStore from "@store/userStore";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 
-function Myorder() {
+function MyOrder() {
   const axios = useAxiosInstance();
   const { user } = useUserStore();
   const { data } = useQuery({
@@ -82,4 +82,4 @@ function Myorder() {
   );
 }
 
-export default Myorder;
+export default MyOrder;
