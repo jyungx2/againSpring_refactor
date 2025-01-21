@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { cartStore } from "../store/cartStore";
 import useUserStore from "@store/userStore";
@@ -28,9 +28,9 @@ function Cart() {
     if (!user) {
       navigate("/login");
     } else {
-      fetchCartItems(userId);
+      fetchCartItems(); // userId를 사용하지 않고 user 정보를 활용하여 장바구니 아이템을 가져옴
     }
-  }, [user, fetchCartItems, navigate, userId]);
+  }, [user, fetchCartItems, navigate]);
 
   const totalPrice = cartItemsList.reduce(
     (total, item) => total + item.price * item.quantity,

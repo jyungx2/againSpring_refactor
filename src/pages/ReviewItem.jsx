@@ -9,7 +9,6 @@ ReviewItem.propTypes = {
     user: PropTypes.object.isRequired,
     product: PropTypes.object.isRequired,
   }),
-  count: PropTypes.number.isRequired,
 };
 
 function ReviewItem({ item }) {

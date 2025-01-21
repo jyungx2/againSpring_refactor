@@ -21,8 +21,8 @@ const Wishlist = () => {
     navigate(`/detail/${item.id}`, { state: item });
   };
 
-  const handleAddToCart = async (productId) => {
-    await addToCart(productId, 1);
+  const handleAddToCart = async (product) => {
+    await addToCart(product, 1);
     await fetchCartItems();
   };
 
@@ -94,7 +94,7 @@ const Wishlist = () => {
                     className="w-full h-full bg-primary-40 text-white text-[14px] font-gowun hover:bg-primary-50"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleAddToCart(item.id);
+                      handleAddToCart(item);
                     }}
                   >
                     장바구니 추가

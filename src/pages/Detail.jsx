@@ -22,13 +22,13 @@ function Detail() {
 
   const handleAddToCart = async (product) => {
     console.log("Adding to cart:", product); // 추가되는 상품 확인
-    const success = await addToCart(product);
+    const success = await addToCart(product, 1); // 수량을 명시적으로 1로 설정
     if (success) {
       alert("장바구니에 추가되었습니다!");
       await fetchCartItems(); // 장바구니 새로고침
       navigate(`/cart/${user.id}`); // userId를 포함한 경로로 변경
     } else {
-      alert("로그인해주세요");
+      alert("아이템 추가 실패");
     }
   };
 
@@ -37,7 +37,7 @@ function Detail() {
     const success = await addToWishlist(product);
     if (success) {
       alert("위시리스트에 추가되었습니다!");
-      navigate(`/cart/${user.id}`); // userId를 포함한 경로로 변경
+      navigate(`/wishlist`);
     } else {
       alert("위시리스트에 아이템 추가 실패");
     }
@@ -109,7 +109,7 @@ function Detail() {
         </p>
       </div>
     ),
-    상품후기: <ReviewList id={id} />,
+    상품후기: <ReviewList productId={id} />, // productId를 전달
     QnA: (
       <div className=" rounded-md overflow-hidden">
         <div className="flex justify-between items-center py-4 px-6 border-b border-gray-300">
@@ -234,7 +234,6 @@ function Detail() {
                   <div key={item.id} className="border-b py-[20px]">
                     <dd className="flex items-start py-[10px]">
                       {/* 상품 이름 */}
-
                       <div className="flex">
                         <h2 className="text-[15px] font-semibold text-grey-80 mr-[180px]">
                           {item.name}
@@ -272,23 +271,23 @@ function Detail() {
                         </dd>
                       </div>
                     </dd>
-                    <hr className="mt-[12px] mb-[1px]  " />
+                    <hr className="mt-[12px] mb-[1px]" />
 
                     {/* 주문 금액 */}
                     <div className="flex">
-                      <dt className=" py-[10px] text-[12px] mt-[1px] mr-[10px]">
+                      <dt className="py-[10px] text-[12px] mt-[1px] mr-[10px]">
                         총 상품 금액(수량):
                       </dt>
-                      <dd className=" text-grey-80 font-gowunBold py-[10px] text-[21px]">
+                      <dd className="text-grey-80 font-gowunBold py-[10px] text-[21px]">
                         {totalPrice.toLocaleString()}원
                       </dd>
-                      <dd className=" text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
+                      <dd className="text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
                         {item?.quantity?.toLocaleString()}개
                       </dd>
                     </div>
-                    <div className="flex mb-[16px] mt-[70px] ">
+                    <div className="flex mb-[16px] mt-[70px]">
                       <button
-                        className="bg-white border-2 border-gray-300  w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                        className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
                         onClick={() => handleAddToWishlist(item)}
                       >
                         찜하기
@@ -316,12 +315,12 @@ function Detail() {
           {/*👽제품상세 탭 */}
           <div>
             {/* 탭 네비게이션 */}
-            <div className="flex mt-[80px] ">
+            <div className="flex mt-[80px]">
               {["상세정보", "구매안내", "상품후기", "QnA"].map((tab) => (
                 <div
                   key={tab}
                   onClick={() => setActiveTab(tab)} // 탭 클릭 시 활성화된 탭을 변경
-                  className={`w-[430px] pt-[20px] pb-[20px] cursor-pointer px-4 py-2 text-center text-[15px] 
+                  className={`w-[430px] pt-[20px] pb-[20px] cursor-pointer px-4 py-2 text-center text-[15px]
                     ${
                       activeTab === tab
                         ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
