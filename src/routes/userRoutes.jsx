@@ -2,7 +2,7 @@ import Login from "@pages/user/Login";
 import Auth from "@pages/user/Auth";
 import Signup from "@pages/user/Signup";
 import TermsOfService from "@pages/user/TermsOfService";
-import MyOrder from "@pages/user/MyOrder";
+import MyOrder from "@pages/user/Myorder";
 import AddReview from "@pages/user/AddReview";
 import MyQna from "@pages/user/MyQna";
 import OrderDetail from "@pages/user/OrderDetail";
