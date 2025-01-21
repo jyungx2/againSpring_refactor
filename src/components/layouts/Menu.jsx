@@ -7,17 +7,7 @@ const Menu = () => {
   const menuItems = [
     { name: '다시,봄', links: ['/'] },
     {
-      name: 'SHOP',
-      subMenu: [
-        '주방용품',
-        '세탁용품',
-        '욕실용품',
-        '문구용품',
-        '식품',
-        '생활잡화',
-        '반려동물',
-      ],
-      links: ['/shop', '/shop', '/shop', '/shop', '/shop', '/shop', '/shop'],
+      name: 'SHOP', links: ['/shop'],
     },
     {
       name: '공지사항',
