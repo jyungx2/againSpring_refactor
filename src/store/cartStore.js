@@ -85,9 +85,18 @@ export const cartStore = create((set, get) => ({
     const instance = axiosInstance(user);
 
     try {
+      // product._id와 quantity를 정수로 변환
+      const productId = parseInt(product._id, 10);
+      const productQuantity = parseInt(quantity, 10);
+
+      // 변환된 값이 유효한지 확인
+      if (isNaN(productId) || isNaN(productQuantity)) {
+        throw new Error("Product ID and quantity must be valid integers");
+      }
+
       const requestBody = {
-        product_id: product._id, // 상품 ID
-        quantity: product.quantity, // 수량
+        product_id: productId, // 상품 ID
+        quantity: productQuantity, // 수량
       };
 
       console.log("Request Body:", requestBody); // 요청 본문 확인
@@ -119,12 +128,14 @@ export const cartStore = create((set, get) => ({
 
       try {
         const response = await instance.patch(`/carts/${cartItem._id}`, {
-          quantity: newQuantity,
+          quantity: parseInt(newQuantity, 10), // 수량을 정수로 변환
         });
 
         if (response.status === 200) {
           const updatedCartItemsList = cartItemsList.map((item) =>
-            item.id === productId ? { ...item, quantity: newQuantity } : item
+            item.id === productId
+              ? { ...item, quantity: parseInt(newQuantity, 10) }
+              : item
           );
 
           set({
