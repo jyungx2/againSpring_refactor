@@ -140,8 +140,8 @@ const TansoMain = () => {
           >
             <div className="flex items-center">
               <img
-                src={user?.profile || "/icons/profile.svg"}
-                alt="User profile"
+                src={`https://11.fesp.shop${user.profile}`}
+                alt=""
                 className="w-24 h-24 rounded-full border-4 border-primary-60 mr-8"
               />
               <div>
