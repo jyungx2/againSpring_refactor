@@ -27,48 +27,57 @@ const TansoMain = () => {
   const getImage = (path) => `https://11.fesp.shop${path}`; // 이미지 경로 반환
 
   useEffect(() => {
+    // 주문 데이터 호출 시작
     axiosInstance
       .get("/orders")
       .then((response) => {
-        const orders = response.data?.item || [];
-        let tansoSum = 0;
-        const productList = [];
+        const orders = response.data?.item || []; // 응답 데이터에서 주문 리스트 추출 (없으면 빈 배열로 초기화)
+
+        let tansoSum = 0; // 총 탄소 배출량 초기화
+        const productList = []; // 제품 데이터 배열 초기화
         const categoryData = Object.keys(categoryLabels).reduce(
-          (acc, key) => ({ ...acc, [key]: 0 }),
+          (acc, key) => ({ ...acc, [key]: 0 }), // 카테고리별 탄소 배출량 초기화 (모든 카테고리 값 0)
           {}
         );
 
+        // 주문 데이터 반복 처리 시작
         orders.forEach((order) => {
           order.products.forEach((product) => {
             const tanso = product.extra?.tanso || 0;
             const categories = product.extra?.category || [];
-            const mainCategory = categories.find((cat) => cat !== "all-of-list");
+            const mainCategory = categories.find((category) => category !== "all-of-list"); // 'all-of-list' 제외한 주요 카테고리 추출
 
-            tansoSum += tanso;
+            tansoSum += tanso; // 총 탄소 배출량에 현재 제품의 탄소 배출량 추가
 
+            // 이미지 경로 처리
             const imagePath = product.image?.path || null;
             const fullImagePath = getImage(imagePath);
 
+            // 제품 정보 productList 추가
             productList.push({
-              id: product.id,
+              id: product.id, //
               name: product.name,
               tanso,
               image: fullImagePath,
               category: categoryLabels[mainCategory],
             });
 
+            // 카테고리에 탄소 배출량 추가
             if (mainCategory && categoryLabels[mainCategory]) {
-              categoryData[mainCategory] += tanso;
+              categoryData[mainCategory] += tanso; // 해당 카테고리에 탄소 배출량 누적
             }
           });
         });
 
-        setTotalTanso(tansoSum.toFixed(2));
-        setProducts(productList);
-        setCategoryTanso(categoryData);
+        // 상태 업데이트
+        setTotalTanso(tansoSum.toFixed(2)); // 소수점 2자리로 설정
+        setProducts(productList); // 제품 데이터 상태에 저장
+        setCategoryTanso(categoryData); // 카테고리별 탄소 배출량 상태에 저장
       })
-      .catch((error) => console.error("주문 데이터를 가져오는 데 실패했습니다:", error));
-  }, []);
+      .catch((error) => {
+        console.error("주문 데이터를 가져오는 데 실패했습니다:", error);
+      });
+  }, []); // 처음 렌더링될 때만 실행
 
   // 렌더링될 때 서서히 나타나는 효괴ㅏ 적용
   const fadeInUp = {
