@@ -1,15 +1,14 @@
-import { useEffect } from 'react';
-import { useQuill } from 'react-quilljs';
-import { useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import 'quill/dist/quill.snow.css';
-import '../assets/styles/fonts.css';
+import { useEffect } from "react";
+import { useQuill } from "react-quilljs";
+import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
+import "quill/dist/quill.snow.css";
 
-import { QUILL_FORMATS, QUILL_MODULES } from '@constants/editorConfig';
-import { handleImageUpload } from '@utils/imageUpload';
-import PostForm from '@components/PostForm';
-import usePostEditor from '@hooks/usePostEditor';
-import useProductModal from '@hooks/useProductModal';
+import { QUILL_FORMATS, QUILL_MODULES } from "@constants/editorConfig";
+import { handleImageUpload } from "@utils/imageUpload";
+import PostForm from "@components/PostForm";
+import usePostEditor from "@hooks/usePostEditor";
+import useProductModal from "@hooks/useProductModal";
 
 /**
  * QnA 전용 에디터 컴포넌트
@@ -117,7 +116,7 @@ export default function PostEditor({ type, isEdit }) {
   const { quill, quillRef } = useQuill({
     modules: QUILL_MODULES,
     formats: QUILL_FORMATS,
-    placeholder: '내용을 입력해주세요.',
+    placeholder: "내용을 입력해주세요.",
   });
 
   const {
@@ -144,8 +143,8 @@ export default function PostEditor({ type, isEdit }) {
     if (quill) {
       setQuillInstance(quill);
       quill
-        .getModule('toolbar')
-        .addHandler('image', () => handleImageUpload(quill));
+        .getModule("toolbar")
+        .addHandler("image", () => handleImageUpload(quill));
     }
   }, [quill, setQuillInstance]);
 
@@ -166,7 +165,7 @@ export default function PostEditor({ type, isEdit }) {
     };
 
     switch (type) {
-      case 'qna':
+      case "qna":
         return (
           <QnAPostEditor
             {...commonProps}
@@ -174,7 +173,7 @@ export default function PostEditor({ type, isEdit }) {
             setSelectedProduct={setSelectedProduct}
           />
         );
-      case 'notice':
+      case "notice":
         return <NoticePostEditor {...commonProps} />;
       default:
         throw new Error(`Unsupported post type: ${type}`);
@@ -185,6 +184,6 @@ export default function PostEditor({ type, isEdit }) {
 }
 
 PostEditor.propTypes = {
-  type: PropTypes.oneOf(['notice', 'qna']).isRequired,
+  type: PropTypes.oneOf(["notice", "qna"]).isRequired,
   isEdit: PropTypes.bool.isRequired,
 };

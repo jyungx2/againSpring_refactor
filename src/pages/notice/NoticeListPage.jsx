@@ -1,11 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
-import '../../assets/styles/fonts.css';
-import useUserStore from '@store/userStore';
-import useAxiosInstance from '@hooks/useAxiosInstance';
-import { useQuery } from '@tanstack/react-query';
-import NoticeListItem from './NoticeListItem';
-import useBoard from '@hooks/useBoard';
-import { Helmet } from 'react-helmet-async';
+import { Link, useNavigate } from "react-router-dom";
+import useUserStore from "@store/userStore";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useQuery } from "@tanstack/react-query";
+import NoticeListItem from "./NoticeListItem";
+import useBoard from "@hooks/useBoard";
+import { Helmet } from "react-helmet-async";
 
 /**
  * 사용자 정보 조회 함수
@@ -13,7 +12,7 @@ import { Helmet } from 'react-helmet-async';
  * @returns {Promise<Object>} 사용자 정보 응답 데이터
  */
 const fetchUserInfo = async (axios) => {
-  const response = await axios.get('/users');
+  const response = await axios.get("/users");
   return response.data;
 };
 
@@ -41,7 +40,7 @@ export default function NoticeListPage() {
     prevGroupLastPage,
     nextGroupFirstPage,
     limit,
-  } = useBoard({ type: 'notice', limit: 12 });
+  } = useBoard({ type: "notice", limit: 12 });
 
   const {
     text: searchText,
@@ -50,14 +49,14 @@ export default function NoticeListPage() {
   } = searchConditions;
 
   const { data: userData, isLoading: isUserLoading } = useQuery({
-    queryKey: ['userInfo'],
+    queryKey: ["userInfo"],
     queryFn: () => fetchUserInfo(axios),
   });
 
   const userType = user
     ? userData?.item?.find((item) => item._id === user._id)?.type
     : null;
-  const isAdmin = userType === 'admin';
+  const isAdmin = userType === "admin";
 
   if (isUserLoading || isLoading) {
     return <div>로딩중...</div>;
@@ -93,7 +92,7 @@ export default function NoticeListPage() {
           <button
             onClick={() => {
               handleSearch();
-              navigate('?page=1');
+              navigate("?page=1");
             }}
             className='mt-2 px-4 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
           >
@@ -145,7 +144,7 @@ export default function NoticeListPage() {
 
           {isAdmin && (
             <button
-              onClick={() => navigate('/notice/new')}
+              onClick={() => navigate("/notice/new")}
               className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
             >
               작성하기
@@ -175,8 +174,8 @@ export default function NoticeListPage() {
                   to={getPageLink(pageNum)}
                   className={`${
                     currentPage === pageNum
-                      ? 'bg-secondary-20 text-white'
-                      : 'bg-grey-20 text-black'
+                      ? "bg-secondary-20 text-white"
+                      : "bg-grey-20 text-black"
                   } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
                 >
                   {pageNum}
@@ -212,19 +211,19 @@ export default function NoticeListPage() {
             </select>
           </div>
 
-          {periodType === 'custom' && (
+          {periodType === "custom" && (
             <div className='flex gap-2'>
               <input
                 type='date'
                 value={startDate}
-                onChange={(e) => handleDateChange('start', e.target.value)}
+                onChange={(e) => handleDateChange("start", e.target.value)}
                 className='h-[37px] px-2 border border-gray-300 rounded'
               />
               <span className='flex items-center'>~</span>
               <input
                 type='date'
                 value={endDate}
-                onChange={(e) => handleDateChange('end', e.target.value)}
+                onChange={(e) => handleDateChange("end", e.target.value)}
                 className='h-[37px] px-2 border border-gray-300 rounded'
               />
             </div>

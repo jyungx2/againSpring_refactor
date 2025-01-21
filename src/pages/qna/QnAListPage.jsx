@@ -1,14 +1,13 @@
-import useUserStore from '@store/userStore';
-import '../../assets/styles/fonts.css';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import useAxiosInstance from '@hooks/useAxiosInstance';
-import QnAListItem from './QnAListItem';
-import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import useUserStore from "@store/userStore";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import QnAListItem from "./QnAListItem";
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const fetchUserInfo = async (axios) => {
-  const response = await axios.get('/users');
+  const response = await axios.get("/users");
   return response.data;
 };
 
@@ -20,25 +19,25 @@ export default function QnAListPage() {
   const [searchParams] = useSearchParams();
   const axios = useAxiosInstance();
   const { user } = useUserStore();
-  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
 
-  const [periodType, setPeriodType] = useState('all-day');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [periodType, setPeriodType] = useState("all-day");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [sortOption, setSortOption] = useState(() => {
-    const sortParam = searchParams.get('sort');
-    if (!sortParam) return 'default';
+    const sortParam = searchParams.get("sort");
+    if (!sortParam) return "default";
     const options = {
-      '{"title":1}': 'title-asc',
-      '{"title":-1}': 'title-desc',
-      '{"createdAt":1}': 'date-asc',
-      '{"createdAt":-1}': 'date-desc',
-      '{"views":1}': 'view-asc',
-      '{"views":-1}': 'view-desc',
+      '{"title":1}': "title-asc",
+      '{"title":-1}': "title-desc",
+      '{"createdAt":1}': "date-asc",
+      '{"createdAt":-1}': "date-desc",
+      '{"views":1}': "view-asc",
+      '{"views":-1}': "view-desc",
     };
-    return options[sortParam] || 'default';
+    return options[sortParam] || "default";
   });
 
   const calculateDateRange = (periodType) => {
@@ -47,23 +46,23 @@ export default function QnAListPage() {
 
     const formatDate = (date) => {
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     };
 
     switch (periodType) {
-      case 'one-day':
+      case "one-day":
         return {
           start: formatDate(new Date(currentDate.getTime() - oneDay)),
           end: formatDate(currentDate),
         };
-      case 'one-week':
+      case "one-week":
         return {
           start: formatDate(new Date(currentDate.getTime() - oneDay * 7)),
           end: formatDate(currentDate),
         };
-      case 'one-month': {
+      case "one-month": {
         const lastMonth = new Date(currentDate);
         lastMonth.setMonth(lastMonth.getMonth() - 1);
         return {
@@ -71,7 +70,7 @@ export default function QnAListPage() {
           end: formatDate(currentDate),
         };
       }
-      case 'six-month': {
+      case "six-month": {
         const sixMonthsAgo = new Date(currentDate);
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
         return {
@@ -79,7 +78,7 @@ export default function QnAListPage() {
           end: formatDate(currentDate),
         };
       }
-      case 'one-year': {
+      case "one-year": {
         const oneYearAgo = new Date(currentDate);
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
         return {
@@ -89,26 +88,26 @@ export default function QnAListPage() {
       }
       default:
         return {
-          start: '',
-          end: '',
+          start: "",
+          end: "",
         };
     }
   };
 
   const { data: userData, isLoading: isUserLoading } = useQuery({
-    queryKey: ['userInfo'],
+    queryKey: ["userInfo"],
     queryFn: () => fetchUserInfo(axios),
   });
 
   const { data: qnaData, isLoading: isQnaLoading } = useQuery({
-    queryKey: ['posts', 'qna', currentPage, sortOption],
+    queryKey: ["posts", "qna", currentPage, sortOption],
     queryFn: () =>
-      axios.get('/posts', {
+      axios.get("/posts", {
         params: {
-          type: 'qna',
+          type: "qna",
           page: currentPage,
           limit,
-          ...(sortOption !== 'default' && {
+          ...(sortOption !== "default" && {
             sort: getSortParamsByOption(sortOption),
           }),
         },
@@ -124,7 +123,7 @@ export default function QnAListPage() {
   }, [qnaData?.item]);
 
   const formatDateForSearch = (dateString, isEndDate = false) => {
-    const formattedDate = dateString.replace(/-/g, '.');
+    const formattedDate = dateString.replace(/-/g, ".");
     return isEndDate
       ? `${formattedDate} 23:59:59`
       : `${formattedDate} 00:00:00`;
@@ -135,10 +134,10 @@ export default function QnAListPage() {
     setSortOption(newSortOption);
 
     const newSearchParams = new URLSearchParams(searchParams);
-    if (newSortOption !== 'default') {
-      newSearchParams.set('sort', getSortParamsByOption(newSortOption));
+    if (newSortOption !== "default") {
+      newSearchParams.set("sort", getSortParamsByOption(newSortOption));
     } else {
-      newSearchParams.delete('sort');
+      newSearchParams.delete("sort");
     }
     navigate(`?${newSearchParams.toString()}`);
   };
@@ -146,12 +145,12 @@ export default function QnAListPage() {
   const handlePeriodChange = (newPeriodType) => {
     setPeriodType(newPeriodType);
 
-    if (newPeriodType === 'custom') {
+    if (newPeriodType === "custom") {
       setStartDate(startDate);
       setEndDate(endDate);
-    } else if (newPeriodType === 'all-day') {
-      setStartDate('');
-      setEndDate('');
+    } else if (newPeriodType === "all-day") {
+      setStartDate("");
+      setEndDate("");
     } else {
       const { start, end } = calculateDateRange(newPeriodType);
       setStartDate(start);
@@ -160,7 +159,7 @@ export default function QnAListPage() {
   };
 
   const handleDateChange = (type, value) => {
-    if (type === 'start') {
+    if (type === "start") {
       setStartDate(value);
     } else {
       setEndDate(value);
@@ -172,37 +171,37 @@ export default function QnAListPage() {
   };
 
   const handleSearch = () => {
-    console.log('=== 검색 시작 ===');
+    console.log("=== 검색 시작 ===");
     const newSearchParams = new URLSearchParams();
 
     let defaultSearchParams = {
-      type: 'qna',
+      type: "qna",
       page: 1,
       limit,
     };
 
-    console.log('검색어:', searchText.trim() ? searchText : '없음');
+    console.log("검색어:", searchText.trim() ? searchText : "없음");
 
     if (searchText.trim()) {
-      newSearchParams.set('keyword', searchText);
+      newSearchParams.set("keyword", searchText);
       defaultSearchParams.keyword = searchText;
     }
 
-    console.log('기간 타입:', periodType);
-    console.log('시작일:', startDate || '없음');
-    console.log('종료일:', endDate || '없음');
+    console.log("기간 타입:", periodType);
+    console.log("시작일:", startDate || "없음");
+    console.log("종료일:", endDate || "없음");
 
-    if (periodType !== 'all-day') {
-      if (periodType === 'custom' && startDate && endDate) {
+    if (periodType !== "all-day") {
+      if (periodType === "custom" && startDate && endDate) {
         defaultSearchParams.custom = JSON.stringify({
           createdAt: {
             $gte: formatDateForSearch(startDate),
             $lt: formatDateForSearch(endDate, true),
           },
         });
-        newSearchParams.set('startDate', startDate);
-        newSearchParams.set('endDate', endDate);
-      } else if (periodType !== 'custom') {
+        newSearchParams.set("startDate", startDate);
+        newSearchParams.set("endDate", endDate);
+      } else if (periodType !== "custom") {
         const { start, end } = calculateDateRange(periodType);
         defaultSearchParams.custom = JSON.stringify({
           createdAt: {
@@ -210,50 +209,50 @@ export default function QnAListPage() {
             $lt: formatDateForSearch(end, true),
           },
         });
-        newSearchParams.set('startDate', start);
-        newSearchParams.set('endDate', end);
+        newSearchParams.set("startDate", start);
+        newSearchParams.set("endDate", end);
       }
     }
 
-    if (sortOption !== 'default') {
+    if (sortOption !== "default") {
       const sortParam = getSortParamsByOption(sortOption);
-      newSearchParams.set('sort', sortParam);
+      newSearchParams.set("sort", sortParam);
       defaultSearchParams.sort = sortParam;
-      console.log('정렬 옵션:', sortOption);
+      console.log("정렬 옵션:", sortOption);
     }
 
-    newSearchParams.set('page', '1');
-    console.log('최종 URL 파라미터:', newSearchParams.toString());
-    console.log('최종 API 파라미터:', defaultSearchParams);
+    newSearchParams.set("page", "1");
+    console.log("최종 URL 파라미터:", newSearchParams.toString());
+    console.log("최종 API 파라미터:", defaultSearchParams);
 
     navigate(`?${newSearchParams.toString()}`);
 
     axios
-      .get('/posts', {
+      .get("/posts", {
         params: defaultSearchParams,
       })
       .then((response) => {
-        console.log('검색 결과:', response.data);
+        console.log("검색 결과:", response.data);
         setFilteredData(response.data.item || []);
       })
       .catch((error) => {
-        console.error('검색 중 오류 발생', error);
+        console.error("검색 중 오류 발생", error);
         setFilteredData([]);
       })
       .finally(() => {
-        console.log('=== 검색 종료 ===');
+        console.log("=== 검색 종료 ===");
       });
   };
 
   const getSortParamsByOption = (sortOption) => {
     const sortParams = {
       default: undefined,
-      'title-asc': JSON.stringify({ title: 1 }),
-      'title-desc': JSON.stringify({ title: -1 }),
-      'date-asc': JSON.stringify({ createdAt: 1 }),
-      'date-desc': JSON.stringify({ createdAt: -1 }),
-      'view-asc': JSON.stringify({ views: 1 }),
-      'view-desc': JSON.stringify({ views: -1 }),
+      "title-asc": JSON.stringify({ title: 1 }),
+      "title-desc": JSON.stringify({ title: -1 }),
+      "date-asc": JSON.stringify({ createdAt: 1 }),
+      "date-desc": JSON.stringify({ createdAt: -1 }),
+      "view-asc": JSON.stringify({ views: 1 }),
+      "view-desc": JSON.stringify({ views: -1 }),
     };
 
     return sortParams[sortOption];
@@ -261,22 +260,22 @@ export default function QnAListPage() {
 
   const getPageLink = (pageNum) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', pageNum.toString());
+    params.set("page", pageNum.toString());
 
     if (searchText.trim()) {
-      params.set('keyword', searchText);
+      params.set("keyword", searchText);
     }
 
-    if (periodType !== 'all-day') {
-      params.set('periodType', periodType);
-      if (periodType === 'custom') {
-        if (startDate) params.set('startDate', startDate);
-        if (endDate) params.set('endDate', endDate);
+    if (periodType !== "all-day") {
+      params.set("periodType", periodType);
+      if (periodType === "custom") {
+        if (startDate) params.set("startDate", startDate);
+        if (endDate) params.set("endDate", endDate);
       }
     }
 
-    if (sortOption !== 'default') {
-      params.set('sort', getSortParamsByOption(sortOption));
+    if (sortOption !== "default") {
+      params.set("sort", getSortParamsByOption(sortOption));
     }
     return `?${params.toString()}`;
   };
@@ -284,7 +283,7 @@ export default function QnAListPage() {
   const userType = user
     ? userData?.item?.find((item) => item._id === user._id)?.type
     : null;
-  const isAdminOrUser = userType === 'admin' || userType === 'user';
+  const isAdminOrUser = userType === "admin" || userType === "user";
 
   const totalData = qnaData?.pagination?.total || 0;
   const totalPages = Math.max(1, Math.ceil(totalData / limit));
@@ -324,11 +323,11 @@ export default function QnAListPage() {
             <p className='text-sm text-grey-40'>다른 검색어로 시도해보세요.</p>
             <button
               onClick={() => {
-                setSearchText('');
+                setSearchText("");
                 setFilteredData(qnaData.item);
                 const newSearchParams = new URLSearchParams(searchParams);
-                newSearchParams.delete('keyword');
-                newSearchParams.set('page', '1');
+                newSearchParams.delete("keyword");
+                newSearchParams.set("page", "1");
                 navigate(`?${newSearchParams.toString()}`);
               }}
               className='mt-2 px-4 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
@@ -381,7 +380,7 @@ export default function QnAListPage() {
 
           {isAdminOrUser && (
             <button
-              onClick={() => navigate('/qna/new')}
+              onClick={() => navigate("/qna/new")}
               className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
             >
               질문하기
@@ -423,8 +422,8 @@ export default function QnAListPage() {
                     to={getPageLink(pageNum)}
                     className={`${
                       currentPage === pageNum
-                        ? 'bg-secondary-20 text-white'
-                        : 'bg-grey-20 text-black'
+                        ? "bg-secondary-20 text-white"
+                        : "bg-grey-20 text-black"
                     } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
                   >
                     {pageNum}
@@ -460,19 +459,19 @@ export default function QnAListPage() {
             </select>
           </div>
 
-          {periodType === 'custom' && (
+          {periodType === "custom" && (
             <div className='flex gap-2'>
               <input
                 type='date'
                 value={startDate}
-                onChange={(e) => handleDateChange('start', e.target.value)}
+                onChange={(e) => handleDateChange("start", e.target.value)}
                 className='h-[37px] px-2 border border-gray-300 rounded'
               />
               <span className='flex items-center'>~</span>
               <input
                 type='date'
                 value={endDate}
-                onChange={(e) => handleDateChange('end', e.target.value)}
+                onChange={(e) => handleDateChange("end", e.target.value)}
                 className='h-[37px] px-2 border border-gray-300 rounded'
               />
             </div>

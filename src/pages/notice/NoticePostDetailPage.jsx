@@ -1,7 +1,6 @@
-import { Helmet } from 'react-helmet-async';
-import '../../assets/styles/fonts.css';
-import PostDetail from '@components/PostDetail';
-import { useState } from 'react';
+import { Helmet } from "react-helmet-async";
+import PostDetail from "@components/PostDetail";
+import { useState } from "react";
 
 /**
  * 공지사항 상세 페이지
@@ -19,17 +18,17 @@ export default function NoticePostDetailPage() {
         <title>
           {postData
             ? `다시, 봄 - ${postData.title}`
-            : '다시, 봄 - 공지사항 상세'}
+            : "다시, 봄 - 공지사항 상세"}
         </title>
         <meta
           property='og:title'
           content={
-            postData ? `다시봄 - ${postData.title}` : '다시봄 공지사항 상세'
+            postData ? `다시봄 - ${postData.title}` : "다시봄 공지사항 상세"
           }
         />
         <meta
           property='og:description'
-          content={postData?.content || '공지사항 상세 페이지 입니다.'}
+          content={postData?.content || "공지사항 상세 페이지 입니다."}
         />
       </Helmet>
       <PostDetail type='notice' onDataLoad={handleDataLoad} />

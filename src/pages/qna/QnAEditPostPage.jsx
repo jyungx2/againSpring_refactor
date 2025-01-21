@@ -1,7 +1,6 @@
-import 'quill/dist/quill.snow.css';
-import '../../assets/styles/fonts.css';
-import PostEditor from '@components/PostEditor';
-import { Helmet } from 'react-helmet-async';
+import "quill/dist/quill.snow.css";
+import PostEditor from "@components/PostEditor";
+import { Helmet } from "react-helmet-async";
 
 /**
  * Q&A 게시글 수정 페이지
