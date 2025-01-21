@@ -243,6 +243,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 4,
+          tanso: 3,
         },
       },
       {
@@ -285,6 +286,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 3,
+          tanso: 10,
         },
       },
       {
@@ -327,6 +329,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
+          tanso: 3.1,
         },
       },
       {
@@ -360,6 +363,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "bathroom"],
           sort: 2,
+          tanso: 4.7,
         },
       },
       {
@@ -397,6 +401,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 1,
+          tanso: 8.1,
         },
       },
       {
@@ -429,6 +434,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 3,
+          tanso: 1.2,
         },
       },
       {
@@ -461,6 +467,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false,
           category: ["all-of-list", "bathroom"],
           sort: 8,
+          tanso: 4.2,
         },
       },
 
@@ -501,6 +508,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 6.1,
         },
       },
       {
@@ -533,6 +541,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: true,
           category: ["all-of-list", "kitchen"],
           sort: 4,
+          tanso: 7.6,
         },
       },
       {
@@ -566,6 +575,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 6,
+          tanso: 4.1,
         },
       },
       {
@@ -608,6 +618,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 7,
+          tanso: 10,
         },
       },
       // 13번 상품
@@ -646,6 +657,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 6,
+          tanso: 5.1,
         },
       },
       // 14번 상품.
@@ -689,6 +701,7 @@ export const initData = async (clientId, nextSeq) => {
           isBest: false,
           category: ["all-of-list", "kitchen"],
           sort: 5,
+          tanso: 8.1,
         },
       },
       {
@@ -732,6 +745,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 7.1,
         },
       },
       {
@@ -770,6 +784,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 9.1,
         },
       },
       {
@@ -808,6 +823,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 12.4,
         },
       },
       {
@@ -841,6 +857,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 1.1,
         },
       },
       {
@@ -889,6 +906,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 3.5,
         },
       },
       {
@@ -922,6 +940,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "kitchen"],
           sort: 2,
+          tanso: 5.5,
         },
       },
 
@@ -957,6 +976,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
+          tanso: 9.1,
         },
       },
       {
@@ -995,6 +1015,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
+          tanso: 9.8,
         },
       },
       {
@@ -1033,6 +1054,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
+          tanso: 10.4,
         },
       },
       {
@@ -1066,6 +1088,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "laundry"],
           sort: 2,
+          tanso: 9.3,
         },
       },
 
@@ -1101,6 +1124,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 7.7,
         },
       },
       {
@@ -1134,6 +1158,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 16.1,
         },
       },
       {
@@ -1172,6 +1197,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 8.1,
         },
       },
       {
@@ -1205,6 +1231,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 11.3,
         },
       },
       {
@@ -1238,6 +1265,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 14.2,
         },
       },
       {
@@ -1276,6 +1304,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 16.1,
         },
       },
       {
@@ -1309,6 +1338,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 18.5,
         },
       },
       {
@@ -1342,6 +1372,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 20.4,
         },
       },
       {
@@ -1375,6 +1406,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 20.1,
         },
       },
       {
@@ -1408,6 +1440,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "life"],
           sort: 2,
+          tanso: 6.4,
         },
       },
 
@@ -1443,6 +1476,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "pet"],
           sort: 2,
+          tanso: 7.9,
         },
       },
 
@@ -1478,6 +1512,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 6.1,
         },
       },
       {
@@ -1511,6 +1546,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 2.2,
         },
       },
       {
@@ -1544,6 +1580,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 2.4,
         },
       },
       {
@@ -1577,6 +1614,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 5.2,
         },
       },
       {
@@ -1610,6 +1648,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 1,
         },
       },
       {
@@ -1643,6 +1682,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 1.5,
         },
       },
       {
@@ -1676,6 +1716,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 2.4,
         },
       },
       {
@@ -1714,6 +1755,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 1.4,
         },
       },
       {
@@ -1747,6 +1789,7 @@ export const initData = async (clientId, nextSeq) => {
           today: true,
           category: ["all-of-list", "stationery"],
           sort: 2,
+          tanso: 4.4,
         },
       },
 
