@@ -5,6 +5,7 @@ import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import NoticeListItem from './NoticeListItem';
 import useBoard from '@hooks/useBoard';
+import { Helmet } from 'react-helmet-async';
 
 /**
  * 사용자 정보 조회 함수
@@ -30,7 +31,6 @@ export default function NoticeListPage() {
     handleSearch,
     data,
     isLoading,
-    error,
     currentPage,
     totalPages,
     total,
@@ -40,8 +40,6 @@ export default function NoticeListPage() {
     showNextButton,
     prevGroupLastPage,
     nextGroupFirstPage,
-    startPage,
-    endPage,
     limit,
   } = useBoard({ type: 'notice', limit: 12 });
 
@@ -116,128 +114,138 @@ export default function NoticeListPage() {
   );
 
   return (
-    <div className='w-[1200px] mx-auto px-6 mb-20'>
-      <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
-        공지사항
-      </h1>
-      <div className='flex justify-between items-center mb-4'>
-        <select
-          value={sortOption}
-          onChange={handleSortChange}
-          className='border border-grey-20 rounded p-1 text-lg focus:border-secondary-30 focus:ring-1 focus:ring-secondary-30 text-grey-60'
-          aria-label='정렬 기준'
-        >
-          <option value='default'>기본순</option>
-          <option value='title-asc'>제목 오름차순</option>
-          <option value='title-desc'>제목 내림차순</option>
-          <option value='date-asc'>작성일 오름차순</option>
-          <option value='date-desc'>작성일 내림차순</option>
-          <option value='view-asc'>조회수 오름차순</option>
-          <option value='view-desc'>조회수 내림차순</option>
-        </select>
-
-        {isAdmin && (
-          <button
-            onClick={() => navigate('/notice/new')}
-            className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
-          >
-            작성하기
-          </button>
-        )}
-      </div>
-
-      <div className='grid grid-cols-[repeat(4,280px)] justify-center gap-6 w-[calc(4_*_280px_+_3_*_24px)] mx-auto my-0'>
-        {noticePostList}
-      </div>
-
-      <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-        {totalPages > 1 && (
-          <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
-            {showPrevButton && (
-              <Link
-                to={getPageLink(prevGroupLastPage)}
-                className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
-              >
-                Prev
-              </Link>
-            )}
-
-            {getPageRange().map((pageNum) => (
-              <Link
-                key={pageNum}
-                to={getPageLink(pageNum)}
-                className={`${
-                  currentPage === pageNum
-                    ? 'bg-secondary-20 text-white'
-                    : 'bg-grey-20 text-black'
-                } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
-              >
-                {pageNum}
-              </Link>
-            ))}
-
-            {showNextButton && (
-              <Link
-                to={getPageLink(nextGroupFirstPage)}
-                className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
-              >
-                Next
-              </Link>
-            )}
-          </div>
-        )}
-      </div>
-
-      <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
-        <div className='relative w-[120px]'>
+    <>
+      <Helmet>
+        <title>다시, 봄 - 공지사항</title>
+        <meta property='og:title' content='다시봄 공지사항' />
+        <meta
+          property='og:description'
+          content='서비스 이용과 관련된 중요 공지사항을 안내합니다.'
+        />
+      </Helmet>
+      <div className='w-[1200px] mx-auto px-6 mb-20'>
+        <h1 className='h-[80px] text-4xl text-center box-border m-0 px-0 py-[20px]'>
+          공지사항
+        </h1>
+        <div className='flex justify-between items-center mb-4'>
           <select
-            value={periodType}
-            onChange={(e) => handlePeriodChange(e.target.value)}
-            className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'
+            value={sortOption}
+            onChange={handleSortChange}
+            className='border border-grey-20 rounded p-1 text-lg focus:border-secondary-30 focus:ring-1 focus:ring-secondary-30 text-grey-60'
+            aria-label='정렬 기준'
           >
-            <option value='all-day'>전체기간</option>
-            <option value='one-day'>1일</option>
-            <option value='one-week'>1주</option>
-            <option value='one-month'>1개월</option>
-            <option value='six-month'>6개월</option>
-            <option value='one-year'>1년</option>
-            <option value='custom'>기간 입력</option>
+            <option value='default'>기본순</option>
+            <option value='title-asc'>제목 오름차순</option>
+            <option value='title-desc'>제목 내림차순</option>
+            <option value='date-asc'>작성일 오름차순</option>
+            <option value='date-desc'>작성일 내림차순</option>
+            <option value='view-asc'>조회수 오름차순</option>
+            <option value='view-desc'>조회수 내림차순</option>
           </select>
+
+          {isAdmin && (
+            <button
+              onClick={() => navigate('/notice/new')}
+              className='px-5 py-2 bg-secondary-20 text-white rounded hover:bg-secondary-40 transition-colors'
+            >
+              작성하기
+            </button>
+          )}
         </div>
 
-        {periodType === 'custom' && (
-          <div className='flex gap-2'>
-            <input
-              type='date'
-              value={startDate}
-              onChange={(e) => handleDateChange('start', e.target.value)}
-              className='h-[37px] px-2 border border-gray-300 rounded'
-            />
-            <span className='flex items-center'>~</span>
-            <input
-              type='date'
-              value={endDate}
-              onChange={(e) => handleDateChange('end', e.target.value)}
-              className='h-[37px] px-2 border border-gray-300 rounded'
-            />
-          </div>
-        )}
+        <div className='grid grid-cols-[repeat(4,280px)] justify-center gap-6 w-[calc(4_*_280px_+_3_*_24px)] mx-auto my-0'>
+          {noticePostList}
+        </div>
 
-        <input
-          type='text'
-          value={searchText}
-          onChange={handleSearchTextChange}
-          className='h-[37px] py-0 px-3 border border-grey-10 rounded w-[200px]'
-          placeholder='검색어를 입력하세요'
-        />
-        <button
-          type='submit'
-          onClick={handleSearch}
-          className='bg-secondary-20 hover:bg-secondary-40 transition-colors text-white h-[37px] py-0 px-[25px] border-none rounded cursor-pointer leading-[37px]'
-        >
-          찾기
-        </button>
+        <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
+          {totalPages > 1 && (
+            <div className='justify-center mb-[16px] flex gap-[16px] mt-10'>
+              {showPrevButton && (
+                <Link
+                  to={getPageLink(prevGroupLastPage)}
+                  className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+                >
+                  Prev
+                </Link>
+              )}
+
+              {getPageRange().map((pageNum) => (
+                <Link
+                  key={pageNum}
+                  to={getPageLink(pageNum)}
+                  className={`${
+                    currentPage === pageNum
+                      ? 'bg-secondary-20 text-white'
+                      : 'bg-grey-20 text-black'
+                  } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30`}
+                >
+                  {pageNum}
+                </Link>
+              ))}
+
+              {showNextButton && (
+                <Link
+                  to={getPageLink(nextGroupFirstPage)}
+                  className='bg-grey-20 text-black w-[60px] py-[8px] rounded-md text-[15px] text-center hover:bg-grey-30'
+                >
+                  Next
+                </Link>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className='pt-10 flex justify-center gap-[5.4px] h-[70.67px]'>
+          <div className='relative w-[120px]'>
+            <select
+              value={periodType}
+              onChange={(e) => handlePeriodChange(e.target.value)}
+              className='w-full h-[37px] px-2.5 border border-grey-10 rounded bg-white'
+            >
+              <option value='all-day'>전체기간</option>
+              <option value='one-day'>1일</option>
+              <option value='one-week'>1주</option>
+              <option value='one-month'>1개월</option>
+              <option value='six-month'>6개월</option>
+              <option value='one-year'>1년</option>
+              <option value='custom'>기간 입력</option>
+            </select>
+          </div>
+
+          {periodType === 'custom' && (
+            <div className='flex gap-2'>
+              <input
+                type='date'
+                value={startDate}
+                onChange={(e) => handleDateChange('start', e.target.value)}
+                className='h-[37px] px-2 border border-gray-300 rounded'
+              />
+              <span className='flex items-center'>~</span>
+              <input
+                type='date'
+                value={endDate}
+                onChange={(e) => handleDateChange('end', e.target.value)}
+                className='h-[37px] px-2 border border-gray-300 rounded'
+              />
+            </div>
+          )}
+
+          <input
+            type='text'
+            value={searchText}
+            onChange={handleSearchTextChange}
+            className='h-[37px] py-0 px-3 border border-grey-10 rounded w-[200px]'
+            placeholder='검색어를 입력하세요'
+          />
+          <button
+            type='submit'
+            onClick={handleSearch}
+            className='bg-secondary-20 hover:bg-secondary-40 transition-colors text-white h-[37px] py-0 px-[25px] border-none rounded cursor-pointer leading-[37px]'
+          >
+            찾기
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

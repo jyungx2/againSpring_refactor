@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
  * 게시글 상세 조회 및 관련 데이터 처리 컴포넌트
  * @param {string} type - 게시글 타입 (notice 또는 qna)
  */
-export default function PostDetail({ type = 'notice' }) {
+export default function PostDetail({ type = 'notice', onDataLoad }) {
   // 관리자 이메일 배열 정의
   const ADMIN_EMAILS = ['admin@market.com', 'seop96@naver.com'];
 
@@ -138,6 +138,10 @@ export default function PostDetail({ type = 'notice' }) {
                   }
                 : { link: '#', title: '' },
           });
+        }
+
+        if (data?.item) {
+          onDataLoad?.(data.item); // 부모 컴포넌트에 데이터 전달
         }
       } catch (error) {
         console.log(`${type} 게시판 에러발생`, error);
@@ -330,4 +334,5 @@ export default function PostDetail({ type = 'notice' }) {
 
 PostDetail.propTypes = {
   type: PropTypes.oneOf(['notice', 'qna']).isRequired,
+  onDataLoad: PropTypes.func,
 };
