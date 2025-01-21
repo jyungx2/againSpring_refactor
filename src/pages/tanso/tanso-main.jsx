@@ -25,18 +25,13 @@ const TansoMain = () => {
   // 이미지 경로 처리 함수
   const getImage = (path) => `https://11.fesp.shop${path}`; // 이미지 경로 반환
 
-
   useEffect(() => {
-    // console.log("이름 호출:", product.name);
-    // console.log("이미지 호출:", product.image);
-    // console.log("이미지 경로:", imagePath);
-    // 주문 데이터 호출: 탄소 배출량 계산
     axiosInstance
       .get("/orders")
       .then((response) => {
         const orders = response.data?.item || [];
-        let tansoSum = 0; // 탄소 초기화
-        const productList = []; // 제품 데이터 초기화
+        let tansoSum = 0;
+        const productList = [];
         const categoryData = Object.keys(categoryLabels).reduce(
           (acc, key) => ({ ...acc, [key]: 0 }),
           {}
@@ -44,45 +39,39 @@ const TansoMain = () => {
 
         orders.forEach((order) => {
           order.products.forEach((product) => {
-            const tanso = product.extra?.tanso || 0; // 제품의 탄소 배출량
-            const categories = product.extra?.category || []; // 제품 카테고리 배열
-            const mainCategory = categories.find((cat) => cat !== "all-of-list"); // 메인 카테고리 추출
+            const tanso = product.extra?.tanso || 0;
+            const categories = product.extra?.category || [];
+            const mainCategory = categories.find((cat) => cat !== "all-of-list");
 
-            tansoSum += tanso; // 총 탄소 배출량 계산
+            tansoSum += tanso;
 
-            const imagePath = product.image?.path || null; // 이미지 경로 추출
+            const imagePath = product.image?.path || null;
             const fullImagePath = getImage(imagePath);
 
-            // 제품 리스트에 데이터 추가
             productList.push({
               id: product.id,
               name: product.name,
               tanso,
               image: fullImagePath,
-              category: categoryLabels[mainCategory], // 카테고리 매핑
+              category: categoryLabels[mainCategory],
             });
 
-            // 카테고리별 탄소 배출량 계산
             if (mainCategory && categoryLabels[mainCategory]) {
               categoryData[mainCategory] += tanso;
             }
           });
         });
 
-        // console.log(productList);
-        // console.log(categoryData);
-
-        // 상태 업데이트
-        setTotalTanso(tansoSum.toFixed(2)); // 총 탄소 배출량 설정
-        setProducts(productList); // 제품 리스트 설정
-        setCategoryTanso(categoryData); // 카테고리별 탄소 배출량 
+        setTotalTanso(tansoSum.toFixed(2));
+        setProducts(productList);
+        setCategoryTanso(categoryData);
       })
-      .catch((error) => console.error("주문 데이터를 가져오는데 실패했습니다:", error));
+      .catch((error) => console.error("주문 데이터를 가져오는 데 실패했습니다:", error));
   }, []);
 
   return (
-    <div className="bg-white min-h-screen py-20">
-      <div className="max-w-7xl mx-auto px-10">
+    <div className="bg-gray-50 w-[1200px] mx-auto px-6 py-8 border border-gray-200 rounded-lg shadow-lg">
+      <div className="max-w-6xl mx-auto px-8">
         {/* 정보 섹션 */}
         <div className="bg-primary-20 p-16 rounded-lg shadow-lg my-16 border border-primary-30">
           <h2 className="text-4xl font-extrabold mb-10 text-center text-primary-90">
@@ -111,66 +100,68 @@ const TansoMain = () => {
           </p>
         </div>
 
+
         {/* 상단 카드 */}
-        <div className="bg-green-200 p-10 rounded-lg shadow-lg flex items-center justify-between">
+        <div className="bg-primary-40 p-12 rounded-lg shadow-lg flex items-center justify-between border border-primary-50">
           <div className="flex items-center">
             <img
-              src={user?.profile || "/icons/profile.svg"} // 사용자 프로필 이미지
+              src={user?.profile || "/icons/profile.svg"}
               alt="User profile"
-              className="w-20 h-20 rounded-full mr-8"
+              className="w-24 h-24 rounded-full border-4 border-primary-60 mr-8"
             />
             <div>
-              <h1 className="text-2xl font-bold">{user?.name || "(로그인하세요)"}님이 주문하신 제품과 탄소량</h1>
-              <p className="text-6xl font-extrabold text-green-800 mt-6">{totalTanso} kg CO2e</p>
+              <h1 className="text-3xl font-bold text-white">
+                {user?.name || "(로그인하세요)"}님이 주문하신 제품과 탄소량
+              </h1>
+              <p className="text-6xl font-extrabold text-primary-10 mt-6">{totalTanso} kg CO2e</p>
             </div>
           </div>
         </div>
 
         {/* 차트 - 카테고리별 탄소 배출량 표시 */}
-        <div className="bg-white p-8 rounded-lg shadow-lg mt-12">
-          <h2 className="text-2xl font-bold mb-6">어디서 많이 배출할까요?</h2>
-          <div className="space-y-4">
+        <div className="bg-secondary-10 p-10 rounded-lg shadow-lg mt-12 border border-secondary-20">
+          <h2 className="text-3xl font-bold mb-6 text-center text-secondary-80">어디서 많이 배출할까요?</h2>
+          <div className="space-y-6">
             {Object.entries(categoryTanso).map(([key, value]) => (
               <div key={key} className="flex items-center">
-                <span className="w-32 text-gray-700">{categoryLabels[key]}</span>
-                <div className="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden mx-4">
+                <span className="w-40 text-lg text-secondary-80">{categoryLabels[key]}</span>
+                <div className="flex-1 h-6 bg-secondary-5 rounded-full overflow-hidden mx-6">
                   <div
-                    className="bg-blue-400 h-full"
-                    style={{ width: `${Math.min(value, 100)}%` }} // 최대 100% 제한
+                    className="bg-secondary-40 h-full"
+                    style={{ width: `${Math.min(value, 100)}%` }}
                   ></div>
                 </div>
-                <span>{value.toFixed(2)} kg</span>
+                <span className="text-lg text-secondary-70">{value.toFixed(2)} kg</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* 주문한 제품 목록 표시 */}
-        <div className="bg-white p-8 rounded-lg shadow-lg mt-12">
-          <h2 className="text-2xl font-bold mb-6">주문한 제품 목록</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="bg-grey-5 p-10 rounded-lg shadow-lg mt-12 border border-grey-30">
+          <h2 className="text-3xl font-bold mb-6 text-center text-grey-70">주문한 제품 목록</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="p-4 border border-gray-200 rounded-lg shadow-md"
+                className="p-6 border border-grey-20 rounded-lg shadow-md bg-white"
               >
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-40 object-cover rounded-md mb-4"
+                  className="w-full h-48 object-cover rounded-md mb-4"
                 />
-                <h3 className="text-lg font-bold">{product.name}</h3>
-                <p className="text-gray-700 mt-2">
+                <h3 className="text-xl font-bold text-grey-80">{product.name}</h3>
+                <p className="text-lg text-grey-70 mt-2">
                   카테고리: {product.category}
                 </p>
-                <p className="text-gray-700 mt-2">
-                  탄소 배출량: <span className="font-bold">{product.tanso} kg</span>
+                <p className="text-lg text-grey-70 mt-2">
+                  탄소 배출량: <span className="font-bold text-primary-70">{product.tanso} kg</span>
                 </p>
               </div>
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
