@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -16,9 +15,28 @@ export default defineConfig({
       { find: "@utils", replacement: "/src/utils" },
     ],
   },
+  build: {
+    commonjsOptions: {
+      transformMixedEsModules: true,
+      include: [/node_modules/],
+    },
+    rollupOptions: {
+      output: {
+        format: "es",
+      },
+    },
+  },
+  optimizeDeps: {
+    include: [
+      "quill",
+      "react-quilljs",
+      "sweetalert2",
+      "sweetalert2-react-content",
+    ],
+  },
   css: {
     modules: {
-      scopeBehaviour: "local", // CSS Module을 local로 설정
+      scopeBehaviour: "local",
     },
   },
 });

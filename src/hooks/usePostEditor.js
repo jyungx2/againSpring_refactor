@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
-import useAxiosInstance from '@hooks/useAxiosInstance';
-import postAlerts from '@utils/postAlerts';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import postAlerts from "@utils/postAlerts";
 
 /**
  * 게시글 데이터 조회 함수
@@ -18,8 +18,8 @@ export default function usePostEditor({
   const queryClient = useQueryClient();
   const axios = useAxiosInstance();
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [originalData, setOriginalData] = useState(null);
   const [quillInstance, setQuillInstance] = useState(null);
@@ -37,7 +37,7 @@ export default function usePostEditor({
         setOriginalData(data);
 
         // Q&A 게시글의 경우 상품 정보 설정
-        if (type === 'qna' && data.product?._id) {
+        if (type === "qna" && data.product?._id) {
           setSelectedProduct({
             _id: data.product._id[0],
             name: data.product.name[0],
@@ -47,7 +47,7 @@ export default function usePostEditor({
       }
     } catch (error) {
       await postAlerts.showError(
-        error.response?.data?.message || '게시글 로딩 중 오류가 발생했습니다.'
+        error.response?.data?.message || "게시글 로딩 중 오류가 발생했습니다."
       );
     } finally {
       setIsLoading(false);
@@ -61,18 +61,12 @@ export default function usePostEditor({
     if (quillInstance && content) {
       quillInstance.root.innerHTML = content;
     }
-    console.log('무한무한무한 ');
-    console.log(quillInstance);
-    console.log(content);
   }, [quillInstance, content]);
 
   useEffect(() => {
     if (isEdit && post?._id) {
       fetchPostData(post._id);
     }
-    console.log('무한무한무한222');
-    console.log(isEdit);
-    console.log(post?._id);
   }, [isEdit, post?._id]);
 
   /**
@@ -82,15 +76,15 @@ export default function usePostEditor({
   const handleSave = async (e) => {
     e?.preventDefault();
 
-    const currentContent = quillInstance?.root.innerHTML || '';
+    const currentContent = quillInstance?.root.innerHTML || "";
 
     // 입력값 검증
     if (!title.trim() || !currentContent.trim()) {
-      await postAlerts.showInfo('제목과 내용을 모두 입력해주세요.');
+      await postAlerts.showInfo("제목과 내용을 모두 입력해주세요.");
       return;
     }
 
-    const postType = type === 'qna' ? 'Q&A' : '공지사항';
+    const postType = type === "qna" ? "Q&A" : "공지사항";
 
     try {
       setIsLoading(true);
@@ -99,7 +93,7 @@ export default function usePostEditor({
         type,
         title: title.trim(),
         content: currentContent,
-        ...(type === 'qna' &&
+        ...(type === "qna" &&
           selectedProduct?._id && {
             product_id: selectedProduct._id,
           }),
@@ -109,10 +103,10 @@ export default function usePostEditor({
       if (await postAlerts.confirmSave(isEdit, postType)) {
         const response = isEdit
           ? await axios.patch(`/posts/${post._id}`, postData)
-          : await axios.post('/posts', postData);
+          : await axios.post("/posts", postData);
 
         if (response.data.ok) {
-          await queryClient.invalidateQueries(['posts', type]);
+          await queryClient.invalidateQueries(["posts", type]);
           if (await postAlerts.showSaveSuccess(isEdit, postType)) {
             navigate(returnPath);
           }
@@ -127,16 +121,16 @@ export default function usePostEditor({
 
   const handleCancel = async () => {
     const hasChanges = isEdit
-      ? type === 'qna'
+      ? type === "qna"
         ? title !== originalData?.title ||
           quillInstance?.root.innerHTML !== originalData?.content ||
           selectedProduct?._id !== originalData?.product?._id
         : title !== originalData?.title ||
           quillInstance?.root.innerHTML !== originalData?.content
-      : title.trim() !== '' ||
-        (quillInstance && quillInstance.getText().trim() !== '');
+      : title.trim() !== "" ||
+        (quillInstance && quillInstance.getText().trim() !== "");
 
-    const postType = type === 'qna' ? 'Q&A' : '공지사항';
+    const postType = type === "qna" ? "Q&A" : "공지사항";
 
     if (hasChanges) {
       if (await postAlerts.confirmCancel(isEdit, postType)) {

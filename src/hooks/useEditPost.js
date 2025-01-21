@@ -1,18 +1,18 @@
-import useAxiosInstance from '@hooks/useAxiosInstance';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import postAlerts from '@utils/postAlerts';
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import postAlerts from "@utils/postAlerts";
 
 export const useEditPost = ({
   post,
   initialData = null,
   returnPath,
-  postType = 'notice',
+  postType = "notice",
 }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [originalData, setOriginalData] = useState(null);
   const [quillInstance, setQuillInstance] = useState(null);
@@ -50,7 +50,7 @@ export const useEditPost = ({
         setOriginalData(data);
 
         // Q&A 게시글의 경우 상품 정보 설정
-        if (postType === 'qna' && data.product?._id) {
+        if (postType === "qna" && data.product?._id) {
           setIsProductPost(true);
           setSelectedProduct({
             _id: data.product._id[0],
@@ -65,11 +65,11 @@ export const useEditPost = ({
       }
     } catch (error) {
       MySwal.fire({
-        title: '오류 발생',
+        title: "오류 발생",
         text:
           error.response?.data?.message ||
-          '게시글 로딩 중 오류가 발생했습니다.',
-        icon: 'error',
+          "게시글 로딩 중 오류가 발생했습니다.",
+        icon: "error",
       });
     } finally {
       setIsLoading(false);
@@ -89,11 +89,11 @@ export const useEditPost = ({
   const handleUpdate = async (e) => {
     e?.preventDefault();
 
-    const currentContent = quillInstance?.root.innerHTML || '';
+    const currentContent = quillInstance?.root.innerHTML || "";
 
     // 입력값 검증
     if (!title.trim() || !currentContent.trim()) {
-      await postAlerts.showInfo('제목과 내용을 모두 입력해주세요.');
+      await postAlerts.showInfo("제목과 내용을 모두 입력해주세요.");
       return;
     }
 
@@ -105,7 +105,7 @@ export const useEditPost = ({
       };
 
       // Q&A 게시글일 경우 상품 정보 추가
-      if (postType === 'qna') {
+      if (postType === "qna") {
         updateData.product_id = selectedProduct?._id || null;
       }
 
@@ -115,7 +115,7 @@ export const useEditPost = ({
         if (
           await postAlerts.showSaveSuccess(
             true,
-            postType === 'qna' ? 'Q&A' : '공지사항'
+            postType === "qna" ? "Q&A" : "공지사항"
           )
         ) {
           navigate(returnPath);
@@ -125,7 +125,7 @@ export const useEditPost = ({
       await postAlerts.showSaveError(
         error,
         true,
-        postType === 'qna' ? 'Q&A' : '공지사항'
+        postType === "qna" ? "Q&A" : "공지사항"
       );
     } finally {
       setIsLoading(false);
@@ -138,7 +138,7 @@ export const useEditPost = ({
    */
   const handleCancel = async () => {
     const hasChanges =
-      postType === 'qna'
+      postType === "qna"
         ? title !== originalData?.title ||
           quillInstance?.root.innerHTML !== originalData?.content ||
           selectedProduct?._id !== originalData?.product?._id
@@ -149,7 +149,7 @@ export const useEditPost = ({
       if (
         await postAlerts.confirmCancel(
           true,
-          postType === 'qna' ? 'Q&A' : '공지사항'
+          postType === "qna" ? "Q&A" : "공지사항"
         )
       ) {
         navigate(returnPath);
@@ -167,8 +167,8 @@ export const useEditPost = ({
     setQuillInstance,
     handleUpdate,
     handleCancel,
-    selectedProduct: postType === 'qna' ? selectedProduct : undefined,
-    setSelectedProduct: postType === 'qna' ? setSelectedProduct : undefined,
-    isProductPost: postType === 'qna' ? isProductPost : undefined,
+    selectedProduct: postType === "qna" ? selectedProduct : undefined,
+    setSelectedProduct: postType === "qna" ? setSelectedProduct : undefined,
+    isProductPost: postType === "qna" ? isProductPost : undefined,
   };
 };

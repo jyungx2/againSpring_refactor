@@ -1,8 +1,8 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import '../../assets/styles/fonts.css';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import "../../assets/styles/fonts.css";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function EventDetailPage() {
   const { id } = useParams();
@@ -14,8 +14,22 @@ export default function EventDetailPage() {
 
   useEffect(() => {
     const dummyData = [
-      { id: "1", title: "2024년 12월 윈터 이벤트", content: "윈터 이벤트 상세 내용입니다.", author: "다시, 봄", updatedAt: "2024-12-01 00:00:00", views: 10 },
-      { id: "2", title: "2025년 1월 회원가입 이벤트", content: "회원가입 이벤트 상세 내용입니다.", author: "다시, 봄", updatedAt: "2025-01-01 00:00:00", views: 20 },
+      {
+        id: "1",
+        title: "2024년 12월 윈터 이벤트",
+        content: "윈터 이벤트 상세 내용입니다.",
+        author: "다시, 봄",
+        updatedAt: "2024-12-01 00:00:00",
+        views: 10,
+      },
+      {
+        id: "2",
+        title: "2025년 1월 회원가입 이벤트",
+        content: "회원가입 이벤트 상세 내용입니다.",
+        author: "다시, 봄",
+        updatedAt: "2025-01-01 00:00:00",
+        views: 20,
+      },
     ];
     const eventIndex = dummyData.findIndex((item) => item.id === id);
     setEventData(dummyData[eventIndex]);
@@ -39,34 +53,35 @@ export default function EventDetailPage() {
 }, [id]);
    */
 
-
   const deleteCheckBtn = () => {
     MySwal.fire({
-      title: '게시글을 삭제하시겠습니까?',
-      text: '삭제된 게시글은 복구할 수 없습니다.',
-      icon: 'warning',
+      title: "게시글을 삭제하시겠습니까?",
+      text: "삭제된 게시글은 복구할 수 없습니다.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네',
-      cancelButtonText: '아니요',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네",
+      cancelButtonText: "아니요",
     }).then((result) => {
       if (result.isConfirmed) {
         MySwal.fire({
-          title: '삭제 완료',
-          text: '게시글이 삭제되었습니다.',
-          confirmButtonText: '확인',
-          icon: 'success',
+          title: "삭제 완료",
+          text: "게시글이 삭제되었습니다.",
+          confirmButtonText: "확인",
+          icon: "success",
         }).then((result) => {
           if (result.isConfirmed) {
-            navigate('/event');
+            navigate("/event");
           }
         });
       }
     });
   };
 
-  {/* 비정상 데이터 처리에 따른 조건부 랜더링 적용 */ }
+  {
+    /* 비정상 데이터 처리에 따른 조건부 랜더링 적용 */
+  }
   if (!eventData) {
     return (
       <div className='w-[1200px] mx-auto px-6 py-4'>
@@ -97,12 +112,20 @@ export default function EventDetailPage() {
       <section className='flex flex-col'>
         <div className='border-t border-black'>
           <div className='flex items-center gap-[20px] py-4 border-b border-grey-10'>
-            <label className='text-lg font-medium text-grey-80 w-24'>제목</label>
-            <h2 className='text-xl font-medium text-grey-50'>{eventData.title}</h2>
+            <label className='text-lg font-medium text-grey-80 w-24'>
+              제목
+            </label>
+            <h2 className='text-xl font-medium text-grey-50'>
+              {eventData.title}
+            </h2>
           </div>
           <div className='flex items-center gap-[20px] py-4 border-b border-grey-10'>
-            <label className='text-lg font-medium text-grey-80 w-24'>작성자</label>
-            <p className='text-xl font-medium text-grey-50'>{eventData.author}</p>
+            <label className='text-lg font-medium text-grey-80 w-24'>
+              작성자
+            </label>
+            <p className='text-xl font-medium text-grey-50'>
+              {eventData.author}
+            </p>
           </div>
           <div className='border-b border-grey-10'>
             <div className='flex gap-[43px] py-4'>
@@ -158,7 +181,9 @@ export default function EventDetailPage() {
                     {previousEvent.title}
                   </Link>
                 ) : (
-                  <p className='flex-1 px-4 py-4 text-lg text-grey-40'>이전 글이 없습니다.</p>
+                  <p className='flex-1 px-4 py-4 text-lg text-grey-40'>
+                    이전 글이 없습니다.
+                  </p>
                 )}
               </div>
               <div className='flex items-center min-h-[60px]'>
@@ -173,14 +198,14 @@ export default function EventDetailPage() {
                     {nextEvent.title}
                   </Link>
                 ) : (
-                  <p className='flex-1 px-4 py-4 text-lg text-grey-40'>다음 글이 없습니다.</p>
+                  <p className='flex-1 px-4 py-4 text-lg text-grey-40'>
+                    다음 글이 없습니다.
+                  </p>
                 )}
               </div>
             </div>
           </nav>
         </div>
-
-
       </section>
     </div>
   );

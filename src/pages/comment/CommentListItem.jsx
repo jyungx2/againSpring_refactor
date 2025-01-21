@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import useAxiosInstance from '@hooks/useAxiosInstance';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from "react";
+import PropTypes from "prop-types";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const CommentListItem = ({ comment, isAdmin, user, post }) => {
   const axios = useAxiosInstance();
@@ -17,13 +17,13 @@ const CommentListItem = ({ comment, isAdmin, user, post }) => {
     mutationFn: ({ commentId, content }) =>
       axios.patch(`/posts/${post._id}/replies/${commentId}`, { content }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', post._id]);
+      queryClient.invalidateQueries(["comments", post._id]);
       setIsEditing(false);
       MySwal.fire({
-        title: '수정 완료',
-        text: '댓글이 수정되었습니다.',
-        icon: 'success',
-        confirmButtonText: '확인',
+        title: "수정 완료",
+        text: "댓글이 수정되었습니다.",
+        icon: "success",
+        confirmButtonText: "확인",
       });
     },
   });
@@ -32,12 +32,12 @@ const CommentListItem = ({ comment, isAdmin, user, post }) => {
     mutationFn: (comment) =>
       axios.delete(`/posts/${post._id}/replies/${comment._id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments', post._id]);
+      queryClient.invalidateQueries(["comments", post._id]);
       MySwal.fire({
-        title: '삭제 완료',
-        text: '댓글이 삭제되었습니다.',
-        icon: 'success',
-        confirmButtonText: '확인',
+        title: "삭제 완료",
+        text: "댓글이 삭제되었습니다.",
+        icon: "success",
+        confirmButtonText: "확인",
       });
     },
   });
@@ -54,12 +54,12 @@ const CommentListItem = ({ comment, isAdmin, user, post }) => {
 
   const handleDelete = async (comment) => {
     const result = await MySwal.fire({
-      title: '댓글을 삭제하시겠습니까?',
-      text: '삭제된 댓글은 복구할 수 없습니다.',
-      icon: 'warning',
+      title: "댓글을 삭제하시겠습니까?",
+      text: "삭제된 댓글은 복구할 수 없습니다.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: '삭제',
-      cancelButtonText: '취소',
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
     });
 
     if (result.isConfirmed) {
