@@ -1,13 +1,12 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { wishlistStore } from "../store/wishlistStore";
-import cartStore from "../store/cartStore";
+import useCartStore from "../store/cartStore";
 
 const Wishlist = () => {
   const { wishlistItems, fetchWishlistItems, deleteItem, loading, error } =
     wishlistStore();
-
-  const { fetchCartItems } = cartStore();
+  const { addToCart, fetchCartItems } = useCartStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +22,7 @@ const Wishlist = () => {
   };
 
   const handleAddToCart = async (productId) => {
-    await cartStore.getState().addToCart(productId, 1);
+    await addToCart(productId, 1);
     await fetchCartItems();
   };
 
