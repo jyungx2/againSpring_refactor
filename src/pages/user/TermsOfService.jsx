@@ -51,7 +51,7 @@ function TermsOfService() {
               checked={allChecked}
             />
             <label
-              className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold text-[18px]"
+              className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('/icons/emptybox.svg')] peer-checked:before:bg-[url('/icons/checkbox.svg')] font-gowunBold text-[18px]"
               htmlFor="check"
             >
               전체 동의하기
@@ -67,7 +67,7 @@ function TermsOfService() {
                 {...register("terms-required", { required: true })}
               />
               <label
-                className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold text-[18px]"
+                className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('/icons/emptybox.svg')] peer-checked:before:bg-[url('/icons/checkbox.svg')] font-gowunBold text-[18px]"
                 htmlFor="termsService"
               >
                 이용약관 동의
@@ -124,7 +124,7 @@ function TermsOfService() {
                 {...register("personal-required", { required: true })}
               />
               <label
-                className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')] font-gowunBold text-[18px]"
+                className="flex gap-4 cursor-pointer items-end before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('/icons/emptybox.svg')] peer-checked:before:bg-[url('/icons/checkbox.svg')] font-gowunBold text-[18px]"
                 htmlFor="termsPrivacy"
               >
                 개인정보 수집 및 이용 동의
@@ -213,7 +213,7 @@ function TermsOfService() {
                   {...register("SMS-optional")}
                 />
                 <label
-                  className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
+                  className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('/icons/emptybox.svg')] peer-checked:before:bg-[url('/icons/checkbox.svg')]"
                   htmlFor="termsSMS"
                 >
                   SMS 수신 동의
@@ -228,7 +228,7 @@ function TermsOfService() {
                   {...register("Email-optional")}
                 />
                 <label
-                  className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('./icons/emptybox.svg')] peer-checked:before:bg-[url('./icons/checkbox.svg')]"
+                  className="flex gap-4 items-center cursor-pointer before:w-[20px] before:h-[20px] before:inline-block before:content-[''] before:bg-[url('/icons/emptybox.svg')] peer-checked:before:bg-[url('/icons/checkbox.svg')]"
                   htmlFor="termsEmail"
                 >
                   E-mail 수신 동의

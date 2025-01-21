@@ -62,7 +62,7 @@ function Login() {
       } else {
         alert(
           err.response.data.message ||
-            "오류가 발생하였습니다. 잠시 후 다시 요청하세요."
+          "오류가 발생하였습니다. 잠시 후 다시 요청하세요."
         );
       }
     },
@@ -83,7 +83,7 @@ function Login() {
         <div className="w-[400px] mx-auto flex flex-col items-center p-[20px_40px_44px] border border-grey-20 rounded-[20px] gap-[44px]">
           <div className="w-20 aspect-[1/1] object-contain">
             <a href="/" className="cursor-pointer">
-              <img src="/public/favicon.png" alt="logo" />
+              <img src="/favicon.png" alt="logo" />
             </a>
           </div>
 
@@ -91,9 +91,8 @@ function Login() {
             <form onSubmit={handleSubmit(login.mutate)}>
               <div className="flex flex-col gap-3">
                 <div
-                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${
-                    errors.email ? `${styles.error}` : ""
-                  }`}
+                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${errors.email ? `${styles.error}` : ""
+                    }`}
                 >
                   <input
                     id="email"
@@ -106,9 +105,8 @@ function Login() {
                 <ErrorMsg target={errors.email} />
 
                 <div
-                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${
-                    errors.password ? `${styles.error}` : ""
-                  }`}
+                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${errors.password ? `${styles.error}` : ""
+                    }`}
                 >
                   <input
                     id="password"
