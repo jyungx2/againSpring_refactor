@@ -6,6 +6,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import ErrorMsg from "@components/ErrorMsg";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 function AddReview() {
   const location = useLocation();
@@ -93,6 +94,15 @@ function AddReview() {
 
   return (
     <>
+      <Helmet>
+        <title>다시, 봄 - 리뷰작성</title>
+        <meta property="og:title" content="다시봄 리뷰작성" />
+        <meta
+          property="og:description"
+          content="구매한 상품에 대한 소중한 리뷰를 작성하고 포인트를 적립하세요!"
+        />
+      </Helmet>
+
       <div className="flex box-border max-w-[1200px] mx-auto px-6 pb-0">
         <Sidebar />
 

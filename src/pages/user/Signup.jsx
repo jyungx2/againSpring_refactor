@@ -6,6 +6,7 @@ import ErrorMsg from "@components/ErrorMsg";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "@store/userStore";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -137,8 +138,8 @@ function Signup() {
 
       // 클라이언트 측에서 유효성 검사에 실패한 오류를 1차적으로 처리
       if (err.response?.data.errors) {
-        err.reponse.data.errors.forEach(
-          (error) => setError(error.path, { message: error.msg })
+        err.reponse.data.errors.forEach((error) =>
+          setError(error.path, { message: error.msg })
         );
       }
       // 서버에서 발생한 오류 메시지를 처리
@@ -153,6 +154,15 @@ function Signup() {
 
   return (
     <>
+      <Helmet>
+        <title>다시, 봄 - 회원가입</title>
+        <meta property="og:title" content="다시봄 회원가입" />
+        <meta
+          property="og:description"
+          content="지금 다시봄 회원가입하고 특별한 할인과 다양한 서비스를 누리세요!"
+        />
+      </Helmet>
+
       <div className="box-border max-w-[1200px] my-[60px] px-6 mx-auto">
         <div className="w-[460px] mx-auto flex flex-col items-center p-[18px_40px_28px] border-2 border-grey-10 rounded-[20px] gap-8">
           <div className="py-3">

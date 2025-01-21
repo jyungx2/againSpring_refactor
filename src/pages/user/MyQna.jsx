@@ -5,6 +5,7 @@ import QnaPagination from "@pages/user/QnaPagination";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 function MyQna() {
   const navigate = useNavigate();
@@ -48,6 +49,15 @@ function MyQna() {
 
   return (
     <>
+      <Helmet>
+        <title>다시, 봄 - 문의 내역 조회</title>
+        <meta property="og:title" content="다시봄 문의 내역 조회" />
+        <meta
+          property="og:description"
+          content="내 문의 내역과 답변을 확인하고, 필요한 경우 추가 문의를 작성하세요."
+        />
+      </Helmet>
+
       <div className="flex box-border max-w-[1200px] mx-auto px-6 pb-0">
         <Sidebar />
 

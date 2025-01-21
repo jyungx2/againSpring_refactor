@@ -2,6 +2,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import ReviewItem from "@pages/user/ReviewItem";
 import Sidebar from "@pages/user/Sidebar";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 
 function ReviewList() {
   const axios = useAxiosInstance();
@@ -21,6 +22,15 @@ function ReviewList() {
 
   return (
     <>
+      <Helmet>
+        <title>다시, 봄 - 후기조회</title>
+        <meta property="og:title" content="다시봄 후기조회" />
+        <meta
+          property="og:description"
+          content="내가 작성한 리뷰를 확인하고, 필요한 경우 수정하거나 삭제할 수 있습니다."
+        />
+      </Helmet>
+
       <div className="flex box-border max-w-[1200px] mx-auto px-6 pb-0">
         <Sidebar />
 
