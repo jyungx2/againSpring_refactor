@@ -146,7 +146,7 @@ function Signup() {
       else {
         alert(
           err.response.data.message ||
-            "오류가 발생하였습니다. 잠시 후 다시 요청하세요."
+          "오류가 발생하였습니다. 잠시 후 다시 요청하세요."
         );
       }
     },
@@ -187,7 +187,7 @@ function Signup() {
                     className="w-full h-full border border-grey-20 rounded-full object-cover p-1"
                   />
                 ) : (
-                  <div className="w-full h-full bg-[url('./icons/profile.svg')]"></div>
+                  <div className="w-full h-full bg-[url('/icons/profile.svg')]"></div>
                 )}
 
                 <div
@@ -231,9 +231,8 @@ function Signup() {
 
               <div>
                 <div
-                  className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20 ${
-                    errors.name ? `${styles.error}` : ""
-                  }`}
+                  className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20 ${errors.name ? `${styles.error}` : ""
+                    }`}
                 >
                   <img src="/icons/user.svg" />
                   <input
@@ -259,9 +258,8 @@ function Signup() {
               <div className="id-collection">
                 <div>
                   <div
-                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20 ${
-                      errors.email ? `${styles.error}` : ""
-                    }`}
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mb-4 focus-within:border-secondary-20 ${errors.email ? `${styles.error}` : ""
+                      }`}
                   >
                     <img className="px-[6px]" src="/icons/mail.svg" />
                     <input
@@ -283,9 +281,8 @@ function Signup() {
 
                 <div>
                   <div
-                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
-                      errors.password ? `${styles.error}` : ""
-                    }`}
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${errors.password ? `${styles.error}` : ""
+                      }`}
                   >
                     <img src="/icons/locker.svg" />
                     <input
@@ -307,9 +304,8 @@ function Signup() {
 
                 <div>
                   <div
-                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
-                      errors["password-confirm"] ? `${styles.error}` : ""
-                    }`}
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${errors["password-confirm"] ? `${styles.error}` : ""
+                      }`}
                   >
                     <img src="/icons/locker.svg" />
                     <input
@@ -332,9 +328,8 @@ function Signup() {
               <div>
                 <div>
                   <div
-                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
-                      errors.phone ? `${styles.error}` : ""
-                    }`}
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${errors.phone ? `${styles.error}` : ""
+                      }`}
                   >
                     <img src="/icons/phone.svg" className="p-[6px]" />
                     <input
@@ -356,9 +351,8 @@ function Signup() {
                 </div>
                 <div>
                   <div
-                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${
-                      errors.address ? `${styles.error}` : ""
-                    }`}
+                    className={`flex gap-2 pl-2 border-2 border-grey-20 rounded-3xl mt-4 mb-4 focus-within:border-secondary-20 ${errors.address ? `${styles.error}` : ""
+                      }`}
                   >
                     <img src="/icons/address.svg" className="p-[6px]" />
                     <input
