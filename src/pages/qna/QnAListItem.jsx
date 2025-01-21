@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 
 const QnAListItem = ({ item, number }) => {
+  const ADMIN_EMAILS = ['admin@market.com', 'seop96@naver.com'];
+
   const axios = useAxiosInstance();
 
   const { data: repliesData } = useQuery({
@@ -14,8 +16,8 @@ const QnAListItem = ({ item, number }) => {
     cacheTime: 1000 * 60 * 5,
   });
 
-  const hasAdminReply = repliesData?.item?.some(
-    (reply) => reply.user?.email === 'admin@market.com'
+  const hasAdminReply = repliesData?.item?.some((reply) =>
+    ADMIN_EMAILS.includes(reply.user?.email)
   );
 
   return (
