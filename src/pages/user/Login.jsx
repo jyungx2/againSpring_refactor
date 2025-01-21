@@ -6,6 +6,7 @@ import useUserStore from "@store/userStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import ErrorMsg from "@components/ErrorMsg";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 function Login() {
   const axios = useAxiosInstance();
@@ -69,6 +70,15 @@ function Login() {
 
   return (
     <>
+      <Helmet>
+        <title>다시, 봄 - 로그인</title>
+        <meta property="og:title" content="다시봄 로그인" />
+        <meta
+          property="og:description"
+          content="다시봄에 로그인하고 다양한 혜택과 서비스를 이용하세요."
+        />
+      </Helmet>
+
       <div className="py-32 mx-auto max-w-[1200px]">
         <div className="w-[400px] mx-auto flex flex-col items-center p-[20px_40px_44px] border border-grey-20 rounded-[20px] gap-[44px]">
           <div className="w-20 aspect-[1/1] object-contain">
