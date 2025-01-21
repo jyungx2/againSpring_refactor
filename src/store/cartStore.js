@@ -80,26 +80,32 @@ export const cartStore = create((set, get) => ({
   },
 
   // 장바구니에 아이템 추가
-  addToCart: async (productId, quantity) => {
+  addToCart: async (product, quantity) => {
     const { user } = useUserStore.getState();
     const instance = axiosInstance(user);
 
     try {
       const requestBody = {
-        product_id: productId,
-        quantity: quantity,
+        product_id: product._id, // 상품 ID
+        quantity: product.quantity, // 수량
       };
 
+      console.log("Request Body:", requestBody); // 요청 본문 확인
+
       const response = await instance.post("/carts/", requestBody);
+
+      console.log("Response:", response); // 응답 확인
 
       if (response.status === 201) {
         await get().fetchCartItems();
         set({ totalOrderAmount: get().computeTotalOrderAmount() });
+        return true; // 추가 성공
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error Response:", error.response?.data || error.message); // 에러 로그 출력
       set({ error: "장바구니에 아이템 추가 실패." });
     }
+    return false; // 추가 실패
   },
 
   // 수량 변경

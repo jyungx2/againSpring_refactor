@@ -178,7 +178,8 @@ export const initData = async (clientId, nextSeq) => {
         name: "[그리네라] 대나무화장지30M 30롤",
         quantity: 100, //총 재고 수량 (디폴트 100개)
         buyQuantity: 0, // 판매된 수량 (디폴트 0개)
-        mainImages: [ // 대표 이미지 
+        mainImages: [
+          // 대표 이미지
           {
             path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(1).jpg`, // 이미지 저장 경로
             name: "[bamboo] toilet_paper(1).jpg", // 이미지 이름
@@ -204,12 +205,12 @@ export const initData = async (clientId, nextSeq) => {
           </div>`,
         createdAt: getTime(-41, -60 * 60 * 2), // 상품 등록일 (사용X)
         updatedAt: getTime(-40, -60 * 15), // 상품 최신화 등록일 (사용X)
-        extra: { 
+        extra: {
           isNew: true, // 새로운 상품 (true일 경우 new 아이콘 같은거 표시 가능 / 메인 페이지 노출 가능)
           isBest: false, // 베스트 상품 (이하 동일)
           category: ["all-of-list", "bathroom"], // 상품 카테고리 (메뉴 카테고리 별로 상품 분류 작업 가능)
           sort: 5, // 정렬 우선순위 (값이 낮을 수록 목록에서 먼저 표시됨 / 동일한 값일 경우 최신 등록 순으로 표시됨)
-          tanso: 10// 탄소배출량 (상품의 탄소배출량 표시) 재활용 및 재생 가능 소재가 일반적으로 주요 자재보다 탄소 발자국을 적게 발생시킴
+          tanso: 10, // 탄소배출량 (상품의 탄소배출량 표시) 재활용 및 재생 가능 소재가 일반적으로 주요 자재보다 탄소 발자국을 적게 발생시킴
         },
       },
       {
@@ -382,7 +383,6 @@ export const initData = async (clientId, nextSeq) => {
             name: "[bathroom] soap_dish(2).jpg",
             originalname: "[bathroom] soap_dish(2).jpg",
           },
-          
         ],
         content: `
           <div class="product-detail">
@@ -648,7 +648,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 6,
         },
       },
-      // 14번 상품. 
+      // 14번 상품.
       {
         _id: await nextSeq("product"),
         seller_id: 2,
@@ -2250,7 +2250,6 @@ export const initData = async (clientId, nextSeq) => {
         updatedAt: getTime(-1, -60 * 60 * 20),
       },
 
-      
       // 공지사항 게시판
       {
         _id: await nextSeq("post"),
