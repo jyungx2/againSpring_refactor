@@ -12,6 +12,9 @@ import PropTypes from 'prop-types';
  * @param {string} type - 게시글 타입 (notice 또는 qna)
  */
 export default function PostDetail({ type = 'notice' }) {
+  // 관리자 이메일 배열 정의
+  const ADMIN_EMAILS = ['admin@market.com', 'seop96@naver.com'];
+
   const { id } = useParams();
   const { user } = useUserStore();
   const axios = useAxiosInstance();
@@ -85,11 +88,12 @@ export default function PostDetail({ type = 'notice' }) {
           mainImages: data.item.product.mainImages[0],
         });
       }
+
       // 답변 상태 설정
       if (data.item?.replies) {
         setReplies(data.item.replies);
-        const adminReplyExists = data.item.replies.some(
-          (reply) => reply.user?.email === 'admin@market.com'
+        const adminReplyExists = data.item.replies.some((reply) =>
+          ADMIN_EMAILS.includes(reply.user?.email)
         );
         setHasAdminReply(adminReplyExists);
       }
