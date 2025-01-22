@@ -25,7 +25,7 @@ export const cartStore = create((set, get) => ({
   error: null,
   selectedItems: [],
 
-  // 총 주문 금액 계산
+    // 총 주문 금액 계산
   computeTotalOrderAmount: () => {
     const { cartItemsList, shippingCost } = get();
     const totalPrice = cartItemsList.reduce(
@@ -35,25 +35,20 @@ export const cartStore = create((set, get) => ({
     return totalPrice + shippingCost;
   },
 
-  // 장바구니 목록 표시
+    // 장바구니 목록 표시
   fetchCartItems: async () => {
     set({ loading: true, error: null });
-
     const { user } = useUserStore.getState();
 
     if (!user || !user.accessToken) {
       console.error("Access Token이 존재하지 않습니다.");
-      set({
-        loading: false,
-        error: "로그인이 필요합니다.",
-      });
+      set({ loading: false, error: "로그인이 필요합니다." });
       return;
     }
 
     try {
       const instance = axiosInstance(user);
       const response = await instance.get("/carts/");
-
       const products = response.data.item.map((item) => ({
         id: item.product._id,
         name: item.product.name,
@@ -72,14 +67,11 @@ export const cartStore = create((set, get) => ({
       });
     } catch (error) {
       console.error(error.response?.data || error.message);
-      set({
-        loading: false,
-        error: "장바구니 아이템을 가져오는 데 실패했습니다.",
-      });
+      set({ loading: false, error: "장바구니 아이템을 가져오는 데 실패했습니다." });
     }
   },
 
-  // 장바구니에 아이템 추가
+    // 장바구니에 아이템 추가
   addToCart: async (product, quantity) => {
     const { user } = useUserStore.getState();
     const instance = axiosInstance(user);
@@ -88,21 +80,18 @@ export const cartStore = create((set, get) => ({
       // product._id와 quantity를 정수로 변환
       const productId = parseInt(product._id, 10);
       const productQuantity = parseInt(quantity, 10);
-
+      
       // 변환된 값이 유효한지 확인
       if (isNaN(productId) || isNaN(productQuantity)) {
         throw new Error("Product ID and quantity must be valid integers");
       }
-
+      
       const requestBody = {
-        product_id: productId, // 상품 ID
-        quantity: productQuantity, // 수량
+        product_id: product.id, // 상품 ID
+        quantity: parseInt(quantity, 10), // 수량
       };
-
       console.log("Request Body:", requestBody); // 요청 본문 확인
-
       const response = await instance.post("/carts/", requestBody);
-
       console.log("Response:", response); // 응답 확인
 
       if (response.status === 201) {
@@ -117,7 +106,7 @@ export const cartStore = create((set, get) => ({
     return false; // 추가 실패
   },
 
-  // 수량 변경
+   // 수량 변경
   updateItemQuantity: async (productId, newQuantity) => {
     const { cartItemsList } = get();
     const cartItem = cartItemsList.find((item) => item.id === productId);
@@ -147,15 +136,12 @@ export const cartStore = create((set, get) => ({
         }
       } catch (error) {
         console.error(error.response?.data || error.message);
-        set({
-          error: "장바구니 상품 수량 변경 실패.",
-        });
+        set({ error: "장바구니 상품 수량 변경 실패." });
       }
     } else {
       console.error("해당 상품 ID에 대한 장바구니 상품이 없음", productId);
     }
   },
-
   // 체크박스 선택한 상품 추가
   selectItem: (id) => {
     set((state) => ({

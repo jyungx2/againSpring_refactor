@@ -22,6 +22,7 @@ const Wishlist = () => {
   };
 
   const handleAddToCart = async (product) => {
+    // console.log("카트에 상품 추가:", product)
     await addToCart(product, 1);
     await fetchCartItems();
   };
