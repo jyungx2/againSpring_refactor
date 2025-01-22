@@ -21,8 +21,13 @@ function Detail() {
   const { addToWishlist } = useWishlistStore();
 
   const handleAddToCart = async (product) => {
-    console.log("Adding to cart:", product);
-    const success = await addToCart(product, 1);
+    // _id를 id로 매핑
+    const productId = {
+      ...product,
+      id: product.id || product._id, // id 필드가 없으면 _id 사용
+    };
+    console.log("Adding to cart:", productId);
+    const success = await addToCart(productId, 1);
     if (success) {
       alert("장바구니에 추가되었습니다!");
       await fetchCartItems();
@@ -37,7 +42,6 @@ function Detail() {
     const success = await addToWishlist(product);
     if (success) {
       alert("위시리스트에 추가되었습니다!");
-      navigate(`/wishlist`);
     } else {
       alert("위시리스트에 아이템 추가 실패");
     }
@@ -325,10 +329,9 @@ function Detail() {
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`w-[430px] pt-[20px] pb-[20px] cursor-pointer px-4 py-2 text-center text-[15px]
-                    ${
-                      activeTab === tab
-                        ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
-                        : "border-2 border-gray-300 text-gray-500"
+                    ${activeTab === tab
+                      ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
+                      : "border-2 border-gray-300 text-gray-500"
                     }`}
                 >
                   {tab}
