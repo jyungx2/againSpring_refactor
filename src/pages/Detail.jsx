@@ -3,11 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import ReviewList from "@pages/ReviewList";
 
 import useCartStore from "../store/cartStore";
-import useWishlistStore from "../store/wishlistStore";
 import useUserStore from "@store/userStore";
 
 function Detail() {
@@ -18,7 +17,9 @@ function Detail() {
   const navigate = useNavigate();
   const { user } = useUserStore();
   const { addToCart, fetchCartItems } = useCartStore();
-  const { addToWishlist } = useWishlistStore();
+
+
+
 
   const handleAddToCart = async (product) => {
     console.log("Adding to cart:", product);
@@ -32,16 +33,17 @@ function Detail() {
     }
   };
 
-  const handleAddToWishlist = async (product) => {
-    console.log("Adding to wishlist:", product);
-    const success = await addToWishlist(product);
-    if (success) {
-      alert("위시리스트에 추가되었습니다!");
-      navigate(`/wishlist`);
-    } else {
-      alert("위시리스트에 아이템 추가 실패");
-    }
-  };
+  const handleAddToWishlist = useMutation({
+    mutationFn: () => axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
+    onSuccess: (res) => {
+      if (res) {
+        alert("위시리스트에 추가되었습니다!");
+        navigate(`/wishlist`);
+      } else {
+        alert("위시리스트에 아이템 추가 실패");
+      }
+    },
+  });
 
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop";
@@ -295,7 +297,7 @@ function Detail() {
                     <div className="flex mb-[16px] mt-[70px]">
                       <button
                         className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={() => handleAddToWishlist(item)}
+                        onClick={handleAddToWishlist.mutate}
                       >
                         찜하기
                       </button>
