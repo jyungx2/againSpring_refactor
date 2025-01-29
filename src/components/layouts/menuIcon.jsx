@@ -1,6 +1,6 @@
 import useUserStore from "@store/userStore";
 import { Link, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const MenuIcons = () => {
@@ -10,7 +10,17 @@ const MenuIcons = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     resetUser();
-    toast.success(`${user.name} 님, 정상적으로 로그아웃 되었습니다.`);
+    toast.error(`${user.name} 님, 정상적으로 로그아웃 되었습니다.`, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
     navigate("/");
   };
 
@@ -78,7 +88,19 @@ const MenuIcons = () => {
           </Link>
         </>
       )}
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </div>
   );
 };
