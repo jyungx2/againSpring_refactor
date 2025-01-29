@@ -7,6 +7,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ErrorMsg from "@components/ErrorMsg";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const axios = useAxiosInstance();
@@ -49,11 +51,11 @@ function Login() {
         autoLogin,
       });
 
-      alert(user.name + "님 로그인 되었습니다.");
+      toast.success(user.name + "님 로그인 되었습니다.");
       navigate(location.state?.from || "/");
     },
     onError: (err) => {
-      console.error(err);
+      toast.error("오류가 발생하였습니다.");
 
       if (err.response?.data.errors) {
         err.response.data.errors.forEach((error) =>
@@ -62,7 +64,7 @@ function Login() {
       } else {
         alert(
           err.response.data.message ||
-          "오류가 발생하였습니다. 잠시 후 다시 요청하세요."
+            "오류가 발생하였습니다. 잠시 후 다시 요청하세요."
         );
       }
     },
@@ -91,8 +93,9 @@ function Login() {
             <form onSubmit={handleSubmit(login.mutate)}>
               <div className="flex flex-col gap-3">
                 <div
-                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${errors.email ? `${styles.error}` : ""
-                    }`}
+                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${
+                    errors.email ? `${styles.error}` : ""
+                  }`}
                 >
                   <input
                     id="email"
@@ -105,8 +108,9 @@ function Login() {
                 <ErrorMsg target={errors.email} />
 
                 <div
-                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${errors.password ? `${styles.error}` : ""
-                    }`}
+                  className={`border-2 border-grey-10 rounded-2xl focus-within:border-secondary-20 px-4 ${
+                    errors.password ? `${styles.error}` : ""
+                  }`}
                 >
                   <input
                     id="password"

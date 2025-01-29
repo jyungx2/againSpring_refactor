@@ -1,5 +1,7 @@
 import useUserStore from "@store/userStore";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MenuIcons = () => {
   const { user, resetUser } = useUserStore();
@@ -8,7 +10,7 @@ const MenuIcons = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     resetUser();
-    alert(`${user.name} 님, 정상적으로 로그아웃 되었습니다.`);
+    toast.success(`${user.name} 님, 정상적으로 로그아웃 되었습니다.`);
     navigate("/");
   };
 
@@ -76,6 +78,7 @@ const MenuIcons = () => {
           </Link>
         </>
       )}
+      <ToastContainer />
     </div>
   );
 };
