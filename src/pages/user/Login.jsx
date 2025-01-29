@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ErrorMsg from "@components/ErrorMsg";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
@@ -51,7 +51,17 @@ function Login() {
         autoLogin,
       });
 
-      toast.success(user.name + "님 로그인 되었습니다.");
+      toast.success(user.name + "님 로그인 되었습니다.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       navigate(location.state?.from || "/");
     },
     onError: (err) => {
