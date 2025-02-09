@@ -3,11 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import ReviewList from "@pages/ReviewList";
 
 import useCartStore from "../store/cartStore";
-import useWishlistStore from "../store/wishlistStore";
 import useUserStore from "@store/userStore";
 
 function Detail() {
@@ -18,7 +17,9 @@ function Detail() {
   const navigate = useNavigate();
   const { user } = useUserStore();
   const { addToCart, fetchCartItems } = useCartStore();
-  const { addToWishlist } = useWishlistStore();
+
+
+
 
   const handleAddToCart = async (product) => {
     // _id를 id로 매핑
@@ -299,7 +300,7 @@ function Detail() {
                     <div className="flex mb-[16px] mt-[70px]">
                       <button
                         className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={() => handleAddToWishlist(item)}
+                        onClick={handleAddToWishlist.mutate}
                       >
                         찜하기
                       </button>

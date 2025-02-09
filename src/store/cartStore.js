@@ -1,3 +1,4 @@
+// 중복 코드 확인 예정
 import { create } from "zustand";
 import axios from "axios";
 import useUserStore from "@store/userStore";
