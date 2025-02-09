@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import useUserStore from "@zustand/userStore";
+import useUserStore from "@store/userStore";
 import { toast } from "react-toastify";
 
 const ProtectedRoute = () => {
@@ -8,7 +8,7 @@ const ProtectedRoute = () => {
   if (!user) {
     toast.error("로그인이 필요합니다.");
     // alert("로그인이 필요합니다.");
-    return <Navigate to="/user/signIn" replace={true} />;
+    return <Navigate to="/login" replace={true} />;
   }
   return <Outlet />;
 };

@@ -8,18 +8,26 @@ import MyQna from "@pages/user/MyQna";
 import OrderDetail from "@pages/user/OrderDetail";
 import ReviewList from "@pages/user/ReviewList";
 import UncompletedPage from "@pages/user/UncompletedPage";
+import ProtectedRoute from "@components/layouts/ProtectedRoute";
 
 const userRoutes = [
   { path: "login", element: <Login /> },
   { path: "users/login/kakao", element: <Auth /> },
   { path: "signup", element: <Signup /> },
   { path: "tos", element: <TermsOfService /> },
-  { path: "user/order", element: <MyOrder /> },
-  { path: "user/order/:orderId/review/:productId", element: <AddReview /> },
-  { path: "user/:type", element: <MyQna /> },
-  { path: "user/order/detail/:orderId", element: <OrderDetail /> },
-  { path: "user/review", element: <ReviewList /> },
-  { path: "uncompleted", element: <UncompletedPage /> },
+
+  // ✅ 로그인해야 접근 가능한 페이지만 ProtectedRoute 적용
+  {
+    element: <ProtectedRoute />,
+    children: [
+      { path: "user/order", element: <MyOrder /> },
+      { path: "user/order/:orderId/review/:productId", element: <AddReview /> },
+      { path: "user/:type", element: <MyQna /> },
+      { path: "user/order/detail/:orderId", element: <OrderDetail /> },
+      { path: "user/review", element: <ReviewList /> },
+      { path: "uncompleted", element: <UncompletedPage /> },
+    ],
+  },
 ];
 
 export default userRoutes;

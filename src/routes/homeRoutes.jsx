@@ -10,6 +10,7 @@ import eventRoutes from "./eventRoutes";
 import tansoRoutes from "./tansoRoutes";
 import shopRoutes from "./shopRoutes";
 import Wishlist from "@pages/WishList";
+import ProtectedRoute from "@components/layouts/ProtectedRoute";
 
 const homeRoutes = [
   {
