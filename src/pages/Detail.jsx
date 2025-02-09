@@ -22,13 +22,8 @@ function Detail() {
 
 
   const handleAddToCart = async (product) => {
-    // _id를 id로 매핑
-    const productId = {
-      ...product,
-      id: product.id || product._id, // id 필드가 없으면 _id 사용
-    };
-    console.log("Adding to cart:", productId);
-    const success = await addToCart(productId, 1);
+    console.log("Adding to cart:", product);
+    const success = await addToCart(product, 1);
     if (success) {
       alert("장바구니에 추가되었습니다!");
       await fetchCartItems();
@@ -38,15 +33,17 @@ function Detail() {
     }
   };
 
-  const handleAddToWishlist = async (product) => {
-    console.log("Adding to wishlist:", product);
-    const success = await addToWishlist(product);
-    if (success) {
-      alert("위시리스트에 추가되었습니다!");
-    } else {
-      alert("위시리스트에 아이템 추가 실패");
-    }
-  };
+  const handleAddToWishlist = useMutation({
+    mutationFn: () => axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
+    onSuccess: (res) => {
+      if (res) {
+        alert("위시리스트에 추가되었습니다!");
+        navigate(`/wishlist`);
+      } else {
+        alert("위시리스트에 아이템 추가 실패");
+      }
+    },
+  });
 
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop";
