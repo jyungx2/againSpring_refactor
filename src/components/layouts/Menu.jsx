@@ -46,7 +46,7 @@ const Menu = () => {
                     <li key={subIndex}>
                       <Link
                         to={item.links[subIndex]}
-                        className="block text-gray-700 hover:text-secondary font-medium whitespace-nowrap px-4 py-2 transition-all duration-200 ease-in-out hover:bg-gray-100"
+                        className="border-4 block text-gray-700 hover:text-secondary font-medium whitespace-nowrap px-4 py-2 transition-all duration-200 ease-in-out hover:bg-gray-100"
                       >
                         {subItem}
                       </Link>
