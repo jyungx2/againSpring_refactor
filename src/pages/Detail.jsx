@@ -327,10 +327,9 @@ function Detail() {
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`w-[430px] pt-[20px] pb-[20px] cursor-pointer px-4 py-2 text-center text-[15px]
-                    ${
-                      activeTab === tab
-                        ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
-                        : "border-2 border-gray-300 text-gray-500"
+                    ${activeTab === tab
+                      ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
+                      : "border-2 border-gray-300 text-gray-500"
                     }`}
                 >
                   {tab}
