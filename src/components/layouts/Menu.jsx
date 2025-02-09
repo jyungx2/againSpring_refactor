@@ -6,9 +6,7 @@ const Menu = () => {
 
   const menuItems = [
     { name: '다시,봄', links: ['/'] },
-    {
-      name: 'SHOP', links: ['/shop'],
-    },
+    { name: 'SHOP', links: ['/shop'], subMenu: ['test1', 'test2'], },
     {
       name: '공지사항',
       subMenu: ['공지사항', 'QnA'],
@@ -20,7 +18,8 @@ const Menu = () => {
 
   return (
     <nav className='w-[1200px] mx-auto bg-white'>
-      <ul className='flex justify-center space-x-10 border-t border-gray-200 py-3'>
+      <ul className="flex justify-center space-x-10 border-t border-gray-200 py-4">
+
         {menuItems.map((item, index) => (
           <li
             key={index}
@@ -35,17 +34,19 @@ const Menu = () => {
             >
               {item.name}
             </Link>
-            {item.subMenu && activeMenu === item.name && (
+            {item.subMenu && (
               <div
-                className='absolute top-full left-0 bg-white shadow-lg rounded-md py-4 px-6 z-50'
-                style={{ width: '100%' }}
+                className={`absolute top-[calc(100%+10px)] left-0 shadow-md z-50 border-t 
+              transition-all duration-300 ease-in-out transform will-change-[transform,opacity] 
+              ${activeMenu === item.name ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none delay-75"}`}
+                style={{ width: "100%" }}
               >
-                <ul className='space-y-2 text-center'>
+                <ul className="w-full text-center bg-white">
                   {item.subMenu.map((subItem, subIndex) => (
                     <li key={subIndex}>
                       <Link
                         to={item.links[subIndex]}
-                        className="text-gray-600 hover:text-secondary block whitespace-nowrap"
+                        className="block text-gray-700 hover:text-secondary font-medium whitespace-nowrap px-4 py-2 transition-all duration-200 ease-in-out hover:bg-gray-100"
                       >
                         {subItem}
                       </Link>
