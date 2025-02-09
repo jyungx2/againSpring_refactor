@@ -30,15 +30,15 @@ const Menu = () => {
           >
             <Link
               to={item.links ? item.links[0] : "#"}
-              className="text-gray-700 hover:text-secondary font-medium text-center block"
+              className="text-gray-700 hover:text-secondary font-medium text-center block py-2"
             >
               {item.name}
             </Link>
             {item.subMenu && (
               <div
-                className={`absolute top-[calc(100%+10px)] left-0 shadow-md z-50 border-t 
-              transition-all duration-300 ease-in-out transform will-change-[transform,opacity] 
-              ${activeMenu === item.name ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none delay-75"}`}
+                className={`absolute top-full left-0 bg-gray-50 shadow-md z-50
+                transition-all duration-300 ease-in-out transform will-change-[transform,opacity] translate-y-[1px]
+                ${activeMenu === item.name ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none delay-75"}`}
                 style={{ width: "100%" }}
               >
                 <ul className="w-full text-center bg-white">
@@ -46,7 +46,7 @@ const Menu = () => {
                     <li key={subIndex}>
                       <Link
                         to={item.links[subIndex]}
-                        className="border-4 block text-gray-700 hover:text-secondary font-medium whitespace-nowrap px-4 py-2 transition-all duration-200 ease-in-out hover:bg-gray-100"
+                        className="block text-gray-700 hover:text-secondary font-medium whitespace-nowrap px-4 py-2 transition-all duration-200 ease-in-out hover:bg-gray-100"
                       >
                         {subItem}
                       </Link>
