@@ -64,19 +64,16 @@ const MenuIcons = () => {
           </Link>
           <Link
             to="/login"
-            className=" px-4 py-2 rounded text-black hover:bg-primary-20"
+            className="px-4 py-2 rounded text-black hover:bg-primary-20 hover:scale-105 transition-transform duration-200"
           >
             로그인
           </Link>
 
-          {/* 회원가입 버튼을 삭제하고 
-          마이페이지 클릭 시 비로그인 상태에서는 alert 창이 뜨고, 
-          로그인 페이지로 이동 로직이 필요 */}
           <Link
-            to="/"
-            className=" px-4 py-2 rounded text-black hover:bg-secondary-10"
+            to="/tos"
+            className="px-4 py-2 rounded text-black hover:bg-secondary-10 hover:scale-105 transition-transform duration-200"
           >
-            마이페이지
+            회원가입
           </Link>
         </>
       )}
