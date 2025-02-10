@@ -39,14 +39,14 @@ function Shop() {
   };
 
   const menuItems = [
-    { name: "전체", category: "all-of-list" },
-    { name: "주방용품", category: "kitchen" },
-    { name: "세탁용품", category: "laundry" },
-    { name: "욕실용품", category: "bathroom" },
-    { name: "문구용품", category: "stationery" },
-    { name: "식품", category: "food" },
-    { name: "생활잡화", category: "life" },
-    { name: "반려동물", category: "pet" },
+    { name: "전체", links: ["/all-of-list"], category: "all-of-list" },
+    { name: "주방용품", links: ["/kitchen"], category: "kitchen" },
+    { name: "세탁용품", links: ["/laundry"], category: "laundry" },
+    { name: "욕실용품", links: ["/bathroom"], category: "bathroom" },
+    { name: "문구용품", links: ["/stationery"], category: "stationery" },
+    { name: "식품", links: ["/food"], category: "food" },
+    { name: "생활잡화", links: ["/life"], category: "life" },
+    { name: "반려동물", links: ["/pet"], category: "pet" },
   ];
 
   // 데이터 가져오기
@@ -185,8 +185,8 @@ function Shop() {
                 <button
                   key={index}
                   className={`mx-1 px-3 py-1 ${currentPage === index + 1
-                    ? "bg-secondary-20 text-white"
-                    : "bg-grey-20 text-black"
+                      ? "bg-secondary-20 text-white"
+                      : "bg-grey-20 text-black"
                     } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40`}
                   onClick={() => handlePageChange(index + 1)}
                 >
