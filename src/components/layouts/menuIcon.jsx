@@ -64,13 +64,14 @@ const MenuIcons = () => {
           </Link>
           <Link
             to="/login"
-            className="bg-primary-40 px-4 py-2 rounded text-white hover:bg-primary-20 font-gowunBold"
+            className="px-4 py-2 rounded text-black hover:bg-primary-20 hover:scale-105 transition-transform duration-200"
           >
             로그인
           </Link>
+
           <Link
             to="/tos"
-            className="bg-secondary-20 px-4 py-2 rounded text-white hover:bg-secondary-10 font-gowunBold"
+            className="px-4 py-2 rounded text-black hover:bg-secondary-10 hover:scale-105 transition-transform duration-200"
           >
             회원가입
           </Link>

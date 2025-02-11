@@ -5,6 +5,7 @@ export default {
       fontFamily: {
         gowun: ["GowunBatang-Regular", "Arial", "sans-serif"],
         gowunBold: ["GowunBatang-Bold", "Arial", "sans-serif"],
+        gowunDodum: ["GowunDodum-Regular", "Arial", "sans-serif"],
       },
       colors: {
         "primary-5": "#EFF6EA",
