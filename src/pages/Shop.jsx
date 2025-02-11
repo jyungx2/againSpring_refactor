@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
-import { Link } from "react-router-dom";
 
 function Shop() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [selectedCategory, setSelectedCategory] = useState("all-of-list"); // 기본 카테고리 값 설정
   const productsPerPage = 8; // 페이지당 보여줄 아이템 수
   const navigate = useNavigate();
+  const location = useLocation(); // 현재 URL 정보를 가져오기 위해 사용
   const { activeMenu, setActiveMenu } = useMenuStore();
   const [hovered, setHovered] = useState(false);
-
-  //✅
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const axiosInstance = useAxiosInstance();
+
+
 
   const startIndex = (currentPage - 1) * productsPerPage;
 
@@ -30,9 +30,9 @@ function Shop() {
     .filter(
       (product) =>
         selectedCategory === "all-of-list" ||
-        product.extra?.category?.includes(selectedCategory)
+        product.extra?.category?.includes(selectedCategory) // 그렇지 않을 경우 선택된 카테고리에 해당하는 항목만 필터링
     )
-    .slice(startIndex, startIndex + productsPerPage);
+    .slice(startIndex, startIndex + productsPerPage); // slice를 사용하여 페이지별로 아이템을 나누어 표시
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -48,6 +48,14 @@ function Shop() {
     { name: "생활잡화", links: ["/life"], category: "life" },
     { name: "반려동물", links: ["/pet"], category: "pet" },
   ];
+
+  // URL 쿼리 파라미터를 통해 카테고리를 가져와서 설정
+  useEffect(() => {
+    const query = new URLSearchParams(location.search); // URLSearchParams를 사용하여 URL 쿼리 파라미터를 가져옴
+    const categoryFromURL = query.get("category") || "all-of-list"; // 값이 없으면 "all-of-list"로 설정
+    setSelectedCategory(categoryFromURL);
+    setCurrentPage(1); // 카테고리 변경 시 페이지 번호 초기화
+  }, []); // selectedCategory가 변경될 때마다 실행하려고 했으나 혹시모를 무한루프 방지하기위해 안씀
 
   // 데이터 가져오기
   useEffect(() => {
@@ -69,11 +77,6 @@ function Shop() {
 
     fetchProducts();
   }, []);
-
-  useEffect(() => {
-    // 카테고리 변경 시 페이지를 첫 페이지로 초기화
-    setCurrentPage(1);
-  }, [selectedCategory]);
 
   if (loading) return <p className="text-center mt-8">Loading...</p>;
   if (error) return <p className="text-center mt-8 text-red-500">{error}</p>;
@@ -185,8 +188,8 @@ function Shop() {
                 <button
                   key={index}
                   className={`mx-1 px-3 py-1 ${currentPage === index + 1
-                      ? "bg-secondary-20 text-white"
-                      : "bg-grey-20 text-black"
+                    ? "bg-secondary-20 text-white"
+                    : "bg-grey-20 text-black"
                     } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40`}
                   onClick={() => handlePageChange(index + 1)}
                 >
