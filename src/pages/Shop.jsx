@@ -55,7 +55,7 @@ function Shop() {
     const categoryFromURL = query.get("category") || "all-of-list"; // 값이 없으면 "all-of-list"로 설정
     setSelectedCategory(categoryFromURL);
     setCurrentPage(1); // 카테고리 변경 시 페이지 번호 초기화
-  }, []); // selectedCategory가 변경될 때마다 실행하려고 했으나 혹시모를 무한루프 방지하기위해 안씀
+  }, [location.search]); // selectedCategory가 변경될 때마다 실행하려고 했으나 혹시모를 무한루프 방지하기위해 안씀
 
   // 데이터 가져오기
   useEffect(() => {
