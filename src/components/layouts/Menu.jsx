@@ -70,6 +70,7 @@ const Menu = () => {
                           onClick={(e) => {    // SHOP 메뉴의 서브메뉴 클릭 시 이벤트 핸들러 추가
                             e.preventDefault();
                             handleShopSubmenuClick(subItem); // 서브메뉴 클릭 시 이벤트 핸들러
+                            setActiveMenu(null); // 클릭 시 서브메뉴 숨기기 
                           }}
                           className="block text-gray-700 hover:text-secondary font-medium whitespace-nowrap px-4 py-4 transition-all duration-200 ease-in-out hover:bg-gray-100"
                         >
