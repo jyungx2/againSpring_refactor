@@ -151,9 +151,9 @@ function Shop() {
                           alt={product.name}
                           style={{
                             width: "100%",
-                            maxWidth: "363px",
+                            maxWidth: "300px",
                             height: "auto",
-                            aspectRatio: "363 / 484",
+                            aspectRatio: "300 / 350",
                             minWidth: "100px",
                           }}
                         />
