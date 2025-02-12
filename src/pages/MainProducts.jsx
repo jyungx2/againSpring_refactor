@@ -60,10 +60,10 @@ const MainProducts = () => {
           <SwiperSlide key={product._id}>
             <Link
               to={`/detail/${product._id}`}
-              className="flex flex-col items-center text-center"
+              className="flex flex-col items-center text-center "
             >
               <div
-                className="bg-gray-200"
+                className="bg-gray-200 rounded-[12px] border border-gray-300 overflow-hidden"
                 style={{ width: "200px", height: "200px" }}
               >
                 <img
