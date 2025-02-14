@@ -5,7 +5,6 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ReviewList from "@pages/ReviewList";
-
 import useCartStore from "../store/cartStore";
 import useUserStore from "@store/userStore";
 
@@ -14,12 +13,10 @@ function Detail() {
   const { id } = useParams();
   const axiosInstance = useAxiosInstance();
   const [cartItemsList, setCartItemsList] = useState([]);
+  const [productDetails, setProductDetails] = useState(null);
   const navigate = useNavigate();
   const { user } = useUserStore();
   const { addToCart, fetchCartItems } = useCartStore();
-
-
-
 
   const handleAddToCart = async (product) => {
     console.log("Adding to cart:", product);
@@ -34,7 +31,8 @@ function Detail() {
   };
 
   const handleAddToWishlist = useMutation({
-    mutationFn: () => axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
+    mutationFn: () =>
+      axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
     onSuccess: (res) => {
       if (res) {
         alert("위시리스트에 추가되었습니다!");
@@ -56,7 +54,8 @@ function Detail() {
         const response = await axiosInstance.get(`/products/${id}`);
         const product = response?.data?.item;
         product.quantity = 1;
-        setCartItemsList([product]);
+        setCartItemsList([product]); // 장바구니에 추가할 상품 목록
+        setProductDetails(product); // 상품 상세 정보
       } catch (error) {
         console.error("Failed to fetch product:", error);
       }
@@ -100,18 +99,9 @@ function Detail() {
   const filteredQnas = qnas?.filter((qna) => qna.product_id === parseInt(id));
 
   const [quantity, setQuantity] = useState(1);
-  const [productDetails, setProductDetails] = useState(null);
+  // const [productDetails, setProductDetails] = useState(null);
 
   const [tabContent, setTabContent] = useState({
-    상세정보: (
-      <div style={{ textAlign: "center" }}>
-        <img
-          src="/images/pencildetail.jpg"
-          alt="상세정보 이미지"
-          style={{ maxWidth: "100%", height: "auto" }}
-        />
-      </div>
-    ),
     구매안내: (
       <div>
         <p className="pl-[100px] pr-[100px] text-[18px]">
@@ -157,16 +147,6 @@ function Detail() {
     ),
   });
 
-  const dummyItems = [
-    {
-      id: 1,
-      name: "상품 A",
-      price: 15000,
-      quantity: 1,
-      image: "https://via.placeholder.com/80",
-    },
-  ];
-
   const shippingCost = 3000;
   const updateQuantity = (id, newQuantity) => {
     setCartItemsList((prevItems) =>
@@ -182,9 +162,26 @@ function Detail() {
   );
 
   const totalOrderAmount = totalPrice + shippingCost;
-
   const { activeMenu, setActiveMenu } = useMenuStore();
   const [hovered, setHovered] = useState(false);
+
+
+  let formattedContent = "";
+
+  if (productDetails && productDetails.content) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = productDetails.content;
+    tempDiv.querySelectorAll("img").forEach((img) => {
+      const src = img.getAttribute("src");
+      if (src && src.startsWith("/files/")) {
+        img.setAttribute("src", `https://11.fesp.shop${src}`);
+      }
+    });
+
+    formattedContent = tempDiv.innerHTML; // 변환된 HTML을 다시 문자열로 변환
+  } else {
+    formattedContent = "<p>상품 상세정보가 없습니다.</p>"; // 상품 상세정보가 없을 경우
+  }
 
   return (
     <div className="flex justify-center px-[16px]">
@@ -338,7 +335,15 @@ function Detail() {
             </div>
 
             <div className="p-4 ml-[auto] mr-[auto] w-[1026px] mt-[100px] mb-[100px]">
-              <p>{tabContent[activeTab]}</p>
+              {/* // 상세정보 탭일 경우 상품 상세정보를 출력 - 조건부 랜더링 작업 (리뷰필요) */}
+              {activeTab === "상세정보" ? (
+                <div
+                  className="product-detail"
+                  dangerouslySetInnerHTML={{ __html: formattedContent }} // HTML을 렌더링하기 위해 dangerouslySetInnerHTML 사용하며 __html 키로 전달
+                />
+              ) : (
+                <p>{tabContent[activeTab]}</p> // 상세정보 탭이 아닐 경우 탭 컨텐츠 출력
+              )}
             </div>
           </div>
         </div>
