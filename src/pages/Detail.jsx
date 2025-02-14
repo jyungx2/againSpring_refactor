@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -63,12 +62,10 @@ function Detail() {
     fetchProduct();
   }, [id]);
 
-  const currentProductName = cartItemsList[0]?.name || "";
+  // const currentProductName = cartItemsList[0]?.name || "";
 
   const {
     data: qnas,
-    isLoading: qnasLoading,
-    error: qnasError,
   } = useQuery({
     queryKey: ["posts", "qna", id],
     queryFn: () =>
@@ -98,10 +95,10 @@ function Detail() {
   // 상품 ID가 20인 QnA만 필터링
   const filteredQnas = qnas?.filter((qna) => qna.product_id === parseInt(id));
 
-  const [quantity, setQuantity] = useState(1);
+  // const [quantity, setQuantity] = useState(1);
   // const [productDetails, setProductDetails] = useState(null);
 
-  const [tabContent, setTabContent] = useState({
+  const [tabContent] = useState({
     구매안내: (
       <div>
         <p className="pl-[100px] pr-[100px] text-[18px]">
@@ -147,7 +144,7 @@ function Detail() {
     ),
   });
 
-  const shippingCost = 3000;
+  // const shippingCost = 3000;
   const updateQuantity = (id, newQuantity) => {
     setCartItemsList((prevItems) =>
       prevItems.map((item) =>
@@ -161,9 +158,9 @@ function Detail() {
     0
   );
 
-  const totalOrderAmount = totalPrice + shippingCost;
-  const { activeMenu, setActiveMenu } = useMenuStore();
-  const [hovered, setHovered] = useState(false);
+  // const totalOrderAmount = totalPrice + shippingCost;
+  // const { activeMenu, setActiveMenu } = useMenuStore();
+  // const [hovered, setHovered] = useState(false);
 
 
   let formattedContent = "";
