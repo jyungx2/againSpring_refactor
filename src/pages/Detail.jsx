@@ -72,9 +72,8 @@ function Detail() {
       axiosInstance.get("/posts", {
         params: {
           type: "qna",
-          // Here, we fetch all QnA posts
           page: 1,
-          limit: 1000, // Set a high limit to fetch all QnA posts
+          limit: 1000,
         },
       }),
     select: (res) => res.data.item,
@@ -100,17 +99,73 @@ function Detail() {
 
   const [tabContent] = useState({
     구매안내: (
-      <div>
-        <p className="pl-[100px] pr-[100px] text-[18px]">
-          고액결제의 경우 안전을 위해 카드사에서 확인전화를 드릴 수도 있습니다.
-          확인과정에서 도난 카드의 사용이나 타인 명의의 주문등 정상적인 주문이
-          아니라고 판단될 경우 임의로 주문을 보류 또는 취소할 수 있습니다.
-          <br /> <br /> <br />
-          무통장 입금은 상품 구매 대금은 PC뱅킹, 인터넷뱅킹, 텔레뱅킹 혹은
-          가까운 은행에서 직접 입금하시면 됩니다. 주문시 입력한 입금자명과
-          실제입금자의 성명이 반드시 일치하여야 하며, 7일 이내로 입금을 하셔야
-          하며 입금되지 않은 주문은 자동취소 됩니다.
-        </p>
+      <div className="grid grid-cols-2 gap-8 text-lg leading-relaxed">
+        {/* 상품결제정보 */}
+        <div className="border border-gray-300 p-6 rounded-md bg-white">
+          <h2 className="font-semibold text-xl">PAYMENT INFO</h2>
+          <h3 className="text-gray-500 mb-4">상품결제정보</h3>
+          <p>
+            고액결제의 경우 안전을 위해 카드사에서 확인전화를 드릴 수도 있습니다.
+            확인 과정에서 도난 카드 사용이나 타인 명의의 주문 등 정상적인 주문이
+            아니라고 판단될 경우 주문을 보류 또는 취소할 수 있습니다.
+            <br /> <br />
+            무통장 입금은 상품 구매 대금을 PC뱅킹, 인터넷뱅킹, 텔레뱅킹 혹은
+            가까운 은행에서 직접 입금하시면 됩니다. 주문 시 입력한 입금자명과
+            실제 입금자명이 반드시 일치해야 하며, 7일 이내로 입금이 확인되지
+            않을 경우 주문이 자동 취소됩니다.
+          </p>
+        </div>
+
+        {/* 배송정보 */}
+        <div className="border border-gray-300 p-6 rounded-md bg-white">
+          <h2 className="font-semibold text-xl">DELIVERY INFO</h2>
+          <h3 className="text-gray-500 mb-4">상품결제정보</h3>
+          <p>
+            배송 방법 : 택배
+            <br />
+            배송 지역 : 전국
+            <br />
+            배송 비용 : 3,000원
+            <br />
+            배송 기간 : 2일 ~ 7일
+            <br />
+            기타 배송 안내 : 택배사 사정에 따라 지연될 수 있습니다.
+          </p>
+        </div>
+
+        {/* 교환 및 반품 정보 */}
+        <div className="border border-gray-300 p-6 rounded-md bg-white">
+          <h2 className="font-semibold text-xl">EXCHANGE INFO</h2>
+          <h3 className="text-gray-500 mb-4">상품결제정보</h3>
+          <p>
+            교환 및 반품이 가능한 경우
+            <br />
+            1) 상품을 공급받은 날로부터 7일 이내 (포장을 개봉하였거나
+            포장이 훼손되어 상품 가치가 상실된 경우 제외)
+            <br />
+            2) 공급받은 상품이 표시·광고 내용과 다르거나 다르게 이행된 경우
+            <br />
+            <br />
+            교환 및 반품이 불가능한 경우
+            <br />
+            1) 고객의 책임 있는 사유로 상품 등이 분실·파손된 경우
+            <br />
+            2) 상품 개봉 후 가치가 훼손된 경우
+          </p>
+        </div>
+
+        {/* 서비스문의*/}
+        <div className="border border-gray-300 p-6 rounded-md bg-white">
+          <h2 className="font-semibold text-xl">SERVICE INFO</h2>
+          <h3 className="text-gray-500 mb-4">상품결제정보</h3>
+          <p>
+            상담 가능 시간 : AM 10:00 ~ PM 6:00 (주말, 공휴일 휴무)
+            <br />
+            점심시간 : PM 12:00 ~ PM 1:00
+            <br />
+            기타 문의사항은 고객센터로 연락 주시면 빠르게 도움 드리겠습니다.
+          </p>
+        </div>
       </div>
     ),
     상품후기: <ReviewList productId={id} />,
@@ -188,7 +243,7 @@ function Detail() {
       >
         <div>
           {cartItemsList.map((item) => (
-            <div className="flex ml-[80px] mt-[50px]" key={item._id}>
+            <div className="flex mt-[50px]" key={item._id}>
               <div className="flex flex-col mr-[30px]">
                 {item?.mainImages?.map((image, index) => (
                   <img
@@ -236,112 +291,110 @@ function Detail() {
 
                 <hr className="mt-[12px] mb-[16px]" />
 
-                {cartItemsList.map((item) => (
-                  <div key={item.id} className="border-b py-[20px]">
-                    <dd className="flex items-start py-[10px]">
-                      <div className="flex">
-                        <h2 className="text-[15px] font-semibold text-grey-80 mr-[180px]">
-                          {item.name}
-                        </h2>
 
-                        <dd className="text-center py-[10px] mr-[60px]">
-                          <div className="flex justify-center">
-                            <div className="flex items-center h-[32px] border border-grey-20">
-                              <button
-                                className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10"
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity - 1)
-                                }
-                              >
-                                -
-                              </button>
-                              <span className="w-[50px] text-center">
-                                {item.quantity}
-                              </span>
-                              <button
-                                className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity + 1)
-                                }
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-                        </dd>
-
-                        <dd className="text-center py-[10px]">
-                          {(item.price * item.quantity).toLocaleString()}원
-                        </dd>
-                      </div>
-                    </dd>
-                    <hr className="mt-[12px] mb-[1px]" />
-
+                <div key={item.id} className="border-b py-[20px]">
+                  <dd className="flex items-start py-[10px]">
                     <div className="flex">
-                      <dt className="py-[10px] text-[12px] mt-[1px] mr-[10px]">
-                        총 상품 금액(수량):
-                      </dt>
-                      <dd className="text-grey-80 font-gowunBold py-[10px] text-[21px]">
-                        {totalPrice.toLocaleString()}원
+                      <h2 className="text-[15px] font-semibold text-grey-80 mr-[180px]">
+                        {item.name}
+                      </h2>
+
+                      <dd className="text-center py-[10px] mr-[60px]">
+                        <div className="flex justify-center">
+                          <div className="flex items-center h-[32px] border border-grey-20">
+                            <button
+                              className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10"
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
+                            >
+                              -
+                            </button>
+                            <span className="w-[50px] text-center">
+                              {item.quantity}
+                            </span>
+                            <button
+                              className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
                       </dd>
-                      <dd className="text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
-                        {item?.quantity?.toLocaleString()}개
+
+                      <dd className="text-center py-[10px]">
+                        {(item.price * item.quantity).toLocaleString()}원
                       </dd>
                     </div>
-                    <div className="flex mb-[16px] mt-[70px]">
-                      <button
-                        className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={handleAddToWishlist.mutate}
-                      >
-                        찜하기
-                      </button>
-                      <button
-                        className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={() => handleAddToCart(item)}
-                      >
-                        장바구니
-                      </button>
-                      <button
-                        className="bg-secondary-10 border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={() => alert("구매가 완료되었습니다!")}
-                      >
-                        구매하기
-                      </button>
-                    </div>
+                  </dd>
+                  <hr className="mt-[12px] mb-[1px]" />
+
+                  <div className="flex">
+                    <dt className="py-[10px] text-[12px] mt-[1px] mr-[10px]">
+                      총 상품 금액(수량):
+                    </dt>
+                    <dd className="text-grey-80 font-gowunBold py-[10px] text-[21px]">
+                      {totalPrice.toLocaleString()}원
+                    </dd>
+                    <dd className="text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
+                      {item?.quantity?.toLocaleString()}개
+                    </dd>
                   </div>
-                ))}
+                  <div className="flex mb-[16px] mt-[70px]">
+                    <button
+                      className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                      onClick={handleAddToWishlist.mutate}
+                    >
+                      찜하기
+                    </button>
+                    <button
+                      className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                      onClick={() => handleAddToCart(item)}
+                    >
+                      장바구니
+                    </button>
+                    <button
+                      className="bg-secondary-10 border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                      onClick={() => alert("구매가 완료되었습니다!")}
+                    >
+                      구매하기
+                    </button>
+                  </div>
+                </div>
               </dl>
             </div>
           ))}
 
-          <div>
-            <div className="flex mt-[80px]">
-              {["상세정보", "구매안내", "상품후기", "QnA"].map((tab) => (
-                <div
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`w-[430px] pt-[20px] pb-[20px] cursor-pointer px-4 py-2 text-center text-[15px]
-                    ${activeTab === tab
-                      ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
-                      : "border-2 border-gray-300 text-gray-500"
-                    }`}
-                >
-                  {tab}
-                </div>
-              ))}
-            </div>
 
-            <div className="p-4 ml-[auto] mr-[auto] w-[1026px] mt-[100px] mb-[100px]">
-              {/* // 상세정보 탭일 경우 상품 상세정보를 출력 - 조건부 랜더링 작업 (리뷰필요) */}
-              {activeTab === "상세정보" ? (
-                <div
-                  className="product-detail"
-                  dangerouslySetInnerHTML={{ __html: formattedContent }} // HTML을 렌더링하기 위해 dangerouslySetInnerHTML 사용하며 __html 키로 전달
-                />
-              ) : (
-                <p>{tabContent[activeTab]}</p> // 상세정보 탭이 아닐 경우 탭 컨텐츠 출력
-              )}
-            </div>
+          <div className="flex mt-[80px]">
+            {["상세정보", "구매안내", "상품후기", "QnA"].map((tab) => (
+              <div
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`flex-1 pt-[20px] pb-[20px] cursor-pointer px-4 text-center text-[15px]
+                  ${activeTab === tab
+                    ? "border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold"
+                    : "border-2 border-gray-300 text-gray-500"
+                  }`}
+              >
+                {tab}
+              </div>
+            ))}
+          </div>
+
+          <div className="p-4 w-full mx-auto mt-[100px] mb-[100px]">
+            {/* // 상세정보 탭일 경우 상품 상세정보를 출력 - 조건부 랜더링 작업 (리뷰필요) */}
+            {activeTab === "상세정보" ? (
+              <div
+                className="product-detail"
+                dangerouslySetInnerHTML={{ __html: formattedContent }} // HTML을 렌더링하기 위해 dangerouslySetInnerHTML 사용하며 __html 키로 전달
+              />
+            ) : (
+              <div>{tabContent[activeTab]}</div> // 상세정보 탭이 아닐 경우 탭 컨텐츠 출력
+            )}
           </div>
         </div>
       </div>
