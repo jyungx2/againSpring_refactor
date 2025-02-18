@@ -64,9 +64,7 @@ function Detail() {
 
   // const currentProductName = cartItemsList[0]?.name || "";
 
-  const {
-    data: qnas,
-  } = useQuery({
+  const { data: qnas, error: qnasError, isLoading: qnasLoading, } = useQuery({
     queryKey: ["posts", "qna", id],
     queryFn: () =>
       axiosInstance.get("/posts", {
@@ -81,18 +79,26 @@ function Detail() {
     cacheTime: 1000 * 60 * 30,
   });
 
+  // [디버깅] 콘솔에 QnA 포스트들 출력
   // 콘솔에 QnA 포스트들의 상품 ID 출력
-  useEffect(() => {
-    if (qnas) {
-      console.log(
-        "QnA 포스트들의 상품 ID:",
-        qnas.map((qna) => qna.product_id)
-      );
-    }
-  }, [qnas]);
+  // useEffect(() => {
+  //   if (qnas) {
+  //     console.log(
+  //       "QnA 포스트들의 상품 ID:",
+  //       qnas.map((qna) => qna.product_id)
+  //     );
+  //   }
+  // }, [qnas]);
 
   // 상품 ID가 20인 QnA만 필터링
   const filteredQnas = qnas?.filter((qna) => qna.product_id === parseInt(id));
+  // [디버깅] 콘솔에 필터링된 QnA 출력
+  // useEffect(() => {
+  //   if (!qnasLoading && qnas) {
+  //     console.log("QnA 전체 데이터:", qnas);
+  //     console.log("필터링된 QnA:", filteredQnas);
+  //   }
+  // }, [qnasLoading, qnas, filteredQnas]);
 
   // const [quantity, setQuantity] = useState(1);
   // const [productDetails, setProductDetails] = useState(null);
@@ -169,34 +175,7 @@ function Detail() {
       </div>
     ),
     상품후기: <ReviewList productId={id} />,
-    QnA: (
-      <div className="rounded-md overflow-hidden">
-        <div className="flex justify-between items-center py-4 px-6 border-b border-gray-300">
-          <h3 className="text-3xl font-bold">Q&A</h3>
-          <Link to="/qna"></Link>
-        </div>
-        <ul className="space-y-9 px-6 py-9">
-          {filteredQnas?.map((qna) => (
-            <li
-              key={qna._id}
-              className="border-b border-gray-300 flex justify-between items-center text-lg py-7"
-            >
-              <Link
-                to={`/qna/detail/${qna._id}`}
-                className="text-[15px] text-gray-800 hover:underline"
-              >
-                {qna.image}
-                {qna.title}
-              </Link>
-              <span className="text-gray-500">
-                {qna.createdAt.split("T")[0]}
-              </span>
-            </li>
-          ))}
-          {filteredQnas?.length === 0 && <p>Q&A가 없습니다.</p>}
-        </ul>
-      </div>
-    ),
+    //  QnA 탭은 이제 최신 filteredQnas를 직접 사용해서 렌더링함 (디버깅적업 -  콘솔에서 qnas와 filteredQnas 확인됨)
   });
 
   // const shippingCost = 3000;
@@ -291,79 +270,80 @@ function Detail() {
 
                 <hr className="mt-[12px] mb-[16px]" />
 
+                {cartItemsList.map((item) => (
+                  <div key={item.id} className="border-b py-[20px]">
+                    <dd className="flex items-start py-[10px]">
+                      <div className="flex">
+                        <h2 className="text-[15px] font-semibold text-grey-80 mr-[180px]">
+                          {item.name}
+                        </h2>
 
-                <div key={item.id} className="border-b py-[20px]">
-                  <dd className="flex items-start py-[10px]">
-                    <div className="flex">
-                      <h2 className="text-[15px] font-semibold text-grey-80 mr-[180px]">
-                        {item.name}
-                      </h2>
-
-                      <dd className="text-center py-[10px] mr-[60px]">
-                        <div className="flex justify-center">
-                          <div className="flex items-center h-[32px] border border-grey-20">
-                            <button
-                              className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10"
-                              onClick={() =>
-                                updateQuantity(item.id, item.quantity - 1)
-                              }
-                            >
-                              -
-                            </button>
-                            <span className="w-[50px] text-center">
-                              {item.quantity}
-                            </span>
-                            <button
-                              className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
-                              onClick={() =>
-                                updateQuantity(item.id, item.quantity + 1)
-                              }
-                            >
-                              +
-                            </button>
+                        <dd className="text-center py-[10px] mr-[60px]">
+                          <div className="flex justify-center">
+                            <div className="flex items-center h-[32px] border border-grey-20">
+                              <button
+                                className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10"
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity - 1)
+                                }
+                              >
+                                -
+                              </button>
+                              <span className="w-[50px] text-center">
+                                {item.quantity}
+                              </span>
+                              <button
+                                className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity + 1)
+                                }
+                              >
+                                +
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      </dd>
+                        </dd>
 
-                      <dd className="text-center py-[10px]">
-                        {(item.price * item.quantity).toLocaleString()}원
+                        <dd className="text-center py-[10px]">
+                          {(item.price * item.quantity).toLocaleString()}원
+                        </dd>
+                      </div>
+                    </dd>
+                    <hr className="mt-[12px] mb-[1px]" />
+
+                    <div className="flex">
+                      <dt className="py-[10px] text-[12px] mt-[1px] mr-[10px]">
+                        총 상품 금액(수량):
+                      </dt>
+                      <dd className="text-grey-80 font-gowunBold py-[10px] text-[21px]">
+                        {totalPrice.toLocaleString()}원
+                      </dd>
+                      <dd className="text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
+                        {item?.quantity?.toLocaleString()}개
                       </dd>
                     </div>
-                  </dd>
-                  <hr className="mt-[12px] mb-[1px]" />
-
-                  <div className="flex">
-                    <dt className="py-[10px] text-[12px] mt-[1px] mr-[10px]">
-                      총 상품 금액(수량):
-                    </dt>
-                    <dd className="text-grey-80 font-gowunBold py-[10px] text-[21px]">
-                      {totalPrice.toLocaleString()}원
-                    </dd>
-                    <dd className="text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
-                      {item?.quantity?.toLocaleString()}개
-                    </dd>
+                    <div className="flex mb-[16px] mt-[70px]">
+                      <button
+                        className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                        onClick={handleAddToWishlist.mutate}
+                      >
+                        찜하기
+                      </button>
+                      <button
+                        className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                        onClick={() => handleAddToCart(item)}
+                      >
+                        장바구니
+                      </button>
+                      <button
+                        className="bg-secondary-10 border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                        onClick={() => alert("구매가 완료되었습니다!")}
+                      >
+                        구매하기
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex mb-[16px] mt-[70px]">
-                    <button
-                      className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                      onClick={handleAddToWishlist.mutate}
-                    >
-                      찜하기
-                    </button>
-                    <button
-                      className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                      onClick={() => handleAddToCart(item)}
-                    >
-                      장바구니
-                    </button>
-                    <button
-                      className="bg-secondary-10 border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                      onClick={() => alert("구매가 완료되었습니다!")}
-                    >
-                      구매하기
-                    </button>
-                  </div>
-                </div>
+                ))}
               </dl>
             </div>
           ))}
@@ -392,8 +372,44 @@ function Detail() {
                 className="product-detail"
                 dangerouslySetInnerHTML={{ __html: formattedContent }} // HTML을 렌더링하기 위해 dangerouslySetInnerHTML 사용하며 __html 키로 전달
               />
+            ) : activeTab === "QnA" ? (
+              // QnA 탭은 이제 최신 filteredQnas를 직접 사용해서 렌더링함 (디버깅적업 -  콘솔에서 qnas와 filteredQnas 확인됨)
+              qnasLoading ? (
+                <div>로딩 중...</div>
+              ) : qnasError ? (
+                <div>데이터를 불러오지 못했습니다.</div>
+              ) : (
+                <div className="rounded-md overflow-hidden">
+                  <div className="flex justify-between items-center py-4 px-6 border-b border-gray-300">
+                    <h3 className="text-3xl font-bold">Q&A</h3>
+                    <Link to="/qna"></Link>
+                  </div>
+                  <ul className="space-y-9 px-6 py-9">
+                    {filteredQnas?.map((qna) => (
+                      <li
+                        key={qna._id}
+                        className="border-b border-gray-300 flex justify-between items-center text-lg py-7"
+                      >
+                        <Link
+                          to={`/qna/detail/${qna._id}`}
+                          className="text-[15px] text-gray-800 hover:underline"
+                        >
+                          {qna.image}
+                          {qna.title}
+                        </Link>
+                        <span className="text-gray-500">
+                          {qna.createdAt.split("T")[0]}
+                        </span>
+                      </li>
+                    ))}
+                    {filteredQnas?.length === 0 && <p>Q&A가 없습니다.</p>}
+                  </ul>
+                </div>
+              )
+            ) : activeTab === "상품후기" ? (
+              <ReviewList productId={id} />
             ) : (
-              <div>{tabContent[activeTab]}</div> // 상세정보 탭이 아닐 경우 탭 컨텐츠 출력
+              <div>{tabContent[activeTab]}</div>
             )}
           </div>
         </div>
