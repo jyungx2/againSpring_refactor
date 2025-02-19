@@ -232,7 +232,8 @@ function Detail() {
                     key={index}
                     src={getImage(image.path)}
                     alt={`상품 이미지 ${index + 1}`}
-                    className="w-[80px] h-[90px] mb-[10px] object-cover mr-[32px] cursor-pointer"
+                    className="w-[100px] h-[110px] mb-[10px] object-cover mr-[32px] cursor-pointer 
+                    hover:border-2 opacity-100 hover:opacity-50 transition-opacity"
                     onClick={() => setSelectedIndex(index)} // 이미지 클릭 시 인덱스 변경
                   />
                 ))}
