@@ -16,6 +16,7 @@ function Detail() {
   const navigate = useNavigate();
   const { user } = useUserStore();
   const { addToCart, fetchCartItems } = useCartStore();
+  const [selectedIndex, setSelectedIndex] = useState(0); // 선택된 이미지 인덱스
 
   const handleAddToCart = async (product) => {
     console.log("Adding to cart:", product);
@@ -223,6 +224,8 @@ function Detail() {
         <div>
           {cartItemsList.map((item) => (
             <div className="flex mt-[50px]" key={item._id}>
+
+              {/* 사이드 이미지  */}
               <div className="flex flex-col mr-[30px]">
                 {item?.mainImages?.map((image, index) => (
                   <img
@@ -230,11 +233,14 @@ function Detail() {
                     src={getImage(image.path)}
                     alt={`상품 이미지 ${index + 1}`}
                     className="w-[80px] h-[90px] mb-[10px] object-cover mr-[32px]"
+                    onClick={() => setSelectedIndex(index)} // 이미지 클릭 시 인덱스 변경
                   />
                 ))}
               </div>
+
+              {/* 메인 이미지 */}
               <img
-                src={getImage(item?.mainImages?.[0]?.path)}
+                src={getImage(item?.mainImages?.[selectedIndex]?.path)} // 선택된 이미지의 path
                 alt="메인 상품 이미지"
                 className="w-[370px] h-[492px] mb-[20px] object-cover mr-[70px]"
               />
