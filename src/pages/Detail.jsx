@@ -232,7 +232,7 @@ function Detail() {
                     key={index}
                     src={getImage(image.path)}
                     alt={`상품 이미지 ${index + 1}`}
-                    className="w-[80px] h-[90px] mb-[10px] object-cover mr-[32px]"
+                    className="w-[80px] h-[90px] mb-[10px] object-cover mr-[32px] cursor-pointer"
                     onClick={() => setSelectedIndex(index)} // 이미지 클릭 시 인덱스 변경
                   />
                 ))}
