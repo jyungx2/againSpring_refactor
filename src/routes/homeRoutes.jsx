@@ -10,11 +10,13 @@ import eventRoutes from "./eventRoutes";
 import tansoRoutes from "./tansoRoutes";
 import shopRoutes from "./shopRoutes";
 import Wishlist from "@pages/WishList";
+import NotFound from "@pages/NotFound"
 
 const homeRoutes = [
   {
     index: "/",
     element: <Layout />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
