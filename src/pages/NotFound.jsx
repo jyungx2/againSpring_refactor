@@ -6,10 +6,9 @@ const NotFound = () => {
       <img src="public/images/ErrorImg.png" alt="에러 이미지" className="mb-4 w-64 h-64 object-contain" />
 
       <h1 className="text-6xl font-extrabold text-primary-50 mb-4">404</h1>
-      <h2 className="text-3xl font-bold mb-2">잘못된 페이지 접근</h2>
-      <p className="text-xl text-gray-700 mb-8 text-center max-w-md">
-        접근하신 주소의 페이지는
-        사라졌거나 다른 페이지로 변경되었습니다.
+      <h2 className="text-6xl font-bold mb-6">잘못된 페이지 접근</h2>
+      <p className="text-2xl text-gray-700 mb-8 text-center max-w-md">
+        접근하신 주소의 페이지는 사라졌거나 <br />다른 페이지로 변경되었습니다. <br />
         주소를 다시 확인해주세요.
       </p>
       <Link
