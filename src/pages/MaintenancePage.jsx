@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const MaintenancePage = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-4">
-      <img src="/images/ErrorImg.png" alt="에러 이미지" className="mb-4 w-64 h-64 object-contain" />
+      <img src="/images/errorimg.png" alt="에러 이미지" className="mb-4 w-64 h-64 object-contain" />
 
       <h1 className="text-6xl font-extrabold text-primary-50 mb-4">503</h1>
       <h2 className="text-6xl font-bold mb-4">다시,봄 페이지 서비스 점검 중</h2>
