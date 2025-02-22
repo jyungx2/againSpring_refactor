@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ReviewList from "@pages/ReviewList";
 
-import useCartStore from "../store/cartStore";
+import useCartStore from "@store/cartStore";
 import useUserStore from "@store/userStore";
+import { toast } from "react-toastify";
 
 function Detail() {
   const [activeTab, setActiveTab] = useState("상세정보");
@@ -16,25 +17,46 @@ function Detail() {
   const [cartItemsList, setCartItemsList] = useState([]);
   const navigate = useNavigate();
   const { user } = useUserStore();
-  const { addToCart, fetchCartItems } = useCartStore();
+  // const { addToCart, fetchCartItems } = useCartStore();
 
+  // const handleAddToCart = async (product) => {
+  //   console.log("Adding to cart:", product);
+  //   const success = await addToCart(product, 1);
+  //   if (success) {
+  //     alert("장바구니에 추가되었습니다!");
+  //     await fetchCartItems();
+  //     navigate(`/cart/${user.id}`);
+  //   } else {
+  //     alert("아이템 추가 실패");
+  //   }
+  // };
 
+  const handleAddToCart = useMutation({
+    mutationFn: (product) => {
+      console.log(product);
+      // 필요한 데이터만 추출하여 전송
+      const cartData = {
+        product_id: parseInt(product._id, 10),
+        quantity: parseInt(product.quantity, 10),
+        // 필요한 다른 데이터들...
+      };
 
-
-  const handleAddToCart = async (product) => {
-    console.log("Adding to cart:", product);
-    const success = await addToCart(product, 1);
-    if (success) {
-      alert("장바구니에 추가되었습니다!");
-      await fetchCartItems();
+      return axiosInstance.post("/carts", cartData);
+    },
+    onSuccess: (res) => {
+      console.log("장바구니 추가 요청 후 반응: ", res);
+      toast.success("장바구니에 추가되었습니다!");
       navigate(`/cart/${user.id}`);
-    } else {
-      alert("아이템 추가 실패");
-    }
-  };
+    },
+    onError: (err) => {
+      console.error("장바구니 추가 요청 시 에러 발생: ", err);
+      toast.error("오류가 발생하였습니다.");
+    },
+  });
 
   const handleAddToWishlist = useMutation({
-    mutationFn: () => axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
+    mutationFn: () =>
+      axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
     onSuccess: (res) => {
       if (res) {
         alert("위시리스트에 추가되었습니다!");
@@ -303,7 +325,7 @@ function Detail() {
                       </button>
                       <button
                         className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={() => handleAddToCart(item)}
+                        onClick={() => handleAddToCart.mutate(item)}
                       >
                         장바구니
                       </button>

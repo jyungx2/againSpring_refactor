@@ -7,12 +7,12 @@ const Wishlist = () => {
   const axiosInstance = useAxiosInstance();
 
   const { data, loading, error } = useQuery({
-    queryKey: ['bookmarks', 'products'],
-    queryFn: () => axiosInstance.get('/bookmarks/product'),
+    queryKey: ["bookmarks", "products"],
+    queryFn: () => axiosInstance.get("/bookmarks/product"),
     select: (res) => res.data,
   });
 
-  const wishlistItems = data?.item.map(item => ({
+  const wishlistItems = data?.item.map((item) => ({
     id: item.product._id,
     name: item.product.name,
     price: item.product.price,
@@ -26,11 +26,11 @@ const Wishlist = () => {
   const deleteItem = useMutation({
     mutationFn: (itemId) => axiosInstance.delete(`/bookmarks/${itemId}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookmarks', 'products'] });
+      queryClient.invalidateQueries({ queryKey: ["bookmarks", "products"] });
     },
     onError: (err) => {
       console.error(err);
-    }
+    },
   });
 
   const { addToCart, fetchCartItems } = useCartStore();
@@ -49,7 +49,7 @@ const Wishlist = () => {
     <div className="mt-[40px] max-w-full">
       <div className="flex items-center mb-[16px]">
         <h2 className="text-[24px] font-gowun text-grey-80 mr-[8px]">
-          위시리스트333
+          위시리스트
         </h2>
         <span className="flex items-center justify-center w-[20px] h-[20px] bg-black bg-opacity-20 text-white rounded-full">
           {wishlistItems?.length}
