@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const NotFound = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 p-4">
-      <img src="public/images/ErrorImg.png" alt="에러 이미지" className="mb-4 w-64 h-64 object-contain" />
+      <img src="/images/errorimg.png" alt="에러 이미지" className="mb-4 w-64 h-64 object-contain" />
 
       <h1 className="text-6xl font-extrabold text-primary-50 mb-4">404</h1>
       <h2 className="text-6xl font-bold mb-6">잘못된 페이지 접근</h2>
