@@ -102,13 +102,12 @@ function Shop() {
                 >
                   <a
                     href="#"
-                    className="
+                    className={`
                       inline-block px-4 py-2 
                       rounded-full 
-                      text-gray-700 font-semibold 
+                      text-gray-700 font-semibold
                       transition-colors
-                      hover:bg-secondary-20 hover:text-white
-                    "
+                      ${selectedCategory === product.category ? "bg-secondary-30 text-white" : "text-gray-700 hover:bg-secondary-20 hover-text-white"}`}
                   >
                     {product.name}
                   </a>
@@ -148,7 +147,7 @@ function Shop() {
                     key={product._id}
                     className="w-1/4 sm:w-1/2 lg:w-1/4 xl:w-1/4 p-2 cursor-pointer"
                     onClick={() =>
-                      navigate(`/detail/${product._id}`, { state: product })
+                      navigate(`/ detail / ${product._id}`, { state: product })
                     }
                   >
                     <Link to={`/detail/${product._id}`}>
