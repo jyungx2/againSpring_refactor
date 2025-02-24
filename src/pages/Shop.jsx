@@ -16,8 +16,6 @@ function Shop() {
   const [error, setError] = useState(null);
   const axiosInstance = useAxiosInstance();
 
-
-
   const startIndex = (currentPage - 1) * productsPerPage;
 
   const getImage = (path) => {
@@ -87,13 +85,14 @@ function Shop() {
         className="container mx-auto px-[24px] my-[40px]"
         style={{ maxWidth: "1200px" }}
       >
-        <div className="flex products-center mb-[16px]">
+        {/* 상단 카테고리 영역 */}
+        <div className="flex items-center mb-[16px]">
           <nav className="w-full">
-            <div className="flex justify-center space-x-8">
+            <ul className="flex justify-center gap-4 py-4">
               {menuItems.map((product, index) => (
-                <div
+                <li
                   key={index}
-                  className="relative group hover:bg-secondary-10 hover:text-white"
+                  className="cursor-pointer"
                   onClick={() => setSelectedCategory(product.category)} // 카테고리 선택 시 해당 카테고리로 필터링
                   onMouseEnter={() => {
                     setActiveMenu(product.name);
@@ -103,17 +102,24 @@ function Shop() {
                 >
                   <a
                     href="#"
-                    className="text-gray-700 hover:text-secondary font-semibold"
+                    className="
+                      inline-block px-4 py-2 
+                      rounded-full 
+                      text-gray-700 font-semibold 
+                      transition-colors
+                      hover:bg-secondary-20 hover:text-white
+                    "
                   >
                     {product.name}
                   </a>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </nav>
         </div>
-        <div className="flex products-center mb-[16px]">
-          <p className="flex products-center justify-center mt-4">
+
+        <div className="flex items-center mb-[16px]">
+          <p className="flex items-center justify-center mt-4">
             총{" "}
             {
               products.filter(
@@ -126,8 +132,9 @@ function Shop() {
           </p>
         </div>
         <hr className="mb-0 border-t border-grey-20" />
+
         {currentproducts.length === 0 ? (
-          <div className="flex flex-col products-center justify-center h-[256px]">
+          <div className="flex flex-col items-center justify-center h-[256px]">
             <p className="text-[18px] font-gowun text-grey-40">
               상품목록이 비어있습니다.
             </p>
@@ -145,7 +152,7 @@ function Shop() {
                     }
                   >
                     <Link to={`/detail/${product._id}`}>
-                      <td className="flex flex-col products-start py-[20px]">
+                      <td className="flex flex-col items-start py-[20px]">
                         <img
                           src={getImage(product.mainImages[0]?.path)}
                           alt={product.name}
