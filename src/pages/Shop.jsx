@@ -127,7 +127,11 @@ function Shop() {
                 <li
                   key={index}
                   className="cursor-pointer"
-                  onClick={() => setSelectedCategory(product.category)} // 카테고리 선택 시 해당 카테고리로 필터링
+                  onClick={() => {
+                    setSelectedCategory(product.category) // 카테고리 선택 시 해당 카테고리로 필터링
+                    setCurrentPage(1); // 카테고리를 변경할 때 currentPage를 1로 초기화
+                  }}
+
                   onMouseEnter={() => {
                     setActiveMenu(product.name);
                     setHovered(true);
