@@ -15,9 +15,7 @@ function Shop() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const axiosInstance = useAxiosInstance();
-
   const startIndex = (currentPage - 1) * productsPerPage;
-
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop"; // 이미지의 기본 URL을 설정합니다.
     return `${baseURL}${path}`; // 전체 이미지 URL을 반환합니다.
@@ -46,6 +44,47 @@ function Shop() {
     { name: "생활잡화", links: ["/life"], category: "life" },
     { name: "반려동물", links: ["/pet"], category: "pet" },
   ];
+
+  const [selectedSort, setSelectedSort] = useState(''); // 정렬,필터 
+
+  // 필터, 정렬 함수
+  function getFilteredAndSortedProducts() {
+    // 카데고리 필터링
+    let result = products.filter((product) => selectedCategory === "all-of-list" || product.extra?.category?.includes(selectedCategory)) //
+
+    // 필터, 정렬 로직 시작
+    switch (selectedSort) {
+      case "new":
+        //신상품
+        result = result.filter((p) => p.extra?.isNew);
+        break;
+      case "best":
+        // 베스트
+        result = result.filter((p) => p.extra?.isBest)
+        break;
+      case "name":
+        //오름차순
+        result = [...result].sort((a, b) => a.name.localeCompare(b.name))
+        break;
+      case "priceAsc":
+        //낮은 가격
+        result = [...result].sort((a, b) => a.price - b.price)
+        break
+      // 높은 가격
+      case "priceDese":
+        result = [...result].sort((a, b) => b.price - a.price)
+        break;
+      default: // 기본 - 아무 동작 하지 않을 경우
+        break
+    }
+
+    // 페이지 네이션
+    const startIndex = (currentPage - 1) * productsPerPage
+    return result.slice(startIndex, startIndex + productsPerPage);
+
+    // 필터 -> currentproducts를 getFilteredAndSortedProducts로 햇갈리지 않게 함수 대비
+    const currentproducts = getFilteredAndSortedProducts();
+  }
 
   // URL 쿼리 파라미터를 통해 카테고리를 가져와서 설정
   useEffect(() => {
@@ -142,6 +181,10 @@ function Shop() {
             <p className="text-[18px] font-gowun text-grey-40">
               상품목록이 비어있습니다.
             </p>
+            {/* 정렬,필터링 버튼 리스트 */}
+            <div className="">
+              <button onClick={ }></button>
+            </div>
           </div>
         ) : (
           <div>
