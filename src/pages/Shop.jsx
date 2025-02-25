@@ -15,20 +15,10 @@ function Shop() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const axiosInstance = useAxiosInstance();
-  const startIndex = (currentPage - 1) * productsPerPage;
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop"; // 이미지의 기본 URL을 설정합니다.
     return `${baseURL}${path}`; // 전체 이미지 URL을 반환합니다.
   };
-
-  // 카테고리 필터링: "all-of-list"일 경우 필터링 없이 모든 항목을 표시
-  const currentproducts = products
-    .filter(
-      (product) =>
-        selectedCategory === "all-of-list" ||
-        product.extra?.category?.includes(selectedCategory) // 그렇지 않을 경우 선택된 카테고리에 해당하는 항목만 필터링
-    )
-    .slice(startIndex, startIndex + productsPerPage); // slice를 사용하여 페이지별로 아이템을 나누어 표시
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -71,7 +61,7 @@ function Shop() {
         result = [...result].sort((a, b) => a.price - b.price)
         break
       // 높은 가격
-      case "priceDese":
+      case "priceDesc":
         result = [...result].sort((a, b) => b.price - a.price)
         break;
       default: // 기본 - 아무 동작 하지 않을 경우
@@ -81,10 +71,10 @@ function Shop() {
     // 페이지 네이션
     const startIndex = (currentPage - 1) * productsPerPage
     return result.slice(startIndex, startIndex + productsPerPage);
-
-    // 필터 -> currentproducts를 getFilteredAndSortedProducts로 햇갈리지 않게 함수 대비
-    const currentproducts = getFilteredAndSortedProducts();
   }
+
+  // 필터, 정렬된 상품 목록
+  const currentproducts = getFilteredAndSortedProducts();
 
   // URL 쿼리 파라미터를 통해 카테고리를 가져와서 설정
   useEffect(() => {
@@ -151,7 +141,7 @@ function Shop() {
                       rounded-full 
                       text-gray-700 font-semibold
                       transition-colors
-                      ${selectedCategory === product.category ? "bg-secondary-30 text-white" : "text-gray-700 hover:bg-secondary-20 hover-text-white"}`}
+                      ${selectedCategory === product.category ? "bg-secondary-30 text-white" : "text-gray-700 hover:bg-secondary-20 hover:text-white"}`}
                   >
                     {product.name}
                   </a>
@@ -160,9 +150,13 @@ function Shop() {
             </ul>
           </nav>
         </div>
+        {/* 상단 구분선 */}
         <hr className="mt-4 mb-4 border-t border-grey-20" />
-        <div className="flex items-center mb-[16px]">
-          <p className="flex items-center justify-center mt-4">
+
+        {/* 상품 개수 + 정렬/필터 버튼을 한 flex 컨테이너로 */}
+        <div className="flex items-center justify-between mb-[16px]">
+          {/* 왼쪽: 총 상품 개수 */}
+          <p className="flex items-center">
             총{" "}
             {
               products.filter(
@@ -173,18 +167,76 @@ function Shop() {
             }{" "}
             개의 상품이 있습니다
           </p>
+
+          {/* 오른쪽: 정렬/필터 버튼 */}
+          {/* 정렬/필터 항목들 */}
+          <div className="flex items-center space-x-3 text-2xl text-gray-500">
+            <button
+              onClick={() => setSelectedSort("new")}
+              className={`
+      cursor-pointer hover:underline
+      ${selectedSort === "new" ? "text-black font-semibold" : ""}
+    `}
+            >
+              신상품
+            </button>
+            <span className="text-gray-300 select-none">|</span>
+
+            <button
+              onClick={() => setSelectedSort("best")}
+              className={`
+      cursor-pointer hover:underline
+      ${selectedSort === "best" ? "text-black font-semibold" : ""}
+    `}
+            >
+              베스트
+            </button>
+            <span className="text-gray-300 select-none">|</span>
+
+            <button
+              onClick={() => setSelectedSort("name")}
+              className={`
+      cursor-pointer hover:underline
+      ${selectedSort === "name" ? "text-black font-semibold" : ""}
+    `}
+            >
+              상품명
+            </button>
+            <span className="text-gray-300 select-none">|</span>
+
+            <button
+              onClick={() => setSelectedSort("priceAsc")}
+              className={`
+      cursor-pointer hover:underline
+      ${selectedSort === "priceAsc" ? "text-black font-semibold" : ""}
+    `}
+            >
+              낮은가격
+            </button>
+            <span className="text-gray-300 select-none">|</span>
+
+            <button
+              onClick={() => setSelectedSort("priceDesc")}
+              className={`
+      cursor-pointer hover:underline
+      ${selectedSort === "priceDesc" ? "text-black font-semibold" : ""}
+    `}
+            >
+              높은가격
+            </button>
+            <span className="text-gray-300 select-none"></span>
+          </div>
         </div>
-        <hr className="mt-8 mb-8 border-t border-grey-20" />
+
+        {/* 하단 구분선 */}
+        <hr className="mt-4 mb-4 border-t border-grey-20" />
+
 
         {currentproducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[256px]">
             <p className="text-[18px] font-gowun text-grey-40">
               상품목록이 비어있습니다.
             </p>
-            {/* 정렬,필터링 버튼 리스트 */}
-            <div className="">
-              <button onClick={ }></button>
-            </div>
           </div>
         ) : (
           <div>
@@ -204,7 +256,7 @@ function Shop() {
                     />
                   </div>
                   <div className="mt-4 text-center">
-                    <h2 className="text-2lg font-semibold text-gray-800">{product.name}</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800">{product.name}</h2>
                     {product.originalPrice && (
                       <p className="text-lg text-gray-500 line-through">
                         {product.originalPrice}원
