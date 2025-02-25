@@ -86,6 +86,11 @@ function Shop() {
         style={{ maxWidth: "1200px" }}
       >
         {/* 상단 카테고리 영역 */}
+        <div className="text-center my-8">
+          <h1 className="text-4xl font-bold">
+            {menuItems.find((item) => item.category === selectedCategory)?.name}
+          </h1>
+        </div>
         <div className="flex items-center mb-[16px]">
           <nav className="w-full">
             <ul className="flex justify-center gap-4 py-4">
@@ -116,7 +121,7 @@ function Shop() {
             </ul>
           </nav>
         </div>
-
+        <hr className="mt-4 mb-4 border-t border-grey-20" />
         <div className="flex items-center mb-[16px]">
           <p className="flex items-center justify-center mt-4">
             총{" "}
@@ -130,7 +135,7 @@ function Shop() {
             개의 상품이 있습니다
           </p>
         </div>
-        <hr className="mb-0 border-t border-grey-20" />
+        <hr className="mt-8 mb-8 border-t border-grey-20" />
 
         {currentproducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[256px]">
@@ -140,47 +145,33 @@ function Shop() {
           </div>
         ) : (
           <div>
-            <table className="w-full table-auto">
-              <tbody className="flex flex-wrap">
-                {currentproducts.map((product) => (
-                  <tr
-                    key={product._id}
-                    className="w-1/4 sm:w-1/2 lg:w-1/4 xl:w-1/4 p-2 cursor-pointer"
-                    onClick={() =>
-                      navigate(`/ detail / ${product._id}`, { state: product })
-                    }
-                  >
-                    <Link to={`/detail/${product._id}`}>
-                      <td className="flex flex-col items-start py-[20px]">
-                        <img
-                          src={getImage(product.mainImages[0]?.path)}
-                          alt={product.name}
-                          style={{
-                            width: "100%",
-                            maxWidth: "300px",
-                            height: "auto",
-                            aspectRatio: "300 / 350",
-                            minWidth: "100px",
-                          }}
-                        />
-                        <div>
-                          <h2 className="text-[16px] font-semibold text-grey-80 mt-[20px]">
-                            {product.name}
-                          </h2>
-                        </div>
-
-                        <p className="text-lg text-gray-500 line-through text-[16px] py-[10px]">
-                          {product.originalPrice || ""}
-                        </p>
-                        <p className="text-xl font-bold text-[16px] py-[10px]">
-                          {product.price}원
-                        </p>
-                      </td>
-                    </Link>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {/* 상품 목록 그리드 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {currentproducts.map((product) => (
+                <Link
+                  key={product._id}
+                  to={`/detail/${product._id}`}
+                  className="group block"
+                >
+                  <div className="overflow-hidden rounded-lg shadow-md">
+                    <img
+                      src={getImage(product.mainImages[0]?.path)}
+                      alt={product.name}
+                      className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="mt-4 text-center">
+                    <h2 className="text-2lg font-semibold text-gray-800">{product.name}</h2>
+                    {product.originalPrice && (
+                      <p className="text-lg text-gray-500 line-through">
+                        {product.originalPrice}원
+                      </p>
+                    )}
+                    <p className="mt-2 text-xl font-bold text-gray-900">{product.price}원</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
             <div className="justify-center mb-[16px] flex gap-[16px] mt-10">
               {Array.from({
                 length: Math.ceil(
