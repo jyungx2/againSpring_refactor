@@ -266,7 +266,7 @@ function Shop() {
                         {product.originalPrice}원
                       </p>
                     )}
-                    <p className="mt-2 text-xl font-bold text-gray-900">{product.price}원</p>
+                    <p className="mt-2 text-xl font-bold text-gray-900">{product.price.toLocaleString()}원</p>
                   </div>
                 </Link>
               ))}
