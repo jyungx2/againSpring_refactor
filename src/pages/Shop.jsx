@@ -6,7 +6,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 function Shop() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [selectedCategory, setSelectedCategory] = useState("all-of-list"); // 기본 카테고리 값 설정
-  const productsPerPage = 8; // 페이지당 보여줄 아이템 수
+  const productsPerPage = 9; // 페이지당 보여줄 아이템 수
   const navigate = useNavigate();
   const location = useLocation(); // 현재 URL 정보를 가져오기 위해 사용
   const { activeMenu, setActiveMenu } = useMenuStore();
@@ -241,8 +241,8 @@ function Shop() {
         ) : (
           <div>
             {/* 상품 목록 그리드 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {currentproducts.map((product) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentproducts.slice(0, 9).map((product) => (
                 <Link
                   key={product._id}
                   to={`/detail/${product._id}`}
