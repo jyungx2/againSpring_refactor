@@ -267,6 +267,18 @@ function Shop() {
                       </p>
                     )}
                     <p className="mt-2 text-xl font-bold text-gray-900">{product.price.toLocaleString()}원</p>
+                    <div className="mt-2 flex items-center justify-center gap-2">
+                      {product.extra?.isNew && (
+                        <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          NEW
+                        </span>
+                      )}
+                      {product.extra?.isBest && (
+                        <span className="bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          BEST
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </Link>
               ))}
