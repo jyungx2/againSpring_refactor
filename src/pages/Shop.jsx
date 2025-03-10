@@ -3,7 +3,6 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import useUserStore from "../store/userStore";
-import { getImageUrl } from "../utils/imageUtils";
 function Shop() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [selectedCategory, setSelectedCategory] = useState("all-of-list"); // 기본 카테고리 값 설정

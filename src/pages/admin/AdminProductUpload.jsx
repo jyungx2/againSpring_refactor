@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useProductApi from '@hooks/useAddProduct';
+import { uploadProductImage } from "@utils/uploadProductImage";
 
 const AdminProductUpload = () => {
   // 관리자 상품 등록 페이지
@@ -21,17 +22,24 @@ const AdminProductUpload = () => {
   };
 
   // 이미지 변경 이벤트 핸들러
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]; // 파일 객체 가져오기
-    if (file) {
-      // 파일이 존재하면
-      const newImage = {
-        // 이미지 정보 객체 생성
-        path: URL.createObjectURL(file), // 이미지 경로
-        name: file.name, // 이미지 이름
-        originalname: file.name, // 이미지 원본 이름
-      };
-      setProduct({ ...product, mainImages: [newImage] }); // 상품 정보 업데이트
+  const handleImageChange = async (e) => { 
+    const file = e.target.files[0]; // 파일 정보 추출
+    if (file) { // 파일이 존재하면
+      try { // 이미지 업로드 시도
+        const fileUrl = await uploadProductImage(file); // 이미지 업로드 함수 호출
+
+        const newImage = { // 새 이미지 객체 생성
+          path: fileUrl, // 이미지 URL
+          name: file.name, // 이미지 이름
+          originalname: file.name, // 이미지 원본 이름
+        };
+        setProduct((prev) => ({ // 상품 정보 업데이트
+          ...prev, // 기존 상품 정보 유지
+          mainImages: [newImage], //mainImages 배열에 새 이미지 추가 (필요 시 여러 장 업로드도 가능)
+        }));
+      } catch (error) {
+        alert("이미지 업로드 실패");
+      }
     }
   };
 
@@ -64,7 +72,6 @@ const AdminProductUpload = () => {
     } catch (error) {
       // 상품 등록 실패 시
       console.error('상품 등록 실패:', error.response?.data || error.message); // 에러 메시지 출력
-      alert('상품 등록 실패'); // 실패 메시지 출력
     }
   };
 
