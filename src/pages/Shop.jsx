@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import useUserStore from "../store/userStore";
 
 function Shop() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
@@ -14,6 +15,7 @@ function Shop() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user } = useUserStore(); // 유저 정보 가져오기
   const axiosInstance = useAxiosInstance();
   const getImage = (path) => {
     const baseURL = "https://11.fesp.shop"; // 이미지의 기본 URL을 설정합니다.
@@ -283,6 +285,9 @@ function Shop() {
                 </Link>
               ))}
             </div>
+            {user?.type === "admin" && (
+                <button onClick={() => navigate('/admin/addproduct')}>상품 등록하기</button>
+              )}
             <div className="justify-center mb-[16px] flex gap-[16px] mt-10">
               {Array.from({
                 length: Math.ceil(
@@ -303,6 +308,7 @@ function Shop() {
                 >
                   {index + 1}
                 </button>
+                
               ))}
             </div>
           </div>

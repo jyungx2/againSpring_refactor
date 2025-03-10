@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import styles from "./User.module.css";
+import useUserStore from "@store/userStore";
 
 function Sidebar() {
   const currentPath = window.location.pathname;
+  const { user } = useUserStore();
 
   const links = [
     { label: "주문조회", path: "/user/order" },
@@ -14,6 +16,10 @@ function Sidebar() {
     { label: "정보수정", path: "/uncompleted" },
     { label: "회원탈퇴", path: "/uncompleted" },
   ];
+
+  if (user?.type === 'admin') {
+    links.push({ label: '상품등록', path: '/admin/addproduct'})
+  }
 
   const renderedLinks = links.map((link) => {
     return (
