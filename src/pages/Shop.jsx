@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import useMenuStore from "../store/menuStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import useUserStore from "../store/userStore";
-
+import { getImageUrl } from "../utils/imageUtils";
 function Shop() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [selectedCategory, setSelectedCategory] = useState("all-of-list"); // 기본 카테고리 값 설정
@@ -236,7 +236,12 @@ function Shop() {
 
         {/* 하단 구분선 */}
         <hr className="mt-4 mb-4 border-t border-grey-20" />
-
+        {user?.type === "admin" && (
+        <button
+          className='block bg-primary-40 text-white px-4 py-2 round ed-md mt-4 mb-4 hover:bg-primary-60 transition-colors duration-300 ml-auto rounded'
+          onClick={() => navigate('/admin/addproduct')}> 상품 등록하기
+        </button>
+)}
 
         {currentproducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[256px]">
@@ -285,9 +290,6 @@ function Shop() {
                 </Link>
               ))}
             </div>
-            {user?.type === "admin" && (
-                <button onClick={() => navigate('/admin/addproduct')}>상품 등록하기</button>
-              )}
             <div className="justify-center mb-[16px] flex gap-[16px] mt-10">
               {Array.from({
                 length: Math.ceil(
