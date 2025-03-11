@@ -23,24 +23,31 @@ const AdminProductUpload = () => {
 
   // 이미지 변경 이벤트 핸들러
   const handleImageChange = async (e) => { 
-    const file = e.target.files[0]; // 파일 정보 추출
-    if (file) { // 파일이 존재하면
-      try { // 이미지 업로드 시도
-        const fileUrl = await uploadProductImage(file); // 이미지 업로드 함수 호출
+    // e.target.files는 사용자가 선택한 파일들의 fileList 객체
+    const files = Array.from(e.target.files); // 파일 목록을 일반 배열로 변환
+    if (!files.length) return;  // 선택 파일이 없으면 함수 종료
 
-        const newImage = { // 새 이미지 객체 생성
-          path: fileUrl, // 이미지 URL
-          name: file.name, // 이미지 이름
-          originalname: file.name, // 이미지 원본 이름
-        };
+      try { // 이미지 업로드 시도
+        // Promise.all을 사용하여 여러 이미지를 동시에 업로드
+        const uploadedImages = await Promise.all(files.map(async(file) => { // files.map()을 통해 각 파일마다 업로드 작업(uploadProductImage 호출)을 수행.
+          const fileUrl = await uploadProductImage(file); // 이미지 업로드 함수 호출
+          return {
+            path: fileUrl, // 이미지 URL = 서버가 반환한 파일 URL
+            name: file.name, // 이미지 파일 이름
+            originalname: file.name, // 이미지 원본 이름
+          };
+        })
+      );
+
+      // 기존 prodct state에 저장된 mainImages 배열과
+      // 새로 업로드된 이미지 객체들이 담긴 배열(uploadImages)를 합쳐서 업데이트.
         setProduct((prev) => ({ // 상품 정보 업데이트
           ...prev, // 기존 상품 정보 유지
-          mainImages: [newImage], //mainImages 배열에 새 이미지 추가 (필요 시 여러 장 업로드도 가능)
+          mainImages: [...prev.mainImages, ...uploadedImages], //mainImages 배열에 새 이미지 추가 (필요 시 여러 장 업로드도 가능)
         }));
       } catch (error) {
         alert("이미지 업로드 실패");
       }
-    }
   };
 
   // 상품 등록 이벤트 핸들러
@@ -83,7 +90,7 @@ const AdminProductUpload = () => {
         <input type="number" name="price" placeholder="가격" onChange={handleChange} required />
         <input type="number" name="quantity" placeholder="수량" onChange={handleChange} required />
         <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} />
-        <input type="file" name="image" accept="image/*" onChange={handleImageChange} />
+        <input type="file" name="image" accept="image/*" multiple onChange={handleImageChange} />
         <textarea name="content" placeholder="상품 설명" onChange={handleChange} required />
         <button type="submit">상품 등록</button>
       </form>
