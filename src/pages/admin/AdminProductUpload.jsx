@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import useProductApi from '@hooks/useAddProduct';
 import { uploadProductImage } from '@utils/uploadProductImage';
 
@@ -16,8 +16,12 @@ const CATEGORY_OPTIONS = [
 const AdminProductUpload = () => {
   // 관리자 상품 등록 페이지
   const { addProduct } = useProductApi(); // 상품 등록 API 호출
+
+  // 파일 input 요소에 접근하기 위한 참조 (useRef)
+  const fileInputRef = useRef(null);
+
+  // 상품 정보 상태
   const [product, setProduct] = useState({
-    // 상품 정보 상태
     name: '',
     price: '',
     quantity: '',
@@ -157,6 +161,7 @@ const AdminProductUpload = () => {
     <div>
       <h2>관리자 상품 등록 페이지</h2>
       <form onSubmit={handleSubmit}>
+        {/* 텍스트 입력 필드 */}
         <input type="text" name="name" placeholder="상품명" onChange={handleChange} required />
         <input type="number" name="price" placeholder="가격" onChange={handleChange} required />
         <input type="number" name="quantity" placeholder="수량" onChange={handleChange} required />
@@ -191,7 +196,19 @@ const AdminProductUpload = () => {
           )}
         </select>
         <input type="number" step="0.1" placeholder="탄소 수치 (ex: 4.8)" onChange={handleTansoChange} />
-        <input type="file" name="image" accept="image/*" multiple onChange={handleImageChange} />
+
+        {/* 파일 업로드 섹션 */}
+        <div>
+          {/* 기존의 input type= file 요소를 숨기고 ref 속성을 통해 fileInputRef에 연결 */}
+          <input type="file" ref={fileInputRef} name="image" accept="image/*" multiple onChange={handleImageChange} style={{ display: 'none' }} />
+
+          {/* 커스텀 파일 선택 버튼 생성 - 버튼 혹은 라벨 클릭시 fileInputRef를 통헤 
+          숨겨진 파일 입력의 click 메소드 호출 */}
+          <button type="button" onClick={() => fileInputRef.current && fileInputRef.current.click()}>
+            파일 선택
+          </button>
+        </div>
+
         <textarea name="content" placeholder="상품 설명" onChange={handleChange} required />
         <button type="submit">상품 등록</button>
       </form>
