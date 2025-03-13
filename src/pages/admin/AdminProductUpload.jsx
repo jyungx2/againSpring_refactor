@@ -219,10 +219,10 @@ const AdminProductUpload = () => {
       <h2>관리자 상품 등록 페이지</h2>
       <form onSubmit={handleSubmit}>
         {/* 텍스트 입력 필드 */}
-        <input type="text" name="name" placeholder="상품명" onChange={handleChange} required />
-        <input type="number" name="price" placeholder="가격" onChange={handleChange} required />
-        <input type="number" name="quantity" placeholder="수량" onChange={handleChange} required />
-        <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} />
+        <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} required />
+        <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} required />
+        <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} required />
+        <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} />
         <div>
           <label>
             <input type="checkbox" checked={product.extra.isNew} onChange={handleIsNewChange} />
@@ -233,7 +233,7 @@ const AdminProductUpload = () => {
             베스트 상품
           </label>
         </div>
-        <select onChange={handleCategoryChange} defaultValue="">
+        <select onChange={handleCategoryChange} value={product.extra.category[1] || ''}>
           <option value="" disabled>
             카테고리를 선택해주세요.
           </option>
@@ -252,7 +252,7 @@ const AdminProductUpload = () => {
             )
           )}
         </select>
-        <input type="number" step="0.1" placeholder="탄소 수치 (ex: 4.8)" onChange={handleTansoChange} />
+        <input type="number" step="0.1" placeholder="탄소 수치 (ex: 4.8)" onChange={handleTansoChange} value={product.extra.tanso} />
 
         {/* 파일 업로드 섹션 */}
         <div>
@@ -265,7 +265,7 @@ const AdminProductUpload = () => {
             파일 선택
           </button>
         </div>
-        <textarea name="content" placeholder="상품 설명" onChange={handleChange} required />
+        <textarea name="content" placeholder="상품 설명" onChange={handleChange} value={product.content} required />
 
         {/* 상품 추가, 수정 버튼 */}
         <button type="button" onClick={handleAddorUpdateProduct}>
