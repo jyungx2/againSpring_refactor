@@ -36,6 +36,12 @@ const AdminProductUpload = () => {
     },
   });
 
+  //상품목록들 관리하기 위한 상태 관리
+  const [productList, setProductList] = useState([]); // 등록할 상품들을 배열로 저장
+
+  // 편집 모드일 때, 현재 편집 중인 상품의 인덱스를 저장하는 상태관리 (null이면 새상품 등록)
+  const [editingIndex, setEditingIndex] = useState(null);
+
   // 인풋 값 변경 이벤트 핸들러
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value }); // 상품 정보 업데이트
@@ -125,6 +131,58 @@ const AdminProductUpload = () => {
     }
   };
 
+  // 상품 추가 또는 수정
+  const handleAddorUpdateProduct = () => {
+    if (!product.name || !product.price) {
+      alert('상품명과 가격은 필수 입력 사항입니다.');
+      return;
+    }
+
+    // 새 상품 추가 (편집 모드가 아닌 경우)
+    if (editingIndex === null) {
+      setProductList([...productList, product]);
+    } else {
+      // 편집 모드일 경우 해당 인덱스의 상품 정보를 업데이트
+      const updateList = productList.map((item, index) => (index === editingIndex ? product : item));
+      setProductList(updateList);
+      setEditingIndex(null); // 편집 상태 해제
+    }
+
+    // 상품 추가 또는 수정 했을 때 폼 초기화 로직
+    setProduct({
+      name: '',
+      price: '',
+      quantity: '',
+      shippingFees: '',
+      mainImages: [],
+      content: '',
+      extra: {
+        isNew: false,
+        isBest: false,
+        category: ['all-of-list'],
+        tanso: 0,
+      },
+    });
+
+    // 파일 선택 후 취소하고 싶을 때 (파일 입력 초기화)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  // 상품 목록 - 수정 버튼 클릭
+  const handleEditProduct = (index) => {
+    // 해당 상품 데이터를 폼에 로드하여 수정
+    setProduct(productList[index]);
+    setEditingIndex(index);
+  };
+
+  // 상품 목록- 삭제 버튼 클릭
+  const handleDeleteProduct = (index) => {
+    // 해당 상품을 목록에서 제거
+    setProductList(productList.filter((_, i) => i !== index));
+  };
+
   // 상품 등록 이벤트 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault(); // 폼 제출 이벤트 기본 동작 방지
@@ -208,9 +266,38 @@ const AdminProductUpload = () => {
             파일 선택
           </button>
         </div>
-
         <textarea name="content" placeholder="상품 설명" onChange={handleChange} required />
-        <button type="submit">상품 등록</button>
+
+        {/* 상품 추가, 수정 버튼 */}
+        <button type="button" onClick={handleAddorUpdateProduct}>
+          {editingIndex === null ? '상품 추가' : '수정 완료'}
+        </button>
+
+        {/* 상품 등록된 목록 랜더 */}
+        <h3>등록된 상품 목록</h3>
+        {productList.length === 0 ? (
+          <p>등록된 상품이 업습니다.</p>
+        ) : (
+          <ul>
+            {productList.map((item, index) => (
+              <li key={index}>
+                <span>
+                  {item.name} - {item.price}원
+                </span>
+
+                {/* 수정버튼 클릭시 해당 상품 데이터를 폼으로 이동 */}
+                <button type="button" onClick={() => handleEditProduct(index)}>
+                  수정
+                </button>
+                {/* 삭제 버튼 클릭시 해당 상품 제거 */}
+                <button type="button" onClick={() => handleDeleteProduct(index)}>
+                  삭제
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        <button type="submit">전체 상품 등록</button>
       </form>
     </div>
   );
