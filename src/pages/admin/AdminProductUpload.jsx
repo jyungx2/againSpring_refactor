@@ -99,36 +99,35 @@ const AdminProductUpload = () => {
   };
 
   // 이미지 변경 이벤트 핸들러
+  // 이미지 선택 시 파일을 즉시 업로드 하는 로직 삭제 후  로컬 미리보기용 URL 생성
   const handleImageChange = async (e) => {
     // e.target.files는 사용자가 선택한 파일들의 fileList 객체
     const files = Array.from(e.target.files); // 파일 목록을 일반 배열로 변환
-    if (!files.length) return; // 선택 파일이 없으면 함수 종료
 
-    try {
-      // 이미지 업로드 시도
-      // Promise.all을 사용하여 여러 이미지를 동시에 업로드
-      const uploadedImages = await Promise.all(
-        files.map(async (file) => {
-          // files.map()을 통해 각 파일마다 업로드 작업(uploadProductImage 호출)을 수행.
-          const fileUrl = await uploadProductImage(file); // 이미지 업로드 함수 호출
-          return {
-            path: fileUrl, // 이미지 URL = 서버가 반환한 파일 URL
-            name: file.name, // 이미지 파일 이름
-            originalname: file.name, // 이미지 원본 이름
-          };
-        })
-      );
-
-      // 기존 prodct state에 저장된 mainImages 배열과
-      // 새로 업로드된 이미지 객체들이 담긴 배열(uploadImages)를 합쳐서 업데이트.
-      setProduct((prev) => ({
-        // 상품 정보 업데이트
-        ...prev, // 기존 상품 정보 유지
-        mainImages: [...prev.mainImages, ...uploadedImages], //mainImages 배열에 새 이미지 추가 (필요 시 여러 장 업로드도 가능)
-      }));
-    } catch (error) {
-      alert('이미지 업로드 실패');
+    // 이미지 4개 초과시 알림 후 취소 설정 (기존에 선택된 이미지도 합쳐짐)
+    if (product.mainImages.length + files.length > 4) {
+      alert('이미지는 최대 4개까지 선택 가능합니다.');
+      e.target.value = ''; // 입력 초기화
+      return;
     }
+
+    // Promise.all을 사용하여 여러 이미지를 동시에 업로드 기능 삭제
+    // 각 파일에 대한 로컬 미리보기 URL 생성 로직 구현
+    const previews = files.map((file) => ({
+      file, // 파일 객체 보존 - 나중에 서버 업로드를 위함
+      path: URL.createObjectURL, // 로컬 미리보기용 URL 생성
+      name: file.name, // 이미지 파일 이름
+      originalname: file.name, // 이미지 원본 이름
+    }));
+
+    // 기존 prodct state에 저장된 mainImages 배열은 보존
+    // 새로 업로드된 이미지 객체들이 담긴 배열(uploadImages) 삭제.
+    // 미리보기 객체들을 기존 이미지 배열에 추가하여 상태 업데이트
+    setProduct((prev) => ({
+      // 상품 정보 업데이트
+      ...prev, // 기존 상품 정보 유지
+      mainImages: [...prev.mainImages, ...previews],
+    }));
   };
 
   // 상품 추가 또는 수정
