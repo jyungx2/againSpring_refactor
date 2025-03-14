@@ -448,7 +448,7 @@ const AdminProductUpload = () => {
                 </td>
                 <td className="border border-gray-300 p-2">{item.name}</td>
                 <td className="border border-gray-300 p-2">{item.quantity}</td>
-                <td className="border border-gray-300 p-2">{item.price}원</td>
+                <td className="border border-gray-300 p-2">{Number(item.price).toLocaleString()}원</td>
                 <td className="border border-gray-300 p-2">{item.extra.tanso}</td>
                 <td className="border border-gray-300 p-2">{item.extra.isNew ? '✔️' : '-'}</td>
                 <td className="border border-gray-300 p-2">{item.extra.isBest ? '✔️' : '-'}</td>
