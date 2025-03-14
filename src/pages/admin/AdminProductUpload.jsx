@@ -294,31 +294,58 @@ const AdminProductUpload = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // 폼 제출 이벤트 기본 동작 방지
 
-    // 상품 설명 최소 10자 검증 (이미 백엔드 로직에 구현되어있으나 프론트에서도 추가로 검증)
-    if (product.content.length < 10) {
-      // 상품 설명이 10자 미만이면
-      alert('상품 설명은 최소 10자 이상 입력해야 합니다.'); // 경고 메시지 출력
+    // 등록할 상품이 없는 상태에서 제출할 경우
+    if (productList.length === 0) {
+      alert('등록할 상품이 없습니다.');
       return;
     }
 
-    // 상품 데이터
-    const productData = {
-      ...product, // ...product로 상품 정보 전달
-      price: Number(product.price), // 가격, 수량, 배송비는 숫자로 변환
-      quantity: Number(product.quantity), // 가격, 수량, 배송비는 숫자로 변환
-      shippingFees: Number(product.shippingFees), // 가격, 수량, 배송비는 숫자로 변환
-    };
+    // 상품 필드 검증 (이미 백엔드 로직에 구현되어있으나 프론트에서도 추가로 검증)
+    if (product.name.length < 2) {
+      alert('상품명은 최소 2글자 이상 입력해야합니다.');
+      return;
+    }
 
-    console.log('최종 변환된 보낼 데이터:', productData); // 콘솔에서 확인
+    if (product.content.length < 10) {
+      alert('상품 설명은 최소 10자 이상 입력해야 합니다.');
+      return;
+    }
 
+    // 각 상품별 이미지 업로드 처리
     try {
+      const productsToUpload = await Promise.all(
+        // productList 배열을 순회하면서 각 상품 객체를 순서대로 담음
+        productList.map(async (p) => {
+          const uploadedImages = await Promise.all(
+            p.mainImages.map(async (img) => {
+              if (img.file) {
+                // 서버에 업로드하여 최종 URL 반환
+                const finalUrl = await uploadProductImage(img.file);
+                // 최종 URL로 대체하고 file 속성은 제거
+                return { ...img, path: finalUrl, file: undefined };
+              }
+              return img;
+            })
+          );
+          return {
+            // 상품 데이터 반환
+            ...p, // 실제 productList의 저장된 각 상품 객체
+            mainImages: uploadedImages, // 각 상품의mainImages 필드를 서버 업로드 결괴인 uploadedImages 배열로 대체
+            price: Number(p.price), // 가격, 수량, 배송비는 숫자로 변환
+            quantity: Number(p.quantity), // 가격, 수량, 배송비는 숫자로 변환
+            shippingFees: Number(p.shippingFees), // 가격, 수량, 배송비는 숫자로 변환
+          };
+        })
+      );
+
       // 상품 등록 요청
-      await addProduct(productData); // 상품 등록 API 호출
-      alert('상품이 등록되었습니다!'); // 성공 메시지 출력
-      navigator('/shop'); // 등록 후 상품 목록 페이지로 이동
+      await Promise.all(productsToUpload.map((p) => addProduct(p)));
+      alert('모든 상품이 등록되었습니다.'); // 성공 메시지 출력
+      setProductList([]); // 등록 성공 후 목록 초기화
     } catch (error) {
       // 상품 등록 실패 시
       console.error('상품 등록 실패:', error.response?.data || error.message); // 에러 메시지 출력
+      alert('상품 등록에 실패하였습니다. 에러 메시지를 확인해 주세요.');
     }
   };
 
@@ -327,9 +354,9 @@ const AdminProductUpload = () => {
       <h2>관리자 상품 등록 페이지</h2>
       <form onSubmit={handleSubmit}>
         {/* 텍스트 입력 필드 */}
-        <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} required />
-        <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} required />
-        <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} required />
+        <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} />
+        <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} />
+        <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} />
         <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} />
         <div>
           <label>
@@ -381,87 +408,89 @@ const AdminProductUpload = () => {
         <button type="button" onClick={handleAddorUpdateProduct}>
           {editingIndex === null ? '상품 추가' : '수정 완료'}
         </button>
+      </form>
 
-        {/* 상품 등록된 목록 랜더 table*/}
-        <h3 className="text-5xl font-semibold mt-20">🛒 추가된 상품 목록</h3>
-        <table className="w-full border-collapse border border-gray-300 mt-4">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 p-2">이미지</th>
-              <th className="border border-gray-300 p-2">상품명</th>
-              <th className="border border-gray-300 p-2">수량</th>
-              <th className="border border-gray-300 p-2">가격</th>
-              <th className="border border-gray-300 p-2">탄소</th>
-              <th className="border border-gray-300 p-2">신상품</th>
-              <th className="border border-gray-300 p-2">베스트 상품</th>
-              <th className="border border-gray-300 p-2">카테고리</th>
-              <th className="border border-gray-300 p-2">수정 / 삭제</th>
+      {/* 상품 등록된 목록 랜더 table*/}
+      <h3 className="text-5xl font-semibold mt-20">🛒 추가된 상품 목록</h3>
+      <table className="w-full border-collapse border border-gray-300 mt-4">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border border-gray-300 p-2">이미지</th>
+            <th className="border border-gray-300 p-2">상품명</th>
+            <th className="border border-gray-300 p-2">수량</th>
+            <th className="border border-gray-300 p-2">가격</th>
+            <th className="border border-gray-300 p-2">탄소</th>
+            <th className="border border-gray-300 p-2">신상품</th>
+            <th className="border border-gray-300 p-2">베스트 상품</th>
+            <th className="border border-gray-300 p-2">카테고리</th>
+            <th className="border border-gray-300 p-2">수정 / 삭제</th>
+          </tr>
+        </thead>
+        <tbody>
+          {productList.length === 0 ? (
+            <tr>
+              <td colSpan={9} className="border border-gray-300 p-4 text-center">
+                추가된 상품 목록이 없습니다.
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {productList.length === 0 ? (
-              <tr>
-                <td colSpan={9} className="border border-gray-300 p-4 text-center">
-                  추가된 상품 목록이 없습니다.
+          ) : (
+            productList.map((item, index) => (
+              <tr key={index} className="text-center">
+                <td className="border border-gray-300 p-2">
+                  <div className="flex gap-2 justify-center">
+                    {item.mainImages.map((img, idx) => (
+                      <div key={idx} className="relative">
+                        {idx === 0 && <span className="absolute top-0 left-0 bg-blue-500 text-white text-xl px-1 rounded">대표이미지</span>}
+                        <img src={img.path} alt={`${item.name}-${idx}`} className="w-32 h-32 object-cover border border-gray-300" />
+                      </div>
+                    ))}
+                  </div>
+                </td>
+                <td className="border border-gray-300 p-2">{item.name}</td>
+                <td className="border border-gray-300 p-2">{item.quantity}</td>
+                <td className="border border-gray-300 p-2">{item.price}원</td>
+                <td className="border border-gray-300 p-2">{item.extra.tanso}</td>
+                <td className="border border-gray-300 p-2">{item.extra.isNew ? '✔️' : '-'}</td>
+                <td className="border border-gray-300 p-2">{item.extra.isBest ? '✔️' : '-'}</td>
+                <td className="border border-gray-300 p-2">{getDisplayCategory(item.extra.category)}</td>
+
+                <td className="border border-gray-300 p-2">
+                  <button type="button" onClick={() => handleEditProduct(index)} className="text-blue-500 hover:underline mr-2">
+                    수정
+                  </button>
+                  <button type="button" onClick={() => handleDeleteProduct(index)} className="text-red-500 hover:underline mr-2">
+                    삭제
+                  </button>
                 </td>
               </tr>
-            ) : (
-              productList.map((item, index) => (
-                <tr key={index} className="text-center">
-                  <td className="border border-gray-300 p-2">
-                    <div className="flex gap-2 justify-center">
-                      {item.mainImages.map((img, idx) => (
-                        <div key={idx} className="relative">
-                          {idx === 0 && <span className="absolute top-0 left-0 bg-blue-500 text-white text-xl px-1 rounded">대표이미지</span>}
-                          <img src={img.path} alt={`${item.name}-${idx}`} className="w-32 h-32 object-cover border border-gray-300" />
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                  <td className="border border-gray-300 p-2">{item.name}</td>
-                  <td className="border border-gray-300 p-2">{item.quantity}</td>
-                  <td className="border border-gray-300 p-2">{item.price}원</td>
-                  <td className="border border-gray-300 p-2">{item.extra.tanso}</td>
-                  <td className="border border-gray-300 p-2">{item.extra.isNew ? '✔️' : '-'}</td>
-                  <td className="border border-gray-300 p-2">{item.extra.isBest ? '✔️' : '-'}</td>
-                  <td className="border border-gray-300 p-2">{getDisplayCategory(item.extra.category)}</td>
+            ))
+          )}
+        </tbody>
+      </table>
 
-                  <td className="border border-gray-300 p-2">
-                    <button type="button" onClick={() => handleEditProduct(index)} className="text-blue-500 hover:underline mr-2">
-                      수정
-                    </button>
-                    <button type="button" onClick={() => handleDeleteProduct(index)} className="text-red-500 hover:underline mr-2">
-                      삭제
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-
-        {/* 이미지 확대보기 */}
-        {modalImage && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50" onClick={handleCloseModal}>
-            <div className="relative">
-              <img src={modalImage.path} alt={modalImage.name} className="max-w-full max-h-screen" />
-              {/* <h1>이미지를 클릭하면 닫힘</h1> */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleCloseModal();
-                }}
-                className="absolute top-2 right-2 text-black text-6xl"
-              >
-                ✖
-              </button>
-            </div>
+      {/* 이미지 확대보기 */}
+      {modalImage && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50" onClick={handleCloseModal}>
+          <div className="relative">
+            <img src={modalImage.path} alt={modalImage.name} className="max-w-full max-h-screen" />
+            {/* <h1>이미지를 클릭하면 닫힘</h1> */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCloseModal();
+              }}
+              className="absolute top-2 right-2 text-black text-6xl"
+            >
+              ✖
+            </button>
           </div>
-        )}
+        </div>
+      )}
 
-        <button type="submit">전체 상품 등록</button>
-      </form>
+      <button type="submit" onClick={handleSubmit}>
+        전체 상품 등록
+      </button>
     </div>
   );
 };
