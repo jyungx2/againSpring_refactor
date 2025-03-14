@@ -115,7 +115,7 @@ const AdminProductUpload = () => {
     // 각 파일에 대한 로컬 미리보기 URL 생성 로직 구현
     const previews = files.map((file) => ({
       file, // 파일 객체 보존 - 나중에 서버 업로드를 위함
-      path: URL.createObjectURL, // 로컬 미리보기용 URL 생성
+      path: URL.createObjectURL(file), // 로컬 미리보기용 URL 생성
       name: file.name, // 이미지 파일 이름
       originalname: file.name, // 이미지 원본 이름
     }));
@@ -128,6 +128,88 @@ const AdminProductUpload = () => {
       ...prev, // 기존 상품 정보 유지
       mainImages: [...prev.mainImages, ...previews],
     }));
+  };
+
+  // 이미지 확대보기
+  const handleViewImage = (img) => {
+    console.log(img);
+  };
+
+  // 대표 이미지 지정 - 선택된 이미지(index)가 배열의 첫번째로 오도록 재배열
+  const handleSetRepresentative = (index) => {
+    if (index === 0) return; // 이미 대표 이미지인 경우 아무작업X
+    setProduct((prev) => {
+      const images = [...prev.mainImages];
+      const selected = images.splice(index, 1)[0]; // 선택된 이미지 제거
+      images.unshift(selected); // 배열의 시작에 추가하여 대표 이미지로 설정
+      return { ...prev, mainImages: images };
+    });
+  };
+
+  // 이미지 삭제 핸들러 - 선택된 이미지를 배열에서 제거
+  const handleDeleteImage = (index) => {
+    setProduct((prev) => {
+      const images = [...prev.mainImages];
+      images.splice(index, 1); // 선택된 이미지 제거
+      return { ...prev, mainImages: images };
+    });
+  };
+
+  // 미리보기 UI 렌더링 함수 - 선택된 이미지들이 있는 경우 썸네일과 각 이미지별 제어 버튼 표시
+  const renderImagePreview = () => {
+    if (product.mainImages.length === 0) return null;
+    return (
+      <div className="mt-2 flex flex-wrap gap-2">
+        {product.mainImages.map((img, idx) => (
+          <div key={idx} className="relative group">
+            {idx === 0 && <span className="absolute top-0 left-0 bg-blue-500 text-white text-xl px-1 rounde">대표이미지</span>}
+            <img src={img.path} alt={img.name} className="w-60 h-60 object-cover border border-gray-300" />
+
+            {/* 오버레이 컨트롤 - 버튼들을 호버시 이미지 위에 등장 */}
+            <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition">
+              <div className="flex space-x-4">
+                {/* 확대보기 */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation(); //
+                    handleViewImage(img);
+                  }}
+                  className="text-white text-2xl"
+                >
+                  🔍
+                </button>
+
+                {/* 대표이미지 지정 버튼 (첫 번째 이미지가 아닐때만) */}
+                {idx !== 0 && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSetRepresentative(idx);
+                    }}
+                    className="text-white text-2xl"
+                  >
+                    Main
+                  </button>
+                )}
+                {/* 이미지 삭제 */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteImage(idx);
+                  }}
+                  className="text-white text-2xl"
+                >
+                  ✖
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   // 상품 추가 또는 수정
@@ -265,6 +347,8 @@ const AdminProductUpload = () => {
             파일 선택
           </button>
         </div>
+        {/* 미리보기 영역 - 썸네일 표시 */}
+        {renderImagePreview()}
         <textarea name="content" placeholder="상품 설명" onChange={handleChange} value={product.content} required />
 
         {/* 상품 추가, 수정 버튼 */}
