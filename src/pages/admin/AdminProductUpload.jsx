@@ -172,7 +172,9 @@ const AdminProductUpload = () => {
                 <button
                   type="button"
                   onClick={(e) => {
-                    e.stopPropagation(); //
+                    // preventDefault는 현재 이벤트의 기본 동작을 중단한다면 stopPropagation은 부모 엘리먼트로의 이벤트전달을 막아주는 함수
+                    // 즉 의도치 않은 동작을 방지하며 이미지 보기와 대표이미지, 이미지삭제 이벤트가 단독으로 실행되도록 하게함
+                    e.stopPropagation();
                     handleViewImage(img);
                   }}
                   className="text-white text-2xl"
