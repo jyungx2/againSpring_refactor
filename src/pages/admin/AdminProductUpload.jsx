@@ -13,6 +13,20 @@ const CATEGORY_OPTIONS = [
   { label: '반려동물', value: 'pet' },
 ];
 
+// 카테고리 배열을 영어 -> 한글로 변환
+const getDisplayCategory = (categories) => {
+  return categories
+    .filter((cat) => cat !== 'all-of-list') // 실제 표시할 카테고리 값만 남기기 위해 배열에서 제거
+    .map((cat) => {
+      //필터링 된 각 카테고리 값에 대해 CATEGORY_OPTIONS 배열에서 해당 값(한글 라벨)과 일치하는 객체를 찾는다.
+      const option = CATEGORY_OPTIONS.find((opt) => opt.value === cat);
+      // 만약 일치하는 객체(option)이 있다면 그 객체의 label값(한글)을 반환하고
+      //cat이 kitchen 이면 option은 label:주방용품,value:kitchen이 되고 반환 값은 주방용품이 된다.
+      return option ? option.label : cat; // 일치하는 객체가 없다면 그대로 cat 갑을 반환.
+    })
+    .join(','); // 최종적으로 매핑된 결과 배열을 콤마로 연결해서 하나의 문자열로 만듬.
+};
+
 const AdminProductUpload = () => {
   // 관리자 상품 등록 페이지
   const { addProduct } = useProductApi(); // 상품 등록 API 호출
@@ -368,30 +382,63 @@ const AdminProductUpload = () => {
           {editingIndex === null ? '상품 추가' : '수정 완료'}
         </button>
 
-        {/* 상품 등록된 목록 랜더 */}
-        <h3>등록된 상품 목록</h3>
-        {productList.length === 0 ? (
-          <p>등록된 상품이 업습니다.</p>
-        ) : (
-          <ul>
-            {productList.map((item, index) => (
-              <li key={index}>
-                <span>
-                  {item.name} - {item.price}원
-                </span>
+        {/* 상품 등록된 목록 랜더 table*/}
+        <h3 className="text-5xl font-semibold mt-20">🛒 추가된 상품 목록</h3>
+        <table className="w-full border-collapse border border-gray-300 mt-4">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border border-gray-300 p-2">이미지</th>
+              <th className="border border-gray-300 p-2">상품명</th>
+              <th className="border border-gray-300 p-2">수량</th>
+              <th className="border border-gray-300 p-2">가격</th>
+              <th className="border border-gray-300 p-2">탄소</th>
+              <th className="border border-gray-300 p-2">신상품</th>
+              <th className="border border-gray-300 p-2">베스트 상품</th>
+              <th className="border border-gray-300 p-2">카테고리</th>
+              <th className="border border-gray-300 p-2">수정 / 삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {productList.length === 0 ? (
+              <tr>
+                <td colSpan={9} className="border border-gray-300 p-4 text-center">
+                  추가된 상품 목록이 없습니다.
+                </td>
+              </tr>
+            ) : (
+              productList.map((item, index) => (
+                <tr key={index} className="text-center">
+                  <td className="border border-gray-300 p-2">
+                    <div className="flex gap-2 justify-center">
+                      {item.mainImages.map((img, idx) => (
+                        <div key={idx} className="relative">
+                          {idx === 0 && <span className="absolute top-0 left-0 bg-blue-500 text-white text-xl px-1 rounded">대표이미지</span>}
+                          <img src={img.path} alt={`${item.name}-${idx}`} className="w-32 h-32 object-cover border border-gray-300" />
+                        </div>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="border border-gray-300 p-2">{item.name}</td>
+                  <td className="border border-gray-300 p-2">{item.quantity}</td>
+                  <td className="border border-gray-300 p-2">{item.price}원</td>
+                  <td className="border border-gray-300 p-2">{item.extra.tanso}</td>
+                  <td className="border border-gray-300 p-2">{item.extra.isNew ? '✔️' : '-'}</td>
+                  <td className="border border-gray-300 p-2">{item.extra.isBest ? '✔️' : '-'}</td>
+                  <td className="border border-gray-300 p-2">{getDisplayCategory(item.extra.category)}</td>
 
-                {/* 수정버튼 클릭시 해당 상품 데이터를 폼으로 이동 */}
-                <button type="button" onClick={() => handleEditProduct(index)}>
-                  수정
-                </button>
-                {/* 삭제 버튼 클릭시 해당 상품 제거 */}
-                <button type="button" onClick={() => handleDeleteProduct(index)}>
-                  삭제
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+                  <td className="border border-gray-300 p-2">
+                    <button type="button" onClick={() => handleEditProduct(index)} className="text-blue-500 hover:underline mr-2">
+                      수정
+                    </button>
+                    <button type="button" onClick={() => handleDeleteProduct(index)} className="text-red-500 hover:underline mr-2">
+                      삭제
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
 
         {/* 이미지 확대보기 */}
         {modalImage && (
