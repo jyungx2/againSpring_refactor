@@ -46,7 +46,7 @@ const AdminProductUpload = () => {
       isNew: false,
       isBest: false,
       category: ['all-of-list'],
-      tanso: 0,
+      tanso: '',
     },
   });
 
@@ -267,7 +267,7 @@ const AdminProductUpload = () => {
         isNew: false,
         isBest: false,
         category: ['all-of-list'],
-        tanso: 0,
+        tanso: '',
       },
     });
 
