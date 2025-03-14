@@ -42,6 +42,10 @@ const AdminProductUpload = () => {
   // 편집 모드일 때, 현재 편집 중인 상품의 인덱스를 저장하는 상태관리 (null이면 새상품 등록)
   const [editingIndex, setEditingIndex] = useState(null);
 
+  // 확대보기할 이미지를 저장하는 상태관리 - 모달 이미지 상태 (null이면 모달 미표시)
+  // 즉 새창으로 이미지를 보여주지 않기위함 -UI 측면에 이점
+  const [modalImage, setModalImage] = useState(null);
+
   // 인풋 값 변경 이벤트 핸들러
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value }); // 상품 정보 업데이트
@@ -130,9 +134,15 @@ const AdminProductUpload = () => {
     }));
   };
 
-  // 이미지 확대보기
+  // 이미지 확대보기 - 클릭 시 해당 이미지를 새창이 아닌 모달에 띄움
   const handleViewImage = (img) => {
-    console.log(img);
+    // console.log(img);
+    setModalImage(img); // 선택된 이미지 정보를 modalImage 상태에 저장
+  };
+
+  // 모달 닫기 - 아무 화면에 버튼 클릭하면 모달을 닫음
+  const handleCloseModal = () => {
+    setModalImage(null);
   };
 
   // 대표 이미지 지정 - 선택된 이미지(index)가 배열의 첫번째로 오도록 재배열
@@ -382,6 +392,27 @@ const AdminProductUpload = () => {
             ))}
           </ul>
         )}
+
+        {/* 이미지 확대보기 */}
+        {modalImage && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50" onClick={handleCloseModal}>
+            <div className="relative">
+              <img src={modalImage.path} alt={modalImage.name} className="max-w-full max-h-screen" />
+              {/* <h1>이미지를 클릭하면 닫힘</h1> */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCloseModal();
+                }}
+                className="absolute top-2 right-2 text-black text-6xl"
+              >
+                ✖
+              </button>
+            </div>
+          </div>
+        )}
+
         <button type="submit">전체 상품 등록</button>
       </form>
     </div>
