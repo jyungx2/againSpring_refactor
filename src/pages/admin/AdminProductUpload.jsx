@@ -350,45 +350,86 @@ const AdminProductUpload = () => {
   };
 
   return (
-    <div>
-      <h2>관리자 상품 등록 페이지</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="w-[1200px] px-[16px] my-[40px] mx-auto">
+      <h2 className="text-5xl font-semibold flex items-center gap-2 mb-6">📦 관리자 상품 등록 페이지</h2>
+      {/* 상품 등록 폼 */}
+      <form className="space-y-4" onSubmit={handleSubmit}>
         {/* 텍스트 입력 필드 */}
-        <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} />
-        <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} />
-        <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} />
-        <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} />
-        <div>
-          <label>
-            <input type="checkbox" checked={product.extra.isNew} onChange={handleIsNewChange} />
-            신상품
-          </label>
-          <label>
-            <input type="checkbox" checked={product.extra.isBest} onChange={handleIsBestChange} />
-            베스트 상품
-          </label>
-        </div>
-        <select onChange={handleCategoryChange} value={product.extra.category[1] || ''}>
-          <option value="" disabled>
-            카테고리를 선택해주세요.
-          </option>
-          {/*CATEGORY_OPTIONS q배열의 각 요소를 순회할 때 사용하는 cat  */}
-          {CATEGORY_OPTIONS.map(
-            (
-              cat // 배열의 각 항목을 순회함
-            ) => (
-              //  cat에 대해 option 태그 생성
-              <option
-                key={cat.value} // {/* 배열을 랜더링할 때 각 요소에 고유한 key를 부여하고  */}
-                value={cat.value} // {/* 옵션태그의 값으로 사용되며 관리자가 선택하려고 할때 해당 값 선택  */}
-              >
-                {cat.label} {/* 드롭다운 메뉴 표시 */}
+        <div className="border rounded-md p-4 mb-4">
+          <h3 className="text-2xl font-semibold mb-4">상품 기본 정보</h3>
+          <div className="grid gird-cols-1 gap-4">
+            <select className="mt-2 w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-40" onChange={handleCategoryChange} value={product.extra.category[1] || ''}>
+              <option value="" disabled>
+                카테고리를 선택해주세요.
               </option>
-            )
-          )}
-        </select>
-        <input type="number" step="0.1" placeholder="탄소 수치 (ex: 4.8)" onChange={handleTansoChange} value={product.extra.tanso} />
+              {/*CATEGORY_OPTIONS q배열의 각 요소를 순회할 때 사용하는 cat  */}
+              {CATEGORY_OPTIONS.map(
+                (
+                  cat // 배열의 각 항목을 순회함
+                ) => (
+                  //  cat에 대해 option 태그 생성
+                  <option
+                    key={cat.value} // {/* 배열을 랜더링할 때 각 요소에 고유한 key를 부여하고  */}
+                    value={cat.value} // {/* 옵션태그의 값으로 사용되며 관리자가 선택하려고 할때 해당 값 선택  */}
+                  >
+                    {cat.label} {/* 드롭다운 메뉴 표시 */}
+                  </option>
+                )
+              )}
+            </select>
+          </div>
+          <div className="gird grid-cols-4 gap-4 mt-4">
+            <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} className="w-gull p-3 border border-gray-300 rounded-md" />
+            <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} className="w-gull p-3 border border-gray-300 rounded-md" />
+            <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} className="w-gull p-3 border border-gray-300 rounded-md" />
+            <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} className="w-gull p-3 border border-gray-300 rounded-md" />
+          </div>
+        </div>
 
+        <div className="border rounded-md p-4 mb-4">
+          <h3 className="text-2xl font-semibold mb-3">추가 옵션</h3>
+          <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4 mt-4 mb-4">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <span className=" text-gray-700">신상품</span>
+                <div
+                  className={`w-12 h-6 flex items-center rounded-full p-1 transition duration-300 
+                    ${product.extra.isNew ? 'bg-primary-40' : 'bg-gray-300'}`}
+                  onClick={() =>
+                    setProduct((prev) => ({
+                      ...prev,
+                      extra: { ...prev.extra, isNew: !prev.extra.isNew },
+                    }))
+                  }
+                >
+                  <div
+                    className={`bg-white w-5 h-5 rounded-full shadow-md transform transition duration-300
+                  ${product.extra.isNew ? 'translate-x-6' : 'translate-x-0'}`}
+                  />
+                </div>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <span className="text-gray-700">베스트 상품</span>
+                <div
+                  className={` w-12 h-6 flex items-center rounded-full p-1 transition duration-300 
+                    ${product.extra.isBest ? 'bg-primary-40' : 'bg-gray-300'}`}
+                  onClick={() =>
+                    setProduct((prev) => ({
+                      ...prev,
+                      extra: { ...prev.extra, isBest: !prev.extra.isBest },
+                    }))
+                  }
+                >
+                  <div
+                    className={`bg-white w-5 h-5 rounded-full shadow-md transform transition duration-300
+                    ${product.extra.isBest ? 'translate-x-6' : 'translate-x-0'}`}
+                  />
+                </div>
+              </label>
+            </div>
+            <input type="number" step="0.1" placeholder="탄소 수치 (ex: 4.8)" onChange={handleTansoChange} value={product.extra.tanso} className="w-full p-3 border border-gray-300 rounded-md" />
+          </div>
+        </div>
         {/* 파일 업로드 섹션 */}
         <div>
           {/* 기존의 input type= file 요소를 숨기고 ref 속성을 통해 fileInputRef에 연결 */}
