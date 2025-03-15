@@ -378,7 +378,7 @@ const AdminProductUpload = () => {
               )}
             </select>
           </div>
-          <div className="gird grid-cols-4 gap-4 mt-4">
+          <div className="grid grid-cols-4 gap-4 mt-4">
             <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} className="w-gull p-3 border border-gray-300 rounded-md" />
             <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} className="w-gull p-3 border border-gray-300 rounded-md" />
             <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} className="w-gull p-3 border border-gray-300 rounded-md" />
@@ -431,22 +431,26 @@ const AdminProductUpload = () => {
           </div>
         </div>
         {/* 파일 업로드 섹션 */}
-        <div>
-          {/* 기존의 input type= file 요소를 숨기고 ref 속성을 통해 fileInputRef에 연결 */}
-          <input type="file" ref={fileInputRef} name="image" accept="image/*" multiple onChange={handleImageChange} style={{ display: 'none' }} />
-
-          {/* 커스텀 파일 선택 버튼 생성 - 버튼 혹은 라벨 클릭시 fileInputRef를 통헤 
+        <div className="border rounded-md p-4 mb-4">
+          <h3 className="text-2xl font-semibold mb-2">이미지 업로드</h3>
+          <div className="border border-gray-300 rounded-md p-3">
+            {/* 기존의 input type= file 요소를 숨기고 ref 속성을 통해 fileInputRef에 연결 */}
+            <input type="file" ref={fileInputRef} name="image" accept="image/*" multiple onChange={handleImageChange} style={{ display: 'none' }} />
+            {/* 커스텀 파일 선택 버튼 생성 - 버튼 혹은 라벨 클릭시 fileInputRef를 통헤 
           숨겨진 파일 입력의 click 메소드 호출 */}
-          <button type="button" onClick={() => fileInputRef.current && fileInputRef.current.click()}>
-            파일 선택
-          </button>
+            <label onClick={() => fileInputRef.current && fileInputRef.current.click()} className="cursor-pointer inline-block bg-primary-40 px-4 py-2 text-white hover:bg-primary-60 transition-colors duration-300 rounded-md">
+              파일 선택
+            </label>
+            {/* 미리보기 영역 - 썸네일 표시 */}
+            {renderImagePreview()}
+          </div>
         </div>
-        {/* 미리보기 영역 - 썸네일 표시 */}
-        {renderImagePreview()}
-        <textarea name="content" placeholder="상품 설명" onChange={handleChange} value={product.content} required />
-
+        <div className="border rounded-md p-4 mb-4">
+          <h3 className="text-2xl font-semibold mb-2">상품 설명</h3>
+          <textarea className="w-full p-3 border border-gray-300 rounded-md resize-none h-40" name="content" placeholder="상품 설명" onChange={handleChange} value={product.content} required />
+        </div>
         {/* 상품 추가, 수정 버튼 */}
-        <button type="button" onClick={handleAddorUpdateProduct}>
+        <button type="button" onClick={handleAddorUpdateProduct} className="w-full bg-primary-40 p-3 mt-4 text-white hover:bg-primary-60 transition-colors duration-300 ml-auto">
           {editingIndex === null ? '상품 추가' : '수정 완료'}
         </button>
       </form>
@@ -529,7 +533,7 @@ const AdminProductUpload = () => {
         </div>
       )}
 
-      <button type="submit" onClick={handleSubmit}>
+      <button type="submit" onClick={handleSubmit} className="w-full bg-secondary-40 p-3 mt-4 text-white hover:bg-secondary-60 transition-colors duration-300 ml-auto">
         전체 상품 등록
       </button>
     </div>
