@@ -302,14 +302,15 @@ const AdminProductUpload = () => {
     }
 
     // 상품 필드 검증 (이미 백엔드 로직에 구현되어있으나 프론트에서도 추가로 검증)
-    if (product.name.length < 2) {
-      alert('상품명은 최소 2글자 이상 입력해야합니다.');
-      return;
-    }
-
-    if (product.content.length < 10) {
-      alert('상품 설명은 최소 10자 이상 입력해야 합니다.');
-      return;
+    for (const p of productList) {
+      if (p.name.length < 2) {
+        alert('상품명은 최소 2글자 이상 입력해야합니다.');
+        return;
+      }
+      if (p.content.length < 10) {
+        alert('상품 설명은 최소 10자 이상 입력해야 합니다.');
+        return;
+      }
     }
 
     // 각 상품별 이미지 업로드 처리
