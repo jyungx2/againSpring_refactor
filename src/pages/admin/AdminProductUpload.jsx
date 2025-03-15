@@ -87,7 +87,7 @@ const AdminProductUpload = () => {
       extra: {
         // extra 정보 업데이트
         ...prev.extra, // 기존 extra 정보 유지
-        tanso: Number(e.target.value), // 탄소 수치 숫자로 변환
+        tanso: e.target.value, // 탄소 수치 숫자로 변환
       },
     }));
   };
@@ -339,6 +339,11 @@ const AdminProductUpload = () => {
             price: Number(p.price), // 가격, 수량, 배송비는 숫자로 변환
             quantity: Number(p.quantity), // 가격, 수량, 배송비는 숫자로 변환
             shippingFees: Number(p.shippingFees), // 가격, 수량, 배송비는 숫자로 변환
+            extra: {
+              ...p.extra,
+              // 최종 제출 시 문자열로 저장된 tanso를 숫자로 변환
+              tanso: Number(p.extra.tanso),
+            },
           };
         })
       );
