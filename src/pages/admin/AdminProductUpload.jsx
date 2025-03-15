@@ -241,6 +241,7 @@ const AdminProductUpload = () => {
   // 상품 추가 또는 수정
   const handleAddorUpdateProduct = () => {
     if (!product.name || !product.price) {
+      // 필수 입력 값 검증
       alert('상품명과 가격은 필수 입력 사항입니다.');
       return;
     }
@@ -354,10 +355,11 @@ const AdminProductUpload = () => {
       <h2 className="text-5xl font-semibold flex items-center gap-2 mb-6">📦 관리자 상품 등록 페이지</h2>
       {/* 상품 등록 폼 */}
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* 텍스트 입력 필드 */}
+        {/* 상품 기본 정보 입력 필드 */}
         <div className="border rounded-md p-4 mb-4">
           <h3 className="text-2xl font-semibold mb-4">상품 기본 정보</h3>
           <div className="grid gird-cols-1 gap-4">
+            {/* 카테고리 선택 */}
             <select className="mt-2 w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-40" onChange={handleCategoryChange} value={product.extra.category[1] || ''}>
               <option value="" disabled>
                 카테고리를 선택해주세요.
@@ -386,10 +388,12 @@ const AdminProductUpload = () => {
           </div>
         </div>
 
+        {/* 추가 옵션 영역 */}
         <div className="border rounded-md p-4 mb-4">
           <h3 className="text-2xl font-semibold mb-3">추가 옵션</h3>
           <div className="grid grid-cols-4 gap-4">
             <div className="grid grid-cols-2 gap-4 mt-4 mb-4">
+              {/* 신상품 토글 */}
               <label className="flex items-center space-x-2 cursor-pointer">
                 <span className=" text-gray-700">신상품</span>
                 <div
@@ -408,6 +412,8 @@ const AdminProductUpload = () => {
                   />
                 </div>
               </label>
+
+              {/* 베스트상품 토글 */}
               <label className="flex items-center space-x-2 cursor-pointer">
                 <span className="text-gray-700">베스트 상품</span>
                 <div
@@ -445,6 +451,7 @@ const AdminProductUpload = () => {
             {renderImagePreview()}
           </div>
         </div>
+        {/* 상품 설명 섹션 */}
         <div className="border rounded-md p-4 mb-4">
           <h3 className="text-2xl font-semibold mb-2">상품 설명</h3>
           <textarea className="w-full p-3 border border-gray-300 rounded-md resize-none h-40" name="content" placeholder="상품 설명" onChange={handleChange} value={product.content} required />
@@ -532,7 +539,6 @@ const AdminProductUpload = () => {
           </div>
         </div>
       )}
-
       <button type="submit" onClick={handleSubmit} className="w-full bg-secondary-40 p-3 mt-4 text-white hover:bg-secondary-60 transition-colors duration-300 ml-auto">
         전체 상품 등록
       </button>
