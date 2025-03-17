@@ -64,9 +64,12 @@ function Detail() {
   }, [id]);
 
   // 관리자용 수정/ 삭제 기능
-  // 수정 버튼 클릭 시 호출되는 함수
   const handleEdit = () => {
-    // 관리자 전용 - 상품 수정 페이지로 이동하여 현재 상품 상세정보를 state로 전달
+    if (!productDetails) {
+      alert('상품 데이터가 없습니다.');
+      return;
+    }
+    // 관리자가 상품 수정 페이지로 이동할 때, 현재 상품 상세 정보를 state로 전달
     navigate('/admin/addproduct', { state: productDetails });
   };
 
@@ -75,7 +78,7 @@ function Detail() {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
         // API 서버를 통해 상품 삭제 요청 (id 사용)
-        await axiosInstance.delete(`/products/${id}`);
+        await axiosInstance.delete(`/seller/products/${id}`);
         alert('상품이 삭제 되었습니다.');
         navigate('/shop');
       } catch (error) {

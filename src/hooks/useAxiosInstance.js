@@ -1,20 +1,20 @@
-import axios from "axios";
-import useUserStore from "@store/userStore";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import useUserStore from '@store/userStore';
+import { useNavigate } from 'react-router-dom';
 
-const REFRESH_url = "/auth/refresh";
+const REFRESH_url = '/auth/refresh';
 
 function useAxiosInstance() {
   const { user, setUser } = useUserStore();
   const navigate = useNavigate();
 
   const instance = axios.create({
-    baseURL: "https://11.fesp.shop",
+    baseURL: 'https://11.fesp.shop/',
     timeout: 1000 * 15,
     headers: {
-      "Content-Type": "application/json",
-      accept: "application/json",
-      "client-id": "final02",
+      'Content-Type': 'application/json',
+      accept: 'application/json',
+      'client-id': 'final02',
     },
   });
 
@@ -34,7 +34,7 @@ function useAxiosInstance() {
       return response;
     },
     async (error) => {
-      console.error("인터셉터 결과(에러): ", error);
+      console.error('인터셉터 결과(에러): ', error);
       const { config, response } = error;
 
       if (response?.status === 401) {
@@ -65,10 +65,8 @@ function useAxiosInstance() {
   );
 
   function navigateLogin() {
-    const goToLogin = confirm(
-      "로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?"
-    );
-    goToLogin && navigate("/login", { state: { from: location.pathname } });
+    const goToLogin = confirm('로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?');
+    goToLogin && navigate('/login', { state: { from: location.pathname } });
   }
 
   return instance;

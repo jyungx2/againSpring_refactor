@@ -1,7 +1,10 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useProductApi from '@hooks/useAddProduct';
 import { uploadProductImage } from '@utils/uploadProductImage';
 import { useProductStore } from '@store/useProductStore';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAxiosInstance from '@hooks/useAxiosInstance';
+
 // select로 표시할 카테고리 목록
 const CATEGORY_OPTIONS = [
   { label: '주방용품', value: 'kitchen' },
@@ -26,9 +29,24 @@ const getDisplayCategory = (categories) => {
     })
     .join(','); // 최종적으로 매핑된 결과 배열을 콤마로 연결해서 하나의 문자열로 만듬.
 };
+// 이미지 경로가 절대경로인지 확인하고, 아니라면 base URL을 붙임
+const getImage = (path) => {
+  if (!path) return ''; // path가 없으면 빈 문자열 반환
+  if (path.startsWith('http')) return path; // 이미 전체 URL이면 그대로 반환
+  const baseURL = 'https://11.fesp.shop';
+  // path가 '/'로 시작하지 않으면 추가
+  return `${baseURL}${path.startsWith('/') ? '' : '/'}${path}`;
+};
 
 // AdminProductUpload - 컴포넌트 내부에서 가격 입력 필드와 관련된 상태와 핸들러
 const AdminProductUpload = () => {
+  const location = useLocation();
+  // ===================productToEdit 디버깅==========================
+  // const productToEdit = location.state; // Detail.jsx에서 navigate로 넘어온 productDetails
+  // console.log('받아온 productToEdit:', productToEdit);
+  // ==================================================================
+  const navigate = useNavigate();
+
   const { addProduct } = useProductApi(); // 상품 등록 API 호출
 
   // 파일 input 요소에 접근하기 위한 참조 (useRef)
@@ -77,12 +95,15 @@ const AdminProductUpload = () => {
     setRawPrice(unformatted); // rawPrice를 원시 숫자 문자열로 업데이트
     updateProduct({ price: unformatted }); // product.price도 원시 값으로 업데이트하여 사용자가 수정하기 편한 상태로 만듦
   };
-
-  // //상품목록들 관리하기 위한 상태 관리
-  // const [productList, setProductList] = useState([]); // 등록할 상품들을 배열로 저장
-
-  // // 편집 모드일 때, 현재 편집 중인 상품의 인덱스를 저장하는 상태관리 (null이면 새상품 등록)
-  // const [editingIndex, setEditingIndex] = useState(null);
+  useEffect(() => {
+    if (location.state) {
+      setProduct(location.state);
+      if (location.state.price) {
+        setRawPrice(String(location.state.price));
+      }
+      setEditingIndex(/* 해당 상품의 인덱스 또는 ID */);
+    }
+  }, [location.state]);
 
   // 확대보기할 이미지를 저장하는 상태관리 - 모달 이미지 상태 (null이면 모달 미표시)
   // 즉 새창으로 이미지를 보여주지 않기위함 -UI 측면에 이점
@@ -218,7 +239,7 @@ const AdminProductUpload = () => {
         {product.mainImages.map((img, idx) => (
           <div key={idx} className="relative group">
             {idx === 0 && <span className="absolute top-0 left-0 bg-blue-500 text-white text-xl px-1 rounde">대표이미지</span>}
-            <img src={img.path} alt={img.name} className="w-60 h-60 object-cover border border-gray-300" />
+            <img src={getImage(img.path)} alt={img.name} className="w-60 h-60 object-cover border border-gray-300" />
 
             {/* 오버레이 컨트롤 - 버튼들을 호버시 이미지 위에 등장 */}
             <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition">
@@ -268,9 +289,9 @@ const AdminProductUpload = () => {
       </div>
     );
   };
-
+  const axiosInstance = useAxiosInstance();
   // 상품 추가 또는 수정
-  const handleAddorUpdateProduct = () => {
+  const handleAddorUpdateProduct = async () => {
     if (!product.name || !product.price) {
       // 필수 입력 값 검증
       alert('상품명과 가격은 필수 입력 사항입니다.');
@@ -279,14 +300,23 @@ const AdminProductUpload = () => {
 
     // 새 상품 추가 (편집 모드가 아닌 경우)
     if (editingIndex === null) {
+      // 신규 상품 추가 모드 : addProductToList() 호출 후 addProduct API 호출
       addProductToList(product);
     } else {
       // 편집 모드일 경우 해당 인덱스의 상품 정보를 업데이트
-      const updateList = productList.map((item, index) => (index === editingIndex ? product : item));
-      updateProductList(updateList);
-      setEditingIndex(null); // 편집 상태 해제
+      // 기존 상품을 수정(Patch) 처리해야함
+      try {
+        await axiosInstance.patch(`/seller/products/${product._id}`, product);
+        alert('상품이 정상적으로 수정되었습니다.');
+        setEditingIndex(null); // 편집 상태 해제
+        resetProduct();
+      } catch (error) {
+        // 수정 후 store에서 수정된 상품 목록 업데이트 (ex: updateProductList)
+        console.log('상품 수정 실패:', error.response?.data || error.message);
+        alert('상품 수정에 실패 하였습니다. 에러 메시지를 확인해주세요');
+        return;
+      }
     }
-    resetProduct();
     // rawPrice도 별도로 초기화
     setRawPrice('');
 
