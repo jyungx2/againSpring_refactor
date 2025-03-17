@@ -390,10 +390,10 @@ const AdminProductUpload = () => {
             </select>
           </div>
           <div className="grid grid-cols-4 gap-4 mt-4">
-            <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} className="w-gull p-3 border border-gray-300 rounded-md" />
-            <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} className="w-gull p-3 border border-gray-300 rounded-md" />
-            <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} className="w-gull p-3 border border-gray-300 rounded-md" />
-            <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} className="w-gull p-3 border border-gray-300 rounded-md" />
+            <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} className="w-full p-3 border border-gray-300 rounded-md" />
+            <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} className="w-full p-3 border border-gray-300 rounded-md" />
+            <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} className="w-full p-3 border border-gray-300 rounded-md" />
+            <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} className="w-full p-3 border border-gray-300 rounded-md" />
           </div>
         </div>
 
