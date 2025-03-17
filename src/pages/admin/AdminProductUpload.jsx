@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import useProductApi from '@hooks/useAddProduct';
 import { uploadProductImage } from '@utils/uploadProductImage';
-
 // select로 표시할 카테고리 목록
 const CATEGORY_OPTIONS = [
   { label: '주방용품', value: 'kitchen' },
@@ -27,13 +26,8 @@ const getDisplayCategory = (categories) => {
     .join(','); // 최종적으로 매핑된 결과 배열을 콤마로 연결해서 하나의 문자열로 만듬.
 };
 
+// AdminProductUpload - 컴포넌트 내부에서 가격 입력 필드와 관련된 상태와 핸들러
 const AdminProductUpload = () => {
-  // 관리자 상품 등록 페이지
-  const { addProduct } = useProductApi(); // 상품 등록 API 호출
-
-  // 파일 input 요소에 접근하기 위한 참조 (useRef)
-  const fileInputRef = useRef(null);
-
   // 상품 정보 상태
   const [product, setProduct] = useState({
     name: '',
@@ -49,6 +43,42 @@ const AdminProductUpload = () => {
       tanso: '',
     },
   });
+
+  // 입력 필드에 표시되는 값을 관리하는 별도의 상태관리
+  const [rawPrice, setRawPrice] = useState(''); // 사용자가 입력할 때는 원시 숫자 문자열로, onBlur 시 포맷팅되어 1000단위 구분 기호가 적용된 문자열로 변경
+
+  // 사용자가 입력 필드에 값을 입력할 때마다 호출
+  const handlePriceChange = (e) => {
+    // rawPrice와 product.price를 사용자가 입력한 원시값으로 업데이트 (ex:1000)
+    setRawPrice(e.target.value); // 입력 필드에 표시될 원시 값 업데이트
+    setProduct({ ...product, price: e.target.value }); // procuct 상태의 price 필드도 동일한 원시 값을 업데이트
+  };
+
+  // onBlur 이벤트 - 사용자가 입력 필드에서 focus를 잃을 때 호출
+  const handlePriceBlur = () => {
+    // 입력된 원시 숫자 문자열을 숫자로 변환한 후, 1000단위 구분 기호가 포함된 포맷된 문자열로 변경
+    const numericValue = Number(rawPrice); // number()를 사용하여 rawPrice를 숫자로 변환
+    if (!isNaN(numericValue)) {
+      // 변환 결과가 유요한 숫자 인지 검사
+      const formatted = numericValue.toLocaleString('ko-KR', {
+        // 숫자 값을 'ko-KR-'로케일로 포맷팅 (한국식 단위 구분기호로 적용)
+        // 소수점 이하 자릿수 설정 방식 (1,000 이런식으로 표시하려면 min:0 max:2로 한다는걸 기억하기)
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
+      // product.price에는 숫자값을 문자열 형태로 저장(콤마없이)
+      setProduct({ ...product, price: numericValue.toString() });
+      // rawPrice를 포맷팅된 문자열로 업데이트하여, 입력필드에는 1000단위 구분 기호가 적용된 값이 보임.
+      setRawPrice(formatted);
+    }
+  };
+  // 사용자가 가격 입력필드를 클릭해 수정하려고 할떄 호출
+  const handlePriceFocus = () => {
+    // 사용자가 필드를 클릭하면, 현재 입력된 값에서 콤마를 제거하여 원시 숫자로 복원
+    const unformatted = rawPrice.replace(/,/g, '');
+    setRawPrice(unformatted); // rawPrice를 원시 숫자 문자열로 업데이트
+    setProduct({ ...product, price: unformatted }); // product.price도 원시 값으로 업데이트하여 사용자가 수정하기 편한 상태로 만듦
+  };
 
   //상품목록들 관리하기 위한 상태 관리
   const [productList, setProductList] = useState([]); // 등록할 상품들을 배열로 저장
@@ -275,6 +305,12 @@ const AdminProductUpload = () => {
       },
     });
 
+    // rawPrice도 별도로 초기화
+    setRawPrice('');
+
+    // 파일 input 요소에 접근하기 위한 참조 (useRef)
+    const fileInputRef = useRef(null);
+
     // 파일 선택 후 취소하고 싶을 때 (파일 입력 초기화)
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -348,6 +384,8 @@ const AdminProductUpload = () => {
         })
       );
 
+      const { addProduct } = useProductApi(); // 상품 등록 API 호출
+
       // 상품 등록 요청
       await Promise.all(productsToUpload.map((p) => addProduct(p)));
       alert('모든 상품이 등록되었습니다.'); // 성공 메시지 출력
@@ -391,7 +429,19 @@ const AdminProductUpload = () => {
           </div>
           <div className="grid grid-cols-4 gap-4 mt-4">
             <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} className="w-full p-3 border border-gray-300 rounded-md" />
-            <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} className="w-full p-3 border border-gray-300 rounded-md" />
+            {/* <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} className="w-full p-3 border border-gray-300 rounded-md" /> */}
+            <input 
+              type="text"  // type=number가아니라 type text를 사용해야 브라우저 기본 숫자 검증 없이 자유롭게 입력가능
+              name="price" 
+              placeholder="가격" 
+              // onFocus={(e) => console.log("포커스 들어옴")} 
+              // onBlur={(e) => console.log("포커스 벗어남")} 
+              onChange={handlePriceChange}  // 사용자가 입력할 때마다 원시값 업데이트
+              onBlur={handlePriceBlur}  // 포커스가 벗어나면 천 단위 구분 기호적용
+              onFocus={handlePriceFocus}  // 포커스가 들어가면 콤마 제거하고 원시 값 복원함
+              value={rawPrice} // 입력 필드에 rawPrice 상태를 표시
+              className="w-full p-3 border border-gray-300 rounded-md" 
+            />
             <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} className="w-full p-3 border border-gray-300 rounded-md" />
             <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} className="w-full p-3 border border-gray-300 rounded-md" />
           </div>
