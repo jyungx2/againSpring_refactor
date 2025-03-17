@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import useProductApi from '@hooks/useAddProduct';
 import { uploadProductImage } from '@utils/uploadProductImage';
+import { useProductStore } from '@store/useProductStore';
 // select로 표시할 카테고리 목록
 const CATEGORY_OPTIONS = [
   { label: '주방용품', value: 'kitchen' },
@@ -28,30 +29,22 @@ const getDisplayCategory = (categories) => {
 
 // AdminProductUpload - 컴포넌트 내부에서 가격 입력 필드와 관련된 상태와 핸들러
 const AdminProductUpload = () => {
-  // 상품 정보 상태
-  const [product, setProduct] = useState({
-    name: '',
-    price: '',
-    quantity: '',
-    shippingFees: '',
-    mainImages: [],
-    content: '',
-    extra: {
-      isNew: false,
-      isBest: false,
-      category: ['all-of-list'],
-      tanso: '',
-    },
-  });
+  const { addProduct } = useProductApi(); // 상품 등록 API 호출
+
+  // 파일 input 요소에 접근하기 위한 참조 (useRef)
+  const fileInputRef = useRef(null);
 
   // 입력 필드에 표시되는 값을 관리하는 별도의 상태관리
   const [rawPrice, setRawPrice] = useState(''); // 사용자가 입력할 때는 원시 숫자 문자열로, onBlur 시 포맷팅되어 1000단위 구분 기호가 적용된 문자열로 변경
+
+  // Zustand 스토어에서 필요한 상태와 업데이트 함수를 가져옴
+  const { product, setProduct, updateProduct, productList, addProductToList, updateProductList, editingIndex, setEditingIndex, resetProduct, resetProductList } = useProductStore();
 
   // 사용자가 입력 필드에 값을 입력할 때마다 호출
   const handlePriceChange = (e) => {
     // rawPrice와 product.price를 사용자가 입력한 원시값으로 업데이트 (ex:1000)
     setRawPrice(e.target.value); // 입력 필드에 표시될 원시 값 업데이트
-    setProduct({ ...product, price: e.target.value }); // procuct 상태의 price 필드도 동일한 원시 값을 업데이트
+    updateProduct({ price: e.target.value }); // procuct 상태의 price 필드도 동일한 원시 값을 업데이트
   };
 
   // onBlur 이벤트 - 사용자가 입력 필드에서 focus를 잃을 때 호출
@@ -62,7 +55,7 @@ const AdminProductUpload = () => {
       // 숫자가아닌 다른 형식으로 입력하면 NaN이므로 유효성 검사 설정
       alert('가격은 숫자만 입력 가능합니다.');
       setRawPrice('');
-      setProduct((prev) => ({ ...prev, prive: '' }));
+      updateProduct({ price: '' });
     } else {
       // 변환 결과가 유요한 숫자 인지 검사
       const formatted = numericValue.toLocaleString('ko-KR', {
@@ -72,7 +65,7 @@ const AdminProductUpload = () => {
         maximumFractionDigits: 2,
       });
       // product.price에는 숫자값을 문자열 형태로 저장(콤마없이)
-      setProduct({ ...product, price: numericValue.toString() });
+      updateProduct({ price: numericValue.toString() });
       // rawPrice를 포맷팅된 문자열로 업데이트하여, 입력필드에는 1000단위 구분 기호가 적용된 값이 보임.
       setRawPrice(formatted);
     }
@@ -82,17 +75,14 @@ const AdminProductUpload = () => {
     // 사용자가 필드를 클릭하면, 현재 입력된 값에서 콤마를 제거하여 원시 숫자로 복원
     const unformatted = rawPrice.replace(/,/g, '');
     setRawPrice(unformatted); // rawPrice를 원시 숫자 문자열로 업데이트
-    setProduct({ ...product, price: unformatted }); // product.price도 원시 값으로 업데이트하여 사용자가 수정하기 편한 상태로 만듦
+    updateProduct({ price: unformatted }); // product.price도 원시 값으로 업데이트하여 사용자가 수정하기 편한 상태로 만듦
   };
 
-  // 파일 input 요소에 접근하기 위한 참조 (useRef)
-  const fileInputRef = useRef(null);
+  // //상품목록들 관리하기 위한 상태 관리
+  // const [productList, setProductList] = useState([]); // 등록할 상품들을 배열로 저장
 
-  //상품목록들 관리하기 위한 상태 관리
-  const [productList, setProductList] = useState([]); // 등록할 상품들을 배열로 저장
-
-  // 편집 모드일 때, 현재 편집 중인 상품의 인덱스를 저장하는 상태관리 (null이면 새상품 등록)
-  const [editingIndex, setEditingIndex] = useState(null);
+  // // 편집 모드일 때, 현재 편집 중인 상품의 인덱스를 저장하는 상태관리 (null이면 새상품 등록)
+  // const [editingIndex, setEditingIndex] = useState(null);
 
   // 확대보기할 이미지를 저장하는 상태관리 - 모달 이미지 상태 (null이면 모달 미표시)
   // 즉 새창으로 이미지를 보여주지 않기위함 -UI 측면에 이점
@@ -100,34 +90,32 @@ const AdminProductUpload = () => {
 
   // 인풋 값 변경 이벤트 핸들러
   const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value }); // 상품 정보 업데이트
+    updateProduct({ [e.target.name]: e.target.value }); // 상품 정보 업데이트
   };
 
   // 카테고리 변경 이벤트 핸들러
   const handleCategoryChange = (e) => {
     const selected = e.target.value; // 선택된 카테고리
-    setProduct((prev) => ({
+    updateProduct({
       // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
       extra: {
         // extra 정보 업데이트
         ...prev.extra, // 기존 extra 정보 유지
         category: ['all-of-list', selected], // 선택된 카테고리 추가
       },
-    }));
+    });
   };
 
   // 탄소 수치 변경 이벤트 핸들러
   const handleTansoChange = (e) => {
-    setProduct((prev) => ({
+    updateProduct({
       // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
       extra: {
         // extra 정보 업데이트
         ...prev.extra, // 기존 extra 정보 유지
         tanso: e.target.value, // 탄소 수치 숫자로 변환
       },
-    }));
+    });
   };
 
   //---------------------------------------------------------------------
@@ -289,30 +277,14 @@ const AdminProductUpload = () => {
 
     // 새 상품 추가 (편집 모드가 아닌 경우)
     if (editingIndex === null) {
-      setProductList([...productList, product]);
+      addProductToList(product);
     } else {
       // 편집 모드일 경우 해당 인덱스의 상품 정보를 업데이트
       const updateList = productList.map((item, index) => (index === editingIndex ? product : item));
-      setProductList(updateList);
+      updateProductList(updateList);
       setEditingIndex(null); // 편집 상태 해제
     }
-
-    // 상품 추가 또는 수정 했을 때 폼 초기화 로직
-    setProduct({
-      name: '',
-      price: '',
-      quantity: '',
-      shippingFees: '',
-      mainImages: [],
-      content: '',
-      extra: {
-        isNew: false,
-        isBest: false,
-        category: ['all-of-list'],
-        tanso: '',
-      },
-    });
-
+    resetProduct();
     // rawPrice도 별도로 초기화
     setRawPrice('');
 
@@ -333,7 +305,7 @@ const AdminProductUpload = () => {
   // 상품 목록- 삭제 버튼 클릭
   const handleDeleteProduct = (index) => {
     // 해당 상품을 목록에서 제거
-    setProductList(productList.filter((_, i) => i !== index));
+    updateProductList(productList.filter((_, i) => i !== index));
   };
 
   // 상품 등록 이벤트 핸들러
@@ -390,12 +362,10 @@ const AdminProductUpload = () => {
         })
       );
 
-      const { addProduct } = useProductApi(); // 상품 등록 API 호출
-
       // 상품 등록 요청
       await Promise.all(productsToUpload.map((p) => addProduct(p)));
       alert('모든 상품이 등록되었습니다.'); // 성공 메시지 출력
-      setProductList([]); // 등록 성공 후 목록 초기화
+      resetProductList([]); // 등록 성공 후 목록 초기화
     } catch (error) {
       // 상품 등록 실패 시
       console.error('상품 등록 실패:', error.response?.data || error.message); // 에러 메시지 출력
