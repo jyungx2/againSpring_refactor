@@ -327,7 +327,7 @@ const AdminProductUpload = () => {
     // 해당 상품 데이터를 폼에 로드하여 수정
     setProduct(productList[index]);
     setEditingIndex(index);
-    setRawPrice(selected.price);
+    setRawPrice(productList[index].price);
   };
 
   // 상품 목록- 삭제 버튼 클릭
