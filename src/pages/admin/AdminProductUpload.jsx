@@ -32,7 +32,7 @@ const getDisplayCategory = (categories) => {
 // 이미지 경로가 절대경로인지 확인하고, 아니라면 base URL을 붙임
 const getImage = (path) => {
   if (!path) return ''; // path가 없으면 빈 문자열 반환
-  if (path.startsWith('http')) return path; // 이미 전체 URL이면 그대로 반환
+  if (path.startsWith('http') || path.startsWith('blob:')) return path; // 이미 전체 URL이면 그대로 반환, 단 blob URL일 경우 그대로 반환하도록 설정
   const baseURL = 'https://11.fesp.shop';
   // path가 '/'로 시작하지 않으면 추가
   return `${baseURL}${path.startsWith('/') ? '' : '/'}${path}`;
