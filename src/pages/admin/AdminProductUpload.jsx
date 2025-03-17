@@ -100,7 +100,7 @@ const AdminProductUpload = () => {
       // 상품 정보 업데이트
       extra: {
         // extra 정보 업데이트
-        ...prev.extra, // 기존 extra 정보 유지
+        ...product.extra, // 기존 extra 정보 유지
         category: ['all-of-list', selected], // 선택된 카테고리 추가
       },
     });
@@ -112,7 +112,7 @@ const AdminProductUpload = () => {
       // 상품 정보 업데이트
       extra: {
         // extra 정보 업데이트
-        ...prev.extra, // 기존 extra 정보 유지
+        ...product.extra, // 기존 extra 정보 유지
         tanso: e.target.value, // 탄소 수치 숫자로 변환
       },
     });
@@ -121,28 +121,28 @@ const AdminProductUpload = () => {
   //---------------------------------------------------------------------
   // 스위치 형식으로 변경 (인라인으로 토글 로직 처리) 함에 따라 함수 미사용 (삭제 보류)
   // 신상품 변경 이벤트 핸들러
-  const handleIsNewChange = (e) => {
-    setProduct((prev) => ({
-      // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
-      extra: {
-        // extra 정보 업데이트
-        ...prev.extra, // 기존 extra 정보 유지
-        isNew: e.target.checked, // 체크 여부에 따라 isNew 값 변경
-      },
-    }));
-  };
+  // const handleIsNewChange = (e) => {
+  //   setProduct((prev) => ({
+  //     // 상품 정보 업데이트
+  //     ...prev, // 기존 상품 정보 유지
+  //     extra: {
+  //       // extra 정보 업데이트
+  //       ...prev.extra, // 기존 extra 정보 유지
+  //       isNew: e.target.checked, // 체크 여부에 따라 isNew 값 변경
+  //     },
+  //   }));
+  // };
 
-  const handleIsBestChange = (e) => {
-    setProduct((prev) => ({
-      // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
-      extra: {
-        ...prev.extra,
-        isBest: e.target.checked, // 체크 여부에 따라 isBest 값 변경
-      },
-    }));
-  };
+  // const handleIsBestChange = (e) => {
+  //   setProduct((prev) => ({
+  //     // 상품 정보 업데이트
+  //     ...prev, // 기존 상품 정보 유지
+  //     extra: {
+  //       ...prev.extra,
+  //       isBest: e.target.checked, // 체크 여부에 따라 isBest 값 변경
+  //     },
+  //   }));
+  // };
   //---------------------------------------------------------------------
 
   // 이미지 변경 이벤트 핸들러
@@ -170,11 +170,11 @@ const AdminProductUpload = () => {
     // 기존 prodct state에 저장된 mainImages 배열은 보존
     // 새로 업로드된 이미지 객체들이 담긴 배열(uploadImages) 삭제.
     // 미리보기 객체들을 기존 이미지 배열에 추가하여 상태 업데이트
-    setProduct((prev) => ({
+    setProduct({
       // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
-      mainImages: [...prev.mainImages, ...previews],
-    }));
+      ...product, // 기존 상품 정보 유지
+      mainImages: [...product.mainImages, ...previews],
+    });
   };
 
   // 이미지 확대보기 - 클릭 시 해당 이미지를 새창이 아닌 모달에 띄움
@@ -191,20 +191,22 @@ const AdminProductUpload = () => {
   // 대표 이미지 지정 - 선택된 이미지(index)가 배열의 첫번째로 오도록 재배열
   const handleSetRepresentative = (index) => {
     if (index === 0) return; // 이미 대표 이미지인 경우 아무작업X
-    setProduct((prev) => {
-      const images = [...prev.mainImages];
-      const selected = images.splice(index, 1)[0]; // 선택된 이미지 제거
-      images.unshift(selected); // 배열의 시작에 추가하여 대표 이미지로 설정
-      return { ...prev, mainImages: images };
+    const images = [...product.mainImages];
+    const selected = images.splice(index, 1)[0]; // 선택된 이미지 제거
+    images.unshift(selected); // 배열의 시작에 추가하여 대표 이미지로 설정
+    setProduct({
+      ...product,
+      mainImages: images,
     });
   };
 
   // 이미지 삭제 핸들러 - 선택된 이미지를 배열에서 제거
   const handleDeleteImage = (index) => {
-    setProduct((prev) => {
-      const images = [...prev.mainImages];
-      images.splice(index, 1); // 선택된 이미지 제거
-      return { ...prev, mainImages: images };
+    const images = [...product.mainImages];
+    images.splice(index, 1); // 선택된 이미지 제거
+    setProduct({
+      ...product,
+      mainImages: images,
     });
   };
 
@@ -435,10 +437,10 @@ const AdminProductUpload = () => {
                   className={`w-12 h-6 flex items-center rounded-full p-1 transition duration-300 
                     ${product.extra.isNew ? 'bg-primary-40' : 'bg-gray-300'}`}
                   onClick={() =>
-                    setProduct((prev) => ({
-                      ...prev,
-                      extra: { ...prev.extra, isNew: !prev.extra.isNew },
-                    }))
+                    setProduct({
+                      ...product,
+                      extra: { ...product.extra, isNew: !product.extra.isNew },
+                    })
                   }
                 >
                   <div
@@ -455,10 +457,10 @@ const AdminProductUpload = () => {
                   className={` w-12 h-6 flex items-center rounded-full p-1 transition duration-300 
                     ${product.extra.isBest ? 'bg-primary-40' : 'bg-gray-300'}`}
                   onClick={() =>
-                    setProduct((prev) => ({
-                      ...prev,
-                      extra: { ...prev.extra, isBest: !prev.extra.isBest },
-                    }))
+                    setProduct({
+                      ...product,
+                      extra: { ...product.extra, isBest: !product.extra.isBest },
+                    })
                   }
                 >
                   <div
