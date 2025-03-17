@@ -58,7 +58,12 @@ const AdminProductUpload = () => {
   const handlePriceBlur = () => {
     // 입력된 원시 숫자 문자열을 숫자로 변환한 후, 1000단위 구분 기호가 포함된 포맷된 문자열로 변경
     const numericValue = Number(rawPrice); // number()를 사용하여 rawPrice를 숫자로 변환
-    if (!isNaN(numericValue)) {
+    if (isNaN(numericValue)) {
+      // 숫자가아닌 다른 형식으로 입력하면 NaN이므로 유효성 검사 설정
+      alert('가격은 숫자만 입력 가능합니다.');
+      setRawPrice('');
+      setProduct((prev) => ({ ...prev, prive: '' }));
+    } else {
       // 변환 결과가 유요한 숫자 인지 검사
       const formatted = numericValue.toLocaleString('ko-KR', {
         // 숫자 값을 'ko-KR-'로케일로 포맷팅 (한국식 단위 구분기호로 적용)
@@ -164,7 +169,6 @@ const AdminProductUpload = () => {
       e.target.value = ''; // 입력 초기화
       return;
     }
-    
 
     // Promise.all을 사용하여 여러 이미지를 동시에 업로드 기능 삭제
     // 각 파일에 대한 로컬 미리보기 URL 생성 로직 구현
@@ -431,17 +435,17 @@ const AdminProductUpload = () => {
           <div className="grid grid-cols-4 gap-4 mt-4">
             <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} className="w-full p-3 border border-gray-300 rounded-md" />
             {/* <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} className="w-full p-3 border border-gray-300 rounded-md" /> */}
-            <input 
-              type="text"  // type=number가아니라 type text를 사용해야 브라우저 기본 숫자 검증 없이 자유롭게 입력가능
-              name="price" 
-              placeholder="가격" 
-              // onFocus={(e) => console.log("포커스 들어옴")} 
-              // onBlur={(e) => console.log("포커스 벗어남")} 
-              onChange={handlePriceChange}  // 사용자가 입력할 때마다 원시값 업데이트
-              onBlur={handlePriceBlur}  // 포커스가 벗어나면 천 단위 구분 기호적용
-              onFocus={handlePriceFocus}  // 포커스가 들어가면 콤마 제거하고 원시 값 복원함
+            <input
+              type="text" // type=number가아니라 type text를 사용해야 브라우저 기본 숫자 검증 없이 자유롭게 입력가능
+              name="price"
+              placeholder="가격"
+              // onFocus={(e) => console.log("포커스 들어옴")}
+              // onBlur={(e) => console.log("포커스 벗어남")}
+              onChange={handlePriceChange} // 사용자가 입력할 때마다 원시값 업데이트
+              onBlur={handlePriceBlur} // 포커스가 벗어나면 천 단위 구분 기호적용
+              onFocus={handlePriceFocus} // 포커스가 들어가면 콤마 제거하고 원시 값 복원함
               value={rawPrice} // 입력 필드에 rawPrice 상태를 표시
-              className="w-full p-3 border border-gray-300 rounded-md" 
+              className="w-full p-3 border border-gray-300 rounded-md"
             />
             <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} className="w-full p-3 border border-gray-300 rounded-md" />
             <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} className="w-full p-3 border border-gray-300 rounded-md" />
