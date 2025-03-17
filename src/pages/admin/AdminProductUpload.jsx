@@ -80,6 +80,9 @@ const AdminProductUpload = () => {
     setProduct({ ...product, price: unformatted }); // product.price도 원시 값으로 업데이트하여 사용자가 수정하기 편한 상태로 만듦
   };
 
+  // 파일 input 요소에 접근하기 위한 참조 (useRef)
+  const fileInputRef = useRef(null);
+
   //상품목록들 관리하기 위한 상태 관리
   const [productList, setProductList] = useState([]); // 등록할 상품들을 배열로 저장
 
@@ -161,6 +164,7 @@ const AdminProductUpload = () => {
       e.target.value = ''; // 입력 초기화
       return;
     }
+    
 
     // Promise.all을 사용하여 여러 이미지를 동시에 업로드 기능 삭제
     // 각 파일에 대한 로컬 미리보기 URL 생성 로직 구현
@@ -307,9 +311,6 @@ const AdminProductUpload = () => {
 
     // rawPrice도 별도로 초기화
     setRawPrice('');
-
-    // 파일 input 요소에 접근하기 위한 참조 (useRef)
-    const fileInputRef = useRef(null);
 
     // 파일 선택 후 취소하고 싶을 때 (파일 입력 초기화)
     if (fileInputRef.current) {
