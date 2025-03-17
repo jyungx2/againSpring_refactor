@@ -9,7 +9,7 @@ function useAxiosInstance() {
   const navigate = useNavigate();
 
   const instance = axios.create({
-    baseURL: 'https://11.fesp.shop/',
+    baseURL: 'https://11.fesp.shop',
     timeout: 1000 * 15,
     headers: {
       'Content-Type': 'application/json',
