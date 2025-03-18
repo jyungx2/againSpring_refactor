@@ -397,7 +397,13 @@ const AdminProductUpload = () => {
       // 상품 등록 요청
       await Promise.all(productsToUpload.map((p) => addProduct(p)));
       alert('모든 상품이 등록되었습니다.'); // 성공 메시지 출력
-      resetProductList([]); // 등록 성공 후 목록 초기화
+      resetProductList(); // 등록 성공 후 목록 초기화
+      resetProduct(); // 개별 상품 폼 초기화
+      setRawPrice(''); // 가격 입력 필드 초기화
+      if (fileInputRef.current) {
+        // 파일 인풋 초기화
+        fileInputRef.current.value = '';
+      }
     } catch (error) {
       // 상품 등록 실패 시
       console.error('상품 등록 실패:', error.response?.data || error.message); // 에러 메시지 출력
