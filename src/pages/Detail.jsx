@@ -70,7 +70,7 @@ function Detail() {
       return;
     }
     // 관리자가 상품 수정 페이지로 이동할 때, 현재 상품 상세 정보를 state로 전달
-    navigate('/admin/addproduct', { state: productDetails });
+    navigate('/admin/product-edit', { state: productDetails });
   };
 
   // 삭제 버튼 클릭 시 호츌되는 함수
