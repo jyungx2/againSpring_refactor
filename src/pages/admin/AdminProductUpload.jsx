@@ -291,36 +291,30 @@ const AdminProductUpload = () => {
   };
   const axiosInstance = useAxiosInstance();
   // 상품 추가 또는 수정
+  // 기존 코드에서는 편집 모드일 경우 DB 수정(PATCH) API를 호출했습니다.
+  // 여기서 수정된 코드는 로컬에만 저장되어 있는 상품 목록(productList)을 업데이트하도록 변경했습니다.
   const handleAddorUpdateProduct = async () => {
     if (!product.name || !product.price) {
-      // 필수 입력 값 검증
       alert('상품명과 가격은 필수 입력 사항입니다.');
       return;
     }
 
-    // 새 상품 추가 (편집 모드가 아닌 경우)
     if (editingIndex === null) {
-      // 신규 상품 추가 모드 : addProductToList() 호출 후 addProduct API 호출
+      // 신규 상품 추가: 로컬 상태(productList)에 상품을 추가합니다.
       addProductToList(product);
     } else {
-      // 편집 모드일 경우 해당 인덱스의 상품 정보를 업데이트
-      // 기존 상품을 수정(Patch) 처리해야함
-      try {
-        await axiosInstance.patch(`/seller/products/${product._id}`, product);
-        alert('상품이 정상적으로 수정되었습니다.');
-        setEditingIndex(null); // 편집 상태 해제
-        resetProduct();
-      } catch (error) {
-        // 수정 후 store에서 수정된 상품 목록 업데이트 (ex: updateProductList)
-        console.log('상품 수정 실패:', error.response?.data || error.message);
-        alert('상품 수정에 실패 하였습니다. 에러 메시지를 확인해주세요');
-        return;
-      }
+      // 편집 모드: 기존 코드는 DB에 수정(PATCH) 요청을 보냈지만,
+      // 아직 DB에 등록되지 않은 상품은 _id가 없으므로 API 호출을 하면 에러가 발생합니다.
+      // 따라서 여기서는 단순히 로컬 목록을 업데이트합니다.
+      const updatedList = productList.map((item, index) => (index === editingIndex ? product : item));
+      updateProductList(updatedList);
+      alert('상품이 로컬 목록에서 수정되었습니다.');
+      setEditingIndex(null);
+      resetProduct();
     }
-    // rawPrice도 별도로 초기화
-    setRawPrice('');
 
-    // 파일 선택 후 취소하고 싶을 때 (파일 입력 초기화)
+    // rawPrice 초기화 및 파일 인풋 리셋
+    setRawPrice('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
