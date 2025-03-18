@@ -234,17 +234,20 @@ function Detail() {
   return (
     <div className="flex justify-center px-[16px]">
       <div className="container mx-auto px-[24px] my-[40px]" style={{ maxWidth: '1200px' }}>
-        {/* 관리자용 수정/삭제 버튼 */}
-        {user?.type === 'admin' && (
-          <div>
-            <button onClick={handleEdit} className="px-4 py-2 bg-primary-40 text-white rounded-md hover:bg-primary-60 transition-colors">
-              수정
-            </button>
-            <button onClick={handledelete} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
-              삭제
-            </button>
-          </div>
-        )}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-bold">{`상품명: ${productDetails?.name || '상품 상세'}`}</h1>
+          {user?.type === 'admin' && (
+            <div className="flex space-x-2">
+              <button onClick={handleEdit} className="px-4 py-2 bg-primary-40 text-white rounded-md hover:bg-primary-60 transition-colors">
+                수정
+              </button>
+              <button onClick={handledelete} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
+                삭제
+              </button>
+            </div>
+          )}
+        </div>
+
         <div>
           {cartItemsList.map((item) => (
             <div className="flex mt-[50px]" key={item._id}>
