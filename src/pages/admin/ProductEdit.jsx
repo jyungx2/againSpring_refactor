@@ -286,11 +286,6 @@ const ProductEdit = () => {
           </div>
         </div>
 
-        {/* 상품 설명 영역 */}
-        <div className="border rounded-md p-4 mb-4">
-          <textarea className="w-full p-3 border border-gray-300 rounded-md resize-none h-40" name="content" placeholder="상품 설명" onChange={handleChange} value={product.content || ''} required />
-        </div>
-
         {/* 추가 옵션 영역 */}
         <div className="border rounded-md p-4 mb-4">
           <h3 className="text-2xl font-semibold mb-3">추가 옵션</h3>
@@ -339,6 +334,12 @@ const ProductEdit = () => {
             </label>
             {renderImagePreview()}
           </div>
+        </div>
+
+        {/* 상품 설명 영역 */}
+        <div className="border rounded-md p-4 mb-4">
+          <h3 className="text-2xl font-semibold mb-2">상품 설명</h3>
+          <textarea className="w-full p-3 border border-gray-300 rounded-md resize-none h-40" name="content" placeholder="상품 설명" onChange={handleChange} value={product.content} required />
         </div>
 
         {/* 수정 완료 버튼 */}
