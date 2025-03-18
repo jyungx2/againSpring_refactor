@@ -78,7 +78,7 @@ function Detail() {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
         // API 서버를 통해 상품 삭제 요청 (id 사용)
-        await axiosInstance.delete(`/seller/products/${id}`);
+        await axiosInstance.delete(`/seller/products/${id}`, { data: { id } });
         alert('상품이 삭제 되었습니다.');
         navigate('/shop');
       } catch (error) {
