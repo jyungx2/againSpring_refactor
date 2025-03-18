@@ -97,11 +97,17 @@ const AdminProductUpload = () => {
   };
   useEffect(() => {
     if (location.state) {
+      // Detail 페이지에서 전달받은 수정할 상품 데이터가 있는 경우
       setProduct(location.state);
       if (location.state.price) {
         setRawPrice(String(location.state.price));
       }
       setEditingIndex(/* 해당 상품의 인덱스 또는 ID */);
+    } else {
+      // 수장할 상품 데이터가 없는 경우, 즉 새로 들어온 경우 폼을 초기 상태로 리셋
+      resetProduct();
+      setRawPrice('');
+      setEditingIndex(null);
     }
   }, [location.state]);
 
