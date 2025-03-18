@@ -234,9 +234,9 @@ function Detail() {
   return (
     <div className="flex justify-center px-[16px]">
       <div className="container mx-auto px-[24px] my-[40px]" style={{ maxWidth: '1200px' }}>
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-4xl font-bold">{`상품명: ${productDetails?.name || '상품 상세'}`}</h1>
-          {user?.type === 'admin' && (
+        {user?.type === 'admin' && (
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-4xl font-bold">{`상품명: ${productDetails?.name || '상품 상세'}`}</h1>
             <div className="flex space-x-2">
               <button onClick={handleEdit} className="px-4 py-2 bg-primary-40 text-white rounded-md hover:bg-primary-60 transition-colors">
                 수정
@@ -245,8 +245,8 @@ function Detail() {
                 삭제
               </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         <div>
           {cartItemsList.map((item) => (
