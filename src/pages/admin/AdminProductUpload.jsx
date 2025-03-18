@@ -95,21 +95,23 @@ const AdminProductUpload = () => {
     setRawPrice(unformatted); // rawPrice를 원시 숫자 문자열로 업데이트
     updateProduct({ price: unformatted }); // product.price도 원시 값으로 업데이트하여 사용자가 수정하기 편한 상태로 만듦
   };
+
+  // AdminProductUpload로 이동할 때마다 location.state의 유무에 따라 폼이 올바르게 초기화해주는 로직
   useEffect(() => {
     if (location.state) {
-      // Detail 페이지에서 전달받은 수정할 상품 데이터가 있는 경우
+      // 수정 모드 진입: Detail 페이지에서 전달받은 수정할 상품 데이터가 있는 경우
       setProduct(location.state);
       if (location.state.price) {
         setRawPrice(String(location.state.price));
       }
-      setEditingIndex(/* 해당 상품의 인덱스 또는 ID */);
+      setEditingIndex(/* 필요한 경우 인덱스 또는 null */);
     } else {
-      // 수장할 상품 데이터가 없는 경우, 즉 새로 들어온 경우 폼을 초기 상태로 리셋
+      // 수정할 상품 데이터가 없는 경우, 즉 새로 들어온 경우에는 폼을 초기 상태로 리셋합니다.
       resetProduct();
       setRawPrice('');
       setEditingIndex(null);
     }
-  }, [location.state]);
+  }, [location.state, resetProduct]);
 
   // 확대보기할 이미지를 저장하는 상태관리 - 모달 이미지 상태 (null이면 모달 미표시)
   // 즉 새창으로 이미지를 보여주지 않기위함 -UI 측면에 이점
@@ -308,6 +310,7 @@ const AdminProductUpload = () => {
     if (editingIndex === null) {
       // 신규 상품 추가: 로컬 상태(productList)에 상품을 추가합니다.
       addProductToList(product);
+      resetProduct(); // 신규 상품 추가 후 폼 초기화 호출하여 입력 필드 리셋
     } else {
       // 편집 모드: 기존 코드는 DB에 수정(PATCH) 요청을 보냈지만,
       // 아직 DB에 등록되지 않은 상품은 _id가 없으므로 API 호출을 하면 에러가 발생합니다.
