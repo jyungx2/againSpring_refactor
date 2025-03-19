@@ -5,6 +5,7 @@ import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQueryClient } from '@tanstack/react-query';
 import useCartStore from '@store/cartStore';
 import useUserStore from '@store/userStore';
+import { calculateShippingFee } from '@utils/calculateShippingFee';
 
 function PaymentSuccess() {
   const location = useLocation();
@@ -50,6 +51,10 @@ function PaymentSuccess() {
       // 주문 생성 API 호출 (백엔드)
       // 여기서 Local Storage에 저장된 'cartItems'를 읽어와 주문 데이터의 products 필드로 사용.
       const storedItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+      // 상품, 배송비 로직 통합
+      const productCost = storedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const shippingFee = calculateShippingFee(storedItems);
+      const totalCost = productCost + shippingFee;
       const orderData = {
         user_id: user.id, // 백엔드 문서 기준으로 user_id 사용
         orderId, // 결제창에서 생성된 주문 번호
@@ -57,10 +62,10 @@ function PaymentSuccess() {
         products: storedItems, // Local Storage에 저장된 장바구니 상품 배열
         cost: {
           // cost 계산: 제품 금액 총합, 배송비 등 (필요에 따라 수정)
-          products: storedItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
-          shippingFees: 2500,
+          products: productCost,
+          shippingFees: shippingFee,
           discount: { products: 0, shippingFees: 0 },
-          total: storedItems.reduce((sum, item) => sum + item.price * item.quantity, 0) + 2500,
+          total: totalCost,
         },
         // user 데이터에서 사용자의 주소와 연락처를 가져옴
         address: {
