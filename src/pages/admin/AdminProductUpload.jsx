@@ -1,6 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useProductApi from '@hooks/useAddProduct';
 import { uploadProductImage } from '@utils/uploadProductImage';
+import { useProductStore } from '@store/useProductStore';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAxiosInstance from '@hooks/useAxiosInstance';
 
 // select로 표시할 카테고리 목록
 const CATEGORY_OPTIONS = [
@@ -26,35 +29,89 @@ const getDisplayCategory = (categories) => {
     })
     .join(','); // 최종적으로 매핑된 결과 배열을 콤마로 연결해서 하나의 문자열로 만듬.
 };
+// 이미지 경로가 절대경로인지 확인하고, 아니라면 base URL을 붙임
+const getImage = (path) => {
+  if (!path) return ''; // path가 없으면 빈 문자열 반환
+  if (path.startsWith('http') || path.startsWith('blob:')) return path; // 이미 전체 URL이면 그대로 반환, 단 blob URL일 경우 그대로 반환하도록 설정
+  const baseURL = 'https://11.fesp.shop';
+  // path가 '/'로 시작하지 않으면 추가
+  return `${baseURL}${path.startsWith('/') ? '' : '/'}${path}`;
+};
 
+// AdminProductUpload - 컴포넌트 내부에서 가격 입력 필드와 관련된 상태와 핸들러
 const AdminProductUpload = () => {
-  // 관리자 상품 등록 페이지
+  const location = useLocation();
+  // ===================productToEdit 디버깅==========================
+  // const productToEdit = location.state; // Detail.jsx에서 navigate로 넘어온 productDetails
+  // console.log('받아온 productToEdit:', productToEdit);
+  // ==================================================================
+  const navigate = useNavigate();
+
   const { addProduct } = useProductApi(); // 상품 등록 API 호출
 
   // 파일 input 요소에 접근하기 위한 참조 (useRef)
   const fileInputRef = useRef(null);
 
-  // 상품 정보 상태
-  const [product, setProduct] = useState({
-    name: '',
-    price: '',
-    quantity: '',
-    shippingFees: '',
-    mainImages: [],
-    content: '',
-    extra: {
-      isNew: false,
-      isBest: false,
-      category: ['all-of-list'],
-      tanso: '',
-    },
-  });
+  // 입력 필드에 표시되는 값을 관리하는 별도의 상태관리
+  const [rawPrice, setRawPrice] = useState(''); // 사용자가 입력할 때는 원시 숫자 문자열로, onBlur 시 포맷팅되어 1000단위 구분 기호가 적용된 문자열로 변경
 
-  //상품목록들 관리하기 위한 상태 관리
-  const [productList, setProductList] = useState([]); // 등록할 상품들을 배열로 저장
+  // Zustand 스토어에서 필요한 상태와 업데이트 함수를 가져옴
+  const { product, setProduct, updateProduct, productList, addProductToList, updateProductList, editingIndex, setEditingIndex, resetProduct, resetProductList } = useProductStore();
 
-  // 편집 모드일 때, 현재 편집 중인 상품의 인덱스를 저장하는 상태관리 (null이면 새상품 등록)
-  const [editingIndex, setEditingIndex] = useState(null);
+  // 사용자가 입력 필드에 값을 입력할 때마다 호출
+  const handlePriceChange = (e) => {
+    // rawPrice와 product.price를 사용자가 입력한 원시값으로 업데이트 (ex:1000)
+    setRawPrice(e.target.value); // 입력 필드에 표시될 원시 값 업데이트
+    updateProduct({ price: e.target.value }); // procuct 상태의 price 필드도 동일한 원시 값을 업데이트
+  };
+
+  // onBlur 이벤트 - 사용자가 입력 필드에서 focus를 잃을 때 호출
+  const handlePriceBlur = () => {
+    // 입력된 원시 숫자 문자열을 숫자로 변환한 후, 1000단위 구분 기호가 포함된 포맷된 문자열로 변경
+    const numericValue = Number(rawPrice); // number()를 사용하여 rawPrice를 숫자로 변환
+    if (isNaN(numericValue)) {
+      // 숫자가아닌 다른 형식으로 입력하면 NaN이므로 유효성 검사 설정
+      alert('가격은 숫자만 입력 가능합니다.');
+      setRawPrice('');
+      updateProduct({ price: '' });
+    } else {
+      // 변환 결과가 유요한 숫자 인지 검사
+      const formatted = numericValue.toLocaleString('ko-KR', {
+        // 숫자 값을 'ko-KR-'로케일로 포맷팅 (한국식 단위 구분기호로 적용)
+        // 소수점 이하 자릿수 설정 방식 (1,000 이런식으로 표시하려면 min:0 max:2로 한다는걸 기억하기)
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
+      // product.price에는 숫자값을 문자열 형태로 저장(콤마없이)
+      updateProduct({ price: numericValue.toString() });
+      // rawPrice를 포맷팅된 문자열로 업데이트하여, 입력필드에는 1000단위 구분 기호가 적용된 값이 보임.
+      setRawPrice(formatted);
+    }
+  };
+  // 사용자가 가격 입력필드를 클릭해 수정하려고 할떄 호출
+  const handlePriceFocus = () => {
+    // 사용자가 필드를 클릭하면, 현재 입력된 값에서 콤마를 제거하여 원시 숫자로 복원
+    const unformatted = rawPrice.replace(/,/g, '');
+    setRawPrice(unformatted); // rawPrice를 원시 숫자 문자열로 업데이트
+    updateProduct({ price: unformatted }); // product.price도 원시 값으로 업데이트하여 사용자가 수정하기 편한 상태로 만듦
+  };
+
+  // AdminProductUpload로 이동할 때마다 location.state의 유무에 따라 폼이 올바르게 초기화해주는 로직
+  useEffect(() => {
+    if (location.state) {
+      // 수정 모드 진입: Detail 페이지에서 전달받은 수정할 상품 데이터가 있는 경우
+      setProduct(location.state);
+      if (location.state.price) {
+        setRawPrice(String(location.state.price));
+      }
+      setEditingIndex(/* 필요한 경우 인덱스 또는 null */);
+    } else {
+      // 수정할 상품 데이터가 없는 경우, 즉 새로 들어온 경우에는 폼을 초기 상태로 리셋합니다.
+      resetProduct();
+      setRawPrice('');
+      setEditingIndex(null);
+    }
+  }, [location.state, resetProduct]);
 
   // 확대보기할 이미지를 저장하는 상태관리 - 모달 이미지 상태 (null이면 모달 미표시)
   // 즉 새창으로 이미지를 보여주지 않기위함 -UI 측면에 이점
@@ -62,61 +119,59 @@ const AdminProductUpload = () => {
 
   // 인풋 값 변경 이벤트 핸들러
   const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value }); // 상품 정보 업데이트
+    updateProduct({ [e.target.name]: e.target.value }); // 상품 정보 업데이트
   };
 
   // 카테고리 변경 이벤트 핸들러
   const handleCategoryChange = (e) => {
     const selected = e.target.value; // 선택된 카테고리
-    setProduct((prev) => ({
+    updateProduct({
       // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
       extra: {
         // extra 정보 업데이트
-        ...prev.extra, // 기존 extra 정보 유지
+        ...product.extra, // 기존 extra 정보 유지
         category: ['all-of-list', selected], // 선택된 카테고리 추가
       },
-    }));
+    });
   };
 
   // 탄소 수치 변경 이벤트 핸들러
   const handleTansoChange = (e) => {
-    setProduct((prev) => ({
+    updateProduct({
       // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
       extra: {
         // extra 정보 업데이트
-        ...prev.extra, // 기존 extra 정보 유지
+        ...product.extra, // 기존 extra 정보 유지
         tanso: e.target.value, // 탄소 수치 숫자로 변환
       },
-    }));
+    });
   };
 
   //---------------------------------------------------------------------
   // 스위치 형식으로 변경 (인라인으로 토글 로직 처리) 함에 따라 함수 미사용 (삭제 보류)
   // 신상품 변경 이벤트 핸들러
-  const handleIsNewChange = (e) => {
-    setProduct((prev) => ({
-      // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
-      extra: {
-        // extra 정보 업데이트
-        ...prev.extra, // 기존 extra 정보 유지
-        isNew: e.target.checked, // 체크 여부에 따라 isNew 값 변경
-      },
-    }));
-  };
+  // const handleIsNewChange = (e) => {
+  //   setProduct((prev) => ({
+  //     // 상품 정보 업데이트
+  //     ...prev, // 기존 상품 정보 유지
+  //     extra: {
+  //       // extra 정보 업데이트
+  //       ...prev.extra, // 기존 extra 정보 유지
+  //       isNew: e.target.checked, // 체크 여부에 따라 isNew 값 변경
+  //     },
+  //   }));
+  // };
 
-  const handleIsBestChange = (e) => {
-    setProduct((prev) => ({
-      // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
-      extra: {
-        ...prev.extra,
-        isBest: e.target.checked, // 체크 여부에 따라 isBest 값 변경
-      },
-    }));
-  };
+  // const handleIsBestChange = (e) => {
+  //   setProduct((prev) => ({
+  //     // 상품 정보 업데이트
+  //     ...prev, // 기존 상품 정보 유지
+  //     extra: {
+  //       ...prev.extra,
+  //       isBest: e.target.checked, // 체크 여부에 따라 isBest 값 변경
+  //     },
+  //   }));
+  // };
   //---------------------------------------------------------------------
 
   // 이미지 변경 이벤트 핸들러
@@ -144,11 +199,11 @@ const AdminProductUpload = () => {
     // 기존 prodct state에 저장된 mainImages 배열은 보존
     // 새로 업로드된 이미지 객체들이 담긴 배열(uploadImages) 삭제.
     // 미리보기 객체들을 기존 이미지 배열에 추가하여 상태 업데이트
-    setProduct((prev) => ({
+    setProduct({
       // 상품 정보 업데이트
-      ...prev, // 기존 상품 정보 유지
-      mainImages: [...prev.mainImages, ...previews],
-    }));
+      ...product, // 기존 상품 정보 유지
+      mainImages: [...product.mainImages, ...previews],
+    });
   };
 
   // 이미지 확대보기 - 클릭 시 해당 이미지를 새창이 아닌 모달에 띄움
@@ -165,20 +220,22 @@ const AdminProductUpload = () => {
   // 대표 이미지 지정 - 선택된 이미지(index)가 배열의 첫번째로 오도록 재배열
   const handleSetRepresentative = (index) => {
     if (index === 0) return; // 이미 대표 이미지인 경우 아무작업X
-    setProduct((prev) => {
-      const images = [...prev.mainImages];
-      const selected = images.splice(index, 1)[0]; // 선택된 이미지 제거
-      images.unshift(selected); // 배열의 시작에 추가하여 대표 이미지로 설정
-      return { ...prev, mainImages: images };
+    const images = [...product.mainImages];
+    const selected = images.splice(index, 1)[0]; // 선택된 이미지 제거
+    images.unshift(selected); // 배열의 시작에 추가하여 대표 이미지로 설정
+    setProduct({
+      ...product,
+      mainImages: images,
     });
   };
 
   // 이미지 삭제 핸들러 - 선택된 이미지를 배열에서 제거
   const handleDeleteImage = (index) => {
-    setProduct((prev) => {
-      const images = [...prev.mainImages];
-      images.splice(index, 1); // 선택된 이미지 제거
-      return { ...prev, mainImages: images };
+    const images = [...product.mainImages];
+    images.splice(index, 1); // 선택된 이미지 제거
+    setProduct({
+      ...product,
+      mainImages: images,
     });
   };
 
@@ -190,7 +247,7 @@ const AdminProductUpload = () => {
         {product.mainImages.map((img, idx) => (
           <div key={idx} className="relative group">
             {idx === 0 && <span className="absolute top-0 left-0 bg-blue-500 text-white text-xl px-1 rounde">대표이미지</span>}
-            <img src={img.path} alt={img.name} className="w-60 h-60 object-cover border border-gray-300" />
+            <img src={getImage(img.path)} alt={img.name} className="w-60 h-60 object-cover border border-gray-300" />
 
             {/* 오버레이 컨트롤 - 버튼들을 호버시 이미지 위에 등장 */}
             <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition">
@@ -240,42 +297,33 @@ const AdminProductUpload = () => {
       </div>
     );
   };
-
+  const axiosInstance = useAxiosInstance();
   // 상품 추가 또는 수정
-  const handleAddorUpdateProduct = () => {
+  // 기존 코드에서는 편집 모드일 경우 DB 수정(PATCH) API를 호출했습니다.
+  // 여기서 수정된 코드는 로컬에만 저장되어 있는 상품 목록(productList)을 업데이트하도록 변경했습니다.
+  const handleAddorUpdateProduct = async () => {
     if (!product.name || !product.price) {
-      // 필수 입력 값 검증
       alert('상품명과 가격은 필수 입력 사항입니다.');
       return;
     }
 
-    // 새 상품 추가 (편집 모드가 아닌 경우)
     if (editingIndex === null) {
-      setProductList([...productList, product]);
+      // 신규 상품 추가: 로컬 상태(productList)에 상품을 추가합니다.
+      addProductToList(product);
+      resetProduct(); // 신규 상품 추가 후 폼 초기화 호출하여 입력 필드 리셋
     } else {
-      // 편집 모드일 경우 해당 인덱스의 상품 정보를 업데이트
-      const updateList = productList.map((item, index) => (index === editingIndex ? product : item));
-      setProductList(updateList);
-      setEditingIndex(null); // 편집 상태 해제
+      // 편집 모드: 기존 코드는 DB에 수정(PATCH) 요청을 보냈지만,
+      // 아직 DB에 등록되지 않은 상품은 _id가 없으므로 API 호출을 하면 에러가 발생합니다.
+      // 따라서 여기서는 단순히 로컬 목록을 업데이트합니다.
+      const updatedList = productList.map((item, index) => (index === editingIndex ? product : item));
+      updateProductList(updatedList);
+      alert('상품이 로컬 목록에서 수정되었습니다.');
+      setEditingIndex(null);
+      resetProduct();
     }
 
-    // 상품 추가 또는 수정 했을 때 폼 초기화 로직
-    setProduct({
-      name: '',
-      price: '',
-      quantity: '',
-      shippingFees: '',
-      mainImages: [],
-      content: '',
-      extra: {
-        isNew: false,
-        isBest: false,
-        category: ['all-of-list'],
-        tanso: '',
-      },
-    });
-
-    // 파일 선택 후 취소하고 싶을 때 (파일 입력 초기화)
+    // rawPrice 초기화 및 파일 인풋 리셋
+    setRawPrice('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -286,12 +334,13 @@ const AdminProductUpload = () => {
     // 해당 상품 데이터를 폼에 로드하여 수정
     setProduct(productList[index]);
     setEditingIndex(index);
+    setRawPrice(productList[index].price);
   };
 
   // 상품 목록- 삭제 버튼 클릭
   const handleDeleteProduct = (index) => {
     // 해당 상품을 목록에서 제거
-    setProductList(productList.filter((_, i) => i !== index));
+    updateProductList(productList.filter((_, i) => i !== index));
   };
 
   // 상품 등록 이벤트 핸들러
@@ -351,7 +400,13 @@ const AdminProductUpload = () => {
       // 상품 등록 요청
       await Promise.all(productsToUpload.map((p) => addProduct(p)));
       alert('모든 상품이 등록되었습니다.'); // 성공 메시지 출력
-      setProductList([]); // 등록 성공 후 목록 초기화
+      resetProductList(); // 등록 성공 후 목록 초기화
+      resetProduct(); // 개별 상품 폼 초기화
+      setRawPrice(''); // 가격 입력 필드 초기화
+      if (fileInputRef.current) {
+        // 파일 인풋 초기화
+        fileInputRef.current.value = '';
+      }
     } catch (error) {
       // 상품 등록 실패 시
       console.error('상품 등록 실패:', error.response?.data || error.message); // 에러 메시지 출력
@@ -390,10 +445,22 @@ const AdminProductUpload = () => {
             </select>
           </div>
           <div className="grid grid-cols-4 gap-4 mt-4">
-            <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} className="w-gull p-3 border border-gray-300 rounded-md" />
-            <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} className="w-gull p-3 border border-gray-300 rounded-md" />
-            <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} className="w-gull p-3 border border-gray-300 rounded-md" />
-            <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} className="w-gull p-3 border border-gray-300 rounded-md" />
+            <input type="text" name="name" placeholder="상품명" onChange={handleChange} value={product.name} className="w-full p-3 border border-gray-300 rounded-md" />
+            {/* <input type="number" name="price" placeholder="가격" onChange={handleChange} value={product.price} className="w-full p-3 border border-gray-300 rounded-md" /> */}
+            <input
+              type="text" // type=number가아니라 type text를 사용해야 브라우저 기본 숫자 검증 없이 자유롭게 입력가능
+              name="price"
+              placeholder="가격"
+              // onFocus={(e) => console.log("포커스 들어옴")}
+              // onBlur={(e) => console.log("포커스 벗어남")}
+              onChange={handlePriceChange} // 사용자가 입력할 때마다 원시값 업데이트
+              onBlur={handlePriceBlur} // 포커스가 벗어나면 천 단위 구분 기호적용
+              onFocus={handlePriceFocus} // 포커스가 들어가면 콤마 제거하고 원시 값 복원함
+              value={rawPrice} // 입력 필드에 rawPrice 상태를 표시
+              className="w-full p-3 border border-gray-300 rounded-md"
+            />
+            <input type="number" name="quantity" placeholder="수량" onChange={handleChange} value={product.quantity} className="w-full p-3 border border-gray-300 rounded-md" />
+            <input type="number" name="shippingFees" placeholder="배송비" onChange={handleChange} value={product.shippingFees} className="w-full p-3 border border-gray-300 rounded-md" />
           </div>
         </div>
 
@@ -409,10 +476,10 @@ const AdminProductUpload = () => {
                   className={`w-12 h-6 flex items-center rounded-full p-1 transition duration-300 
                     ${product.extra.isNew ? 'bg-primary-40' : 'bg-gray-300'}`}
                   onClick={() =>
-                    setProduct((prev) => ({
-                      ...prev,
-                      extra: { ...prev.extra, isNew: !prev.extra.isNew },
-                    }))
+                    setProduct({
+                      ...product,
+                      extra: { ...product.extra, isNew: !product.extra.isNew },
+                    })
                   }
                 >
                   <div
@@ -429,10 +496,10 @@ const AdminProductUpload = () => {
                   className={` w-12 h-6 flex items-center rounded-full p-1 transition duration-300 
                     ${product.extra.isBest ? 'bg-primary-40' : 'bg-gray-300'}`}
                   onClick={() =>
-                    setProduct((prev) => ({
-                      ...prev,
-                      extra: { ...prev.extra, isBest: !prev.extra.isBest },
-                    }))
+                    setProduct({
+                      ...product,
+                      extra: { ...product.extra, isBest: !product.extra.isBest },
+                    })
                   }
                 >
                   <div
