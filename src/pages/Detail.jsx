@@ -6,6 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import ReviewList from '@pages/ReviewList';
 import useCartStore from '../store/cartStore';
 import useUserStore from '@store/userStore';
+import PurchaseButton from '@components/PurchaseButton';
 
 function Detail() {
   const [activeTab, setActiveTab] = useState('상세정보');
@@ -338,12 +339,12 @@ function Detail() {
                       <button className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center" onClick={() => handleAddToCart(item)}>
                         장바구니
                       </button>
-                      <button
+                      <PurchaseButton
+                        products={[item]} // 단일 상품 배열
                         className="bg-secondary-10 border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={() => alert('구매가 완료되었습니다!')}
                       >
                         구매하기
-                      </button>
+                      </PurchaseButton>
                     </div>
                   </div>
                 ))}
