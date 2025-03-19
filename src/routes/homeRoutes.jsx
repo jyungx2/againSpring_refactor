@@ -12,6 +12,7 @@ import shopRoutes from './shopRoutes';
 import Wishlist from '@pages/WishList';
 import NotFound from '@pages/NotFound';
 import adminRoutes from './adminRoutes';
+import paymentRoutes from './PaymentRoutes';
 
 const homeRoutes = [
   {
@@ -40,6 +41,7 @@ const homeRoutes = [
       ...tansoRoutes,
       ...shopRoutes,
       ...adminRoutes,
+      ...paymentRoutes,
     ],
   },
 ];
