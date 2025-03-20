@@ -22,7 +22,11 @@ function Cart() {
 
   const totalPrice = cartItemsList.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const totalOrderAmount = totalPrice + shippingCost;
+  const finalAmount = totalPrice + shippingCost;
+
+  // // (나중에 시도)calculateShippingFee 함수를 사용하여 배송비 계산 (50,000원 이상이면 0, 아니면 3,000원)
+  // const shippingFee = calculateShippingFee(cartItemsList);
+  // const totalOrderAmount = totalPrice + shippingFee;
 
   const handleQuantityChange = (item, change) => {
     const newQuantity = Math.max(0, item.quantity + change);
@@ -157,7 +161,7 @@ function Cart() {
                 <div className="text-[18px] font-bold px-[20px]">=</div>
               </div>
               <div className="flex flex-col items-center">
-                <div className="text-[18px] font-bold">{totalOrderAmount.toLocaleString()}원</div>
+                <div className="text-[18px] font-bold">{finalAmount.toLocaleString()}원</div>
                 <div className="text-[12px] font-gowun text-grey-50">총 주문 금액</div>
               </div>
             </div>
@@ -166,7 +170,7 @@ function Cart() {
 
             <div className="flex justify-center mb-[16px]">
               <div className="flex justify-center mb-[16px]">
-                <PurchaseButton products={cartItemsList} className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[15px] text-center hover:bg-primary-50">
+                <PurchaseButton products={cartItemsList} shippingFee={shippingCost} className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[15px] text-center hover:bg-primary-50">
                   결제하기
                 </PurchaseButton>
               </div>
