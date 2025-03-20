@@ -5,7 +5,7 @@ import useAxiosInstance from '@hooks/useAxiosInstance';
 import { useQueryClient } from '@tanstack/react-query';
 import useCartStore from '@store/cartStore';
 import useUserStore from '@store/userStore';
-import { calculateShippingFee } from '@utils/calculateShippingFee';
+// import { calculateShippingFee } from '@utils/calculateShippingFee';
 
 function PaymentSuccess() {
   const location = useLocation();
@@ -52,7 +52,11 @@ function PaymentSuccess() {
       let storedItems = JSON.parse(localStorage.getItem('cartItems')) || [];
       // 상품, 배송비 로직 통합
       const productCost = storedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const shippingFee = calculateShippingFee(storedItems);
+      // const shippingFee = calculateShippingFee(storedItems);\
+      const query = new URLSearchParams(location.search);
+      const shippingFeeParam = query.get('shippingFee');
+      const shippingFee = parseInt(shippingFeeParam, 10) || 0;
+
       const totalCost = productCost + shippingFee;
       // 단일 객체인 경우 배열로 감싸기
       if (!Array.isArray(storedItems)) {

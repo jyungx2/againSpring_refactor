@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { calculateShippingFee } from '@utils/calculateShippingFee';
 
-function PurchaseButton({ products, className, children }) {
+function PurchaseButton({ products, shippingFee, className, children }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handlePurchase = async () => {
@@ -12,11 +12,11 @@ function PurchaseButton({ products, className, children }) {
     // 결제할 최종 금액 계산 (상품 가격의 합)
     const totalAmount = products.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-    // 단 한번만 부과할 배송비
-    const shippingFee = calculateShippingFee(products);
+    // 부모로부터 전달된 shippingFee가 있으면 사용, 없으면 calculateShippingFee 호출
+    const effectiveShippingFee = shippingFee !== undefined ? shippingFee : calculateShippingFee(products);
 
     // 상품 가격 + 배송비 = 최종 결제 금액
-    const finalAmount = totalAmount + shippingFee;
+    const finalAmount = totalAmount + effectiveShippingFee;
 
     // 한 번만 생성되는 orderId (딱히 쓸일없을듯..)
     const orderId = `ORDER_${Date.now()}`;
@@ -35,7 +35,7 @@ function PurchaseButton({ products, className, children }) {
         amount: finalAmount, // 최종 금액
         orderId: orderId, // 위에서 생성한 orderId 사용
         orderName: products.length === 1 ? products[0].name : `${products[0].name} 외 ${products.length - 1}건`,
-        successUrl: `${import.meta.env.VITE_TOSS_SUCCESS_URL}?amount=${finalAmount}&orderId=${orderId}`,
+        successUrl: `${import.meta.env.VITE_TOSS_SUCCESS_URL}?amount=${finalAmount}&orderId=${orderId}&shippingFee=${shippingFee}`,
         failUrl: import.meta.env.VITE_TOSS_FAIL_URL,
       });
     } catch (error) {
