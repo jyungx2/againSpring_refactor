@@ -1,12 +1,11 @@
+// src/pages/Detail.jsx
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import useAxiosInstance from '@hooks/useAxiosInstance';
-import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import ReviewList from '@pages/ReviewList';
 import useCartStore from '../store/cartStore';
 import useUserStore from '@store/userStore';
-import PurchaseButton from '@components/PurchaseButton';
 
 function Detail() {
   const [activeTab, setActiveTab] = useState('상세정보');
@@ -19,6 +18,7 @@ function Detail() {
   const { addToCart, fetchCartItems } = useCartStore();
   const [selectedIndex, setSelectedIndex] = useState(0); // 선택된 이미지 인덱스
 
+  // 장바구니에 추가 후 Cart 페이지로 이동하는 함수
   const handleAddToCart = async (product) => {
     console.log('Adding to cart:', product);
     const success = await addToCart(product, 1);
@@ -31,6 +31,7 @@ function Detail() {
     }
   };
 
+  // 위시리스트 추가
   const handleAddToWishlist = useMutation({
     mutationFn: () => axiosInstance.post('/bookmarks/product', { target_id: parseInt(id) }),
     onSuccess: (res) => {
@@ -55,7 +56,7 @@ function Detail() {
         const product = response?.data?.item;
         // console.log(product);
         product.quantity = 1;
-        setCartItemsList([product]); // 장바구니에 추가할 상품 목록
+        setCartItemsList([product]); // 장바구니에 추가할 상품 목록 - 단일 상품이라도 배열로 저장
         setProductDetails(product); // 상품 상세 정보
       } catch (error) {
         console.error('Failed to fetch product:', error);
@@ -90,8 +91,6 @@ function Detail() {
     }
   };
 
-  // const currentProductName = cartItemsList[0]?.name || "";
-
   const {
     data: qnas,
     error: qnasError,
@@ -110,30 +109,7 @@ function Detail() {
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 30,
   });
-
-  // [디버깅] 콘솔에 QnA 포스트들 출력
-  // 콘솔에 QnA 포스트들의 상품 ID 출력
-  // useEffect(() => {
-  //   if (qnas) {
-  //     console.log(
-  //       "QnA 포스트들의 상품 ID:",
-  //       qnas.map((qna) => qna.product_id)
-  //     );
-  //   }
-  // }, [qnas]);
-
-  // 상품 ID가 20인 QnA만 필터링
   const filteredQnas = qnas?.filter((qna) => qna.product_id === parseInt(id));
-  // [디버깅] 콘솔에 필터링된 QnA 출력
-  // useEffect(() => {
-  //   if (!qnasLoading && qnas) {
-  //     console.log("QnA 전체 데이터:", qnas);
-  //     console.log("필터링된 QnA:", filteredQnas);
-  //   }
-  // }, [qnasLoading, qnas, filteredQnas]);
-
-  // const [quantity, setQuantity] = useState(1);
-  // const [productDetails, setProductDetails] = useState(null);
 
   const [tabContent] = useState({
     구매안내: (
@@ -201,19 +177,8 @@ function Detail() {
       </div>
     ),
     상품후기: <ReviewList productId={id} />,
-    //  QnA 탭은 이제 최신 filteredQnas를 직접 사용해서 렌더링함 (디버깅적업 -  콘솔에서 qnas와 filteredQnas 확인됨)
+    // QnA 탭은 qnas 데이터를 사용
   });
-
-  // const shippingCost = 3000;
-  const updateQuantity = (id, newQuantity) => {
-    setCartItemsList((prevItems) => prevItems.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item)));
-  };
-
-  const totalPrice = cartItemsList.reduce((total, item) => total + item.price * item.quantity, 0);
-
-  // const totalOrderAmount = totalPrice + shippingCost;
-  // const { activeMenu, setActiveMenu } = useMenuStore();
-  // const [hovered, setHovered] = useState(false);
 
   let formattedContent = '';
 
@@ -231,6 +196,7 @@ function Detail() {
   } else {
     formattedContent = '<p>상품 상세정보가 없습니다.</p>'; // 상품 상세정보가 없을 경우
   }
+  const totalPrice = cartItemsList.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
     <div className="flex justify-center px-[16px]">
@@ -282,7 +248,7 @@ function Detail() {
 
                 <dl className="flex">
                   <dt className="mr-[90px] mb-[16px]">판매가</dt>
-                  <dd>{item?.price?.toLocaleString()}</dd>
+                  <dd>{item?.price?.toLocaleString()}원</dd>
                 </dl>
 
                 <dl className="flex">
@@ -332,19 +298,14 @@ function Detail() {
                       <dd className="text-grey-80 font-gowunBold py-[10px] text-[21px]">{totalPrice.toLocaleString()}원</dd>
                       <dd className="text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">{item?.quantity?.toLocaleString()}개</dd>
                     </div>
-                    <div className="flex mb-[16px] mt-[70px]">
+                    <div className="flex justify-center mb-[16px] mt-[70px]">
                       <button className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center" onClick={handleAddToWishlist.mutate}>
                         찜하기
                       </button>
+                      {/* 구매하기 버튼: 단품 결제 관련 PurchaseButton 대신 handleAddToCart 호출 */}
                       <button className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center" onClick={() => handleAddToCart(item)}>
-                        장바구니
-                      </button>
-                      <PurchaseButton
-                        products={[item]} // 단일 상품 배열
-                        className="bg-secondary-10 border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                      >
                         구매하기
-                      </PurchaseButton>
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -357,8 +318,8 @@ function Detail() {
               <div
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 pt-[20px] pb-[20px] cursor-pointer px-4 text-center text-[15px]
-                  ${activeTab === tab ? 'border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold' : 'border-2 border-gray-300 text-gray-500'}`}
+                className={`flex-1 pt-[20px] pb-[20px] cursor-pointer px-4 text-center text-[15px] 
+                ${activeTab === tab ? 'border-t-3 border-l-3 border-r-3 bg-secondary-10 text-secondary-30 font-bold' : 'border-2 border-gray-300 text-gray-500'}`}
               >
                 {tab}
               </div>
