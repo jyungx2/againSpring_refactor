@@ -22,10 +22,10 @@ function PurchaseButton({ products, className, children }) {
     const orderId = `ORDER_${Date.now()}`;
 
     // 디버깅: 결제창에 넘길 금액과 orderId를 출력
-    console.log('requestPayment amount:', totalAmount);
-    console.log('requestPayment orderId:', orderId, 'amount:', totalAmount);
+    console.log('requestPayment amount:', finalAmount);
+    console.log('requestPayment orderId:', orderId);
 
-    // 결제에 사용할 상품 목록을 Local Storage에 저장 (PaymentSuccess에서 사용)
+    // 결제에 사용할 상품 목록 (cartItems)을 Local Storage에 저장 (PaymentSuccess에서 사용)
     localStorage.setItem('cartItems', JSON.stringify(products));
 
     try {
