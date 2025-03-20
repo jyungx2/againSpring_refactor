@@ -9,3 +9,10 @@ export function calculateShippingFee(cartItems) {
   const maxFee = Math.max(...cartItems.map((item) => item.shippingFee || 0));
   return maxFee;
 }
+
+// 50,000원 이상이면 무료배송, 그렇지 않으면 3,000원 배송비 적용
+if (totalProductCost >= 50000) {
+  return 0;
+} else {
+  return 3000;
+}
