@@ -23,9 +23,21 @@ function Detail() {
     console.log('Adding to cart:', product);
     const success = await addToCart(product, 1);
     if (success) {
-      alert('장바구니에 추가되었습니다!');
+      alert('결제를 위해 장바구니로 이동합니다');
       await fetchCartItems();
       navigate(`/cart/${user.id}`);
+    } else {
+      alert('아이템 추가 실패');
+    }
+  };
+
+  // 장바구니에 상품 추가만 하고 페이지 이동 X
+  const handleAddToCartNoNav = async (product) => {
+    console.log('Adding to Cart (페이지 이동 X):', product);
+    const success = addToCart(product, 1);
+    if (success) {
+      alert('장바구니에 담겼습니다.');
+      await fetchCartItems();
     } else {
       alert('아이템 추가 실패');
     }
@@ -301,6 +313,9 @@ function Detail() {
                     <div className="flex justify-center mb-[16px] mt-[70px]">
                       <button className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center" onClick={handleAddToWishlist.mutate}>
                         찜하기
+                      </button>
+                      <button className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center" onClick={() => handleAddToCartNoNav(item)}>
+                        장바구니 담기
                       </button>
                       {/* 구매하기 버튼: 단품 결제 관련 PurchaseButton 대신 handleAddToCart 호출 */}
                       <button className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center" onClick={() => handleAddToCart(item)}>
