@@ -74,12 +74,20 @@ function GoogleLoginButton() {
           setUser({
             _id: userData._id,
             name: userData.name,
+            email: userData.email,
             type: userData.type,
             accessToken: userData.token.accessToken,
             refreshToken: userData.token.refreshToken,
+            phone: userData.phone,
+            address: userData.address,
           });
 
           alert(`${userData.name}님, [Google 계정] 신규 회원 가입 + 로그인이 완료되었습니다.`);
+          if (!userData.phone || !userData.address) {
+            navigate('/signup/extra');
+          } else {
+            navigate(location.state?.from || '/');
+          }
         } else if (loginErr.response?.status === 409) {
           // 이미 가입된 사용자(Conflict) - 백엔드가 409를 준다면
           // 바로 로그인 로직으로 넘어가거나, 메시지 띄움
