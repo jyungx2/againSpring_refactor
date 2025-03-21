@@ -104,7 +104,7 @@ function GoogleLoginButton() {
 
   return (
     <button type="button" onClick={handleGoogleLogin} className="font-gowunBold w-full h-[42px]  rounded-[12px] text-center cursor-pointer box-border border bg-white text-black  transition hover:bg-gray-200">
-      Google로 로그인
+      Google로 시작하기
     </button>
   );
 }
