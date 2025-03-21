@@ -103,7 +103,8 @@ function GoogleLoginButton() {
   }
 
   return (
-    <button type="button" onClick={handleGoogleLogin} className="font-gowunBold w-full h-[42px]  rounded-[12px] text-center cursor-pointer box-border border bg-white text-black  transition hover:bg-gray-200">
+    <button type="button" onClick={handleGoogleLogin} className="w-full h-[42px] flex items-center justify-center gap-2 rounded-[12px] text-center bg-white text-black border hover:border-gray-600">
+      <img src="https://www.google.com/favicon.ico" alt="구글" className="w-10" />
       Google로 시작하기
     </button>
   );
