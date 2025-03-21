@@ -30,7 +30,7 @@ function Login() {
     setError,
     formState: { errors },
   } = useForm({
-    defaultValues: { email: 'seop96@naver.com', password: 'asasasas' },
+    // defaultValues: { email: 'seop96@naver.com', password: 'asasasas' },
   });
 
   const login = useMutation({
