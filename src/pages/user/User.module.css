@@ -90,4 +90,5 @@ img {
 input:disabled {
   background-color: #f0f0f0 !important;
   color: #666 !important;
+  cursor: not-allowed;
 }
