@@ -4,10 +4,13 @@ import { auth } from '../firebase/firebaseConfig';
 import { jwtDecode } from 'jwt-decode';
 import useAxiosInstance from '@hooks/useAxiosInstance';
 import useUserStore from '@store/userStore';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function GoogleLoginButton() {
   const instance = useAxiosInstance();
   const setUser = useUserStore((state) => state.setUser);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // 로그인 함수
   async function handleGoogleLogin() {
@@ -44,6 +47,7 @@ function GoogleLoginButton() {
         });
 
         alert(`${userData.name}님, [Google 계정] 로그인이 완료되었습니다.`);
+        navigate(location.state?.from || '/');
       } catch (loginErr) {
         // 로그인 실패(404/400) → 회원가입 후 재로그인
         if (loginErr.response?.status === 404 || loginErr.response?.status === 400) {
