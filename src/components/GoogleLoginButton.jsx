@@ -46,7 +46,7 @@ function GoogleLoginButton() {
           refreshToken: userData.token.refreshToken,
         });
 
-        alert(`${userData.name}님, [Google 계정] 로그인이 완료되었습니다.`);
+        alert(`[Google 계정] ${userData.name}님, 로그인되었습니다.`);
         navigate(location.state?.from || '/');
       } catch (loginErr) {
         // 로그인 실패(404/400) → 회원가입 후 재로그인
@@ -82,7 +82,6 @@ function GoogleLoginButton() {
             address: userData.address,
           });
 
-          alert(`${userData.name}님, [Google 계정] 신규 회원 가입 + 로그인이 완료되었습니다.`);
           if (!userData.phone || !userData.address) {
             navigate('/signup/extra');
           } else {
@@ -104,7 +103,7 @@ function GoogleLoginButton() {
   }
 
   return (
-    <button type="button" onClick={handleGoogleLogin} className="font-gowunBold w-full h-[42px]  rounded-[12px] text-center cursor-pointer box-border bg-blue-600 text-white  hover:bg-blue-700">
+    <button type="button" onClick={handleGoogleLogin} className="font-gowunBold w-full h-[42px]  rounded-[12px] text-center cursor-pointer box-border border bg-white text-black  transition hover:bg-gray-200">
       Google로 로그인
     </button>
   );
