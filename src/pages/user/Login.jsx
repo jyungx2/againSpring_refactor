@@ -103,8 +103,13 @@ function Login() {
               </div>
 
               <div className="mt-8">
-                <button className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-primary-40 text-white mb-[10px] focus-within:bg-primary-30">로그인</button>
-                <button type="button" className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-kakao text-black mb-[10px] focus-within:bg-kakao-hover" onClick={handleKakaoLogin}>
+                <button className="font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-primary-40 text-white mb-[10px] hover:bg-primary-30">로그인</button>
+                <button
+                  type="button"
+                  className=" flex items-center justify-center gap-5 font-gowunBold w-full h-[42px] rounded-[12px] text-center cursor-pointer box-border bg-kakao text-black mb-[10px] hover:bg-kakao-hover"
+                  onClick={handleKakaoLogin}
+                >
+                  <img src="/icons/kakao-talk.png" alt="카카오톡" className="w-10 h-10" />
                   카카오톡으로 시작하기
                 </button>
                 {/* 구글 로그인 추가 */}
