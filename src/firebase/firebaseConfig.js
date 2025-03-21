@@ -1,10 +1,10 @@
+// firebaseConfig.js
+
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// [추가] Google 로그인 등 Firebase 인증을 위해 getAuth import
+import { getAuth } from 'firebase/auth';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyCTgsOXNuGQ86P1jKHygGtzhO6hqOl0V3g',
   authDomain: 'againspringshop.firebaseapp.com',
@@ -17,4 +17,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+export const analytics = getAnalytics(app);
+
+export const auth = getAuth(app);
