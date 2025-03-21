@@ -72,7 +72,17 @@ function Login() {
         <meta property="og:description" content="다시봄에 로그인하고 다양한 혜택과 서비스를 이용하세요." />
       </Helmet>
 
-      <div className="py-32 mx-auto max-w-[1200px]">
+      <div className="py-32 mx-auto max-w-[1200px] flex flex-col items-center">
+        <div className="relative inline-block group">
+          <img src="/icons/admin-Icon.png" alt="admin" className="w-10 mx-auto mb-4  animate-blink hover:animate-none" />
+          <div className="  absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2  bg-black  text-white  text-2xl rounded opacity-0 group-hover:opacity-100 transition pointer-events-none whitespace-nowrap z-50">
+            * 관리자 계정 *
+            <br />
+            email: 'seop96@naver.com'
+            <br />
+            password: 'asasasas'
+          </div>
+        </div>
         <div className="w-[400px] mx-auto flex flex-col items-center p-[20px_40px_44px] border border-grey-20 rounded-[20px] gap-[44px]">
           <div className="w-20 aspect-[1/1] object-contain">
             <a href="/" className="cursor-pointer">
