@@ -1,47 +1,55 @@
-import PropTypes from "prop-types";
-import useOrderStore from "@store/purchaseStore";
+import React, { useState } from 'react';
+import { loadTossPayments } from '@tosspayments/payment-sdk';
+import { calculateShippingFee } from '@utils/calculateShippingFee';
 
-const PurchaseButton = ({ products }) => {
-  const { loading, error, successMessage, placeOrder } = useOrderStore();
+function PurchaseButton({ products, shippingFee, className, children }) {
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handlePurchase = () => {
-    placeOrder(products);
+  const handlePurchase = async () => {
+    if (isLoading) return; // 중복 클릭 방지
+    setIsLoading(true);
+
+    // 결제할 최종 금액 계산 (상품 가격의 합)
+    const totalAmount = products.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    // 부모로부터 전달된 shippingFee가 있으면 사용, 없으면 calculateShippingFee 호출
+    const effectiveShippingFee = shippingFee !== undefined ? shippingFee : calculateShippingFee(products);
+
+    // 상품 가격 + 배송비 = 최종 결제 금액
+    const finalAmount = totalAmount + effectiveShippingFee;
+
+    // 한 번만 생성되는 orderId (딱히 쓸일없을듯..)
+    const orderId = `ORDER_${Date.now()}`;
+
+    // 디버깅: 결제창에 넘길 금액과 orderId를 출력
+    console.log('requestPayment amount:', finalAmount);
+    console.log('requestPayment orderId:', orderId);
+
+    // 결제에 사용할 상품 목록 (cartItems)을 Local Storage에 저장 (PaymentSuccess에서 사용)
+    localStorage.setItem('cartItems', JSON.stringify(products));
+
+    try {
+      // Toss Payments SDK 로드 후 결제창 요청
+      const tossPayments = await loadTossPayments(import.meta.env.VITE_TOSS_CLIENT_KEY);
+      await tossPayments.requestPayment('카드', {
+        amount: finalAmount, // 최종 금액
+        orderId: orderId, // 위에서 생성한 orderId 사용
+        orderName: products.length === 1 ? products[0].name : `${products[0].name} 외 ${products.length - 1}건`,
+        successUrl: `${import.meta.env.VITE_TOSS_SUCCESS_URL}?amount=${finalAmount}&orderId=${orderId}&shippingFee=${shippingFee}`,
+        failUrl: import.meta.env.VITE_TOSS_FAIL_URL,
+      });
+    } catch (error) {
+      console.error('결제창 오류:', error);
+      alert('결제창 호출 중 오류가 발생했습니다.');
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      <button
-        className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[15px] text-center hover:bg-primary-50"
-        onClick={handlePurchase}
-        disabled={loading}
-      >
-        {loading ? "구매 중..." : "구매하기"}
-      </button>
-
-      {/* 성공 메시지 */}
-      {successMessage && (
-        <div className="text-black font-gowunBold mt-[8px] text-[24px] absolute top-[50%] left-[50%] transform -translate-x-[50%] -translate-y-[50%] bg-primary-40 p-[40px] rounded-lg shadow-lg whitespace-nowrap">
-          {successMessage}
-        </div>
-      )}
-
-      {/* 에러 메시지 */}
-      {error && (
-        <div className="text-red-500 mt-[8px] text-[14px] absolute">
-          {error}
-        </div>
-      )}
-    </div>
+    <button className={className} onClick={handlePurchase} disabled={isLoading}>
+      {isLoading ? '결제 진행 중...' : children || '구매하기'}
+    </button>
   );
-};
-
-PurchaseButton.propTypes = {
-  products: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.number.isRequired,
-      quantity: PropTypes.number.isRequired,
-    })
-  ).isRequired,
-};
+}
 
 export default PurchaseButton;
