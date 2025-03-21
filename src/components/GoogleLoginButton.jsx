@@ -92,7 +92,7 @@ function GoogleLoginButton() {
   }
 
   return (
-    <button onClick={handleGoogleLogin} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+    <button type="button" onClick={handleGoogleLogin} className="font-gowunBold w-full h-[42px]  rounded-[12px] text-center cursor-pointer box-border bg-blue-600 text-white  hover:bg-blue-700">
       Google로 로그인
     </button>
   );
