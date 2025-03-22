@@ -78,7 +78,7 @@ function Login() {
           <div className="  absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2  bg-black  text-white  text-2xl rounded opacity-0 group-hover:opacity-100 transition pointer-events-none whitespace-nowrap z-50">
             * 관리자 계정 *
             <br />
-            email: 'seop96@naver.com'
+            email: 'admin@admin.com'
             <br />
             password: 'asasasas'
           </div>
