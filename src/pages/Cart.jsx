@@ -1,72 +1,128 @@
-import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { cartStore } from "../store/cartStore";
-import useUserStore from "@store/userStore";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Wishlist from "@pages/WishList";
 import PurchaseButton from "@components/PurchaseButton";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 function Cart() {
-  const { userId } = useParams();
-  const {
-    cartItemsList,
-    shippingCost,
-    fetchCartItems,
-    loading,
-    error,
-    updateItemQuantity,
-    selectedItems,
-    selectItem,
-    deselectItem,
-    deleteSelectedItems,
-    clearCart,
-  } = cartStore();
-  const { user } = useUserStore();
+  const axios = useAxiosInstance();
+  const [cartItems, setCartItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // 🧾 1. 장바구니 불러오기
   useEffect(() => {
-    if (!user) {
-      navigate("/login");
+    const fetchCart = async () => {
+      try {
+        const res = await axios.get("/carts");
+        const items = res.data.item; // [{id, name, price, quantity}]
+        setCartItems(items);
+        setSelectedItems(items.map((item) => item._id)); // ✅ 처음엔 전체 선택
+      } catch {
+        alert("장바구니 불러오기 실패");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCart();
+  }, []);
+
+  // ✅ 체크박스 개별 선택/해제
+  const handleSelect = (id) => {
+    setSelectedItems((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
+  // ✅ 전체 선택/해제 토글
+  const handleToggleSelectAll = () => {
+    if (selectedItems.length === cartItems.length) {
+      setSelectedItems([]);
     } else {
-      fetchCartItems(); // userId를 사용하지 않고 user 정보를 활용하여 장바구니 아이템을 가져옴
-    }
-  }, [user, fetchCartItems, navigate]);
-
-  const totalPrice = cartItemsList.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-
-  const totalOrderAmount = totalPrice + shippingCost;
-
-  const handleQuantityChange = (item, change) => {
-    const newQuantity = Math.max(0, item.quantity + change);
-    updateItemQuantity(item.id, newQuantity);
-  };
-
-  const handleCheckboxChange = (itemId) => {
-    if (selectedItems.includes(itemId)) {
-      deselectItem(itemId);
-    } else {
-      selectItem(itemId);
+      setSelectedItems(cartItems.map((item) => item._id));
     }
   };
 
-  const handleDeleteSelected = () => {
-    deleteSelectedItems();
+  // ✅ 선택 상품 삭제
+  const handleDeleteSelected = async () => {
+    if (selectedItems.length === 0) {
+      alert("선택된 상품이 없습니다.");
+      return;
+    }
+
+    const updated = cartItems.filter(
+      (item) => !selectedItems.includes(item._id)
+    );
+
+    const confirmed = window.confirm("선택한 상품을 정말 삭제하시겠습니까?");
+    if (!confirmed) return;
+
+    try {
+      // ✅ 각 선택된 항목을 순차적으로 삭제 요청
+      // Promise.all()을 사용해서 비동기 병렬 처리로 삭제 요청을 동시에 보냄
+      await Promise.all(
+        selectedItems.map((_id) => axios.delete(`/carts/${_id}`))
+      );
+
+      // UI 동기화
+      const updated = cartItems.filter(
+        (item) => !selectedItems.includes(item._id)
+      );
+      setCartItems(updated);
+      setSelectedItems([]);
+      alert("선택한 상품이 삭제되었습니다.");
+    } catch (err) {
+      console.error(err);
+      alert("상품 삭제에 실패했습니다.");
+    }
+
+    setCartItems(updated);
+    setSelectedItems([]); // 선택 초기화
   };
 
-  const handleClearCart = async () => {
-    await clearCart();
-    alert("장바구니가 비워졌습니다.");
+  // ✅ 수량 변경
+  const handleQuantityChange = (id, delta) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item._id === id
+          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          : item
+      )
+    );
   };
+
+  const handleCleanup = async () => {
+    try {
+      const res = await axios.delete("/carts/cleanup");
+      console.log(res.status);
+      setCartItems([]);
+      setSelectedItems([]);
+      alert("모든 상품을 삭제했습니다.");
+    } catch (err) {
+      console.error(err);
+      alert("전체 상품 삭제에 실패했습니다.");
+    }
+  };
+
+  // ✅ 금액 계산 (선택된 상품만)
+  const totalPrice = cartItems
+    .filter((item) => selectedItems.includes(item._id))
+    .reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  // ✅ 총액 3만원 이상이면 배송비 0원
+  const shippingCost =
+    totalPrice >= 30000 || selectedItems.length === 0 ? 0 : 2500;
+
+  if (loading) return <div>로딩 중...</div>;
 
   const handleOrderAgain = () => {
     navigate("/");
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div className="text-red-500">{error}</div>;
 
   return (
     <div className="flex justify-center">
@@ -84,12 +140,12 @@ function Cart() {
             장바구니
           </h1>
           <span className="flex items-center justify-center w-[20px] h-[20px] bg-black bg-opacity-20 text-white rounded-full">
-            {cartItemsList.length}
+            {cartItems.length}
           </span>
         </div>
         <hr className="mb-0 border-t border-grey-20" />
 
-        {cartItemsList.length === 0 ? (
+        {cartItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[256px]">
             <img
               src="/images/Cart1.png"
@@ -122,25 +178,25 @@ function Cart() {
               </thead>
 
               <tbody>
-                {cartItemsList.map((item) => (
-                  <tr key={item.id} className="border-b">
+                {cartItems.map((item) => (
+                  <tr key={item._id} className="border-b">
                     <td className="text-left">
                       <input
                         type="checkbox"
                         className="w-[16px] h-[16px] cursor-pointer"
-                        checked={selectedItems.includes(item.id)}
-                        onChange={() => handleCheckboxChange(item.id)}
+                        checked={selectedItems.includes(item._id)}
+                        onChange={() => handleSelect(item._id)}
                       />
                     </td>
                     <td className="flex items-start py-[20px]">
                       <img
-                        src={`https://11.fesp.shop${item.image}`}
+                        src={`https://11.fesp.shop${item.product.image.path}`}
                         alt={item.name}
                         className="w-[80px] h-[80px] object-cover mr-[8px]"
                       />
                       <div>
                         <h2 className="text-[15px] font-semibold text-grey-80">
-                          {item.name}
+                          {item.product.name}
                         </h2>
                       </div>
                     </td>
@@ -155,7 +211,7 @@ function Cart() {
                             }`}
                             onClick={() =>
                               item.quantity > 1 &&
-                              handleQuantityChange(item, -1)
+                              handleQuantityChange(item._id, -1)
                             }
                             disabled={item.quantity <= 1}
                           >
@@ -166,7 +222,7 @@ function Cart() {
                           </span>
                           <button
                             className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
-                            onClick={() => handleQuantityChange(item, 1)}
+                            onClick={() => handleQuantityChange(item._id, 1)}
                           >
                             +
                           </button>
@@ -174,12 +230,10 @@ function Cart() {
                       </div>
                     </td>
                     <td className="text-center text-grey-80 font-gowunBold py-[20px] border-l border-grey-20 text-[20px]">
-                      {(item.price * item.quantity).toLocaleString()}원
+                      {(item.product.price * item.quantity).toLocaleString()}원
                     </td>
                     <td className="text-center text-grey-80 font-gowunBold py-[20px] border-l border-grey-20">
-                      <div className="text-[16px]">
-                        {shippingCost.toLocaleString()}원
-                      </div>
+                      <div className="text-[16px]">2,500원</div>
                       <div className="text-[13px] font-gowun text-grey-40">
                         택배
                       </div>
@@ -194,9 +248,9 @@ function Cart() {
             <div className="flex justify-start mb-[40px]">
               <button
                 className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]"
-                onClick={handleClearCart}
+                onClick={handleToggleSelectAll}
               >
-                장바구니 비우기
+                전체 선택
               </button>
               <button
                 className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]"
@@ -204,15 +258,21 @@ function Cart() {
               >
                 선택 상품 삭제
               </button>
+              <button
+                className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]"
+                onClick={handleCleanup}
+              >
+                장바구니 비우기
+              </button>
             </div>
 
             <hr className="mb-[12px] border-grey-50" />
 
             <div className="flex justify-between">
               <p className="text-[14px] font-gowun">
-                총 주문 상품{" "}
+                총 선택 상품{" "}
                 <span className="text-secondary-40 font-gowunBold">
-                  {cartItemsList.length}
+                  {selectedItems.length}
                 </span>
                 개
               </p>
@@ -220,8 +280,8 @@ function Cart() {
 
             <hr className="mt-[12px] mb-[16px]" />
 
-            <div className="grid grid-cols-[repeat(5,auto)] justify-center gap-[4px] mb-[16px]">
-              <div className="flex flex-col items-center">
+            <div className="grid grid-cols-[repeat(5,auto)] justify-center gap-[4px] mb-[16px] items-center">
+              <div className="flex flex-col items-center gap-2">
                 <div className="text-[18px] font-gowunBold">
                   {totalPrice.toLocaleString()}원
                 </div>
@@ -232,20 +292,23 @@ function Cart() {
               <div className="flex items-center justify-center">
                 <div className="text-[18px] font-bold px-[20px]">+</div>
               </div>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center gap-2">
                 <div className="text-[18px] font-gowunBold">
-                  {shippingCost.toLocaleString()}원
+                  {selectedItems.length === 0
+                    ? 0
+                    : shippingCost.toLocaleString()}
+                  원
                 </div>
-                <div className="text-[12px] font-gowun text-grey-50">
-                  배송비
+                <div className="items-center justify-center text-[12px] font-gowun text-grey-50">
+                  배송비 (30,000원 이상 무료배송)
                 </div>
               </div>
               <div className="flex items-center justify-center">
                 <div className="text-[18px] font-bold px-[20px]">=</div>
               </div>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center gap-2">
                 <div className="text-[18px] font-bold">
-                  {totalOrderAmount.toLocaleString()}원
+                  {(totalPrice + shippingCost).toLocaleString()}원
                 </div>
                 <div className="text-[12px] font-gowun text-grey-50">
                   총 주문 금액
@@ -258,7 +321,9 @@ function Cart() {
             <div className="flex justify-center mb-[16px]">
               <div className="flex justify-center mb-[16px]">
                 <PurchaseButton
-                  products={cartItemsList}
+                  products={cartItems.filter((item) =>
+                    selectedItems.includes(item._id)
+                  )}
                   className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[15px] text-center hover:bg-primary-50"
                 />
               </div>
