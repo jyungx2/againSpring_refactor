@@ -6,7 +6,7 @@ import MyOrder from "@pages/user/Myorder";
 import AddReview from "@pages/user/AddReview";
 import MyQna from "@pages/user/MyQna";
 import OrderDetail from "@pages/user/OrderDetail";
-import ReviewList from "@pages/user/ReviewList";
+import ReviewList from "@pages/user/MyReviewList";
 import UncompletedPage from "@pages/user/UncompletedPage";
 import ProtectedRoute from "@components/layouts/ProtectedRoute";
 

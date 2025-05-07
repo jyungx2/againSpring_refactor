@@ -4,7 +4,7 @@ import Sidebar from "@pages/user/Sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 
-function ReviewList() {
+function MyReviewList() {
   const axios = useAxiosInstance();
 
   const { data } = useQuery({
@@ -63,4 +63,4 @@ function ReviewList() {
   );
 }
 
-export default ReviewList;
+export default MyReviewList;

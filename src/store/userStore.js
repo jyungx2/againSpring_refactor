@@ -22,6 +22,7 @@ const UserStore = (set) => ({
       storage: createJSONStorage(() => selectedStorage),
     });
 
+    // state.user.name, state.user.phone -> 이런식으로 접근하기 위해 ...(spread operator)없이 바로 객체안에 저장({user})
     set({ user });
   },
   resetUser: () => {
