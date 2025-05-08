@@ -1,34 +1,56 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Wishlist from "@pages/WishList";
 import PurchaseButton from "@components/PurchaseButton";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 function Cart() {
+  const queryClient = useQueryClient();
   const axios = useAxiosInstance();
-  const [cartItems, setCartItems] = useState([]);
+  // const [cartItems, setCartItems] = useState([]); // (useEffect+useState) 조합 대신, useQuery로 상태관리하면 필요없다!
+
+  // ✅ 체크된 상품의 ID 배열 (UI 전용 상태)
   const [selectedItems, setSelectedItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   // 🧾 1. 장바구니 불러오기
-  useEffect(() => {
-    const fetchCart = async () => {
+  // ✅ useEffect 대신, useQuery를 사용해 캐싱기능 자동화!
+  // useEffect(() => {
+  //   const fetchCart = async () => {
+  //     try {
+  //       const res = await axios.get("/carts");
+  //       const items = res.data.item; // [{id, name, price, quantity}]
+  //       setCartItems(items);
+  //       setSelectedItems(items.map((item) => item._id)); // ✅ 처음엔 전체 선택
+  //     } catch {
+  //       alert("장바구니 불러오기 실패");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchCart();
+  // }, []);
+
+  // ✅ 장바구니 데이터 가져오기 (React Query에서 관리)
+  const { data: cartItems = [], isLoading } = useQuery({
+    queryKey: ["cart"],
+    queryFn: async () => {
       try {
         const res = await axios.get("/carts");
-        const items = res.data.item; // [{id, name, price, quantity}]
-        setCartItems(items);
-        setSelectedItems(items.map((item) => item._id)); // ✅ 처음엔 전체 선택
+        const items = res.data.item; // 장바구니에 들어가있는 상품 배열
+        // ✅ 최초 렌더링 시, 전체 선택된 상태로 설정
+        setSelectedItems(items.map((item) => item._id));
+
+        return items; // 여기서 리턴한 items(useQuery 내부에서 관리된 캐시 값)가 곧 반환되는 data가 되므로, 굳이 별도로 useState로 상태관리 할 필요 X => 불필요한 useState 제거 가능
       } catch {
         alert("장바구니 불러오기 실패");
-      } finally {
-        setLoading(false);
       }
-    };
-
-    fetchCart();
-  }, []);
+    },
+  });
 
   // ✅ 체크박스 개별 선택/해제
   const handleSelect = (id) => {
@@ -46,16 +68,27 @@ function Cart() {
     }
   };
 
+  // ✅ 장바구니 아이템 개별 삭제 mutation
+  const deleteCartMutation = useMutation({
+    mutationFn: async (_id) => {
+      const res = await axios.delete(`/carts/${_id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      // ✅ 삭제 성공 시 캐시 무효화 (서버에서 fresh한 장바구니 다시 불러오게)
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+    onError: () => {
+      alert("삭제 실패 😢");
+    },
+  });
+
   // ✅ 선택 상품 삭제
   const handleDeleteSelected = async () => {
     if (selectedItems.length === 0) {
       alert("선택된 상품이 없습니다.");
       return;
     }
-
-    const updated = cartItems.filter(
-      (item) => !selectedItems.includes(item._id)
-    );
 
     const confirmed = window.confirm("선택한 상품을 정말 삭제하시겠습니까?");
     if (!confirmed) return;
@@ -64,42 +97,51 @@ function Cart() {
       // ✅ 각 선택된 항목을 순차적으로 삭제 요청
       // Promise.all()을 사용해서 비동기 병렬 처리로 삭제 요청을 동시에 보냄
       await Promise.all(
-        selectedItems.map((_id) => axios.delete(`/carts/${_id}`))
+        selectedItems.map((_id) => deleteCartMutation.mutateAsync(_id))
       );
 
       // UI 동기화
-      const updated = cartItems.filter(
-        (item) => !selectedItems.includes(item._id)
-      );
-      setCartItems(updated);
+      // const updated = cartItems.filter(
+      //   (item) => !selectedItems.includes(item._id)
+      // );
+      // setCartItems(updated);
       setSelectedItems([]);
       alert("선택한 상품이 삭제되었습니다.");
     } catch (err) {
       console.error(err);
       alert("상품 삭제에 실패했습니다.");
     }
-
-    setCartItems(updated);
-    setSelectedItems([]); // 선택 초기화
   };
+
+  const updateQuantityMutation = useMutation({
+    mutationFn: async ({ id, quantity }) => {
+      return await axios.patch(`/carts/${id}`, { quantity });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] }); // 서버에서 최신 cart 다시 불러옴
+    },
+    onError: () => {
+      alert("수량 변경 실패 😢");
+    },
+  });
 
   // ✅ 수량 변경
+  // 1. cartItems 상태를 직접 수정하지 않고, 서버 상태가 단일 진실의 출처(Single Source of Truth) 가 됨
+  // 2. 캐시 자동 관리 (invalidateQueries)
+  // 3. 수량 변경이 서버에도 동기화되어 여러 탭이나 새로고침 시 일관된 동작
   const handleQuantityChange = (id, delta) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item._id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
+    const item = cartItems.find((item) => item._id === id);
+    if (!item) return;
+    const newQuantity = Math.max(1, item.quantity + delta);
+    updateQuantityMutation.mutate({ id, quantity: newQuantity });
   };
 
+  // ✅ 장바구니 비우기 (모두 삭제)
   const handleCleanup = async () => {
     try {
-      const res = await axios.delete("/carts/cleanup");
-      console.log(res.status);
-      setCartItems([]);
-      setSelectedItems([]);
+      await axios.delete("/carts/cleanup");
+      queryClient.invalidateQueries({ queryKey: ["cart"] }); // refetch -> useState로 관리하지 말고, 쿼리키를 무효화 시키면 uesQuery가 data(cartItems) 자동페칭해서 리렌더링된다!
+      setSelectedItems([]); // 선택 항목 초기화(UI용)
       alert("모든 상품을 삭제했습니다.");
     } catch (err) {
       console.error(err);
@@ -112,17 +154,18 @@ function Cart() {
     .filter((item) => selectedItems.includes(item._id))
     .reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
-  // ✅ 총액 3만원 이상이면 배송비 0원
+  // ✅ 배송비 계산 (3만원 이상 무료배송 + 아무것도 선택 안하면 0원)
   const shippingCost =
     totalPrice >= 30000 || selectedItems.length === 0 ? 0 : 2500;
-
-  if (loading) return <div>로딩 중...</div>;
 
   const handleOrderAgain = () => {
     navigate("/");
   };
 
-  if (loading) return <div>Loading...</div>;
+  // 💥💥💥모든 훅 먼저 선언한 뒤, 아래 조건 분기 (렌더링 제어)💥💥💥
+  // ⭐️ 리액트 훅(useQuery, useMutation, useState 등)은 컴포넌트 함수가 실행될 때마다 항상 똑같은 순서로 호출되어야 해.
+  // 그래서 훅 선언보다 먼저 return을 하게 되면, 어떤 렌더에서는 훅이 실행되고, 다음 렌더에서는 return이 먼저 되면서 훅이 실행되지 않는 문제가 생겨.⭐️
+  if (isLoading) return <div>장바구니 목록 가져오는 중...</div>;
 
   return (
     <div className="flex justify-center">
