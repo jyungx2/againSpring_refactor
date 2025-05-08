@@ -1,28 +1,35 @@
 import { useNavigate } from "react-router-dom";
-import useCartStore from "../store/cartStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import useUserStore from "@store/userStore";
 
 const Wishlist = () => {
   const axiosInstance = useAxiosInstance();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { user } = useUserStore();
 
-  const { data, loading, error } = useQuery({
+  const {
+    data: wishList,
+    loading,
+    error,
+  } = useQuery({
     queryKey: ["bookmarks", "products"],
     queryFn: () => axiosInstance.get("/bookmarks/product"),
-    select: (res) => res.data,
+    select: (res) => res.data.item,
   });
 
-  const wishlistItems = data?.item.map((item) => ({
-    id: item.product._id,
+  const wishlistItems = wishList?.map((item) => ({
+    _id: item._id, // wishlist에서의 고유한 id
+    product_id: item.product._id, // 고유한 상품 id
     name: item.product.name,
     price: item.product.price,
     image: item.product.mainImages[0]?.path
       ? `https://11.fesp.shop${item.product.mainImages[0].path}`
       : "/path/to/default/image.png",
-    _id: item._id,
   }));
 
-  const queryClient = useQueryClient();
   const deleteItem = useMutation({
     mutationFn: (itemId) => axiosInstance.delete(`/bookmarks/${itemId}`),
     onSuccess: () => {
@@ -33,17 +40,36 @@ const Wishlist = () => {
     },
   });
 
-  const { addToCart, fetchCartItems } = useCartStore();
-  const navigate = useNavigate();
-
   const handleCardClick = (item) => {
-    navigate(`/detail/${item.id}`, { state: item });
+    // ✅ Detail.jsx에서 useLocation().state값을 활용하고 있지 않고 있음
+    // useParams으로부터 가져오는 상품 id값만 있으면 정상적인 렌더링 가능 & "useParams + 서버 요청" 구조라면 { state: item }는 필수 아님.
+    // ❗️ 하지만, 데이터가 이미 있을 때 넘기면 네트워크(fetch) 요청 한 번 줄일 수 있음
+    // 💥 단점: location.state는 메모리 기반이라서 state로 넘기면 새로고침 시 데이터 날아간다. 따라서 정말 중요한 데이터는 query param이나 URL param으로 관리하는 게 안전하다.
+    navigate(`/detail/${item.product_id}`);
   };
 
-  const handleAddToCart = async (product) => {
-    await addToCart(product, 1);
-    await fetchCartItems();
-  };
+  const handleAddToCart = useMutation({
+    mutationFn: (product) => {
+      // 필요한 데이터만 추출하여 전송
+      const cartData = {
+        product_id: parseInt(product.product_id, 10),
+        quantity: 1,
+        // 필요한 다른 데이터들...
+      };
+
+      return axiosInstance.post("/carts", cartData);
+    },
+    onSuccess: (res) => {
+      console.log("장바구니 추가 요청 후 반응: ", res);
+      toast.success("장바구니에 추가되었습니다!");
+      navigate(`/cart/${user._id}`);
+      queryClient.invalidateQueries(["cart"]);
+    },
+    onError: (err) => {
+      console.error("장바구니 추가 요청 시 에러 발생: ", err);
+      toast.error("오류가 발생하였습니다.");
+    },
+  });
 
   return (
     <div className="mt-[40px] max-w-full">
@@ -113,7 +139,7 @@ const Wishlist = () => {
                     className="w-full h-full bg-primary-40 text-white text-[14px] font-gowun hover:bg-primary-50"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleAddToCart(item);
+                      handleAddToCart.mutate(item);
                     }}
                   >
                     장바구니 추가

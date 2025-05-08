@@ -53,6 +53,13 @@ function Detail() {
         alert("위시리스트에 아이템 추가 실패");
       }
     },
+    onError: (error) => {
+      if (error.response?.status === 409) {
+        alert("이미 위시리스트에 추가된 상품입니다.");
+      } else {
+        alert("찜하기 중 오류가 발생했습니다.");
+      }
+    },
   });
 
   const getImage = (path) => {
@@ -216,7 +223,7 @@ function Detail() {
                 <div className="flex mb-[16px] mt-[3rem]">
                   <button
                     className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center productDatas-center"
-                    onClick={handleAddToWishlist.mutate}
+                    onClick={() => handleAddToWishlist.mutate()}
                   >
                     찜하기
                   </button>
