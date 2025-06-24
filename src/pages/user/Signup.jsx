@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import useUserStore from "@store/userStore";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { Bounce, toast } from "react-toastify";
 
 const emailExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -130,7 +131,19 @@ function Signup() {
         address: userLogin.address,
       });
 
-      alert("회원가입이 완료되었습니다.");
+      toast.success(`${user.name} 님, 회원가입이 완료되었습니다.`, {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        className: "!w-[400px] !text-center", // Tailwind 클래스 강제 적용
+      });
+
       navigate("/");
     },
     onError: (err) => {

@@ -10,9 +10,9 @@ const MenuIcons = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     resetUser();
-    toast.error(`${user.name} 님, 정상적으로 로그아웃 되었습니다.`, {
+    toast.success(`${user.name} 님, 정상적으로 로그아웃 되었습니다.`, {
       position: "top-center",
-      autoClose: 2000,
+      autoClose: 1500,
       hideProgressBar: true,
       closeOnClick: false,
       pauseOnHover: true,
@@ -20,6 +20,7 @@ const MenuIcons = () => {
       progress: undefined,
       theme: "light",
       transition: Bounce,
+      className: "!w-[400px] !text-center", // Tailwind 클래스 강제 적용
     });
     navigate("/");
   };

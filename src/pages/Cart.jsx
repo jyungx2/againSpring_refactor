@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Wishlist from "@pages/WishList";
-import PurchaseButton from "@components/PurchaseButton";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -13,7 +12,7 @@ function Cart() {
 
   // ✅ 체크된 상품의 ID 배열 (UI 전용 상태)
   const [selectedItems, setSelectedItems] = useState([]);
-
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const navigate = useNavigate();
 
   // 🧾 1. 장바구니 불러오기
@@ -42,8 +41,6 @@ function Cart() {
       try {
         const res = await axios.get("/carts");
         const items = res.data.item; // 장바구니에 들어가있는 상품 배열
-        // ✅ 최초 렌더링 시, 전체 선택된 상태로 설정
-        setSelectedItems(items.map((item) => item._id));
 
         return items; // 여기서 리턴한 items(useQuery 내부에서 관리된 캐시 값)가 곧 반환되는 data가 되므로, 굳이 별도로 useState로 상태관리 할 필요 X => 불필요한 useState 제거 가능
       } catch {
@@ -51,12 +48,25 @@ function Cart() {
       }
     },
   });
+  console.log("cartItems: ", cartItems);
+  console.log("selectedItems: ", selectedItems);
+
+  // ❗처음 cartItems 로딩됐을 때 한 번만 실행
+  useEffect(() => {
+    if (cartItems.length > 0 && isInitialLoad) {
+      setSelectedItems([...cartItems]);
+      setIsInitialLoad(false); // ✅ 초기화는 한 번만
+    }
+  }, [cartItems, isInitialLoad]);
 
   // ✅ 체크박스 개별 선택/해제
   const handleSelect = (id) => {
-    setSelectedItems((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-    );
+    setSelectedItems((prev) => {
+      const exists = prev.find((item) => item._id === id);
+      return exists
+        ? prev.filter((item) => item._id !== id)
+        : [...prev, cartItems.find((item) => item._id === id)];
+    });
   };
 
   // ✅ 전체 선택/해제 토글
@@ -64,7 +74,7 @@ function Cart() {
     if (selectedItems.length === cartItems.length) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(cartItems.map((item) => item._id));
+      setSelectedItems([...cartItems]);
     }
   };
 
@@ -97,7 +107,7 @@ function Cart() {
       // ✅ 각 선택된 항목을 순차적으로 삭제 요청
       // Promise.all()을 사용해서 비동기 병렬 처리로 삭제 요청을 동시에 보냄
       await Promise.all(
-        selectedItems.map((_id) => deleteCartMutation.mutateAsync(_id))
+        selectedItems.map((item) => deleteCartMutation.mutateAsync(item._id))
       );
 
       // UI 동기화
@@ -136,23 +146,27 @@ function Cart() {
     updateQuantityMutation.mutate({ id, quantity: newQuantity });
   };
 
-  // ✅ 장바구니 비우기 (모두 삭제)
-  const handleCleanup = async () => {
-    try {
-      await axios.delete("/carts/cleanup");
-      queryClient.invalidateQueries({ queryKey: ["cart"] }); // refetch -> useState로 관리하지 말고, 쿼리키를 무효화 시키면 uesQuery가 data(cartItems) 자동페칭해서 리렌더링된다!
-      setSelectedItems([]); // 선택 항목 초기화(UI용)
+  // ✅ 장바구니 전체 삭제 Mutation
+  const cleanupCartMutation = useMutation({
+    mutationFn: async () => {
+      return await axios.delete("/carts/cleanup");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] }); // 서버 데이터 새로고침
+      setSelectedItems([]); // UI 선택 상태 초기화
       alert("모든 상품을 삭제했습니다.");
-    } catch (err) {
+    },
+    onError: (err) => {
       console.error(err);
       alert("전체 상품 삭제에 실패했습니다.");
-    }
-  };
+    },
+  });
 
   // ✅ 금액 계산 (선택된 상품만)
-  const totalPrice = cartItems
-    .filter((item) => selectedItems.includes(item._id))
-    .reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const totalPrice = selectedItems.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
+    0
+  );
 
   // ✅ 배송비 계산 (3만원 이상 무료배송 + 아무것도 선택 안하면 0원)
   const shippingCost =
@@ -179,7 +193,7 @@ function Cart() {
         </Helmet>
 
         <div className="flex items-center mb-[16px]">
-          <h1 className="text-[24px] font-gowun text-grey-80 mr-[8px]">
+          <h1 className="text-[24px] font-bold text-grey-80 mr-[8px]">
             장바구니
           </h1>
           <span className="flex items-center justify-center w-[20px] h-[20px] bg-black bg-opacity-20 text-white rounded-full">
@@ -227,7 +241,9 @@ function Cart() {
                       <input
                         type="checkbox"
                         className="w-[16px] h-[16px] cursor-pointer"
-                        checked={selectedItems.includes(item._id)}
+                        checked={selectedItems.some(
+                          (selected) => selected.product_id === item.product_id
+                        )}
                         onChange={() => handleSelect(item._id)}
                       />
                     </td>
@@ -303,7 +319,7 @@ function Cart() {
               </button>
               <button
                 className="bg-white text-black py-[8px] px-[12px] font-[12px] font-gowunBold border border-grey-40 text-[14px] hover:bg-grey-30 mr-[8px]"
-                onClick={handleCleanup}
+                onClick={() => cleanupCartMutation.mutate()}
               >
                 장바구니 비우기
               </button>
@@ -363,12 +379,16 @@ function Cart() {
 
             <div className="flex justify-center mb-[16px]">
               <div className="flex justify-center mb-[16px]">
-                <PurchaseButton
-                  products={cartItems.filter((item) =>
-                    selectedItems.includes(item._id)
-                  )}
-                  className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[15px] text-center hover:bg-primary-50"
-                />
+                <button
+                  onClick={() =>
+                    navigate("/checkout", {
+                      state: { cartItems: selectedItems, shippingCost: 2500 },
+                    })
+                  }
+                  className="bg-primary-40 text-white w-[280px] py-[8px] rounded-md text-[1.5rem] text-center hover:bg-primary-50"
+                >
+                  구매하기
+                </button>
               </div>
             </div>
 

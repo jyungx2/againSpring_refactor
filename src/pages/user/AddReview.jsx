@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import ErrorMsg from "@components/ErrorMsg";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
 
 function AddReview() {
   const location = useLocation();
@@ -62,7 +63,7 @@ function AddReview() {
       return axios.post(`/replies`, formData);
     },
     onSuccess: (formData) => {
-      alert("리뷰가 등록되었습니다.");
+      toast.success("리뷰가 등록되었습니다.");
       console.log("전송된 데이터: ", formData);
     },
     onError: (err) => {

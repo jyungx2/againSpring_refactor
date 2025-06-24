@@ -9,6 +9,8 @@ import eventRoutes from "./eventRoutes";
 import tansoRoutes from "./tansoRoutes";
 import shopRoutes from "./shopRoutes";
 import Wishlist from "@pages/WishList";
+import PurchaseComplete from "@pages/PurchaseComplete";
+import Checkout from "@pages/Checkout";
 
 const homeRoutes = [
   {
@@ -28,6 +30,14 @@ const homeRoutes = [
       {
         path: "wishlist",
         element: <Wishlist />,
+      },
+      {
+        path: "purchase-complete",
+        element: <PurchaseComplete />,
+      },
+      {
+        path: "checkout",
+        element: <Checkout />,
       },
       ...userRoutes,
       ...noticeRoutes,

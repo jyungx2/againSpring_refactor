@@ -1,23 +1,38 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import useMenuStore from "../store/menuStore";
-import useAxiosInstance from "@hooks/useAxiosInstance";
-import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ReviewList from "@pages/ReviewList";
 import useUserStore from "@store/userStore";
 import { toast } from "react-toastify";
 import QnAList from "@pages/QnaList";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 function Detail() {
   const [activeTab, setActiveTab] = useState("상세정보");
   const { id } = useParams();
-  const axiosInstance = useAxiosInstance();
+  const axios = useAxiosInstance();
   const navigate = useNavigate();
   const { user } = useUserStore();
   const [quantity, setQuantity] = useState(1);
 
-  console.log("user: ", user);
+  const handlePurchase = useMutation({
+    mutationFn: async (product) => {
+      const products = [
+        {
+          _id: product._id,
+          quantity: product.quantity,
+        },
+      ];
+      await axios.post("/orders", { products });
+    },
+    onSuccess: async () => {
+      toast.success(`${user.name} 님, 주문이 완료되었습니다.`);
+    },
+    onError: (err) => {
+      console.error(err);
+      alert("주문 처리 중 문제가 발생했습니다.");
+    },
+  });
 
   const handleAddToCart = useMutation({
     mutationFn: (product) => {
@@ -29,12 +44,12 @@ function Detail() {
         // 필요한 다른 데이터들...
       };
 
-      return axiosInstance.post("/carts", cartData);
+      return axios.post("/carts", cartData);
     },
     onSuccess: (res) => {
       console.log("장바구니 추가 요청 후 반응: ", res);
       toast.success("장바구니에 추가되었습니다!");
-      navigate(`/cart/${user._id}`);
+      // navigate(`/cart/${user._id}`);
     },
     onError: (err) => {
       console.error("장바구니 추가 요청 시 에러 발생: ", err);
@@ -44,7 +59,7 @@ function Detail() {
 
   const handleAddToWishlist = useMutation({
     mutationFn: () =>
-      axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
+      axios.post("/bookmarks/product", { target_id: parseInt(id) }),
     onSuccess: (res) => {
       if (res) {
         alert("위시리스트에 추가되었습니다!");
@@ -75,9 +90,10 @@ function Detail() {
   } = useQuery({
     queryKey: ["product", id],
     queryFn: () =>
-      axiosInstance.get(`/products/${id}`).then((res) => {
+      axios.get(`/products/${id}`).then((res) => {
         const product = res.data.item;
         product.quantity = 1;
+        console.log(product);
         return product;
       }),
   });
@@ -235,7 +251,7 @@ function Detail() {
                   </button>
                   <button
                     className="bg-secondary-10 border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center productDatas-center"
-                    onClick={() => alert("구매가 완료되었습니다!")}
+                    onClick={() => handlePurchase.mutate(productData)}
                   >
                     구매하기
                   </button>
