@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Wishlist from "@pages/WishList";
@@ -10,9 +10,10 @@ function Cart() {
   const axios = useAxiosInstance();
   // const [cartItems, setCartItems] = useState([]); // (useEffect+useState) 조합 대신, useQuery로 상태관리하면 필요없다!
 
-  // ✅ 체크된 상품의 ID 배열 (UI 전용 상태)
+  // ✅ 체크된 상품 객체 배열 (UI 전용 상태)
   const [selectedItems, setSelectedItems] = useState([]);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  // const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const isInitialLoad = useRef(true);
   const navigate = useNavigate();
 
   // 🧾 1. 장바구니 불러오기
@@ -41,6 +42,7 @@ function Cart() {
       try {
         const res = await axios.get("/carts");
         const items = res.data.item; // 장바구니에 들어가있는 상품 배열
+        // setSelectedItems([...items]);
 
         return items; // 여기서 리턴한 items(useQuery 내부에서 관리된 캐시 값)가 곧 반환되는 data가 되므로, 굳이 별도로 useState로 상태관리 할 필요 X => 불필요한 useState 제거 가능
       } catch {
@@ -53,11 +55,15 @@ function Cart() {
 
   // ❗처음 cartItems 로딩됐을 때 한 번만 실행
   useEffect(() => {
-    if (cartItems.length > 0 && isInitialLoad) {
+    console.log("🧪 cartItems: ", cartItems);
+    console.log("✅ didInit.current: ", isInitialLoad.current);
+
+    if (cartItems.length > 0 && isInitialLoad.current) {
       setSelectedItems([...cartItems]);
-      setIsInitialLoad(false); // ✅ 초기화는 한 번만
+      isInitialLoad.current = false; // ❓useState의 setter 함수 대신, useRef를 사용한 이유: setState(실행되는 순간 컴포넌트 렌더링 유발)와 다르게 useRef는 값이 바뀌어도 리렌더를 유발하지 않음 ==> 단순히 값을 기억하는 데에만 사용하기 때문에 성능상 안전하고 간결 => 렌더링과 무관한 상태를 추적할 때 가장 적합
+      // ✅ 최초 렌더링 이후 조건문에 걸려 isInitialLoad === false로 바뀌므로, 더이상 조건문에 걸리지 않아 무한루프에 걸리진 않지만, 불필요한 렌더링 발생시킬 가능성 있기 때문에 useRef()가 더 적합..
     }
-  }, [cartItems, isInitialLoad]);
+  }, [cartItems]);
 
   // ✅ 체크박스 개별 선택/해제
   const handleSelect = (id) => {
@@ -115,7 +121,7 @@ function Cart() {
       //   (item) => !selectedItems.includes(item._id)
       // );
       // setCartItems(updated);
-      setSelectedItems([]);
+      // setSelectedItems([]);
       alert("선택한 상품이 삭제되었습니다.");
     } catch (err) {
       console.error(err);
