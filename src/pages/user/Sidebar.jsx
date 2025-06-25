@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import styles from "./User.module.css";
+import useUserStore from "@store/userStore";
 
 function Sidebar() {
   // const currentPath = window.location.pathname;
@@ -27,6 +28,7 @@ function Sidebar() {
     window.location은 명령형(imperative) 방식입니다
     useLocation은 React의 선언적(declarative) 방식에 맞게 설계되었습니다
   */
+  const { user } = useUserStore();
 
   const links = [
     { label: "주문조회", path: "/user/order" },
@@ -38,6 +40,10 @@ function Sidebar() {
     { label: "정보수정", path: "/uncompleted" },
     { label: "회원탈퇴", path: "/uncompleted" },
   ];
+
+  if (user?.type === "admin") {
+    links.push({ label: "상품등록", path: "/admin/addproduct" });
+  }
 
   const renderedLinks = links.map((link) => {
     return (

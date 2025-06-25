@@ -11,11 +11,15 @@ import shopRoutes from "./shopRoutes";
 import Wishlist from "@pages/WishList";
 import PurchaseComplete from "@pages/PurchaseComplete";
 import Checkout from "@pages/Checkout";
+import NotFound from "@pages/NotFound";
+import adminRoutes from "./adminRoutes";
+import paymentRoutes from "./PaymentRoutes";
 
 const homeRoutes = [
   {
     index: "/",
     element: <Layout />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
@@ -45,6 +49,8 @@ const homeRoutes = [
       ...eventRoutes,
       ...tansoRoutes,
       ...shopRoutes,
+      ...adminRoutes,
+      ...paymentRoutes,
     ],
   },
 ];

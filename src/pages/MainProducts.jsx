@@ -45,9 +45,10 @@ const MainProducts = () => {
   const bestProducts = products.filter((product) => product.extra?.isBest);
   // const discountedProducts = products.filter((product) => product.extra?.discount > 0);
 
-  const renderSwiper = (title, items) => (
-    <section className="my-8">
-      <h2 className="text-3xl font-bold mb-6">{title}</h2>
+  const renderSwiper = (title, description, items) => (
+    <section className="my-14">
+      <h2 className="text-3xl font-bold mb-4 text-center">{title}</h2>
+      <p className="text-2xl text-gray-500 mb-16 text-center">{description}</p>
       <Swiper
         modules={[Navigation, Pagination]}
         spaceBetween={20}
@@ -59,10 +60,10 @@ const MainProducts = () => {
           <SwiperSlide key={product._id}>
             <Link
               to={`/detail/${product._id}`}
-              className="flex flex-col items-center text-center"
+              className="flex flex-col items-center text-center "
             >
               <div
-                className="bg-gray-200"
+                className="bg-gray-200 rounded-[12px] border border-gray-300 overflow-hidden"
                 style={{ width: "200px", height: "200px" }}
               >
                 <img
@@ -86,8 +87,14 @@ const MainProducts = () => {
   return (
     <div className="w-full px-6">
       <div className="max-w-[1200px] mx-auto">
-        {renderSwiper("새로운 상품", newProducts)}
-        {renderSwiper("베스트 상품", bestProducts)}
+        {renderSwiper(
+          "새로운 상품",
+          "다시,봄에서 매일매일 신상품이 업데이트 됩니다. 지금 바로 만나보세요",
+          newProducts)}
+        {renderSwiper(
+          "베스트 상품",
+          "다시, 봄에서 가장 인기있는 상품을 만나보세요.",
+          bestProducts)}
         {/* {renderSwiper("할인 상품", discountedProducts)} */}
       </div>
     </div>

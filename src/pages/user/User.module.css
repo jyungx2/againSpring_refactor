@@ -57,7 +57,7 @@ img {
   width: 22px;
   height: 22px;
   position: relative;
-  background-image: url("/icons/camera.svg");
+  background-image: url('/icons/camera.svg');
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
@@ -70,11 +70,11 @@ img {
 }
 
 .active::before {
-  content: ""; /* 이미지를 가상 요소로 표시 */
+  content: ''; /* 이미지를 가상 요소로 표시 */
   width: 20px;
   height: 20px;
   background-size: 20px;
-  background-image: url("/favicon.png");
+  background-image: url('/favicon.png');
   display: inline-block;
   margin-right: 6px; /* 이미지와 텍스트 간격 조정 */
   vertical-align: bottom;
@@ -86,4 +86,9 @@ img {
   overflow: hidden;
   text-overflow: ellipsis;
   line-clamp: 2; /* 2줄까지만 표시 */
+}
+input:disabled {
+  background-color: #f0f0f0 !important;
+  color: #666 !important;
+  cursor: not-allowed;
 }

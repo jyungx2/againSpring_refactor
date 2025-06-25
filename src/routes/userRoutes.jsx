@@ -9,12 +9,14 @@ import OrderDetail from "@pages/user/OrderDetail";
 import ReviewList from "@pages/user/MyReviewList";
 import UncompletedPage from "@pages/user/UncompletedPage";
 import ProtectedRoute from "@components/layouts/ProtectedRoute";
+import ExtraInfoForm from "@pages/user/ExtraInfoFrom";
 
 const userRoutes = [
   { path: "login", element: <Login /> },
   { path: "users/login/kakao", element: <Auth /> },
   { path: "signup", element: <Signup /> },
   { path: "tos", element: <TermsOfService /> },
+  { path: "signup/extra", element: <ExtraInfoForm /> },
 
   // ✅ 로그인해야 접근 가능한 페이지만 ProtectedRoute 적용
   {

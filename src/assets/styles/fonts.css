@@ -12,7 +12,16 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'GowunDodum-Regular';
+  src: url('../fonts/GowunDodum-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
 /* 공통 글꼴 설정 */
 html, body {
-  font-family: 'GowunBatang-Regular', Arial, sans-serif;
+  font-family: 'GowunDodum-Regular', Arial, sans-serif;
 }
