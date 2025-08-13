@@ -19,7 +19,7 @@ function ReviewItem({ item }) {
           <div className="flex gap-[10px] items-start">
             <div className="shrink-0">
               <img
-                src={`https://11.fesp.shop${item.product.image.path}`}
+                src={`https://fesp-api.koyeb.app/market${item.product.image.path}`}
                 className="w-[80px] h-[80px]"
               />
             </div>

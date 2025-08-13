@@ -1,17 +1,19 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import axios from 'axios';
-import useUserStore from '@store/userStore';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import axios from "axios";
+import useUserStore from "@store/userStore";
 
 const axiosInstance = (user) => {
   return axios.create({
-    baseURL: 'https://11.fesp.shop',
+    baseURL: "https://fesp-api.koyeb.app/market",
     timeout: 1000 * 15,
     headers: {
-      'Content-Type': 'application/json',
-      accept: 'application/json',
-      'client-id': 'final02',
-      Authorization: user?.accessToken ? `Bearer ${user.accessToken}` : undefined,
+      "Content-Type": "application/json",
+      accept: "application/json",
+      "client-id": "febc11-final02-regj",
+      Authorization: user?.accessToken
+        ? `Bearer ${user.accessToken}`
+        : undefined,
     },
   });
 };
@@ -29,7 +31,10 @@ export const cartStore = create(
       // 총 주문 금액 계산
       computeTotalOrderAmount: () => {
         const { cartItemsList, shippingCost } = get();
-        const totalPrice = cartItemsList.reduce((total, item) => total + item.price * item.quantity, 0);
+        const totalPrice = cartItemsList.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
         return totalPrice + shippingCost;
       },
 
@@ -39,14 +44,14 @@ export const cartStore = create(
         const { user } = useUserStore.getState();
 
         if (!user || !user.accessToken) {
-          console.error('Access Token이 존재하지 않습니다.');
-          set({ loading: false, error: '로그인이 필요합니다.' });
+          console.error("Access Token이 존재하지 않습니다.");
+          set({ loading: false, error: "로그인이 필요합니다." });
           return;
         }
 
         try {
           const instance = axiosInstance(user);
-          const response = await instance.get('/carts/');
+          const response = await instance.get("/carts/");
           const products = response.data.item.map((item) => ({
             id: item.product._id,
             name: item.product.name,
@@ -65,7 +70,10 @@ export const cartStore = create(
           });
         } catch (error) {
           console.error(error.response?.data || error.message);
-          set({ loading: false, error: '장바구니 아이템을 가져오는 데 실패했습니다.' });
+          set({
+            loading: false,
+            error: "장바구니 아이템을 가져오는 데 실패했습니다.",
+          });
         }
       },
 
@@ -80,16 +88,16 @@ export const cartStore = create(
 
           // 변환된 값이 유효한지 확인
           if (!productId) {
-            throw new Error('상품 ID가 유효하지 않습니다.');
+            throw new Error("상품 ID가 유효하지 않습니다.");
           }
 
           const requestBody = {
             product_id: productId, // 상품 ID - 문자열 or 정수
             quantity: productQuantity, // 수량
           };
-          console.log('Request Body:', requestBody); // 요청 본문 확인
-          const response = await instance.post('/carts/', requestBody);
-          console.log('Response:', response); // 응답 확인
+          console.log("Request Body:", requestBody); // 요청 본문 확인
+          const response = await instance.post("/carts/", requestBody);
+          console.log("Response:", response); // 응답 확인
 
           if (response.status === 201) {
             await get().fetchCartItems();
@@ -97,8 +105,11 @@ export const cartStore = create(
             return true; // 추가 성공
           }
         } catch (error) {
-          console.error('Error Response:', error.response?.data || error.message); // 에러 로그 출력
-          set({ error: '장바구니에 아이템 추가 실패.' });
+          console.error(
+            "Error Response:",
+            error.response?.data || error.message
+          ); // 에러 로그 출력
+          set({ error: "장바구니에 아이템 추가 실패." });
         }
         return false; // 추가 실패
       },
@@ -118,21 +129,25 @@ export const cartStore = create(
             });
 
             if (response.status === 200) {
-              const updatedCartItemsList = cartItemsList.map((item) => (item.id === productId ? { ...item, quantity: parseInt(newQuantity, 10) } : item));
+              const updatedCartItemsList = cartItemsList.map((item) =>
+                item.id === productId
+                  ? { ...item, quantity: parseInt(newQuantity, 10) }
+                  : item
+              );
 
               set({
                 cartItemsList: updatedCartItemsList,
                 totalOrderAmount: get().computeTotalOrderAmount(),
               });
             } else {
-              set({ error: '장바구니 상품 수량 변경 실패.' });
+              set({ error: "장바구니 상품 수량 변경 실패." });
             }
           } catch (error) {
             console.error(error.response?.data || error.message);
-            set({ error: '장바구니 상품 수량 변경 실패.' });
+            set({ error: "장바구니 상품 수량 변경 실패." });
           }
         } else {
-          console.error('해당 상품 ID에 대한 장바구니 상품이 없음', productId);
+          console.error("해당 상품 ID에 대한 장바구니 상품이 없음", productId);
         }
       },
       // 체크박스 선택한 상품 추가
@@ -155,11 +170,13 @@ export const cartStore = create(
         const { user } = useUserStore.getState();
 
         if (selectedItems.length === 0) {
-          set({ error: '선택한 상품이 없습니다.' });
+          set({ error: "선택한 상품이 없습니다." });
           return;
         }
 
-        const selectedCartItemIds = cartItemsList.filter((item) => selectedItems.includes(item.id)).map((item) => item._id);
+        const selectedCartItemIds = cartItemsList
+          .filter((item) => selectedItems.includes(item.id))
+          .map((item) => item._id);
 
         try {
           const instance = axiosInstance(user);
@@ -171,14 +188,16 @@ export const cartStore = create(
           });
 
           set((state) => ({
-            cartItemsList: state.cartItemsList.filter((item) => !selectedItems.includes(item.id)),
+            cartItemsList: state.cartItemsList.filter(
+              (item) => !selectedItems.includes(item.id)
+            ),
             selectedItems: [],
             error: null,
           }));
 
-          alert('선택한 상품이 삭제되었습니다.');
+          alert("선택한 상품이 삭제되었습니다.");
         } catch {
-          set({ error: '상품 삭제에 실패했습니다.' });
+          set({ error: "상품 삭제에 실패했습니다." });
         }
       },
 
@@ -188,7 +207,7 @@ export const cartStore = create(
 
         try {
           const instance = axiosInstance(user);
-          await instance.delete('/carts/cleanup', {
+          await instance.delete("/carts/cleanup", {
             headers: {
               Authorization: `Bearer ${user.accessToken}`,
             },
@@ -200,7 +219,7 @@ export const cartStore = create(
             error: null,
           });
         } catch {
-          set({ error: '장바구니 비우기에 실패했습니다.' });
+          set({ error: "장바구니 비우기에 실패했습니다." });
         }
       },
 
@@ -211,7 +230,7 @@ export const cartStore = create(
         try {
           const instance = axiosInstance(user);
 
-          await instance.delete('/carts/', {
+          await instance.delete("/carts/", {
             data: { carts: productIds },
             headers: {
               Authorization: `Bearer ${user.accessToken}`,
@@ -219,15 +238,17 @@ export const cartStore = create(
           });
 
           set((state) => ({
-            cartItemsList: state.cartItemsList.filter((item) => !productIds.includes(item._id)),
+            cartItemsList: state.cartItemsList.filter(
+              (item) => !productIds.includes(item._id)
+            ),
           }));
         } catch (error) {
           console.error(error);
-          set({ error: '장바구니 상품 삭제에 실패했습니다.' });
+          set({ error: "장바구니 상품 삭제에 실패했습니다." });
         }
       },
     }),
-    { name: 'cart-store' } // localStorage key
+    { name: "cart-store" } // localStorage key
   )
 );
 

@@ -17,7 +17,7 @@ function Shop() {
   const { user } = useUserStore(); // 유저 정보 가져오기
   const axiosInstance = useAxiosInstance();
   const getImage = (path) => {
-    const baseURL = "https://11.fesp.shop"; // 이미지의 기본 URL을 설정합니다.
+    const baseURL = "https://fesp-api.koyeb.app/market"; // 이미지의 기본 URL을 설정합니다.
     return `${baseURL}${path}`; // 전체 이미지 URL을 반환합니다.
   };
 
@@ -36,12 +36,16 @@ function Shop() {
     { name: "반려동물", links: ["/pet"], category: "pet" },
   ];
 
-  const [selectedSort, setSelectedSort] = useState(''); // 정렬,필터 
+  const [selectedSort, setSelectedSort] = useState(""); // 정렬,필터
 
   // 필터, 정렬 함수
   function getFilteredAndSortedProducts() {
     // 카데고리 필터링
-    let result = products.filter((product) => selectedCategory === "all-of-list" || product.extra?.category?.includes(selectedCategory)) //
+    let result = products.filter(
+      (product) =>
+        selectedCategory === "all-of-list" ||
+        product.extra?.category?.includes(selectedCategory)
+    ); //
 
     // 필터, 정렬 로직 시작
     switch (selectedSort) {
@@ -51,26 +55,26 @@ function Shop() {
         break;
       case "best":
         // 베스트
-        result = result.filter((p) => p.extra?.isBest)
+        result = result.filter((p) => p.extra?.isBest);
         break;
       case "name":
         //오름차순
-        result = [...result].sort((a, b) => a.name.localeCompare(b.name))
+        result = [...result].sort((a, b) => a.name.localeCompare(b.name));
         break;
       case "priceAsc":
         //낮은 가격
-        result = [...result].sort((a, b) => a.price - b.price)
-        break
+        result = [...result].sort((a, b) => a.price - b.price);
+        break;
       // 높은 가격
       case "priceDesc":
-        result = [...result].sort((a, b) => b.price - a.price)
+        result = [...result].sort((a, b) => b.price - a.price);
         break;
       default: // 기본 - 아무 동작 하지 않을 경우
-        break
+        break;
     }
 
     // 페이지 네이션
-    const startIndex = (currentPage - 1) * productsPerPage
+    const startIndex = (currentPage - 1) * productsPerPage;
     return result.slice(startIndex, startIndex + productsPerPage);
   }
 
@@ -129,10 +133,9 @@ function Shop() {
                   key={index}
                   className="cursor-pointer"
                   onClick={() => {
-                    setSelectedCategory(product.category) // 카테고리 선택 시 해당 카테고리로 필터링
+                    setSelectedCategory(product.category); // 카테고리 선택 시 해당 카테고리로 필터링
                     setCurrentPage(1); // 카테고리를 변경할 때 currentPage를 1로 초기화
                   }}
-
                   onMouseEnter={() => {
                     setActiveMenu(product.name);
                     setHovered(true);
@@ -146,7 +149,11 @@ function Shop() {
                       rounded-full 
                       text-gray-700 font-semibold
                       transition-colors
-                      ${selectedCategory === product.category ? "bg-secondary-30 text-white" : "text-gray-700 hover:bg-secondary-20 hover:text-white"}`}
+                      ${
+                        selectedCategory === product.category
+                          ? "bg-secondary-30 text-white"
+                          : "text-gray-700 hover:bg-secondary-20 hover:text-white"
+                      }`}
                   >
                     {product.name}
                   </a>
@@ -236,11 +243,14 @@ function Shop() {
         {/* 하단 구분선 */}
         <hr className="mt-4 mb-4 border-t border-grey-20" />
         {user?.type === "admin" && (
-        <button
-          className='block bg-primary-40 text-white px-4 py-2 round ed-md mt-4 mb-4 hover:bg-primary-60 transition-colors duration-300 ml-auto rounded'
-          onClick={() => navigate('/admin/addproduct')}> 상품 등록하기
-        </button>
-)}
+          <button
+            className="block bg-primary-40 text-white px-4 py-2 round ed-md mt-4 mb-4 hover:bg-primary-60 transition-colors duration-300 ml-auto rounded"
+            onClick={() => navigate("/admin/addproduct")}
+          >
+            {" "}
+            상품 등록하기
+          </button>
+        )}
 
         {currentproducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[256px]">
@@ -266,13 +276,17 @@ function Shop() {
                     />
                   </div>
                   <div className="mt-4 text-center">
-                    <h2 className="text-2xl font-semibold text-gray-800">{product.name}</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800">
+                      {product.name}
+                    </h2>
                     {product.originalPrice && (
                       <p className="text-lg text-gray-500 line-through">
                         {product.originalPrice}원
                       </p>
                     )}
-                    <p className="mt-2 text-xl font-bold text-gray-900">{product.price.toLocaleString()}원</p>
+                    <p className="mt-2 text-xl font-bold text-gray-900">
+                      {product.price.toLocaleString()}원
+                    </p>
                     <div className="mt-2 flex items-center justify-center gap-2">
                       {product.extra?.isNew && (
                         <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -301,15 +315,15 @@ function Shop() {
               }).map((_, index) => (
                 <button
                   key={index}
-                  className={`mx-1 px-3 py-1 ${currentPage === index + 1
-                    ? "bg-secondary-20 text-white"
-                    : "bg-grey-20 text-black"
-                    } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40`}
+                  className={`mx-1 px-3 py-1 ${
+                    currentPage === index + 1
+                      ? "bg-secondary-20 text-white"
+                      : "bg-grey-20 text-black"
+                  } w-[40px] py-[8px] rounded-md text-[15px] text-center hover:bg-secondary-40`}
                   onClick={() => handlePageChange(index + 1)}
                 >
                   {index + 1}
                 </button>
-                
               ))}
             </div>
           </div>

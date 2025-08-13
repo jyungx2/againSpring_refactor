@@ -68,7 +68,7 @@ function OrderDetail() {
           <div className="flex gap-[20px]">
             <img
               className="w-[150px] h-[200px] object-contain"
-              src={`https://11.fesp.shop${item.image?.path}`}
+              src={`https://fesp-api.koyeb.app/market${item.image?.path}`}
             />
             <div className="flex flex-col justify-center gap-[20px]">
               <p className="text-[18px]">{item.name}</p>

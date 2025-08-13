@@ -4,15 +4,15 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "dbinit": "cross-env NODE_ENV=production node ./init.js againSpring final02"
+    "dbinit": "cross-env NODE_ENV=production node ./init.js againSpring febc11-final02-regj"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "moment": "^2.30.1",
-    "mongodb": "^6.5.0"
+    "mongodb": "^6.18.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"

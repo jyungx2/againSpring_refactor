@@ -26,7 +26,7 @@ const Wishlist = () => {
     name: item.product.name,
     price: item.product.price,
     image: item.product.mainImages[0]?.path
-      ? `https://11.fesp.shop${item.product.mainImages[0].path}`
+      ? `https://fesp-api.koyeb.app/market${item.product.mainImages[0].path}`
       : "/path/to/default/image.png",
   }));
 

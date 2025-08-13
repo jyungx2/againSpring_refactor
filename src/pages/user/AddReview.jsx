@@ -119,7 +119,7 @@ function AddReview() {
           <div className="flex items-start p-[30px] text-[16px] border-t border-grey-30 gap-[18px]">
             <img
               className="w-[140px] h-[140px] object-contain"
-              src={`https://11.fesp.shop${item.image?.path}`}
+              src={`https://fesp-api.koyeb.app/market${item.image?.path}`}
             />
             <div className="flex flex-col gap-[20px] text-[18px]">
               <p>{item.name}</p>

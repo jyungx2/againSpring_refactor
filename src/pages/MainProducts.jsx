@@ -14,7 +14,7 @@ const MainProducts = () => {
   const axiosInstance = useAxiosInstance();
 
   const getImage = (path) => {
-    const baseURL = "https://11.fesp.shop";
+    const baseURL = "https://fesp-api.koyeb.app/market";
     return `${baseURL}${path}`;
   };
 
@@ -76,7 +76,9 @@ const MainProducts = () => {
               <p className="text-lg text-gray-500 line-through">
                 {product.originalPrice?.toLocaleString() || ""}
               </p>
-              <p className="text-xl font-bold">{product.price.toLocaleString()}원</p>
+              <p className="text-xl font-bold">
+                {product.price.toLocaleString()}원
+              </p>
             </Link>
           </SwiperSlide>
         ))}
@@ -90,11 +92,13 @@ const MainProducts = () => {
         {renderSwiper(
           "새로운 상품",
           "다시,봄에서 매일매일 신상품이 업데이트 됩니다. 지금 바로 만나보세요",
-          newProducts)}
+          newProducts
+        )}
         {renderSwiper(
           "베스트 상품",
           "다시, 봄에서 가장 인기있는 상품을 만나보세요.",
-          bestProducts)}
+          bestProducts
+        )}
         {/* {renderSwiper("할인 상품", discountedProducts)} */}
       </div>
     </div>

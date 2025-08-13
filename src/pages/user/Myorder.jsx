@@ -42,7 +42,7 @@ function MyOrder() {
               {user.profile ? (
                 <img
                   className="w-[100px] h-[100px] aspect-square object-cover border border-grey-20 rounded-full box-border p-1"
-                  src={`https://11.fesp.shop${user.profile}`}
+                  src={`https://fesp-api.koyeb.app/market${user.profile}`}
                   alt="프로필 이미지"
                 />
               ) : (

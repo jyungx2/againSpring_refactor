@@ -58,7 +58,7 @@ function Detail() {
   });
 
   const getImage = (path) => {
-    const baseURL = "https://11.fesp.shop";
+    const baseURL = "https://fesp-api.koyeb.app/market";
     return `${baseURL}${path}`;
   };
 
@@ -208,7 +208,7 @@ function Detail() {
     tempDiv.querySelectorAll("img").forEach((img) => {
       const src = img.getAttribute("src");
       if (src && src.startsWith("/files/")) {
-        img.setAttribute("src", `https://11.fesp.shop${src}`);
+        img.setAttribute("src", `https://fesp-api.koyeb.app/market${src}`);
       }
     });
 

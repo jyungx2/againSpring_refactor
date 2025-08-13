@@ -58,7 +58,7 @@ function TermsOfService() {
             </label>
           </div>
 
-          <div>
+          <div className="bg-red-50">
             <div className="flex">
               <input
                 type="checkbox"

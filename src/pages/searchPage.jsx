@@ -36,8 +36,8 @@ const SearchPage = () => {
       // 검색어를 기반으로 클라이언트에서 filter 함수로 필터링
       const response = await instance.get("/products");
       const allProducts = response.data.item;
-      const filteredProducts = allProducts.filter((product) =>
-        product.name.includes(searchTerm) // includes로 특정 요소 불러오기
+      const filteredProducts = allProducts.filter(
+        (product) => product.name.includes(searchTerm) // includes로 특정 요소 불러오기
       );
       // console.log("검색 결과:", response.data.item);
       setResults(filteredProducts);
@@ -64,8 +64,9 @@ const SearchPage = () => {
           />
           <button
             type="submit"
-            className={`absolute top-1/2 right-4 transform -translate-y-1/2 bg-primary-40 hover:bg-primary-20 px-4 py-3 rounded-md flex items-center justify-center shadow-lg transition-all duration-300 ${loading ? "cursor-not-allowed bg-gray-300" : ""
-              }`}
+            className={`absolute top-1/2 right-4 transform -translate-y-1/2 bg-primary-40 hover:bg-primary-20 px-4 py-3 rounded-md flex items-center justify-center shadow-lg transition-all duration-300 ${
+              loading ? "cursor-not-allowed bg-gray-300" : ""
+            }`}
             disabled={loading} // 로딩상태일경우 버튼 비활성화
           >
             {/* 검색 돋보기 아이콘 추가 */}
@@ -117,7 +118,7 @@ const SearchPage = () => {
                 상품 클릭 시 해당 제품 페이지로 이동합니다.
               </p>
               <img
-                src={`https://11.fesp.shop${product.mainImages?.[0]?.path}`}
+                src={`https://fesp-api.koyeb.app/market${product.mainImages?.[0]?.path}`}
                 alt={product.name}
                 className="w-full h-100 object-cover mb-4 rounded"
               />
