@@ -200,7 +200,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
               <div align="center">
-                <img src="/files/${clientId}/[bathroom] bamboo_toilet_paper_Detail.jpg" alt="[그리네라] 대나무화장지30M 30롤">
+                <img src="/files/${clientId}/bathroom_bamboo_toilet_paper_Detail.jpg" alt="[그리네라] 대나무화장지30M 30롤">
               </div>
           </div>`,
         createdAt: getTime(-41, -60 * 60 * 2), // 상품 등록일 (사용X)

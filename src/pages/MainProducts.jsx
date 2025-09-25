@@ -14,7 +14,7 @@ const MainProducts = () => {
   const axiosInstance = useAxiosInstance();
 
   const getImage = (path) => {
-    const baseURL = "https://fesp-api.koyeb.app";
+    const baseURL = "https://fesp-api.koyeb.app/market";
     console.log("path: ", path);
     console.log("💗: ", `${baseURL}${path}`);
 
