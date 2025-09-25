@@ -181,17 +181,17 @@ export const initData = async (clientId, nextSeq) => {
         mainImages: [
           // 대표 이미지
           {
-            path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(1).jpg`, // 이미지 저장 경로
+            path: `files/${clientId}/bathroom_bamboo_toilet_paper_1.jpg`, // 이미지 저장 경로
             name: "[bamboo] toilet_paper(1).jpg", // 이미지 이름
             originalname: "[bamboo] toilet_paper(1).jpg", // 업로드 당시 오리지널 이름
           },
           {
-            path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(2).jpg`,
+            path: `/files/${clientId}/bathroom_bamboo_toilet_paper_2.jpg`,
             name: "[bamboo] toilet_paper(2).jpg",
             originalname: "[bamboo] toilet_paper(2).jpg",
           },
           {
-            path: `/files/${clientId}/[bathroom] bamboo_toilet_paper(3).jpg`,
+            path: `/files/${clientId}/bathroom_bamboo_toilet_paper_3.jpg`,
             name: "[bamboo] toilet_paper(3).jpg",
             originalname: "[bamboo] toilet_paper(3).jpg",
           },
@@ -225,7 +225,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[bathroom] bamboo_toothbrush.jpg`,
+            path: `/files/${clientId}/bathroom_bamboo_toothbrush.jpg`,
             name: "[bathroom] bamboo_toothbrush.jpg",
             originalname: "[bathroom] bamboo_toothbrush.jpg",
           },
@@ -233,7 +233,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
               <div align="center">
-                <img src="/files/${clientId}/[bathroom] bamboo_toothbrush_Detail.jpg" alt="[자연상점] 대나무 칫솔 (일반형)">
+                <img src="/files/${clientId}/bathroom_bamboo_toothbrush_Detail.jpg" alt="[자연상점] 대나무 칫솔 (일반형)">
               </div>
           </div>`,
         createdAt: getTime(-38, -60 * 60 * 6),
@@ -258,17 +258,17 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[bathroom] body_towel(1).jpg`,
+            path: `/files/${clientId}/bathroom_body_towel_1.jpg`,
             name: "[bathroom] body_towel(1).jpg",
             originalname: "[bathroom] body_towel(1).jpg",
           },
           {
-            path: `/files/${clientId}/[bathroom] body_towel(2).jpg`,
+            path: `/files/${clientId}/bathroom_body_towel_2.jpg`,
             name: "[bathroom] body_towel(2).jpg",
             originalname: "[bathroom] body_towel(2).jpg",
           },
           {
-            path: `/files/${clientId}/[bathroom] body_towel(3).jpg`,
+            path: `/files/${clientId}/bathroom_body_towel_3.jpg`,
             name: "[bathroom] body_towel(3).jpg",
             originalname: "[bathroom] body_towel(3).jpg",
           },
@@ -276,7 +276,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
               <div align="center">
-                <img src="/files/${clientId}/[bathroom] body_towel_Detail.jpg" alt="[사이로] 두둥 푸딩 거품 샤워타월">
+                <img src="/files/${clientId}/bathroom_body_towel_Detail.jpg" alt="[사이로] 두둥 푸딩 거품 샤워타월">
               </div>
           </div>`,
         createdAt: getTime(-35, -60 * 60 * 6),
@@ -301,17 +301,17 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[bathroom] body_wash(1).jpg`,
+            path: `/files/${clientId}/bathroom_body_wash_1.jpg`,
             name: "[bathroom] body_wash(1).jpg",
             originalname: "[bathroom] body_wash(1).jpg",
           },
           {
-            path: `/files/${clientId}/[bathroom] body_wash(2).jpg`,
+            path: `/files/${clientId}/bathroom_body_wash_2.jpg`,
             name: "[bathroom] body_wash(2).jpg",
             originalname: "[bathroom] body_wash(2).jpg",
           },
           {
-            path: `/files/${clientId}/[bathroom] body_wash(3).jpg`,
+            path: `/files/${clientId}/bathroom_body_wash_3.jpg`,
             name: "[bathroom] body_wash(3).jpg",
             originalname: "[bathroom] body_wash(3).jpg",
           },
@@ -319,7 +319,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
               <div align="center">
-                <img src="/files/${clientId}/[bathroom] body_wash_Detail.jpg" alt="[에코브릭] 약산성 바디워시바">
+                <img src="/files/${clientId}/bathroom_body_wash_Detail.jpg" alt="[에코브릭] 약산성 바디워시바">
               </div>
           </div>`,
         createdAt: getTime(-33, -60 * 60 * 7),
@@ -344,7 +344,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[bathroom] dental_floss.jpg`,
+            path: `/files/${clientId}/bathroom_dental_floss.jpg`,
             name: "[bathroom] dental_floss.jpg",
             originalname: "[bathroom] dental_floss.jpg",
           },
@@ -352,7 +352,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[bathroom] dental_floss_Detail.jpg" alt="[조르단] 그린클린 치실 (30ml)">
+                <img src="/files/${clientId}/bathroom_dental_floss_Detail.jpg" alt="[조르단] 그린클린 치실 (30ml)">
               </div>
           </div>`,
         createdAt: getTime(-30, -60 * 60 * 10),
@@ -378,12 +378,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[bathroom] soap_dish(1).jpg`,
+            path: `/files/${clientId}/bathroom_soap_dish_1.jpg`,
             name: "[bathroom] soap_dish(1).jpg",
             originalname: "[bathroom] soap_dish(1).jpg",
           },
           {
-            path: `/files/${clientId}/[bathroom] soap_dish(2).jpg`,
+            path: `/files/${clientId}/bathroom_soap_dish_2.jpg`,
             name: "[bathroom] soap_dish(2).jpg",
             originalname: "[bathroom] soap_dish(2).jpg",
           },
@@ -391,7 +391,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[bathroom] soap_dish_Detail.jpg" alt="[탄소창고] 오목이 비누받침">
+                <img src="/files/${clientId}/bathroom_soap_dish_Detail.jpg" alt="[탄소창고] 오목이 비누받침">
               </div>
           </div>`,
         createdAt: getTime(-30, -60 * 60 * 21),
@@ -416,7 +416,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[bathroom] solid_toothpaste.jpg`,
+            path: `/files/${clientId}/bathroom_solid_toothpaste.jpg`,
             name: "[bathroom] solid_toothpaste.jpg",
             originalname: "[bathroom] solid_toothpaste.jpg",
           },
@@ -424,7 +424,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[bathroom] solid_toothpaste_Detail.jpg" alt="[자연상점] 동그라미 고체치약 (30정)">
+                <img src="/files/${clientId}/bathroom_solid_toothpaste_Detail.jpg" alt="[자연상점] 동그라미 고체치약 (30정)">
               </div>
           </div>`,
         createdAt: getTime(-25, -60 * 60 * 12),
@@ -449,7 +449,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[bathroom] toothbrush_cover.jpg`,
+            path: `/files/${clientId}/bathroom_toothbrush_cover.jpg`,
             name: "[bathroom] toothbrush_cover.jpg",
             originalname: "[bathroom] toothbrush_cover",
           },
@@ -457,7 +457,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[bathroom] toothbrush_cover_Detail.jpg" alt="[지구샵] 실리콘 칫솔뚜껑">
+                <img src="/files/${clientId}/bathroom_toothbrush_cover_Detail.jpg" alt="[지구샵] 실리콘 칫솔뚜껑">
               </div>
           </div>`,
         createdAt: getTime(-22, -60 * 60 * 22),
@@ -484,12 +484,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] cutting board(1).jpg`,
+            path: `/files/${clientId}/kitchen_cutting_board_1.jpg`,
             name: "[kitchen] cutting board(1).jpg",
             originalname: "[kitchen] cutting board(1).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] cutting board(2).jpg`,
+            path: `/files/${clientId}/kitchen_cutting_board_2.jpg`,
             name: "[kitchen] cutting board(2).jpg",
             originalname: "[kitchen] cutting board(2).jpg",
           },
@@ -497,7 +497,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] cutting board_Detail.jpg" alt="[벨르썸] 캠핑 산으로 바다로">
+                <img src="/files/${clientId}/kitchen_cutting_board_Detail.jpg" alt="[벨르썸] 캠핑 산으로 바다로">
               </div>
           </div>`,
         createdAt: getTime(-21, -60 * 60 * 4),
@@ -523,7 +523,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] Detergent.png`,
+            path: `/files/${clientId}/kitchen_Detergent.png`,
             name: "[kitchen] Detergent.png",
             originalname: "[kitchen] Detergent.png",
           },
@@ -531,7 +531,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] Detergent_Detail.jpg" alt="[동구밭] 식기세척기 세제 타블렛 240g">
+                <img src="/files/${clientId}/kitchen_Detergent_Detail.jpg" alt="[동구밭] 식기세척기 세제 타블렛 240g">
               </div>
           </div>`,
         createdAt: getTime(-18, -60 * 60 * 7),
@@ -556,7 +556,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] dishcloth.jpg`,
+            path: `/files/${clientId}/kitchen_dishcloth.jpg`,
             name: "[kitchen] dishcloth.jpg",
             originalname: "[kitchen] dishcloth.jpg",
           },
@@ -564,7 +564,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] dishcloth_Detail.jpg" alt="[퀸비스토어] 바른행주 1장 (2겹)">
+                <img src="/files/${clientId}/kitchen_dishcloth_Detail.jpg" alt="[퀸비스토어] 바른행주 1장 (2겹)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -590,17 +590,17 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] gloves(1).png`,
+            path: `/files/${clientId}/kitchen_gloves_1.png`,
             name: "[kitchen] gloves(1).png",
             originalname: "[kitchen] gloves(1).png",
           },
           {
-            path: `/files/${clientId}/[kitchen] gloves(2).png`,
+            path: `/files/${clientId}/kitchen_gloves_2.png`,
             name: "[kitchen] gloves(2).png",
             originalname: "[kitchen] gloves(2).png",
           },
           {
-            path: `/files/${clientId}/[kitchen] gloves(3).png`,
+            path: `/files/${clientId}/kitchen_gloves_3.png`,
             name: "[kitchen] gloves(3).png",
             originalname: "[kitchen] gloves(3).png",
           },
@@ -608,7 +608,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
            <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] gloves_Detail.jpg" alt="[아트앤허그] 담비 주방장갑(1p)">
+                <img src="/files/${clientId}/kitchen_gloves_Detail.jpg" alt="[아트앤허그] 담비 주방장갑(1p)">
               </div>
           </div>`,
         createdAt: getTime(-11, -60 * 60 * 12),
@@ -634,12 +634,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] plate(1).jpg`,
+            path: `/files/${clientId}/kitchen_plate_1.jpg`,
             name: "[kitchen] plate(1).jpg",
             originalname: "[kitchen] plate(1).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] plate(2).jpg`,
+            path: `/files/${clientId}/kitchen_plate_2.jpg`,
             name: "[kitchen] plate(2).jpg",
             originalname: "[kitchen] plate(2).jpg",
           },
@@ -647,7 +647,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
            <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] plate_Detail.jpg" alt="[자누담] 해초접시 (1set-10개입)">
+                <img src="/files/${clientId}/kitchen_plate_Detail.jpg" alt="[자누담] 해초접시 (1set-10개입)">
               </div>
           </div>`,
         createdAt: getTime(-10, -60 * 60 * 12),
@@ -673,17 +673,17 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] scrubber(1).jpg`,
+            path: `/files/${clientId}/kitchen_scrubber_1.jpg`,
             name: "[kitchen] scrubber(1).jpg",
             originalname: "[kitchen] scrubber(1).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] scrubber(2).jpg`,
+            path: `/files/${clientId}/kitchen_scrubber_2.jpg`,
             name: "[kitchen] scrubber(2).jpg",
             originalname: "[kitchen] scrubber(2).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] scrubber(3).jpg`,
+            path: `/files/${clientId}/kitchen_scrubber_3.jpg`,
             name: "[kitchen] scrubber(3).jpg",
             originalname: "[kitchen] scrubber(3).jpg",
           },
@@ -691,7 +691,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
            <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] scrubber_Detail.jpg" alt="[온전히지구] 그대로수세미 (압착형)">
+                <img src="/files/${clientId}/kitchen_scrubber_Detail.jpg" alt="[온전히지구] 그대로수세미 (압착형)">
               </div>
           </div>`,
         createdAt: getTime(-3, -60 * 60 * 12),
@@ -716,17 +716,17 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] Spoon&Fork_Set.jpg`,
+            path: `/files/${clientId}/kitchen_Spoon&Fork_Set.jpg`,
             name: "[kitchen] Spoon&Fork_Set.jpg",
             originalname: "[kitchen] Spoon&Fork_Set.jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] Spoon&Fork_Set(2).jpg`,
+            path: `/files/${clientId}/kitchen_Spoon&Fork_Set_2.jpg`,
             name: "[kitchen] Spoon&Fork_Set(2).jpg",
             originalname: "[kitchen] Spoon&Fork_Set(2).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] Spoon&Fork_Set(3).jpg`,
+            path: `/files/${clientId}/kitchen_Spoon&Fork_Set_3.jpg`,
             name: "[kitchen] Spoon&Fork_Set(3).jpg",
             originalname: "[kitchen] Spoon&Fork_Set(3).jpg",
           },
@@ -734,7 +734,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] Spoon&Fork_Set_Detail.jpg" alt="[탄소창고] 다회용 스푼&포크 세트">
+                <img src="/files/${clientId}/kitchen_Spoon&Fork_Set_Detail.jpg" alt="[탄소창고] 다회용 스푼&포크 세트">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -760,12 +760,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] stainless_steel_straw(1).jpg`,
+            path: `/files/${clientId}/kitchen_stainless_steel_straw_1.jpg`,
             name: "[kitchen] stainless_steel_straw(1).jpg",
             originalname: "[kitchen] stainless_steel_straw(1).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] stainless_steel_straw(2).jpg`,
+            path: `/files/${clientId}/kitchen_stainless_steel_straw_2.jpg`,
             name: "[kitchen] stainless_steel_straw(2).jpg",
             originalname: "[kitchen] stainless_steel_straw(2).jpg",
           },
@@ -773,7 +773,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] stainless_steel_straw_Detail.jpg" alt="[퀸비스토어] 스테인리스 빨대">
+                <img src="/files/${clientId}/kitchen_stainless_steel_straw_Detail.jpg" alt="[퀸비스토어] 스테인리스 빨대">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -799,12 +799,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] stand_spatula(1).jpg`,
+            path: `/files/${clientId}/kitchen_stand_spatula_1.jpg`,
             name: "[kitchen] stand_spatula(1).jpg",
             originalname: "[kitchen] stand_spatula(1).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] stand_spatula(2).jpg`,
+            path: `/files/${clientId}/kitchen_stand_spatula_2.jpg`,
             name: "[kitchen] stand_spatula(2).jpg",
             originalname: "[kitchen] stand_spatula(2).jpg",
           },
@@ -812,7 +812,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] stand_spatula_Detail.jpg" alt="[탄소창고] 스탠드주걱">
+                <img src="/files/${clientId}/kitchen_stand_spatula_Detail.jpg" alt="[탄소창고] 스탠드주걱">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -838,7 +838,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] tea_bag.jpg`,
+            path: `/files/${clientId}/kitchen_tea_bag.jpg`,
             name: "[kitchen] tea_bag.jpg",
             originalname: "[kitchen] tea_bag.jpg",
           },
@@ -846,7 +846,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] tea_bag_Detail.jpg" alt="[소락] 다시백 티백">
+                <img src="/files/${clientId}/kitchen_tea_bag_Detail.jpg" alt="[소락] 다시백 티백">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -872,22 +872,22 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] towel(1).jpg`,
+            path: `/files/${clientId}/kitchen_towel_1.jpg`,
             name: "[kitchen] towel(1).jpg",
             originalname: "[kitchen] towel(1).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] towel(2).jpg`,
+            path: `/files/${clientId}/kitchen_towel_2.jpg`,
             name: "[kitchen] towel(2).jpg",
             originalname: "[kitchen] towel(2).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] towel(3).jpg`,
+            path: `/files/${clientId}/kitchen_towel_3.jpg`,
             name: "[kitchen] towel(3).jpg",
             originalname: "[kitchen] towel(3).jpg",
           },
           {
-            path: `/files/${clientId}/[kitchen] towel(4).jpg`,
+            path: `/files/${clientId}/kitchen_towel_4.jpg`,
             name: "[kitchen] towel(4).jpg",
             originalname: "[kitchen] towel(4).jpg",
           },
@@ -895,7 +895,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] towel_Detail.jpg" alt="[그리네라] 대나무 키친타올 100매 (12입)">
+                <img src="/files/${clientId}/kitchen_towel_Detail.jpg" alt="[그리네라] 대나무 키친타올 100매 (12입)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -921,7 +921,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[kitchen] zipper_bags.jpg`,
+            path: `/files/${clientId}/kitchen_zipper_bags.jpg`,
             name: "[kitchen] zipper_bags.jpg",
             originalname: "[kitchen] zipper_bags.jpg",
           },
@@ -929,7 +929,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[kitchen] zipper_bags_Detail.jpg" alt="[슈가랩] 사탕수수로 만든 지퍼백">
+                <img src="/files/${clientId}/kitchen_zipper_bags_Detail.jpg" alt="[슈가랩] 사탕수수로 만든 지퍼백">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -957,7 +957,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[laundry] Cleaner.jpg`,
+            path: `/files/${clientId}/laundry_Cleaner.jpg`,
             name: "[laundry] Cleaner.jpg",
             originalname: "[laundry] Cleaner.jpg",
           },
@@ -965,7 +965,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[laundry] Cleaner_Detail.jpeg" alt="[비긴에코] 초강력 초간단 캡슐 세탁조클리너 10개">
+                <img src="/files/${clientId}/laundry_Cleaner_Detail.jpeg" alt="[비긴에코] 초강력 초간단 캡슐 세탁조클리너 10개">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -991,12 +991,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[laundry] dryer_sheet(1).png`,
+            path: `/files/${clientId}/laundry_dryer_sheet_1.png`,
             name: "[laundry] dryer_sheet(1).png",
             originalname: "[laundry] dryer_sheet(1).png",
           },
           {
-            path: `/files/${clientId}/[laundry] dryer_sheet(2).png`,
+            path: `/files/${clientId}/laundry_dryer_sheet_2.png`,
             name: "[laundry] dryer_sheet(2).png",
             originalname: "[laundry] dryer_sheet(2).png",
           },
@@ -1004,7 +1004,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[laundry] dryer_sheet_Detail.jpg" alt="[비긴에코] 섬유유연제 건조기시트 프루티플로럴 80매">
+                <img src="/files/${clientId}/laundry_dryer_sheet_Detail.jpg" alt="[비긴에코] 섬유유연제 건조기시트 프루티플로럴 80매">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1030,12 +1030,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[laundry] Percarbonate_soda(1).jpg`,
+            path: `/files/${clientId}/laundry_Percarbonate_soda_1.jpg`,
             name: "[laundry] Percarbonate_soda(1).jpg",
             originalname: "[laundry] Percarbonate_soda(1).jpg",
           },
           {
-            path: `/files/${clientId}/[laundry] Percarbonate_soda(2).jpg`,
+            path: `/files/${clientId}/laundry_Percarbonate_soda_2.jpg`,
             name: "[laundry] Percarbonate_soda(2).jpg",
             originalname: "[laundry] Percarbonate_soda(2).jpg",
           },
@@ -1043,7 +1043,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[laundry] Percarbonate_soda_Detail.jpeg" alt="[꽃마리] 세탁용 과탄산소다솝">
+                <img src="/files/${clientId}/laundry_Percarbonate_soda_Detail.jpeg" alt="[꽃마리] 세탁용 과탄산소다솝">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1069,7 +1069,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[laundry] solid_detergent.jpg`,
+            path: `/files/${clientId}/laundry_solid_detergent.jpg`,
             name: "[laundry] solid_detergent.jpg",
             originalname: "[laundry] solid_detergent.jpg",
           },
@@ -1077,7 +1077,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[laundry] solid_detergent_Detail.jpg" alt="[블루워시] 고체 세탁세제 (제라늄/70정)">
+                <img src="/files/${clientId}/laundry_solid_detergent_Detail.jpg" alt="[블루워시] 고체 세탁세제 (제라늄/70정)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1105,7 +1105,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] coffee_filter.jpg`,
+            path: `/files/${clientId}/life_coffee_filter.jpg`,
             name: "[life] coffee_filter.jpg",
             originalname: "[life] coffee_filter.jpg",
           },
@@ -1113,7 +1113,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] coffee_filter_Detail.jpg" alt="[에콜그린] 옥수수콘 커피필터 50매 (사다리꼴형)">
+                <img src="/files/${clientId}/life_coffee_filter_Detail.jpg" alt="[에콜그린] 옥수수콘 커피필터 50매 (사다리꼴형)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1139,7 +1139,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] flat_pouch.jpg`,
+            path: `/files/${clientId}/life_flat_pouch.jpg`,
             name: "[life] flat_pouch.jpg",
             originalname: "[life] flat_pouch.jpg",
           },
@@ -1147,7 +1147,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] flat_pouch_Detail.jpg" alt="[project1907] 플랫 파우치 (Flat Pouch)">
+                <img src="/files/${clientId}/life_flat_pouch_Detail.jpg" alt="[project1907] 플랫 파우치 (Flat Pouch)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1173,12 +1173,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] flowerpot(1).jpg`,
+            path: `/files/${clientId}/life_flowerpot_1.jpg`,
             name: "[life] flowerpot(1).jpg",
             originalname: "[life] flowerpot(1).jpg",
           },
           {
-            path: `/files/${clientId}/[life] flowerpot(2).jpg`,
+            path: `/files/${clientId}/life_flowerpot_2.jpg`,
             name: "[life] flowerpot(2).jpg",
             originalname: "[life] flowerpot(2).jpg",
           },
@@ -1186,7 +1186,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] flowerpot_Detail.jpg" alt="[탄소창고] 쑥쑥화분">
+                <img src="/files/${clientId}/life_flowerpot_Detail.jpg" alt="[탄소창고] 쑥쑥화분">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1212,7 +1212,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] kdis_tote_bag.jpg`,
+            path: `/files/${clientId}/life_kdis_tote_bag.jpg`,
             name: "[life] kdis_tote_bag.jpg",
             originalname: "[life] kdis_tote_bag.jpg",
           },
@@ -1220,7 +1220,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] kdis_tote_bag_Detail.jpg" alt="[project1907] 키즈토트백 (KIDS Tote Bag)">
+                <img src="/files/${clientId}/life_kdis_tote_bag_Detail.jpg" alt="[project1907] 키즈토트백 (KIDS Tote Bag)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1246,7 +1246,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] long_umbrella.jpg`,
+            path: `/files/${clientId}/life_long_umbrella.jpg`,
             name: "[life] long_umbrella.jpg",
             originalname: "[life] long_umbrella.jpg",
           },
@@ -1254,7 +1254,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] long_umbrella_Detail.jpg" alt="[project1907] 장우산(대)">
+                <img src="/files/${clientId}/life_long_umbrella_Detail.jpg" alt="[project1907] 장우산(대)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1280,12 +1280,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] oyster_deodorant(1).jpg`,
+            path: `/files/${clientId}/life_oyster_deodorant_1.jpg`,
             name: "[life] oyster_deodorant(1).jpg",
             originalname: "[life] oyster_deodorant(1).jpg",
           },
           {
-            path: `/files/${clientId}/[life] oyster_deodorant(2).jpg`,
+            path: `/files/${clientId}/life_oyster_deodorant_2.jpg`,
             name: "[life] oyster_deodorant(2).jpg",
             originalname: "[life] oyster_deodorant(2).jpg",
           },
@@ -1293,7 +1293,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] oyster_deodorant_Detail.jpg" alt="굴 담은 탈취제">
+                <img src="/files/${clientId}/life_oyster_deodorant_Detail.jpg" alt="굴 담은 탈취제">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1319,7 +1319,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] passport_case.jpg`,
+            path: `/files/${clientId}/life_passport_case.jpg`,
             name: "[life] passport_case.jpg",
             originalname: "[life] passport_case.jpg",
           },
@@ -1327,7 +1327,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] passport_case_Detail.jpg" alt="[project1907] 여권케이스 (Passport Case)">
+                <img src="/files/${clientId}/life_passport_case_Detail.jpg" alt="[project1907] 여권케이스 (Passport Case)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1353,7 +1353,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] vegan_bagpack.jpg`,
+            path: `/files/${clientId}/life_vegan_bagpack.jpg`,
             name: "[life] vegan_bagpack.jpg",
             originalname: "[life] vegan_bagpack.jpg",
           },
@@ -1361,7 +1361,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] vegan_bagpack_Detail.jpg" alt="[project1907] 비건 백팩 (Vegan Backpack)">
+                <img src="/files/${clientId}/life_vegan_bagpack_Detail.jpg" alt="[project1907] 비건 백팩 (Vegan Backpack)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1387,7 +1387,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] vegan_hobo_bag.jpg`,
+            path: `/files/${clientId}/life_vegan_hobo_bag.jpg`,
             name: "[life] vegan_hobo_bag.jpg",
             originalname: "[life] vegan_hobo_bag.jpg",
           },
@@ -1395,7 +1395,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] vegan_hobo_bag_Detail.jpg" alt="[project1907] 비건 호보백 (Vegan Hobo bag)">
+                <img src="/files/${clientId}/life_vegan_hobo_bag_Detail.jpg" alt="[project1907] 비건 호보백 (Vegan Hobo bag)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1421,7 +1421,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[life] wax_candle.jpg`,
+            path: `/files/${clientId}/life_wax_candle.jpg`,
             name: "[life] wax_candle.jpg",
             originalname: "[life] wax_candle.jpg",
           },
@@ -1429,7 +1429,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[life] wax_candle_Detail.png" alt="[업앤업] 밀랍초">
+                <img src="/files/${clientId}/life_wax_candle_Detail.png" alt="[업앤업] 밀랍초">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1457,7 +1457,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[pet] dog_pad.jpg`,
+            path: `/files/${clientId}/pet_dog_pad.jpg`,
             name: "[pet] dog_pad.jpg",
             originalname: "[pet] dog_pad.jpg",
           },
@@ -1465,7 +1465,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[pet] dog_pad_Detail.jpg" alt="[에콜그린] 옥수수콘 생분해 강아지 배변패드 (10매)">
+                <img src="/files/${clientId}/pet_dog_pad_Detail.jpg" alt="[에콜그린] 옥수수콘 생분해 강아지 배변패드 (10매)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1493,7 +1493,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[stationery] admission_gift.jpg`,
+            path: `/files/${clientId}/stationery_admission_gift.jpg`,
             name: "[stationery] admission_gift.jpg",
             originalname: "[stationery] admission_gift.jpg",
           },
@@ -1501,7 +1501,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[stationery] admission_gift_Detail.jpg" alt="[자연상점] 아자아자! 입학 응원 세트">
+                <img src="/files/${clientId}/stationery_admission_gift_Detail.jpg" alt="[자연상점] 아자아자! 입학 응원 세트">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1527,7 +1527,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[stationery] check_list.jpg`,
+            path: `/files/${clientId}/stationery_check_list.jpg`,
             name: "[stationery] check_list.jpg",
             originalname: "[stationery] check_list.jpg",
           },
@@ -1535,7 +1535,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[stationery] check_list_Detail.jpg" alt="[스테이그린] 사탕수수 메모지 - Check list">
+                <img src="/files/${clientId}/stationery_check_list_Detail.jpg" alt="[스테이그린] 사탕수수 메모지 - Check list">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1561,7 +1561,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[stationery] note.jpg`,
+            path: `/files/${clientId}/stationery_note.jpg`,
             name: "[stationery] note.jpg",
             originalname: "[stationery] note.jpg",
           },
@@ -1569,7 +1569,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[stationery] note_Detail.jpg" alt="[지구나무] A5 재생지 노트(유선)">
+                <img src="/files/${clientId}/stationery_note_Detail.jpg" alt="[지구나무] A5 재생지 노트(유선)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1595,7 +1595,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[stationery] paper_clip.jpg`,
+            path: `/files/${clientId}/stationery_paper_clip.jpg`,
             name: "[stationery] paper_clip.jpg",
             originalname: "[stationery] paper_clip.jpg",
           },
@@ -1603,7 +1603,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[stationery] paper_clip_Detail.jpg" alt="[지구나무] 페이퍼 클립 (높은음자리표) - 10개입">
+                <img src="/files/${clientId}/stationery_paper_clip_Detail.jpg" alt="[지구나무] 페이퍼 클립 (높은음자리표) - 10개입">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1629,7 +1629,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[stationery] pencil.gif`,
+            path: `/files/${clientId}/stationery_pencil.gif`,
             name: "[stationery] pencil.gif",
             originalname: "[stationery] pencil.gif",
           },
@@ -1637,7 +1637,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[stationery] pencil_Detail.jpg" alt="[지구나무] 신문지 업사이클링 연필(5개입)">
+                <img src="/files/${clientId}/stationery_pencil_Detail.jpg" alt="[지구나무] 신문지 업사이클링 연필(5개입)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1663,7 +1663,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[stationery] pencil_cap.jpg`,
+            path: `/files/${clientId}/stationery_pencil_cap.jpg`,
             name: "[stationery] pencil_cap.jpg",
             originalname: "[stationery] pencil_cap.jpg",
           },
@@ -1671,7 +1671,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[stationery] pencil_cap_Detail.jpg" alt="[지구나무] [RE]재생가죽 펜슬캡">
+                <img src="/files/${clientId}/stationery_pencil_cap_Detail.jpg" alt="[지구나무] [RE]재생가죽 펜슬캡">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1697,7 +1697,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[stationery] pencil_sharpener.jpg`,
+            path: `/files/${clientId}/stationery_pencil_sharpener.jpg`,
             name: "[stationery] pencil_sharpener.jpg",
             originalname: "[stationery] pencil_sharpener.jpg",
           },
@@ -1705,7 +1705,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[stationery] pencil_sharpener_Detail.jpg" alt="[지구나무] 폐나무 분말 연필깎이">
+                <img src="/files/${clientId}/stationery_pencil_sharpener_Detail.jpg" alt="[지구나무] 폐나무 분말 연필깎이">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1731,12 +1731,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[stationery] postit(1).jpg`,
+            path: `/files/${clientId}/stationery_postit_1.jpg`,
             name: "[stationery] postit(1).jpg",
             originalname: "[stationery] postit(1).jpg",
           },
           {
-            path: `/files/${clientId}/[stationery] postit(2).jpg`,
+            path: `/files/${clientId}/stationery_postit_2.jpg`,
             name: "[stationery] postit(2).jpg",
             originalname: "[stationery] postit(2).jpg",
           },
@@ -1744,7 +1744,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[stationery] postit_Detail.jpg" alt="[프린텍]재생지포스트잇 세로형 100매">
+                <img src="/files/${clientId}/stationery_postit_Detail.jpg" alt="[프린텍]재생지포스트잇 세로형 100매">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -1770,7 +1770,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/[stationery] stationery_set.jpg`,
+            path: `/files/${clientId}/stationery_stationery_set.jpg`,
             name: "[stationery] stationery_set.jpg",
             originalname: "[stationery] stationery_set.jpg",
           },
@@ -1778,7 +1778,7 @@ export const initData = async (clientId, nextSeq) => {
         content: `
           <div class="product-detail">
             <div align="center">
-                <img src="/files/${clientId}/[stationery] stationery_set_Detail.jpg" alt="[자연상점] 신문지 연필세트 (연필3개+크라프트연필통)">
+                <img src="/files/${clientId}/stationery_stationery_set_Detail.jpg" alt="[자연상점] 신문지 연필세트 (연필3개+크라프트연필통)">
               </div>
           </div>`,
         createdAt: getTime(-16, -60 * 60 * 3),

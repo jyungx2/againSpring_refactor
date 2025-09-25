@@ -58,7 +58,7 @@ const MenuIcons = () => {
           {user.profile && (
             <img
               className="w-12 h-12 rounded-full object-cover"
-              src={`https://fesp-api.koyeb.app/market${user.profile}`}
+              src={user.profile}
               alt="프로필 이미지"
             />
           )}
