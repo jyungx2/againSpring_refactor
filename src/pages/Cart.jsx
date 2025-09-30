@@ -255,7 +255,7 @@ function Cart() {
                     </td>
                     <td className="flex items-start py-[20px]">
                       <img
-                        src={`https://fesp-api.koyeb.app/market${item.product.image.path}`}
+                        src={item.product?.image?.path}
                         alt={item.name}
                         className="w-[80px] h-[80px] object-cover mr-[8px]"
                       />

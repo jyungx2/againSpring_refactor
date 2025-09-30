@@ -67,7 +67,7 @@ export default function PostForm({
             {selectedProduct?.mainImages?.length > 0 ? (
               <>
                 <img
-                  src={`https://fesp-api.koyeb.app/market${selectedProduct.mainImages[0].path}`}
+                  src={selectedProduct.mainImages[0].path}
                   alt={selectedProduct.name}
                   className="w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600"
                 />

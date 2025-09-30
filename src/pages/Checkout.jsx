@@ -32,7 +32,7 @@ export default function Checkout() {
             className="grid grid-cols-[auto_1fr_auto] gap-4 py-6 border-b border-gray-200"
           >
             <img
-              src={`https://fesp-api.koyeb.app/market${item.product.image.path}`}
+              src={item.product.image.path}
               className="w-[120px] h-[120px]"
             />
             <div>

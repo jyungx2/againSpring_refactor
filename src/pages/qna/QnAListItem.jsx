@@ -30,7 +30,7 @@ const QnAListItem = ({ item, number }) => {
         >
           {item.product && item.product.image && (
             <img
-              src={`https://fesp-api.koyeb.app/market${item.product.image.path}`}
+              src={item.product.image.path}
               alt={item.product.name}
               className="w-20 h-20 object-cover"
             />

@@ -204,20 +204,20 @@ function Detail() {
 
   let formattedContent = "";
 
-  // if (productDetails) {
-  //   const tempDiv = document.createElement("div");
-  //   tempDiv.innerHTML = productDetails.content;
-  //   tempDiv.querySelectorAll("img").forEach((img) => {
-  //     const src = img.getAttribute("src");
-  //     if (src && src.startsWith("/files/")) {
-  //       img.setAttribute("src", `https://fesp-api.koyeb.app/market${src}`);
-  //     }
-  //   });
+  if (productDetails && productDetails.content) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = productDetails.content;
+    tempDiv.querySelectorAll("img").forEach((img) => {
+      const src = img.getAttribute("src");
+      if (src && src.startsWith("/files/")) {
+        img.setAttribute("src", `https://fesp-api.koyeb.app/market${src}`);
+      }
+    });
 
-  //   formattedContent = tempDiv.innerHTML; // 변환된 HTML을 다시 문자열로 변환
-  // } else {
-  //   formattedContent = "<p>상품 상세정보가 없습니다.</p>"; // 상품 상세정보가 없을 경우
-  // }
+    formattedContent = tempDiv.innerHTML; // 변환된 HTML을 다시 문자열로 변환
+  } else {
+    formattedContent = "<p>Loading...</p>"; // 상품 상세정보가 없을 경우
+  }
   const totalPrice = cartItemsList.reduce(
     (total, item) => total + item.price * item.quantity,
     0

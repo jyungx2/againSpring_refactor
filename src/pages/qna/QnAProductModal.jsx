@@ -276,7 +276,7 @@ export default function QnAProductModal({ onClose, onProductSelect }) {
                       <td className="py-1 pl-2">
                         {product.mainImages?.length > 0 ? (
                           <img
-                            src={`https://fesp-api.koyeb.app/market${product.mainImages[0].path}`}
+                            src={product.mainImages[0].path}
                             alt={product.name}
                             className="w-24 h-24 object-cover rounded"
                             loading="lazy"

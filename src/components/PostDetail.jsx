@@ -183,7 +183,7 @@ export default function PostDetail({ type = "notice", onDataLoad }) {
           <div className="mr-6 relative">
             {selectedProduct.mainImages?.length > 0 ? (
               <img
-                src={`https://fesp-api.koyeb.app/market${selectedProduct.mainImages[0].path}`}
+                src={selectedProduct.mainImages[0].path}
                 className="w-32 h-32 bg-gray-200 flex items-center justify-center text-sm text-gray-600"
                 alt={selectedProduct.name}
               />

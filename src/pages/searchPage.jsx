@@ -118,7 +118,7 @@ const SearchPage = () => {
                 상품 클릭 시 해당 제품 페이지로 이동합니다.
               </p>
               <img
-                src={`https://fesp-api.koyeb.app/market${product.mainImages?.[0]?.path}`}
+                src={product.mainImages?.[0]?.path}
                 alt={product.name}
                 className="w-full h-100 object-cover mb-4 rounded"
               />
