@@ -16,10 +16,13 @@ function Shop() {
   const [error, setError] = useState(null);
   const { user } = useUserStore(); // 유저 정보 가져오기
   const axiosInstance = useAxiosInstance();
-  const getImage = (path) => {
-    const baseURL = "https://fesp-api.koyeb.app/market"; // 이미지의 기본 URL을 설정합니다.
-    return `${baseURL}${path}`; // 전체 이미지 URL을 반환합니다.
-  };
+
+  // API 수정으로 인한 이미지 경로 소스 변경
+  // 기존: 로컬 경로(api 주소 + 고유 path) -> 수정: 클라우드 이미지 절대 경로
+  // const getImage = (path) => {
+  //   const baseURL = "https://fesp-api.koyeb.app/market"; // 이미지의 기본 URL을 설정합니다.
+  //   return `${baseURL}${path}`; // 전체 이미지 URL을 반환합니다.
+  // };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -80,6 +83,7 @@ function Shop() {
 
   // 필터, 정렬된 상품 목록
   const currentproducts = getFilteredAndSortedProducts();
+  console.log("dddddD: ", currentproducts);
 
   // URL 쿼리 파라미터를 통해 카테고리를 가져와서 설정
   useEffect(() => {
@@ -270,7 +274,7 @@ function Shop() {
                 >
                   <div className="overflow-hidden rounded-lg shadow-md">
                     <img
-                      src={getImage(product.mainImages[0]?.path)}
+                      src={product.mainImages[0]?.path}
                       alt={product.name}
                       className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
                     />

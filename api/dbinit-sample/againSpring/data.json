@@ -1,0 +1,1673 @@
+{
+  "user": [
+    {
+      "email": "admin@market.com",
+      "password": "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+      "name": "무지",
+      "phone": "01011112222",
+      "address": "서울시 강남구 역삼동 123",
+      "type": "admin",
+      "loginType": "email",
+      "image": "/uploadFiles/user-muzi.webp",
+      "extra": {
+        "birthday": "03-23",
+        "membershipClass": "MC03",
+        "addressBook": [
+          {
+            "id": 1,
+            "name": "집",
+            "value": "서울시 강남구 역삼동 123"
+          },
+          {
+            "id": 2,
+            "name": "회사",
+            "value": "서울시 강남구 신사동 234"
+          }
+        ]
+      }
+    }
+  ],
+  "product": [
+    {
+      "seller_id": 2,
+      "price": 18900,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[그리네라] 대나무화장지30M 30롤",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759136670/febc11-final02-regj/VrKFSly9j.jpg",
+          "name": "[bamboo] toilet_paper(1).jpg",
+          "originalname": "[bamboo] toilet_paper(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759136763/febc11-final02-regj/eQWAtP4Up.jpg",
+          "name": "[bamboo] toilet_paper(2).jpg",
+          "originalname": "[bamboo] toilet_paper(2).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759136848/febc11-final02-regj/ZTe0mqW9M.jpg",
+          "name": "[bamboo] toilet_paper(3).jpg",
+          "originalname": "[bamboo] toilet_paper(3).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759138719/febc11-final02-regj/yTJq8Voi-.jpg\" alt=\"[그리네라] 대나무화장지30M 30롤\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "category": ["all-of-list", "bathroom"],
+        "sort": 5,
+        "tanso": 10
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 1400,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[자연상점] 대나무 칫솔 (일반형)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759138736/febc11-final02-regj/SeUCOqNOY.jpg",
+          "name": "[bathroom] bamboo_toothbrush.jpg",
+          "originalname": "[bathroom] bamboo_toothbrush.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759138742/febc11-final02-regj/HJ6oz_j9L.jpg\" alt=\"[자연상점] 대나무 칫솔 (일반형)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "category": ["all-of-list", "bathroom"],
+        "sort": 4,
+        "tanso": 3
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 9000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[사이로] 두둥 푸딩 거품 샤워타월",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759138766/febc11-final02-regj/EIS9GMiIw.jpg",
+          "name": "[bathroom] body_towel(1).jpg",
+          "originalname": "[bathroom] body_towel(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759138790/febc11-final02-regj/QAdeAdXar.jpg",
+          "name": "[bathroom] body_towel(2).jpg",
+          "originalname": "[bathroom] body_towel(2).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759138794/febc11-final02-regj/QrgrgIPva.jpg",
+          "name": "[bathroom] body_towel(3).jpg",
+          "originalname": "[bathroom] body_towel(3).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759138848/febc11-final02-regj/v0xErnoFi.jpg\" alt=\"[사이로] 두둥 푸딩 거품 샤워타월\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "category": ["all-of-list", "bathroom"],
+        "sort": 3,
+        "tanso": 10
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 17800,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[에코브릭] 약산성 바디워시바",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759138856/febc11-final02-regj/nm8kMV0aV.jpg",
+          "name": "[bathroom] body_wash(1).jpg",
+          "originalname": "[bathroom] body_wash(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759138861/febc11-final02-regj/aqMFjx1FT.jpg",
+          "name": "[bathroom] body_wash(2).jpg",
+          "originalname": "[bathroom] body_wash(2).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759136861/febc11-final02-regj/zezjyWzHR.jpg",
+          "name": "[bathroom] body_wash(3).jpg",
+          "originalname": "[bathroom] body_wash(3).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759138881/febc11-final02-regj/0T3mG9iPK.jpg\" alt=\"[에코브릭] 약산성 바디워시바\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "category": ["all-of-list", "bathroom"],
+        "sort": 1,
+        "tanso": 3.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3900,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[조르단] 그린클린 치실 (30ml)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139463/febc11-final02-regj/IX_FwMbiB.jpg",
+          "name": "[bathroom] dental_floss.jpg",
+          "originalname": "[bathroom] dental_floss.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139446/febc11-final02-regj/Xl8L8I25v.jpg\" alt=\"[조르단] 그린클린 치실 (30ml)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": true,
+        "today": true,
+        "category": ["all-of-list", "bathroom"],
+        "sort": 2,
+        "tanso": 4.7
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3500,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[탄소창고] 오목이 비누받침",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139483/febc11-final02-regj/bTLfxBrPK.jpg",
+          "name": "[bathroom] soap_dish(1).jpg",
+          "originalname": "[bathroom] soap_dish(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139492/febc11-final02-regj/vU5gQ_sGe.jpg",
+          "name": "[bathroom] soap_dish(2).jpg",
+          "originalname": "[bathroom] soap_dish(2).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139504/febc11-final02-regj/8Qh8Fj_2k.jpg\" alt=\"[탄소창고] 오목이 비누받침\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "category": ["all-of-list", "bathroom"],
+        "sort": 1,
+        "tanso": 8.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 4500,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[자연상점] 동그라미 고체치약 (30정)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139531/febc11-final02-regj/iFWnG-iGU.jpg",
+          "name": "[bathroom] solid_toothpaste.jpg",
+          "originalname": "[bathroom] solid_toothpaste.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139540/febc11-final02-regj/El5ydIrjr.jpg\" alt=\"[자연상점] 동그라미 고체치약 (30정)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "category": ["all-of-list", "bathroom"],
+        "sort": 3,
+        "tanso": 1.2
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 800,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[지구샵] 실리콘 칫솔뚜껑",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139547/febc11-final02-regj/que0JQccs.jpg",
+          "name": "[bathroom] toothbrush_cover.jpg",
+          "originalname": "[bathroom] toothbrush_cover"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139540/febc11-final02-regj/El5ydIrjr.jpg\" alt=\"[지구샵] 실리콘 칫솔뚜껑\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "category": ["all-of-list", "bathroom"],
+        "sort": 8,
+        "tanso": 4.2
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 120000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[벨르썸] 캠핑 산으로 바다로",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139554/febc11-final02-regj/VntZUwqLv.jpg",
+          "name": "[kitchen] cutting board(1).jpg",
+          "originalname": "[kitchen] cutting board(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139568/febc11-final02-regj/v6ZO9pGjX.jpg",
+          "name": "[kitchen] cutting board(2).jpg",
+          "originalname": "[kitchen] cutting board(2).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139578/febc11-final02-regj/Bb_PxGuPN.jpg\" alt=\"[벨르썸] 캠핑 산으로 바다로\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 2,
+        "tanso": 6.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 15900,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[동구밭] 식기세척기 세제 타블렛 240g",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139651/febc11-final02-regj/YYFxtiOSx.png",
+          "name": "[kitchen] Detergent.png",
+          "originalname": "[kitchen] Detergent.png"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139604/febc11-final02-regj/borbrvnSi.jpg\" alt=\"[동구밭] 식기세척기 세제 타블렛 240g\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": true,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 4,
+        "tanso": 7.6
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3500,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[퀸비스토어] 바른행주 1장 (2겹)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139673/febc11-final02-regj/Mq_A4sEYw.jpg",
+          "name": "[kitchen] dishcloth.jpg",
+          "originalname": "[kitchen] dishcloth.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139664/febc11-final02-regj/6eOHnIOTe.jpg\" alt=\"[퀸비스토어] 바른행주 1장 (2겹)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 6,
+        "tanso": 4.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 14000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[아트앤허그] 담비 주방장갑(1p)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139718/febc11-final02-regj/Q5BG37i8J.png",
+          "name": "[kitchen] gloves(1).png",
+          "originalname": "[kitchen] gloves(1).png"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139680/febc11-final02-regj/fpGNFZigg.png",
+          "name": "[kitchen] gloves(2).png",
+          "originalname": "[kitchen] gloves(2).png"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139691/febc11-final02-regj/jTONmxhN1.png",
+          "name": "[kitchen] gloves(3).png",
+          "originalname": "[kitchen] gloves(3).png"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139725/febc11-final02-regj/SMr39-UMp.jpg\" alt=\"[아트앤허그] 담비 주방장갑(1p)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 7,
+        "tanso": 10
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 11500,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[자누담] 해초접시 (1set-10개입)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139734/febc11-final02-regj/InwIR56h_.jpg",
+          "name": "[kitchen] plate(1).jpg",
+          "originalname": "[kitchen] plate(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139826/febc11-final02-regj/dcD64vmxL.jpg",
+          "name": "[kitchen] plate(2).jpg",
+          "originalname": "[kitchen] plate(2).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139841/febc11-final02-regj/Mlm1S9pyz.jpg\" alt=\"[자누담] 해초접시 (1set-10개입)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 6,
+        "tanso": 5.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 1800,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[온전히지구] 그대로수세미 (압착형)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139862/febc11-final02-regj/SeCX9qoGi.jpg",
+          "name": "[kitchen] scrubber(1).jpg",
+          "originalname": "[kitchen] scrubber(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139875/febc11-final02-regj/suMkod53N.jpg",
+          "name": "[kitchen] scrubber(2).jpg",
+          "originalname": "[kitchen] scrubber(2).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139881/febc11-final02-regj/ZeE8QUw0q.jpg",
+          "name": "[kitchen] scrubber(3).jpg",
+          "originalname": "[kitchen] scrubber(3).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139889/febc11-final02-regj/kzKjy_kWT.jpg\" alt=\"[온전히지구] 그대로수세미 (압착형)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 5,
+        "tanso": 8.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 5000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[탄소창고] 다회용 스푼&포크 세트",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139969/febc11-final02-regj/dYxQo6t6U.jpg",
+          "name": "[kitchen] Spoon&Fork_Set.jpg",
+          "originalname": "[kitchen] Spoon&Fork_Set.jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139941/febc11-final02-regj/U8T_pjFmQ.jpg",
+          "name": "[kitchen] Spoon&Fork_Set(2).jpg",
+          "originalname": "[kitchen] Spoon&Fork_Set(2).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139947/febc11-final02-regj/e2YgCSHNC.jpg",
+          "name": "[kitchen] Spoon&Fork_Set(3).jpg",
+          "originalname": "[kitchen] Spoon&Fork_Set(3).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139962/febc11-final02-regj/p74Ggsfkj.jpg\" alt=\"[탄소창고] 다회용 스푼&포크 세트\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": true,
+        "today": true,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 2,
+        "tanso": 7.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 1000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[퀸비스토어] 스테인리스 빨대",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139982/febc11-final02-regj/vKY1BURdT.jpg",
+          "name": "[kitchen] stainless_steel_straw(1).jpg",
+          "originalname": "[kitchen] stainless_steel_straw(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759139989/febc11-final02-regj/QJaQkDU0c.jpg",
+          "name": "[kitchen] stainless_steel_straw(2).jpg",
+          "originalname": "[kitchen] stainless_steel_straw(2).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759139996/febc11-final02-regj/N-Xi3sSvS.jpg\" alt=\"[퀸비스토어] 스테인리스 빨대\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 2,
+        "tanso": 9.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 6500,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[탄소창고] 스탠드주걱",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140005/febc11-final02-regj/1H7IUrSb4.jpg",
+          "name": "[kitchen] stand_spatula(1).jpg",
+          "originalname": "[kitchen] stand_spatula(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140013/febc11-final02-regj/CuZUYPh46.jpg",
+          "name": "[kitchen] stand_spatula(2).jpg",
+          "originalname": "[kitchen] stand_spatula(2).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759140024/febc11-final02-regj/T1-OJAXJq.jpg\" alt=\"[탄소창고] 스탠드주걱\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 2,
+        "tanso": 12.4
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3500,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[소락] 다시백 티백",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140042/febc11-final02-regj/g6L_J_HC4.jpg",
+          "name": "[kitchen] tea_bag.jpg",
+          "originalname": "[kitchen] tea_bag.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759140035/febc11-final02-regj/LVeGifYaj.jpg\" alt=\"[소락] 다시백 티백\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 2,
+        "tanso": 1.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 18900,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[그리네라] 대나무 키친타올 100매 (12입)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140057/febc11-final02-regj/zfmMThN2y.jpg",
+          "name": "[kitchen] towel(1).jpg",
+          "originalname": "[kitchen] towel(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140065/febc11-final02-regj/kB6ZxGWEE.jpg",
+          "name": "[kitchen] towel(2).jpg",
+          "originalname": "[kitchen] towel(2).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140216/febc11-final02-regj/lVMJTEelX.jpg",
+          "name": "[kitchen] towel(3).jpg",
+          "originalname": "[kitchen] towel(3).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140243/febc11-final02-regj/Vm4p4-yLF.jpg",
+          "name": "[kitchen] towel(4).jpg",
+          "originalname": "[kitchen] towel(4).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759140256/febc11-final02-regj/AQp4oPNPG.jpg\" alt=\"[그리네라] 대나무 키친타올 100매 (12입)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 2,
+        "tanso": 3.5
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 2200,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[슈가랩] 사탕수수로 만든 지퍼백",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140535/febc11-final02-regj/dhzwGqY6e.jpg",
+          "name": "[kitchen] zipper_bags.jpg",
+          "originalname": "[kitchen] zipper_bags.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759140302/febc11-final02-regj/mvTo6kZXQ.jpg\" alt=\"[슈가랩] 사탕수수로 만든 지퍼백\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": true,
+        "today": true,
+        "category": ["all-of-list", "kitchen"],
+        "sort": 2,
+        "tanso": 5.5
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 9900,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[비긴에코] 초강력 초간단 캡슐 세탁조클리너 10개",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140556/febc11-final02-regj/5Jjq3mcOD.jpg",
+          "name": "[laundry] Cleaner.jpg",
+          "originalname": "[laundry] Cleaner.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759140544/febc11-final02-regj/_l_nbt1y4.jpg\" alt=\"[비긴에코] 초강력 초간단 캡슐 세탁조클리너 10개\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "laundry"],
+        "sort": 2,
+        "tanso": 9.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 10900,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[비긴에코] 섬유유연제 건조기시트 프루티플로럴 80매",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140566/febc11-final02-regj/_SYwgajUV.png",
+          "name": "[laundry] dryer_sheet(1).png",
+          "originalname": "[laundry] dryer_sheet(1).png"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140591/febc11-final02-regj/9mZqWApNH.png",
+          "name": "[laundry] dryer_sheet(2).png",
+          "originalname": "[laundry] dryer_sheet(2).png"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759140606/febc11-final02-regj/SdillMyVn.jpg\" alt=\"[비긴에코] 섬유유연제 건조기시트 프루티플로럴 80매\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "laundry"],
+        "sort": 2,
+        "tanso": 9.8
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 4300,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[꽃마리] 세탁용 과탄산소다솝",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140616/febc11-final02-regj/qKw6KnbwW.jpg",
+          "name": "[laundry] Percarbonate_soda(1).jpg",
+          "originalname": "[laundry] Percarbonate_soda(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140708/febc11-final02-regj/LBmNuYK3l.jpg",
+          "name": "[laundry] Percarbonate_soda(2).jpg",
+          "originalname": "[laundry] Percarbonate_soda(2).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759140729/febc11-final02-regj/2LAlO4wZx.jpg\" alt=\"[꽃마리] 세탁용 과탄산소다솝\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "laundry"],
+        "sort": 2,
+        "tanso": 10.4
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 26000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[블루워시] 고체 세탁세제 (제라늄/70정)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140815/febc11-final02-regj/MsGl4yJwI.jpg",
+          "name": "[laundry] solid_detergent.jpg",
+          "originalname": "[laundry] solid_detergent.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759225676/febc11-final02-regj/BEj4xXvtr.jpg\" alt=\"[블루워시] 고체 세탁세제 (제라늄/70정)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "laundry"],
+        "sort": 2,
+        "tanso": 9.3
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 5900,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[에콜그린] 옥수수콘 커피필터 50매 (사다리꼴형)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140832/febc11-final02-regj/H7uGKz5F0.jpg",
+          "name": "[life] coffee_filter.jpg",
+          "originalname": "[life] coffee_filter.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759140826/febc11-final02-regj/0QLyfygp2.jpg\" alt=\"[에콜그린] 옥수수콘 커피필터 50매 (사다리꼴형)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": true,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 7.7
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 12000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[project1907] 플랫 파우치 (Flat Pouch)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759140864/febc11-final02-regj/tMRfMQE38.jpg",
+          "name": "[life] flat_pouch.jpg",
+          "originalname": "[life] flat_pouch.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"/uploadFiles/life_flat_pouch_Detail.jpg\" alt=\"[project1907] 플랫 파우치 (Flat Pouch)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 16.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 1500,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[탄소창고] 쑥쑥화분",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148180/febc11-final02-regj/2tf4_UznG.jpg",
+          "name": "[life] flowerpot(1).jpg",
+          "originalname": "[life] flowerpot(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148212/febc11-final02-regj/r0qb9iEmz.jpg",
+          "name": "[life] flowerpot(2).jpg",
+          "originalname": "[life] flowerpot(2).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148258/febc11-final02-regj/mW0lXDc77.jpg\" alt=\"[탄소창고] 쑥쑥화분\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 8.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 42000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[project1907] 키즈토트백 (KIDS Tote Bag)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148398/febc11-final02-regj/oo6L-qZI1.jpg",
+          "name": "[life] kdis_tote_bag.jpg",
+          "originalname": "[life] kdis_tote_bag.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148442/febc11-final02-regj/1fDdMHerF.jpg\" alt=\"[project1907] 키즈토트백 (KIDS Tote Bag)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 11.3
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 28000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[project1907] 장우산(대)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148461/febc11-final02-regj/a4TXRA6fN.jpg",
+          "name": "[life] long_umbrella.jpg",
+          "originalname": "[life] long_umbrella.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148478/febc11-final02-regj/z1sbRXOEo.jpg\" alt=\"[project1907] 장우산(대)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 14.2
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "굴 담은 탈취제",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148504/febc11-final02-regj/x19o7bNVd.jpg",
+          "name": "[life] oyster_deodorant(1).jpg",
+          "originalname": "[life] oyster_deodorant(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148529/febc11-final02-regj/bAUI-rTVK.jpg",
+          "name": "[life] oyster_deodorant(2).jpg",
+          "originalname": "[life] oyster_deodorant(2).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148547/febc11-final02-regj/v7yoN3ADr.jpg\" alt=\"굴 담은 탈취제\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": true,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 16.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 13000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[project1907] 여권케이스 (Passport Case)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148571/febc11-final02-regj/M3Q9R_5n1.jpg",
+          "name": "[life] passport_case.jpg",
+          "originalname": "[life] passport_case.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148589/febc11-final02-regj/rYKb9PhGG.jpg\" alt=\"[project1907] 여권케이스 (Passport Case)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 18.5
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 79000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[project1907] 비건 백팩 (Vegan Backpack)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148606/febc11-final02-regj/DuV0Fpbu3.jpg",
+          "name": "[life] vegan_bagpack.jpg",
+          "originalname": "[life] vegan_bagpack.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148645/febc11-final02-regj/nhW-pQrqH.jpg\" alt=\"[project1907] 비건 백팩 (Vegan Backpack)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 20.4
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 90000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[project1907] 비건 호보백 (Vegan Hobo bag)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148674/febc11-final02-regj/rhtz3mlRI.jpg",
+          "name": "[life] vegan_hobo_bag.jpg",
+          "originalname": "[life] vegan_hobo_bag.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148705/febc11-final02-regj/MQ2h7IDnx.jpg\" alt=\"[project1907] 비건 호보백 (Vegan Hobo bag)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 20.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 18000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[업앤업] 밀랍초",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148747/febc11-final02-regj/En047F4QX.jpg",
+          "name": "[life] wax_candle.jpg",
+          "originalname": "[life] wax_candle.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148767/febc11-final02-regj/QigRObf9o.png\" alt=\"[업앤업] 밀랍초\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "life"],
+        "sort": 2,
+        "tanso": 6.4
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 11900,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[에콜그린] 옥수수콘 생분해 강아지 배변패드 (10매)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148791/febc11-final02-regj/8qjx_t3ku.jpg",
+          "name": "[pet] dog_pad.jpg",
+          "originalname": "[pet] dog_pad.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148811/febc11-final02-regj/M_l6SOKiK.jpg\" alt=\"[에콜그린] 옥수수콘 생분해 강아지 배변패드 (10매)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": true,
+        "today": true,
+        "category": ["all-of-list", "pet"],
+        "sort": 2,
+        "tanso": 7.9
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 17000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[자연상점] 아자아자! 입학 응원 세트",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148832/febc11-final02-regj/fzWJAcusY.jpg",
+          "name": "[stationery] admission_gift.jpg",
+          "originalname": "[stationery] admission_gift.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148855/febc11-final02-regj/qwQwuo8tM.jpg\" alt=\"[자연상점] 아자아자! 입학 응원 세트\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "stationery"],
+        "sort": 2,
+        "tanso": 6.1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[스테이그린] 사탕수수 메모지 - Check list",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148895/febc11-final02-regj/P9qZwtXKi.jpg",
+          "name": "[stationery] check_list.jpg",
+          "originalname": "[stationery] check_list.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148922/febc11-final02-regj/ur3rqd4tt.jpg\" alt=\"[스테이그린] 사탕수수 메모지 - Check list\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "stationery"],
+        "sort": 2,
+        "tanso": 2.2
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 1500,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[지구나무] A5 재생지 노트(유선)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148952/febc11-final02-regj/ymf_bcCMM.jpg",
+          "name": "[stationery] note.jpg",
+          "originalname": "[stationery] note.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759148970/febc11-final02-regj/dC8cASQA1.jpg\" alt=\"[지구나무] A5 재생지 노트(유선)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": true,
+        "today": true,
+        "category": ["all-of-list", "stationery"],
+        "sort": 2,
+        "tanso": 2.4
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 4800,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[지구나무] 페이퍼 클립 (높은음자리표) - 10개입",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759148991/febc11-final02-regj/LQhiFFNjy.jpg",
+          "name": "[stationery] paper_clip.jpg",
+          "originalname": "[stationery] paper_clip.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759149010/febc11-final02-regj/uM3qGUsZQ.jpg\" alt=\"[지구나무] 페이퍼 클립 (높은음자리표) - 10개입\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "stationery"],
+        "sort": 2,
+        "tanso": 5.2
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[지구나무] 신문지 업사이클링 연필(5개입)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759149056/febc11-final02-regj/XRBfOQ8gP.png",
+          "name": "[stationery] pencil.gif",
+          "originalname": "[stationery] pencil.gif"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759149081/febc11-final02-regj/1PwPov6wH.jpg\" alt=\"[지구나무] 신문지 업사이클링 연필(5개입)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": true,
+        "today": true,
+        "category": ["all-of-list", "stationery"],
+        "sort": 2,
+        "tanso": 1
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[지구나무] [RE]재생가죽 펜슬캡",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759149112/febc11-final02-regj/lfD-BEOCr.jpg",
+          "name": "[stationery] pencil_cap.jpg",
+          "originalname": "[stationery] pencil_cap.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759149151/febc11-final02-regj/bJHXxeYVe.jpg\" alt=\"[지구나무] [RE]재생가죽 펜슬캡\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "stationery"],
+        "sort": 2,
+        "tanso": 1.5
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3500,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[지구나무] 폐나무 분말 연필깎이",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759149181/febc11-final02-regj/98Y6bl4a8.jpg",
+          "name": "[stationery] pencil_sharpener.jpg",
+          "originalname": "[stationery] pencil_sharpener.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759149221/febc11-final02-regj/LnpwPVJoT.jpg\" alt=\"[지구나무] 폐나무 분말 연필깎이\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": true,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "stationery"],
+        "sort": 2,
+        "tanso": 2.4
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 1600,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[프린텍]재생지포스트잇 세로형 100매",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759149242/febc11-final02-regj/dJ9Glh9gW.jpg",
+          "name": "[stationery] postit(1).jpg",
+          "originalname": "[stationery] postit(1).jpg"
+        },
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759149256/febc11-final02-regj/oCiIFrbXW.jpg",
+          "name": "[stationery] postit(2).jpg",
+          "originalname": "[stationery] postit(2).jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759149280/febc11-final02-regj/PZwOXZX31.jpg\" alt=\"[프린텍]재생지포스트잇 세로형 100매\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": false,
+        "today": true,
+        "category": ["all-of-list", "stationery"],
+        "sort": 2,
+        "tanso": 1.4
+      }
+    },
+    {
+      "seller_id": 2,
+      "price": 3000,
+      "shippingFees": 3000,
+      "show": true,
+      "active": true,
+      "name": "[자연상점] 신문지 연필세트 (연필3개+크라프트연필통)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "https://res.cloudinary.com/ddedslqvv/image/upload/v1759149306/febc11-final02-regj/kDNQyeCeg.jpg",
+          "name": "[stationery] stationery_set.jpg",
+          "originalname": "[stationery] stationery_set.jpg"
+        }
+      ],
+      "content": "<div class=\"product-detail\">\n  <div align=\"center\">\n    <img src=\"https://res.cloudinary.com/ddedslqvv/image/upload/v1759149357/febc11-final02-regj/H_8EkzWLS.jpg\" alt=\"[자연상점] 신문지 연필세트 (연필3개+크라프트연필통)\">\n  </div>\n</div>",
+      "extra": {
+        "isNew": false,
+        "isBest": true,
+        "today": true,
+        "category": ["all-of-list", "stationery"],
+        "sort": 2,
+        "tanso": 4.4
+      }
+    },
+    {
+      "seller_id": 3,
+      "price": 12900,
+      "shippingFees": 3500,
+      "show": false,
+      "active": false,
+      "name": "테스트용 (메인상품정보1)",
+      "quantity": 999999,
+      "buyquantity": 0,
+      "mainImages": [
+        {
+          "path": "/uploadFiles/[kitchen] (1).jpg",
+          "name": "[kitchen] (1).jpg",
+          "originalname": "샤넬.jpg"
+        }
+      ],
+      "content": "샤넬 향수",
+
+      "extra": {
+        "depth": 1
+      }
+    },
+    {
+      "seller_id": 3,
+      "price": 6900,
+      "shippingFees": 3500,
+      "name": "테스트용 (메인상품정보2)",
+      "quantity": 100,
+      "buyquantity": 0,
+      "show": false,
+      "active": false,
+      "mainImages": [
+        {
+          "path": "/uploadFiles/sample-pushpop03.jpg",
+          "name": "sample-pushpop03.jpg",
+          "originalname": "샤넬.jpg"
+        }
+      ],
+      "content": "3달 쓴 향수입니다.",
+
+      "extra": {
+        "depth": 2,
+        "parent": 15,
+        "size": "200mm"
+      }
+    }
+  ],
+  "order": [],
+  "review": [
+    {
+      "user_id": 4,
+      "user": {
+        "_id": 2,
+        "name": "배고파앙",
+        "image": "/uploadFiles/rD3kfWjH8.png"
+      },
+      "order_id": 1,
+      "product_id": 19,
+      "rating": 5,
+      "content": "아이가 좋아해요."
+    }
+  ],
+  "cart": [
+    {
+      "user_id": 4,
+      "product_id": 1,
+      "quantity": 2
+    }
+  ],
+  "bookmark": [
+    {
+      "user_id": 4,
+      "user": {
+        "name": "제이지",
+        "image": "/uploadFiles/user-jayg.webp"
+      },
+      "type": "product",
+      "target_id": 2,
+      "memo": "첫째 크리스마스 선물."
+    }
+  ],
+  "post": [
+    {
+      "type": "qna",
+      "product_id": 1,
+      "seller_id": 2,
+      "views": 5,
+      "user": {
+        "_id": 4,
+        "name": "제이지",
+        "image": "user-jayg.webp"
+      },
+      "title": "크기가 얼만만한가요?",
+      "content": "아이가 6살인데 가지고 놀기 적당한 크기인가요?",
+      "replies": [
+        {
+          "user_id": 2,
+          "user": {
+            "_id": 2,
+            "name": "네오",
+            "image": "user-neo.webp"
+          },
+          "content": "크기는 상품 상세정보에 나와 있습니다.",
+          "like": 5
+        },
+        {
+          "user_id": 4,
+          "user": {
+            "_id": 4,
+            "name": "제이지",
+            "image": "user-jayg.webp"
+          },
+          "content": "어디있나 모르겠어요.",
+          "like": 7
+        },
+        {
+          "user_id": 2,
+          "user": {
+            "_id": 2,
+            "name": "네오",
+            "image": "user-neo.webp"
+          },
+          "content": "높이 60cm 입니다.",
+          "like": 3
+        }
+      ]
+    },
+    {
+      "type": "qna",
+      "product_id": 1,
+      "seller_id": 2,
+      "views": 50,
+      "user": {
+        "_id": 4,
+        "name": "제이지",
+        "image": "user-jayg.webp"
+      },
+      "title": "이번주 토요일까지 받아볼 수 있을까요?",
+      "content": "토요일 생일 선물로 준비중인데 그때까지 배송 가능할까요?"
+    },
+    {
+      "type": "notice",
+      "views": 10,
+      "user": {
+        "_id": 1,
+        "name": "무지",
+        "image": "user-muzi.webp"
+      },
+      "title": "배송지연 안내",
+      "content": "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다."
+    },
+    {
+      "type": "notice",
+      "views": 15,
+      "user": {
+        "_id": 1,
+        "name": "무지",
+        "image": "user-muzi.webp"
+      },
+      "title": "배송비 인상 안내",
+      "content": "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다."
+    }
+  ],
+  "code": [
+    {
+      "title": "상품 카테고리",
+      "codes": [
+        {
+          "sort": 2,
+          "code": "PC01",
+          "value": "어린이",
+          "depth": 1
+        },
+        {
+          "sort": 3,
+          "code": "PC0101",
+          "value": "퍼즐",
+          "parent": "PC01",
+          "depth": 2
+        },
+        {
+          "sort": 1,
+          "code": "PC0102",
+          "value": "보드게임",
+          "parent": "PC01",
+          "depth": 2
+        },
+        {
+          "sort": 2,
+          "code": "PC010201",
+          "value": "2인용",
+          "parent": "PC0102",
+          "depth": 3
+        },
+        {
+          "sort": 1,
+          "code": "PC010202",
+          "value": "3~4인용",
+          "parent": "PC0102",
+          "depth": 3
+        },
+        {
+          "sort": 2,
+          "code": "PC0103",
+          "value": "레고",
+          "parent": "PC01",
+          "depth": 2
+        },
+        {
+          "sort": 4,
+          "code": "PC0104",
+          "value": "로봇",
+          "parent": "PC01",
+          "depth": 2
+        },
+
+        {
+          "sort": 1,
+          "code": "PC02",
+          "value": "스포츠",
+          "depth": 1
+        },
+        {
+          "sort": 1,
+          "code": "PC0201",
+          "value": "축구",
+          "parent": "PC02",
+          "depth": 2
+        },
+        {
+          "sort": 3,
+          "code": "PC0202",
+          "value": "야구",
+          "parent": "PC02",
+          "depth": 2
+        },
+        {
+          "sort": 2,
+          "code": "PC0203",
+          "value": "농구",
+          "parent": "PC02",
+          "depth": 2
+        },
+
+        {
+          "sort": 3,
+          "code": "PC03",
+          "value": "어른",
+          "depth": 1
+        },
+        {
+          "sort": 1,
+          "code": "PC0301",
+          "value": "원격 조종",
+          "parent": "PC03",
+          "depth": 2
+        },
+        {
+          "sort": 2,
+          "code": "PC0302",
+          "value": "퍼즐",
+          "parent": "PC03",
+          "depth": 2
+        },
+        {
+          "sort": 3,
+          "code": "PC0303",
+          "value": "레고",
+          "parent": "PC03",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "_id": "orderState",
+      "title": "주문 상태",
+      "codes": [
+        {
+          "sort": 1,
+          "code": "OS010",
+          "value": "주문 완료"
+        },
+        {
+          "sort": 2,
+          "code": "OS020",
+          "value": "결제 완료"
+        },
+        {
+          "sort": 3,
+          "code": "OS030",
+          "value": "배송 준비중"
+        },
+        {
+          "sort": 4,
+          "code": "OS035",
+          "value": "배송중"
+        },
+        {
+          "sort": 5,
+          "code": "OS040",
+          "value": "배송 완료"
+        },
+        {
+          "sort": 6,
+          "code": "OS110",
+          "value": "반품 요청"
+        },
+        {
+          "sort": 7,
+          "code": "OS120",
+          "value": "반품 처리중"
+        },
+        {
+          "sort": 8,
+          "code": "OS130",
+          "value": "반품 완료"
+        },
+        {
+          "sort": 9,
+          "code": "OS210",
+          "value": "교환 요청"
+        },
+        {
+          "sort": 10,
+          "code": "OS220",
+          "value": "교환 처리중"
+        },
+        {
+          "sort": 11,
+          "code": "OS230",
+          "value": "교환 완료"
+        },
+        {
+          "sort": 12,
+          "code": "OS310",
+          "value": "환불 요청"
+        },
+        {
+          "sort": 13,
+          "code": "OS320",
+          "value": "환불 처리중"
+        },
+        {
+          "sort": 14,
+          "code": "OS330",
+          "value": "환불 완료"
+        }
+      ]
+    },
+    {
+      "_id": "membershipClass",
+      "title": "회원 등급",
+      "codes": [
+        {
+          "sort": 1,
+          "code": "MC01",
+          "value": "일반",
+          "discountRate": 0
+        },
+        {
+          "sort": 2,
+          "code": "MC02",
+          "value": "프리미엄",
+          "discountRate": 10
+        },
+        {
+          "sort": 3,
+          "code": "MC03",
+          "value": "VIP",
+          "discountRate": 20
+        }
+      ]
+    }
+  ],
+  "config": [
+    {
+      "title": "배송비",
+      "value": 3000
+    },
+    {
+      "title": "배송비 무료 금액",
+      "value": 50000
+    }
+  ]
+}

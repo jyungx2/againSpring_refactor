@@ -57,17 +57,18 @@ function Detail() {
     },
   });
 
-  const getImage = (path) => {
-    const baseURL = "https://fesp-api.koyeb.app/market";
-    return `${baseURL}${path}`;
-  };
+  // const getImage = (path) => {
+  //   const baseURL = "https://fesp-api.koyeb.app/market";
+  //   return `${baseURL}${path}`;
+  // };
 
   useEffect(() => {
+    console.log("typeof ID: ", typeof Number(id));
     const fetchProduct = async () => {
       try {
-        const response = await axiosInstance.get(`/products/${id}`);
+        const response = await axiosInstance.get(`/products/${Number(id)}`);
         const product = response?.data?.item;
-        // console.log(product);
+        console.log("detail: ", product);
         product.quantity = 1;
         setCartItemsList([product]); // 장바구니에 추가할 상품 목록 - 단일 상품이라도 배열로 저장
         setProductDetails(product); // 상품 상세 정보
@@ -76,6 +77,7 @@ function Detail() {
       }
     };
     fetchProduct();
+    console.log(cartItemsList);
   }, [id]);
 
   // 관리자용 수정/ 삭제 기능
@@ -202,20 +204,20 @@ function Detail() {
 
   let formattedContent = "";
 
-  if (productDetails && productDetails.content) {
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = productDetails.content;
-    tempDiv.querySelectorAll("img").forEach((img) => {
-      const src = img.getAttribute("src");
-      if (src && src.startsWith("/files/")) {
-        img.setAttribute("src", `https://fesp-api.koyeb.app/market${src}`);
-      }
-    });
+  // if (productDetails) {
+  //   const tempDiv = document.createElement("div");
+  //   tempDiv.innerHTML = productDetails.content;
+  //   tempDiv.querySelectorAll("img").forEach((img) => {
+  //     const src = img.getAttribute("src");
+  //     if (src && src.startsWith("/files/")) {
+  //       img.setAttribute("src", `https://fesp-api.koyeb.app/market${src}`);
+  //     }
+  //   });
 
-    formattedContent = tempDiv.innerHTML; // 변환된 HTML을 다시 문자열로 변환
-  } else {
-    formattedContent = "<p>상품 상세정보가 없습니다.</p>"; // 상품 상세정보가 없을 경우
-  }
+  //   formattedContent = tempDiv.innerHTML; // 변환된 HTML을 다시 문자열로 변환
+  // } else {
+  //   formattedContent = "<p>상품 상세정보가 없습니다.</p>"; // 상품 상세정보가 없을 경우
+  // }
   const totalPrice = cartItemsList.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -257,7 +259,7 @@ function Detail() {
                 {item?.mainImages?.map((image, index) => (
                   <img
                     key={index}
-                    src={getImage(image.path)}
+                    src={image.path}
                     alt={`상품 이미지 ${index + 1}`}
                     className="w-[100px] h-[110px] mb-[10px] object-cover mr-[32px] cursor-pointer 
                     hover:border-2 opacity-100 hover:opacity-50 transition-opacity"
@@ -268,7 +270,7 @@ function Detail() {
 
               {/* 메인 이미지 */}
               <img
-                src={getImage(item?.mainImages?.[selectedIndex]?.path)} // 선택된 이미지의 path
+                src={item?.mainImages?.[selectedIndex]?.path} // 선택된 이미지의 path
                 alt="메인 상품 이미지"
                 className="w-[370px] h-[492px] mb-[20px] object-cover mr-[70px]"
               />

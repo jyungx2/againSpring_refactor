@@ -13,15 +13,16 @@ const MainProducts = () => {
   const [error, setError] = useState(null);
   const axiosInstance = useAxiosInstance();
 
-  const getImage = (path) => {
-    const baseURL = "https://fesp-api.koyeb.app/market";
-    console.log("path: ", path);
-    console.log("💗: ", `${baseURL}${path}`);
+  // const getImage = (path) => {
+  //   // const imageCloud = axiosInstance.post("/files", { attach: path });
+  //   // console.log("imagecloud: ", imageCloud);
+  //   // console.log("💗: ", `${path}`);
 
-    return `${baseURL}${path}`;
-  };
+  //   return imageCloud;
+  // };
 
   useEffect(() => {
+    console.log("메인");
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
@@ -59,32 +60,35 @@ const MainProducts = () => {
         navigation
         className="product-slider custom-swiper"
       >
-        {items.map((product) => (
-          <SwiperSlide key={product._id}>
-            <Link
-              to={`/detail/${product._id}`}
-              className="flex flex-col items-center text-center "
-            >
-              <div
-                className="bg-gray-200 rounded-[12px] border border-gray-300 overflow-hidden"
-                style={{ width: "200px", height: "200px" }}
+        {items.map((product) => {
+          console.log("물건: ", product);
+          return (
+            <SwiperSlide key={product._id}>
+              <Link
+                to={`/detail/${product._id}`}
+                className="flex flex-col items-center text-center "
               >
-                <img
-                  src={getImage(product.mainImages[0]?.path)}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <p className="mt-4 text-2xl">{product.name}</p>
-              <p className="text-lg text-gray-500 line-through">
-                {product.originalPrice?.toLocaleString() || ""}
-              </p>
-              <p className="text-xl font-bold">
-                {product.price.toLocaleString()}원
-              </p>
-            </Link>
-          </SwiperSlide>
-        ))}
+                <div
+                  className="bg-gray-200 rounded-[12px] border border-gray-300 overflow-hidden"
+                  style={{ width: "200px", height: "200px" }}
+                >
+                  <img
+                    src={product.mainImages[0]?.path}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <p className="mt-4 text-2xl">{product.name}</p>
+                <p className="text-lg text-gray-500 line-through">
+                  {product.originalPrice?.toLocaleString() || ""}
+                </p>
+                <p className="text-xl font-bold">
+                  {product.price.toLocaleString()}원
+                </p>
+              </Link>
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </section>
   );

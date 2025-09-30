@@ -10,7 +10,7 @@ function useAxiosInstance() {
 
   const instance = axios.create({
     baseURL: "https://fesp-api.koyeb.app/market",
-    timeout: 1000 * 15,
+    timeout: 1000 * 20,
     headers: {
       "Content-Type": "application/json",
       accept: "application/json",
