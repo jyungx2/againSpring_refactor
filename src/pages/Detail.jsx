@@ -179,7 +179,7 @@ function Detail() {
         navigate("/shop");
       } catch (error) {
         // 디버깅 확인 전용
-        console.log("상품 삭제 실패:", error, response?.data || error.message);
+        console.log("상품 삭제 실패:", error?.response?.data || error.message);
         alert("상품 삭제에 실패하였습니다. 에러 메시지를 확인해주세요");
       }
     }
