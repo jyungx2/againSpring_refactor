@@ -1,49 +1,109 @@
 // src/pages/Detail.jsx
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ReviewList from "@pages/ReviewList";
-import useCartStore from "../store/cartStore";
+// import useCartStore from "../store/cartStore";
 import useUserStore from "@store/userStore";
+import { toast } from "react-toastify";
 
 function Detail() {
   const [activeTab, setActiveTab] = useState("상세정보");
   const { id } = useParams();
   const axiosInstance = useAxiosInstance();
-  const [cartItemsList, setCartItemsList] = useState([]);
+  // const [cartItemsList, setCartItemsList] = useState([]);
   const [productDetails, setProductDetails] = useState(null);
   const navigate = useNavigate();
   const { user } = useUserStore();
-  const { addToCart, fetchCartItems } = useCartStore();
+  // const { addToCart, fetchCartItems } = useCartStore();
   const [selectedIndex, setSelectedIndex] = useState(0); // 선택된 이미지 인덱스
+  const [quantity, setQuantity] = useState(1);
+
+  // REF) 상품 구매 함수 - useMutation 사용
+  const handlePurchase = useMutation({
+    mutationFn: async (product) => {
+      const products = [
+        {
+          _id: product._id,
+          quantity: Number(quantity),
+        },
+      ];
+      await axiosInstance.post("/orders", { products });
+    },
+    onSuccess: async () => {
+      toast.success(`${user.name} 님, 주문이 완료되었습니다.`);
+    },
+    onError: (err) => {
+      console.error(err, err.response?.data || err.message);
+      alert("주문 처리 중 문제가 발생했습니다.");
+    },
+  });
 
   // 장바구니에 추가 후 Cart 페이지로 이동하는 함수
-  const handleAddToCart = async (product) => {
-    console.log("Adding to cart:", product);
-    const success = await addToCart(product, 1);
-    if (success) {
-      alert("결제를 위해 장바구니로 이동합니다");
-      await fetchCartItems();
-      navigate(`/cart/${user.id}`);
-    } else {
-      alert("아이템 추가 실패");
-    }
-  };
+  // const handleAddToCart = async (product) => {
+  //   console.log("Adding to cart:", product);
+  //   const success = await addToCart(product, 1);
+  //   if (success) {
+  //     alert("결제를 위해 장바구니로 이동합니다");
+  //     await fetchCartItems();
+  //     navigate(`/cart/${user.id}`);
+  //   } else {
+  //     alert("아이템 추가 실패");
+  //   }
+  // };
 
-  // 장바구니에 상품 추가만 하고 페이지 이동 X
-  const handleAddToCartNoNav = async (product) => {
-    console.log("Adding to Cart (페이지 이동 X):", product);
-    const success = addToCart(product, 1);
-    if (success) {
-      alert("장바구니에 담겼습니다.");
-      await fetchCartItems();
-    } else {
-      alert("아이템 추가 실패");
-    }
-  };
+  // // 장바구니에 상품 추가만 하고 페이지 이동 X
+  // const handleAddToCartNoNav = async (product) => {
+  //   console.log("Adding to Cart (페이지 이동 X):", product);
+  //   const success = addToCart(product, 1);
+  //   if (success) {
+  //     alert("장바구니에 담겼습니다.");
+  //     await fetchCartItems();
+  //   } else {
+  //     alert("아이템 추가 실패");
+  //   }
+  // };
 
-  // 위시리스트 추가
+  // REF) 장바구니에 상품 추가 함수 - useMutation 사용
+  const handleAddToCart = useMutation({
+    mutationFn: (product) => {
+      console.log(product);
+      // 필요한 데이터만 추출하여 전송
+      const cartData = {
+        product_id: parseInt(product._id, 10),
+        quantity: parseInt(quantity, 10),
+        // 필요한 다른 데이터들...
+      };
+
+      return axiosInstance.post("/carts", cartData);
+    },
+    onSuccess: (res) => {
+      console.log("장바구니 추가 요청 후 반응: ", res);
+      toast.success("장바구니에 추가되었습니다!");
+      // navigate(`/cart/${user._id}`);
+    },
+    onError: (err) => {
+      console.error("장바구니 추가 요청 시 에러 발생: ", err);
+      toast.error("오류가 발생하였습니다.");
+    },
+  });
+
+  // // 위시리스트 추가
+  // const handleAddToWishlist = useMutation({
+  //   mutationFn: () =>
+  //     axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
+  //   onSuccess: (res) => {
+  //     if (res) {
+  //       alert("위시리스트에 추가되었습니다!");
+  //       navigate(`/wishlist`);
+  //     } else {
+  //       alert("위시리스트에 아이템 추가 실패");
+  //     }
+  //   },
+  // });
+
+  // REF) 위시리스트에 상품 추가 함수 - useMutation 사용
   const handleAddToWishlist = useMutation({
     mutationFn: () =>
       axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
@@ -55,30 +115,49 @@ function Detail() {
         alert("위시리스트에 아이템 추가 실패");
       }
     },
+    onError: (error) => {
+      if (error.response?.status === 409) {
+        alert("이미 위시리스트에 추가된 상품입니다.");
+      } else {
+        alert("찜하기 중 오류가 발생했습니다.");
+      }
+    },
   });
 
-  // const getImage = (path) => {
-  //   const baseURL = "https://fesp-api.koyeb.app/market";
-  //   return `${baseURL}${path}`;
-  // };
+  // useEffect(() => {
+  //   console.log("typeof ID: ", typeof Number(id));
+  //   const fetchProduct = async () => {
+  //     try {
+  //       const response = await axiosInstance.get(`/products/${Number(id)}`);
+  //       const product = response?.data?.item;
+  //       console.log("detail: ", product);
+  //       product.quantity = 1;
+  //       setCartItemsList([product]); // 장바구니에 추가할 상품 목록 - 단일 상품이라도 배열로 저장
+  //       setProductDetails(product); // 상품 상세 정보
+  //     } catch (error) {
+  //       console.error("Failed to fetch product:", error);
+  //     }
+  //   };
+  //   fetchProduct();
+  //   console.log(cartItemsList);
+  // }, [id]);
 
-  useEffect(() => {
-    console.log("typeof ID: ", typeof Number(id));
-    const fetchProduct = async () => {
-      try {
-        const response = await axiosInstance.get(`/products/${Number(id)}`);
-        const product = response?.data?.item;
-        console.log("detail: ", product);
+  // ✅ 상품 상세 데이터 패칭
+  const {
+    data: productData,
+    isLoading: productLoading,
+    error: productError,
+  } = useQuery({
+    queryKey: ["product", id],
+    queryFn: () =>
+      axiosInstance.get(`/products/${id}`).then((res) => {
+        const product = res.data.item;
         product.quantity = 1;
-        setCartItemsList([product]); // 장바구니에 추가할 상품 목록 - 단일 상품이라도 배열로 저장
         setProductDetails(product); // 상품 상세 정보
-      } catch (error) {
-        console.error("Failed to fetch product:", error);
-      }
-    };
-    fetchProduct();
-    console.log(cartItemsList);
-  }, [id]);
+        console.log(product);
+        return product;
+      }),
+  });
 
   // 관리자용 수정/ 삭제 기능
   const handleEdit = () => {
@@ -218,10 +297,16 @@ function Detail() {
   } else {
     formattedContent = "<p>Loading...</p>"; // 상품 상세정보가 없을 경우
   }
-  const totalPrice = cartItemsList.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+
+  const updateQuantity = (newQuantity) => {
+    setQuantity(Math.max(1, newQuantity));
+  };
+
+  const totalPrice = (productData?.price * quantity).toLocaleString();
+
+  if (productLoading || !productData)
+    return <div>상품 정보를 불러오는 중...</div>;
+  if (productError) return <div>상품 정보를 불러올 수 없습니다.</div>;
 
   return (
     <div className="flex justify-center px-[16px]">
@@ -252,138 +337,130 @@ function Detail() {
         )}
 
         <div>
-          {cartItemsList.map((item) => (
-            <div className="flex mt-[50px]" key={item._id}>
-              {/* 사이드 이미지  */}
-              <div className="flex flex-col mr-[30px]">
-                {item?.mainImages?.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image.path}
-                    alt={`상품 이미지 ${index + 1}`}
-                    className="w-[100px] h-[110px] mb-[10px] object-cover mr-[32px] cursor-pointer 
+          <div className="flex mt-[50px]" key={productData._id}>
+            {/* 사이드 이미지  */}
+            <div className="flex flex-col mr-[30px]">
+              {productData?.mainImages?.map((image, index) => (
+                <img
+                  key={index}
+                  src={image.path}
+                  alt={`상품 이미지 ${index + 1}`}
+                  className="w-[100px] h-[110px] mb-[10px] object-cover mr-[32px] cursor-pointer 
                     hover:border-2 opacity-100 hover:opacity-50 transition-opacity"
-                    onClick={() => setSelectedIndex(index)} // 이미지 클릭 시 인덱스 변경
-                  />
-                ))}
-              </div>
+                  onClick={() => setSelectedIndex(index)} // 이미지 클릭 시 인덱스 변경
+                />
+              ))}
+            </div>
 
-              {/* 메인 이미지 */}
-              <img
-                src={item?.mainImages?.[selectedIndex]?.path} // 선택된 이미지의 path
-                alt="메인 상품 이미지"
-                className="w-[370px] h-[492px] mb-[20px] object-cover mr-[70px]"
-              />
+            {/* 메인 이미지 */}
+            <img
+              src={productData?.mainImages?.[selectedIndex]?.path} // 선택된 이미지의 path
+              alt="메인 상품 이미지"
+              className="w-[370px] h-[492px] mb-[20px] object-cover mr-[70px]"
+            />
+
+            <hr className="mt-[12px] mb-[16px]" />
+
+            <dl className="w-full">
+              <p className="text-[18px] font-semibold mb-[20px] mt-[30px]">
+                {productData.name}
+              </p>
+              <p className="text-[13px] text-grey-80">상품설명</p>
+              <hr className="mt-[12px] mb-[16px]" />
+
+              <dl className="flex">
+                <dt className="mr-[90px] mb-[16px]">판매가</dt>
+                <dd>{productData?.price?.toLocaleString()}원</dd>
+              </dl>
+
+              <dl className="flex">
+                <dt className="mr-[30px] mb-[16px]">국내·해외배송</dt>
+                <dd>국내배송</dd>
+              </dl>
+
+              <dl className="flex">
+                <dt className="mr-[90px] mb-[16px]">배송비</dt>
+                <dd>3,000원 (50,000원 이상 구매 시 무료)</dd>
+              </dl>
+
+              <dl className="flex">
+                <dt className="mr-[90px] mb-[16px]">원산지</dt>
+                <dd>국내</dd>
+              </dl>
 
               <hr className="mt-[12px] mb-[16px]" />
 
-              <dl className="w-full">
-                <p className="text-[18px] font-semibold mb-[20px] mt-[30px]">
-                  {item.name}
-                </p>
-                <p className="text-[13px] text-grey-80">상품설명</p>
-                <hr className="mt-[12px] mb-[16px]" />
+              <div key={productData.id} className="border-b py-[20px]">
+                <dd className="flex items-start py-[10px]">
+                  <div className="flex">
+                    <h2 className="text-[15px] font-semibold text-grey-80 mr-[180px]">
+                      {productData.name}
+                    </h2>
 
-                <dl className="flex">
-                  <dt className="mr-[90px] mb-[16px]">판매가</dt>
-                  <dd>{item?.price?.toLocaleString()}원</dd>
-                </dl>
-
-                <dl className="flex">
-                  <dt className="mr-[30px] mb-[16px]">국내·해외배송</dt>
-                  <dd>국내배송</dd>
-                </dl>
-
-                <dl className="flex">
-                  <dt className="mr-[90px] mb-[16px]">배송비</dt>
-                  <dd>3,000원 (50,000원 이상 구매 시 무료)</dd>
-                </dl>
-
-                <dl className="flex">
-                  <dt className="mr-[90px] mb-[16px]">원산지</dt>
-                  <dd>국내</dd>
-                </dl>
-
-                <hr className="mt-[12px] mb-[16px]" />
-
-                {cartItemsList.map((item) => (
-                  <div key={item.id} className="border-b py-[20px]">
-                    <dd className="flex items-start py-[10px]">
-                      <div className="flex">
-                        <h2 className="text-[15px] font-semibold text-grey-80 mr-[180px]">
-                          {item.name}
-                        </h2>
-
-                        <dd className="text-center py-[10px] mr-[60px]">
-                          <div className="flex justify-center">
-                            <div className="flex items-center h-[32px] border border-grey-20">
-                              <button
-                                className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10"
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity - 1)
-                                }
-                              >
-                                -
-                              </button>
-                              <span className="w-[50px] text-center">
-                                {item.quantity}
-                              </span>
-                              <button
-                                className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity + 1)
-                                }
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-                        </dd>
-
-                        <dd className="text-center py-[10px]">
-                          {(item.price * item.quantity).toLocaleString()}원
-                        </dd>
+                    <dd className="text-center py-[10px] mr-[60px]">
+                      <div className="flex justify-center">
+                        <div className="flex items-center h-[32px] border border-grey-20">
+                          <button
+                            className="w-[24px] h-full border-r border-grey-20 hover:bg-grey-10"
+                            onClick={() => updateQuantity(quantity - 1)}
+                          >
+                            -
+                          </button>
+                          <span className="w-[50px] text-center">
+                            {quantity}
+                          </span>
+                          <button
+                            className="w-[24px] h-full border-l border-grey-20 hover:bg-grey-10"
+                            onClick={() => updateQuantity(quantity + 1)}
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
                     </dd>
-                    <hr className="mt-[12px] mb-[1px]" />
 
-                    <div className="flex">
-                      <dt className="py-[10px] text-[12px] mt-[1px] mr-[10px]">
-                        총 상품 금액(수량):
-                      </dt>
-                      <dd className="text-grey-80 font-gowunBold py-[10px] text-[21px]">
-                        {totalPrice.toLocaleString()}원
-                      </dd>
-                      <dd className="text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
-                        {item?.quantity?.toLocaleString()}개
-                      </dd>
-                    </div>
-                    <div className="flex justify-center mb-[16px] mt-[70px]">
-                      <button
-                        className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={handleAddToWishlist.mutate}
-                      >
-                        찜하기
-                      </button>
-                      <button
-                        className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={() => handleAddToCartNoNav(item)}
-                      >
-                        장바구니 담기
-                      </button>
-                      {/* 구매하기 버튼: 단품 결제 관련 PurchaseButton 대신 handleAddToCart 호출 */}
-                      <button
-                        className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
-                        onClick={() => handleAddToCart(item)}
-                      >
-                        구매하기
-                      </button>
-                    </div>
+                    <dd className="text-center py-[10px]">
+                      {(productData?.price * quantity).toLocaleString()}원
+                    </dd>
                   </div>
-                ))}
-              </dl>
-            </div>
-          ))}
+                </dd>
+                <hr className="mt-[12px] mb-[1px]" />
+
+                <div className="flex">
+                  <dt className="py-[10px] text-[12px] mt-[1px] mr-[10px]">
+                    총 상품 금액(수량):
+                  </dt>
+                  <dd className="text-grey-80 font-gowunBold py-[10px] text-[21px]">
+                    {totalPrice.toLocaleString()}원
+                  </dd>
+                  <dd className="text-grey-80 font-gowunBold py-[10px] text-[12px] mt-[10px] ml-[10px]">
+                    {quantity.toLocaleString()}개
+                  </dd>
+                </div>
+                <div className="flex justify-center mb-[16px] mt-[70px]">
+                  <button
+                    className="bg-white border-2 border-gray-300 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                    onClick={() => handleAddToWishlist.mutate()}
+                  >
+                    찜하기
+                  </button>
+                  <button
+                    className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                    onClick={() => handleAddToCart.mutate(productData)}
+                  >
+                    장바구니 담기
+                  </button>
+                  {/* 구매하기 버튼: 단품 결제 관련 PurchaseButton 대신 handleAddToCart 호출 */}
+                  <button
+                    className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
+                    onClick={() => handlePurchase.mutate(productData)}
+                  >
+                    구매하기
+                  </button>
+                </div>
+              </div>
+            </dl>
+          </div>
 
           <div className="flex mt-[80px]">
             {["상세정보", "구매안내", "상품후기", "QnA"].map((tab) => (
