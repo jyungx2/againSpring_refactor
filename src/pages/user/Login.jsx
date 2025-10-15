@@ -32,7 +32,7 @@ function Login() {
     setError,
     formState: { errors },
   } = useForm({
-    defaultValues: { email: "ebom@market.com", password: "12341234" },
+    defaultValues: { email: "ebitna@gmail.com", password: "12345678" },
   });
 
   const login = useMutation({
@@ -66,14 +66,12 @@ function Login() {
       navigate(location.state?.from || "/");
     },
     onError: (err) => {
-      toast.error("오류가 발생하였습니다.");
-
       if (err.response?.data.errors) {
         err.response.data.errors.forEach((error) =>
           setError(error.path, { message: error.msg })
         );
       } else {
-        alert(
+        toast.error(
           err.response.data.message ||
             "오류가 발생하였습니다. 잠시 후 다시 요청하세요."
         );

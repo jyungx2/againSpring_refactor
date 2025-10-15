@@ -109,17 +109,17 @@ function Detail() {
       axiosInstance.post("/bookmarks/product", { target_id: parseInt(id) }),
     onSuccess: (res) => {
       if (res) {
-        alert("위시리스트에 추가되었습니다!");
+        toast.success("위시리스트에 추가되었습니다!");
         navigate(`/wishlist`);
       } else {
-        alert("위시리스트에 아이템 추가 실패");
+        toast.error("위시리스트에 아이템 추가 실패");
       }
     },
     onError: (error) => {
       if (error.response?.status === 409) {
-        alert("이미 위시리스트에 추가된 상품입니다.");
+        toast.warn("이미 위시리스트에 추가된 상품입니다.");
       } else {
-        alert("찜하기 중 오류가 발생했습니다.");
+        toast.error("찜하기 중 오류가 발생했습니다.");
       }
     },
   });
