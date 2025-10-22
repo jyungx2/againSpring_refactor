@@ -1,7 +1,7 @@
 ## 다시봄 쇼핑몰 웹사이트
 
 ### 리팩토링 이후 배포 주소: https://again-spring-jy.netlify.app/
-> 1. 기존 api 서버 도메인 만료로 인한 오류 해결
+1. 기존 api 서버 도메인 만료로 인한 오류 해결
 ✅ 변경된 API 서버 주소 및 client-id를 반영
 - 기존: 11.fesp.shop
 - 변경: fesp-api.koyeb.app/market
