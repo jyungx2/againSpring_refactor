@@ -29,13 +29,15 @@ function Detail() {
           quantity: Number(quantity),
         },
       ];
-      await axiosInstance.post("/orders", { products });
+      const res = await axiosInstance.post("/orders", { products });
+      console.log("res: ", res);
     },
     onSuccess: async () => {
       toast.success(`${user.name} 님, 주문이 완료되었습니다.`);
     },
     onError: (err) => {
-      console.error(err, err.response?.data || err.message);
+      console.error(err);
+      console.error(err.response?.data?.message || err.message);
       alert("주문 처리 중 문제가 발생했습니다.");
     },
   });
@@ -450,7 +452,7 @@ function Detail() {
                   >
                     장바구니 담기
                   </button>
-                  {/* 구매하기 버튼: 단품 결제 관련 PurchaseButton 대신 handleAddToCart 호출 */}
+                  {/* 구매하기 버튼: 단품 결제는 PurchaseButton 대신 handleAddToCart 호출 */}
                   <button
                     className="bg-white border-gray-300 border-2 w-[160px] py-[15px] mr-[10px] rounded-md text-[15px] text-center hover:bg-secondary-20 flex justify-center items-center"
                     onClick={() => handlePurchase.mutate(productData)}

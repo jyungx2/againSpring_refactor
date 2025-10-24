@@ -129,15 +129,68 @@ function Cart() {
     }
   };
 
+  // 낙관적 업데이트의 핵심은 onMutate**이고, 실패 롤백은 onError, 최종 동기화는 보통 onSettled(또는 onSuccess)
   const updateQuantityMutation = useMutation({
     mutationFn: async ({ id, quantity }) => {
-      return await axios.patch(`/carts/${id}`, { quantity });
+      const res = await axios.patch(`/carts/${id}`, { quantity });
+      console.log("res.data: ", res.data);
+      return res.data.item;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] }); // 서버에서 최신 cart 다시 불러옴
+    // 1) 요청 직전: 레이스 방지 + 낙관적 업데이트 + 스냅샷
+    onMutate: async ({ id, quantity }) => {
+      // 진행 중인 cart 요청 취소 (레이스 방지)
+      await queryClient.cancelQueries({ queryKey: ["cart"] });
+
+      // 이전 캐시 스냅샷 저장 (롤백용)
+      const previousCart = queryClient.getQueryData(["cart"]);
+      // const previousSelected = selectedItems;
+
+      // 낙관적 캐시 업데이트 (UI 즉시 반영)
+      // old는 해당 키 ["cart"]의 현재 캐시에 들어있는 데이터
+      queryClient.setQueryData(["cart"], (old = []) =>
+        old.map((item) => (item._id === id ? { ...item, quantity } : item))
+      ); // setQueryData의 업데이터는 불변 업데이트를 해야함. 즉, old를 직접 mutate하지 말고, map처럼 새 배열/객체를 반환해야 함
+
+      // UI에서 선택된 항목도 객체 배열이라면 함께 업데이트
+      setSelectedItems((prev) =>
+        prev.map((s) => (s._id === id ? { ...s, quantity } : s))
+      );
+
+      // onError에서 사용할 롤백 데이터 전달
+      return { previousCart }; // 이전 캐시 스냅샷을 반환하면, 그 값이 onError의 세 번째 인자(context)로 전달
     },
-    onError: () => {
-      alert("수량 변경 실패 😢");
+    // 💥 error: "3 → 2 → 1 → 2 → 1"처럼 깜빡이는 현상 발생
+    // 빠른 연타 + onSuccess 즉시 setQueryData + onSettled invalidate가 겹치면, 오래된 응답이 잠깐 새 상태를 덮어 “2→1”이 두 번 보임. => onSuccess에서는 덮어쓰지 말고, onSettled 한 번만 리페치해야 함!
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries({ queryKey: ["cart"] }); // 서버에서 최신 cart 다시 불러옴
+    // },
+
+    // 🚨 왜 "3 → 2 → 1 → 2 → 1" 깜빡임이 생기나?
+    // 1) onMutate에서 낙관적 업데이트 → UI가 즉시 3→2, 이어서 2→1로 변함 (연타 가정)
+    // 2) 그러나 서버 응답은 A(3→2), B(2→1) 순서가 뒤엉킬 수 있음 (out-of-order)
+    // 3) onSuccess에서 서버 스냅샷으로 setQueryData(=2) → 낙관 상태(1)를 잠깐 덮어써서 화면이 2로 ‘되돌아보임’
+    // 4) onSettled에서 invalidateQueries → 리페치가 들어오며 최종적으로 서버의 최신 상태(=1)로 확정
+    // ⇒ 즉, "낙관(빠름) → onSuccess 덮어쓰기(중간값) → 리페치 확정(최신값)"이라는
+    //    2차/3차 업데이트 파동 + 응답 순서 뒤바뀜 때문에 2→1이 두 번 보이는 깜빡임 발생.
+    //
+    // ✅ 해결(권장):
+    // - onSuccess에서 즉시 setQueryData(통째 교체)하지 말고 비워두기
+    // - onMutate(낙관) → onError(롤백) → onSettled에서 한 번만 invalidateQueries 로 최종 동기화
+    // - 같은 아이템은 응답 대기 중 버튼 비활성화(연타 방지), 선택 상태는 ID 배열로만 관리
+
+    // 2) 실패 시: 정확히 롤백
+    onError: (error, _vars, context) => {
+      if (context?.previousCart) {
+        queryClient.setQueryData(["cart"], context.previousCart);
+      }
+      // if (context?.previousSelected) {
+      //   setSelectedItems(context.previousSelected);
+      // }
+      alert(error, "수량 변경 실패 😢");
+    },
+    // 3) 성공/실패와 무관하게: 최종 동기화 1번만
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 
@@ -149,6 +202,10 @@ function Cart() {
     const item = cartItems.find((item) => item._id === id);
     if (!item) return;
     const newQuantity = Math.max(1, item.quantity + delta);
+    // 중복 클릭 방지: next === item.quantity면 무시
+    if (newQuantity === item.quantity) return;
+
+    // 실제 API 통해 장바구니 아이템 수량을 바꾸는 뮤테이션 함수 호출!
     updateQuantityMutation.mutate({ id, quantity: newQuantity });
   };
 
