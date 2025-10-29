@@ -77,14 +77,24 @@
 - 주문 내역 조회 및 후기 작성
   - 주문 내역 페이지에서 **‘리뷰 작성하기’ 버튼** 클릭 시, 해당 상품에 대한 상세 리뷰를 작성하고 사진을 첨부할 수 있도록 구현하였습니다.
   - 작성한 리뷰는 **상품 상세페이지의 리뷰 목록 및 후기 조회 페이지에 즉시 반영**됩니다.
+ 
+  <div align="center" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+    <img src="https://github.com/user-attachments/assets/78a9f5e6-aa01-450f-8f94-c2f5c7d7463d" width="280" alt="image 1"/>
+    <img src="https://github.com/user-attachments/assets/cab39563-b296-4e28-af1d-7e2e4706e333" width="280" alt="image 2"/>
+    <img src="https://github.com/user-attachments/assets/4d1bfd7d-8c89-49b4-8d31-886608cbd454" width="280" alt="image 3"/>
+  </div>
+
 
 - 문의 내역 조회
   - 사용자 경험(UX)을 고려하여 **페이지네이션(Pagination)** 기능을 구현하였습니다.
   - **‘문의하러 가기’ 버튼** 클릭 시 /qna 페이지로 이동하여 새로운 문의를 작성할 수 있도록 하였습니다.
+ 
+    <img width="450" height="240" alt="image 5" src="https://github.com/user-attachments/assets/de49a26b-4a40-4f13-bee3-5692acd2bed0" />
 
-- 후기 조회
+- 후기 내역 조회
   - 사용자가 작성한 상품 리뷰를 한눈에 확인할 수 있도록 구현하였습니다.
   - 각 리뷰에는 작성 시점과 상품 정보가 함께 표시되어 본인이 남긴 후기 기록을 직관적으로 확인할 수 있도록 하였습니다.
- <img width="450" height="240" alt="image 5" src="https://github.com/user-attachments/assets/de49a26b-4a40-4f13-bee3-5692acd2bed0" />
+    
+    <img width="450" height="240" alt="image 4" src="https://github.com/user-attachments/assets/d3ef1d12-0ac3-4654-9013-90f5f16f9428" />
 
 
