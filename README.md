@@ -76,7 +76,7 @@
 
 - 주문 내역 조회 및 후기 작성
   - 주문 내역 페이지에서 **‘리뷰 작성하기’ 버튼** 클릭 시, 해당 상품에 대한 상세 리뷰를 작성하고 사진을 첨부할 수 있도록 구현하였습니다.
-  - 작성한 리뷰는 **상품 상세페이지의 리뷰 목록 및 후기 조회 페이지에 즉시 반영**됩니다.
+  - 작성한 리뷰는 **상품 상세페이지의 리뷰 목록 및 후기 조회 페이지에 즉시 반영**됩니다.
  
   <div align="center" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
     <img src="https://github.com/user-attachments/assets/78a9f5e6-aa01-450f-8f94-c2f5c7d7463d" width="280" alt="image 1"/>
