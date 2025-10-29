@@ -1,25 +1,42 @@
-# 🌿 다시봄 쇼핑몰 웹사이트
+## 🌿 다시봄 (Again Spring)
+친환경 제품 전문 쇼핑몰 ‘자연상점’을 참고하여 제작한 ‘다시봄’은 지속 가능한 소비를 촉진하고,</br>
+“다시 지구에 봄이 오길 바란다”는 의미를 담아 기획한 친환경 쇼핑몰 웹사이트
+> 👉 사이트 바로가기: https://next-urang-market.vercel.app/</br>
+> 👉 프로젝트 상세보기: https://my-portfolio-three-xi-44.vercel.app/blog/again-spring</br>
 
-### 리팩토링 이후 배포 주소: https://again-spring-jy.netlify.app/
-### 담당 개발 파일: pages/user/*
+### ❗NOTICE️ 
+⚠️ 현재 로그인 및 결제 기능은 디버깅이 제한된 상태입니다.⚠️
+
+1. 카카오 로그인 관련 이슈
+현재 카카오 로그인 기능은 백엔드 서버의 검증 로직에서 사용하는 redirect_uri가  
+기존 배포 주소로만 등록되어 있어, 새로운 배포 주소에서는 정상적으로 동작하지 않습니다.
+  > 🔍 해결 시도 및 경과    
+  > 1. 카카오 개발자 콘솔에 개인 앱을 등록하고, 새로운 REST API Key 및 redirect_uri를 설정하였으나   
+  > → 백엔드 검증 시 사용되는 값과 일치하지 않아 인증 오류 발생
+  > 2. 백엔드 담당 강사님께 새로운 redirect_uri 추가를 요청드렸으나,  
+  > → 현재 서버의 redirect URI 등록 개수 제한으로 인해 수정 대기 중
+
+2. 상품 상세 페이지 & 장바구니 페이지 - 주문 POST 요청 api('/orders') 일시적인 오류 발생 및 백엔드 점검 중
 
 
-#### 1️⃣ 기존 api 서버 도메인 만료로 인한 오류 해결  
-✅ 변경된 API 서버 주소 및 client-id를 반영하여 상품 목록, 상세 조회, 장바구니 등 주요 기능이 정상적으로 복구되었습니다.
-- 기존: 11.fesp.shop
-- 변경: fesp-api.koyeb.app/market
+✅ 3. 기존 api 서버 도메인 만료로 인한 오류 해결  
+   변경된 API 서버 주소 및 client-id를 반영하여 상품 목록, 상세 조회, 장바구니 등 주요 기능이 정상적으로 복구되었습니다.
+   - 기존: 11.fesp.shop
+   - 변경: fesp-api.koyeb.app/market 
 
 ---
 
-#### 2️⃣ 카카오 로그인 관련 이슈
-현재 카카오 로그인 기능은 백엔드 서버의 검증 로직에서 사용하는 redirect_uri가  
-기존 배포 주소로만 등록되어 있어, 새로운 배포 주소에서는 정상적으로 동작하지 않습니다.
+### 🧭 기술 스택
+  - Frontend: Next.js 14 (Page Router), React, Javascript
+  - Backend: Next.js API Routes, MongoDB + Mongoose
+  - Styling: Tailwind CSS, Module CSS
+  - State Management: Zustand
+  - Deployment: Vercel
+  - Image Upload: Cloudinary
+  - Auth: JWT 기반 + CoolSMS (추후 Redis 연동 예정)
+  - Realtime API: Socket.IO
+  - Payment: Stripe
+  
+---
 
-🔍 해결 시도 및 경과    
-1. 카카오 개발자 콘솔에 개인 앱을 등록하고, 새로운 REST API Key 및 redirect_uri를 설정하였으나   
-→ 백엔드 검증 시 사용되는 값과 일치하지 않아 인증 오류 발생
-
-2. 백엔드 담당 강사님께 새로운 redirect_uri 추가를 요청드렸으나,  
-→ 현재 서버의 redirect URI 등록 개수 제한으로 인해 수정 대기 중
-
-⚠️ 따라서 현재 로그인 기능은 디버깅이 제한된 상태입니다.⚠️
+### 🚀 주요 구현 기능
