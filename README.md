@@ -4,7 +4,8 @@
 > 👉 사이트 바로가기: https://next-urang-market.vercel.app/</br>
 > 👉 프로젝트 상세보기: https://my-portfolio-three-xi-44.vercel.app/blog/again-spring</br>
 
-### ❗NOTICE️ 
+---
+## ❗NOTICE️ 
 #### ⚠️ 1. 카카오 로그인 관련 이슈
 현재 카카오 로그인 기능은 백엔드 서버의 검증 로직에서 사용하는 redirect_uri가  
 기존 배포 주소로만 등록되어 있어, 새로운 배포 주소에서는 정상적으로 동작하지 않습니다.
@@ -13,6 +14,8 @@
   > → 백엔드 검증 시 사용되는 값과 일치하지 않아 인증 오류 발생
   > 2. 백엔드 담당 강사님께 새로운 redirect_uri 추가를 요청드렸으나,  
   > → 현재 서버의 redirect URI 등록 개수 제한으로 인해 수정 대기 중
+  <br>
+  <br>
 
 #### ⚠️ 2. 상품 상세 페이지 & 장바구니 페이지 - 주문 생성 API(POST /orders) 일시적 오류 및 백엔드 점검 중
   현재 주문 생성 API(POST /orders) 요청 과정에서 일시적인 오류가 발생하여</br>
@@ -23,6 +26,8 @@
   
   🎥[영상 바로가기](https://drive.google.com/file/d/10B2M8rt8dXfDkSJ16ssPAHSaCW2nvQAD/view) 
   > 💬 1.25배속 또는 1.5배속으로 시청하시면 더욱 효율적으로 확인하실 수 있습니다.
+  <br>
+  <br>
 
 #### ✅ 3. 기존 api 서버 도메인 만료로 인한 오류 해결  
    변경된 API 서버 주소 및 client-id를 반영하여 상품 목록, 상세 조회, 장바구니 등 주요 기능이 정상적으로 복구되었습니다.
@@ -31,7 +36,7 @@
 
 ---
 
-### 🧭 기술 스택
+## 🧭 기술 스택
   - Frontend: Next.js 14 (Page Router), React, Javascript
   - Backend: Next.js API Routes, MongoDB + Mongoose
   - Styling: Tailwind CSS, Module CSS
@@ -44,4 +49,24 @@
   
 ---
 
-### 🚀 주요 구현 기능
+## 🚀 주요 구현 기능
+1. 담당 파일
+  - pages
+    - user/*
+    - Checkout.jsx
+  
+  - components
+    - ProtectedRoute.jsx
+    - ErrorMsg.jsx
+    - PurchaseButton.jsx
+  
+  - store
+    - userStore.js
+
+  - hooks
+    - useAxiosInstance.js
+
+   ---
+
+   2. 담당 구현 기능
+      
