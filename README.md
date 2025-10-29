@@ -85,3 +85,6 @@
 - 후기 조회
   - 사용자가 작성한 상품 리뷰를 한눈에 확인할 수 있도록 구현하였습니다.
   - 각 리뷰에는 작성 시점과 상품 정보가 함께 표시되어 본인이 남긴 후기 기록을 직관적으로 확인할 수 있도록 하였습니다.
+ <img width="450" height="240" alt="image 5" src="https://github.com/user-attachments/assets/de49a26b-4a40-4f13-bee3-5692acd2bed0" />
+
+
