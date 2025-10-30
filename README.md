@@ -37,13 +37,14 @@
 ---
 
 ## 🧭 기술 스택
-  - Frontend: React, Javascript
+  - Frontend: React, JavaScript
   - Styling: Tailwind CSS, CSS Modules
   - State Management
     - Client State: Zustand
     - Server State: TanStack Query
   - Deployment: Netlify
   - Image Upload: Cloudinary
+  - Auth: JWT (issued by backend) · sessionStorage · Zustand (global auth state) · Axios Interceptors
   
 ---
 
