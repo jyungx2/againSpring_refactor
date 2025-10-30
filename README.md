@@ -24,7 +24,7 @@
   이에 따라 로그인 및 결제 기능의 디버깅이 제한되고 있으며,</br>
   결제 후 마이페이지 내 결제 내역·문의 내역·후기 조회 기능은 아래 영상을 참고해주시기 바랍니다.</br>
   
-  🎥[영상 바로가기](https://drive.google.com/file/d/10B2M8rt8dXfDkSJ16ssPAHSaCW2nvQAD/view) 
+  🎥[시연영상 바로가기](https://drive.google.com/file/d/10B2M8rt8dXfDkSJ16ssPAHSaCW2nvQAD/view) 
   > 💬 1.25배속 또는 1.5배속으로 시청하시면 더욱 효율적으로 확인하실 수 있습니다.
   <br>
   <br>
