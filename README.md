@@ -39,7 +39,9 @@
 ## 🧭 기술 스택
   - Frontend: React, Javascript
   - Styling: Tailwind CSS, CSS Modules
-  - State Management: Zustand
+  - State Management
+    - Client State: Zustand
+    - Server State: TanStack Query
   - Deployment: Netlify
   - Image Upload: Cloudinary
   
