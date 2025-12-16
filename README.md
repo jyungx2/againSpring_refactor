@@ -1,7 +1,7 @@
 ## 🌿 다시봄 (Again Spring)
 친환경 제품 전문 쇼핑몰 ‘자연상점’을 참고하여 제작한 ‘다시봄’은 지속 가능한 소비를 촉진하고,</br>
 “다시 지구에 봄이 오길 바란다”는 의미를 담아 기획한 친환경 쇼핑몰 웹사이트
-> 👉 사이트 바로가기: https://next-urang-market.vercel.app/</br>
+> 👉 사이트 바로가기: https://again-spring-jy.netlify.app/</br>
 > 👉 프로젝트 상세보기: https://my-portfolio-three-xi-44.vercel.app/blog/again-spring</br>
 
 ---
